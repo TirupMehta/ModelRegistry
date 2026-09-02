@@ -19,7 +19,7 @@ export default function CompaniesPage() {
     <main className="relative min-h-screen">
       <Header />
 
-      <section className="section max-w-4xl mx-auto w-full px-6 md:px-20 pb-20">
+      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         <div className="space-y-4 text-base md:text-[17px] font-light text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
             <p>

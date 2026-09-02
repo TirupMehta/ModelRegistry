@@ -69,28 +69,29 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-xs transition-opacity duration-150 animate-in fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-xs transition-opacity duration-150 animate-in fade-in"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl bg-white dark:bg-[#0e1014] border border-black/10 dark:border-white/[0.08] rounded-xl shadow-2xl p-6 sm:p-8 overflow-y-auto max-h-[90vh] transition-all duration-150 ease-out animate-in fade-in"
+        className="relative w-full max-w-2xl bg-white dark:bg-[#0e1014] border border-black/10 dark:border-white/[0.08] rounded-xl shadow-2xl p-4 sm:p-7 overflow-y-auto max-h-[92vh] transition-all duration-150 ease-out animate-in fade-in"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar */}
-        <div className="flex items-center justify-between gap-2 border-b border-black/10 dark:border-white/[0.08] pb-3 mb-5">
-          <div className="flex items-center gap-2 text-[11px] font-mono text-[#ff5d2e]">
-            <Terminal size={13} />
-            <span className="uppercase tracking-widest font-medium">SPEC DATASHEET // {model.id}</span>
+        <div className="flex items-center justify-between gap-2 border-b border-black/10 dark:border-white/[0.08] pb-3 mb-4 sm:mb-5">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] font-mono text-[#ff5d2e] min-w-0">
+            <Terminal size={13} className="shrink-0" />
+            <span className="uppercase tracking-widest font-medium truncate max-w-[130px] sm:max-w-none">SPEC // {model.id}</span>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
             <button
               onClick={() => setIsShareStudioOpen(true)}
               title="Export Instagram Story / Social Card"
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[10px] sm:text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
             >
-              <Share2 size={12} />
-              <span>EXPORT CARD</span>
+              <Share2 size={11} className="sm:w-3 sm:h-3" />
+              <span className="hidden sm:inline">EXPORT CARD</span>
+              <span className="sm:hidden">SHARE</span>
             </button>
 
             <button

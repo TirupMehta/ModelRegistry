@@ -137,3 +137,28 @@ p {
 .dark ::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
 }
+
+/* 
+ * Responsive Screen & Mobile Ergonomics
+ */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+/* Remove mobile tap highlight on iOS / Android */
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Touch friendly scrolling */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}

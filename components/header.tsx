@@ -74,7 +74,10 @@ function NavLinks({ pathname }: { pathname: string }) {
   }, [targetHref, activeHref])
 
   return (
-    <nav ref={navRef} className="relative flex items-center gap-1 sm:gap-2">
+    <nav
+      ref={navRef}
+      className="relative flex items-center gap-1 sm:gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden max-w-full py-0.5 touch-scroll"
+    >
       {/* Segmented active pill */}
       <div
         ref={pillRef}
@@ -90,7 +93,7 @@ function NavLinks({ pathname }: { pathname: string }) {
           onMouseEnter={() => setHoverHref(href)}
           onMouseLeave={() => setHoverHref(null)}
           className={[
-            "relative z-10 py-1.5 px-3 rounded-md text-xs sm:text-[13px] font-mono tracking-tight select-none cursor-pointer transition-colors duration-150",
+            "relative z-10 py-1.5 px-2.5 sm:px-3 rounded-md text-xs sm:text-[13px] font-mono tracking-tight select-none cursor-pointer transition-colors duration-150 whitespace-nowrap",
             isLinkActive(href)
               ? "text-black dark:text-white font-medium"
               : "text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white",
@@ -111,9 +114,9 @@ export default function Header() {
     <>
       {/* ── Top Telemetry Readout Bar ────────────────────────────────────── */}
       <div className="reveal-in w-full bg-black/[0.02] dark:bg-[#0a0c0f] border-b border-black/5 dark:border-white/[0.06] py-2 text-[11px] font-mono text-black/60 dark:text-zinc-400">
-        <div className="max-w-4xl mx-auto w-full px-6 md:px-20 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <span className="inline-flex items-center gap-2 font-medium text-[#ff5d2e] tracking-wider uppercase">
+        <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+            <span className="inline-flex items-center gap-1.5 sm:gap-2 font-medium text-[#ff5d2e] tracking-wider uppercase text-[10px] sm:text-[11px]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#00e599] shadow-[0_0_6px_#00e599] shrink-0" />
               SYS://REGISTRY
             </span>
@@ -123,7 +126,7 @@ export default function Header() {
             </span>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0 text-[11px] font-mono">
+          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 text-[10px] sm:text-[11px] font-mono">
             <Link
               href="/rss.xml"
               className="group inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
@@ -144,22 +147,22 @@ export default function Header() {
       </div>
 
       {/* ── Industrial Header Unit ────────────────────────────────────────── */}
-      <header className="max-w-4xl mx-auto w-full px-6 md:px-20 pt-6 md:pt-16 pb-0">
+      <header className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pt-5 sm:pt-6 md:pt-16 pb-0">
         <TextWithBlur>
-          <div className="flex items-center justify-between gap-4 mb-4 md:mb-6">
-            <div className="flex items-center gap-3.5">
-              <Link href="/" className="group flex items-center gap-2.5 select-none">
-                <div className="flex items-center gap-2.5">
+          <div className="flex items-center justify-between gap-3 mb-4 md:mb-6">
+            <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
+              <Link href="/" className="group flex items-center gap-2 sm:gap-2.5 select-none">
+                <div className="flex items-center gap-2 sm:gap-2.5">
                   {isHome ? (
-                    <h1 className="text-2xl sm:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
+                    <h1 className="text-xl sm:text-2xl md:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
                       Model<span className="font-semibold text-[#ff5d2e]">Registry</span>
                     </h1>
                   ) : (
-                    <p className="text-2xl sm:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
+                    <p className="text-xl sm:text-2xl md:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
                       Model<span className="font-semibold text-[#ff5d2e]">Registry</span>
                     </p>
                   )}
-                  <span className="text-[10px] uppercase font-mono tracking-widest px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] text-black/50 dark:text-zinc-400 bg-black/[0.02] dark:bg-white/[0.02] group-hover:border-[#ff5d2e]/40 transition-colors duration-150">
+                  <span className="hidden sm:inline text-[10px] uppercase font-mono tracking-widest px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] text-black/50 dark:text-zinc-400 bg-black/[0.02] dark:bg-white/[0.02] group-hover:border-[#ff5d2e]/40 transition-colors duration-150">
                     v2026.9
                   </span>
                 </div>
@@ -167,19 +170,20 @@ export default function Header() {
             </div>
 
             {/* Contribute Action & Theme Toggle */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
               <a
                 href="https://github.com/TirupMehta/ModelRegistry"
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Contribute a newly released model on GitHub"
-                className="group inline-flex items-center justify-center gap-1.5 h-[28px] px-3 text-[11px] font-mono tracking-wide bg-black/[0.04] dark:bg-white/[0.04] hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] rounded-md text-black/70 dark:text-zinc-300 hover:text-white dark:hover:text-white transition-colors duration-150 select-none cursor-pointer"
+                className="group inline-flex items-center justify-center gap-1 sm:gap-1.5 h-[28px] px-2.5 sm:px-3 text-[10px] sm:text-[11px] font-mono tracking-wide bg-black/[0.04] dark:bg-white/[0.04] hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] rounded-md text-black/70 dark:text-zinc-300 hover:text-white dark:hover:text-white transition-colors duration-150 select-none cursor-pointer"
               >
                 <GitPullRequest
                   size={12}
                   className="text-black/50 dark:text-zinc-400 group-hover:text-white transition-colors duration-150"
                 />
-                <span>+ CONTRIBUTE</span>
+                <span className="hidden sm:inline">+ CONTRIBUTE</span>
+                <span className="sm:hidden">+ ADD</span>
                 <ArrowUpRight size={10} className="opacity-40 group-hover:opacity-100 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
 
@@ -192,12 +196,12 @@ export default function Header() {
         </TextWithBlur>
 
         {/* ── Segmented Navigation Line ──────────────────────────────────── */}
-        <div className="flex justify-between items-center gap-4 mb-6 md:mb-8 border-b border-black/5 dark:border-white/[0.07] pb-3 flex-nowrap">
-          <TextWithBlur delay={100} className="min-w-0">
+        <div className="flex justify-between items-center gap-4 mb-6 md:mb-8 border-b border-black/5 dark:border-white/[0.07] pb-3 flex-nowrap overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-scroll">
+          <TextWithBlur delay={100} className="min-w-0 max-w-full">
             <NavLinks pathname={pathname} />
           </TextWithBlur>
 
-          <div className="text-[11px] font-mono text-black/40 dark:text-zinc-400 select-none hidden sm:block tracking-wider">
+          <div className="text-[11px] font-mono text-black/40 dark:text-zinc-400 select-none hidden sm:block tracking-wider shrink-0">
             [ EPOCH: SEPT 2026 ]
           </div>
         </div>

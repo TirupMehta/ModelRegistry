@@ -65,7 +65,7 @@ export default function LeaderboardPage() {
     <main className="relative min-h-screen">
       <Header />
 
-      <section className="section max-w-4xl mx-auto w-full px-6 md:px-20 pb-20">
+      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         <div className="space-y-4 text-base md:text-[17px] font-light text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
             <p>
@@ -81,15 +81,15 @@ export default function LeaderboardPage() {
 
             return (
               <TextWithBlur key={category.title} delay={index * 35}>
-                <div className="p-5 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:all_120ms_ease-out]">
+                <div className="p-4 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:all_120ms_ease-out]">
                   {/* Category Header */}
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded flex items-center justify-center bg-black/5 dark:bg-[#15181e] border border-black/10 dark:border-white/[0.08] text-[#ff4400] shrink-0">
+                      <div className="w-8 h-8 rounded flex items-center justify-center bg-black/5 dark:bg-[#15181e] border border-black/10 dark:border-white/[0.08] text-[#ff5d2e] shrink-0">
                         <Icon size={16} />
                       </div>
                       <div>
-                        <h2 className="text-lg sm:text-xl font-medium text-black dark:text-white">
+                        <h2 className="text-base sm:text-xl font-medium text-black dark:text-white">
                           {category.title}
                         </h2>
                         <p className="text-xs sm:text-sm font-light text-black/60 dark:text-zinc-400">
@@ -100,11 +100,11 @@ export default function LeaderboardPage() {
                   </div>
 
                   {/* Leader Banner */}
-                  <div className="mb-4 py-2 px-3 rounded bg-[#ff4400]/5 dark:bg-[#ff4400]/10 border border-[#ff4400]/20 flex items-center justify-between text-xs font-mono">
-                    <span className="text-[#ff4400] font-medium uppercase tracking-wider text-[10px]">
+                  <div className="mb-4 py-2 px-3 rounded bg-[#ff5d2e]/5 dark:bg-[#ff5d2e]/10 border border-[#ff5d2e]/20 flex items-center justify-between text-xs font-mono">
+                    <span className="text-[#ff5d2e] font-medium uppercase tracking-wider text-[10px] shrink-0">
                       DOMAIN SOTA
                     </span>
-                    <span className="font-medium text-black dark:text-zinc-100 truncate ml-2">
+                    <span className="font-medium text-black dark:text-zinc-100 truncate ml-2 text-[11px] sm:text-xs">
                       {category.leader}
                     </span>
                   </div>
@@ -115,22 +115,22 @@ export default function LeaderboardPage() {
                       <div
                         key={model.id}
                         onClick={() => setActiveModalModel(model)}
-                        className="group cursor-pointer p-3 rounded-md border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 flex items-center justify-between gap-3 text-xs"
+                        className="group cursor-pointer p-2.5 sm:p-3 rounded-md border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 flex items-center justify-between gap-2.5 sm:gap-3 text-xs"
                       >
-                        <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
                           <span className="font-mono text-black/35 dark:text-zinc-500 w-5 shrink-0 tabular-nums transition-colors group-hover:text-[#ff5d2e]">
                             {String(mIndex + 1).padStart(2, "0")}
                           </span>
                           <span className="font-medium text-black dark:text-zinc-100 truncate group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {model.name}
                           </span>
-                          <span className="text-black/40 dark:text-zinc-400 font-mono text-[11px] shrink-0">
+                          <span className="text-black/40 dark:text-zinc-400 font-mono text-[11px] shrink-0 hidden sm:inline">
                             ({model.companyName})
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-3 shrink-0 font-mono">
-                          <span className="text-[11px] text-black/55 dark:text-zinc-400">
+                        <div className="flex items-center gap-2 sm:gap-3 shrink-0 font-mono">
+                          <span className="text-[11px] text-black/55 dark:text-zinc-400 hidden sm:inline">
                             {model.contextWindow.replace(" tokens", "")}
                           </span>
                           <span className="text-[10px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e]">

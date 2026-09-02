@@ -33,7 +33,7 @@ export default function TimelinePage() {
     <main className="relative min-h-screen">
       <Header />
 
-      <section className="section max-w-4xl mx-auto w-full px-6 md:px-20 pb-20">
+      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         <div className="space-y-4 text-base md:text-[17px] font-light text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
             <p>
@@ -46,12 +46,12 @@ export default function TimelinePage() {
         <div className="flex flex-col list-hover-group space-y-8">
           {Object.entries(groupedTimeline).map(([monthYear, models], gIndex) => (
             <TextWithBlur key={monthYear} delay={gIndex * 40}>
-              <div className="border-l-2 border-black/10 dark:border-white/[0.08] pl-4 sm:pl-6 ml-2 relative">
+              <div className="border-l-2 border-black/10 dark:border-white/[0.08] pl-3.5 sm:pl-6 ml-1.5 sm:ml-2 relative">
                 {/* Technical node indicator */}
-                <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-sm bg-[#ff4400]" />
+                <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-sm bg-[#ff5d2e]" />
 
                 <h2 className="text-base sm:text-lg font-medium text-black dark:text-white mb-4 flex items-center gap-2 font-mono">
-                  <Calendar size={14} className="text-[#ff4400]" />
+                  <Calendar size={14} className="text-[#ff5d2e]" />
                   <span>{monthYear}</span>
                   <span className="text-xs text-black/40 dark:text-zinc-400 font-normal">
                     [{models.length} {models.length === 1 ? "release" : "releases"}]
@@ -66,15 +66,15 @@ export default function TimelinePage() {
                       <div
                         key={model.id}
                         onClick={() => setActiveModalModel(model)}
-                        className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
+                        className="cursor-pointer p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
-                        <div className="flex items-center justify-between gap-2 mb-1.5 font-mono text-xs">
-                          <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 mb-1.5 font-mono text-xs">
+                          <div className="flex items-center gap-2 min-w-0">
                             <span
                               className="w-2 h-2 rounded-sm shrink-0"
                               style={{ backgroundColor: company?.accentColor || "#ff5d2e" }}
                             />
-                            <span className="text-black/55 dark:text-zinc-400 uppercase">
+                            <span className="text-black/55 dark:text-zinc-400 uppercase text-[11px] sm:text-xs">
                               {model.companyName}
                             </span>
                             <span className="text-black/20 dark:text-white/20 select-none">/</span>

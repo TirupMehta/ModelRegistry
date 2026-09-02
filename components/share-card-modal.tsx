@@ -394,14 +394,14 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   }
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-md animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-5 bg-black/60 backdrop-blur-md animate-in fade-in duration-150">
       <div
-        className="relative w-full max-w-4xl max-h-[92vh] flex flex-col md:flex-row bg-[#f7f7f4] dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.09] rounded-xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-4xl max-h-[95vh] flex flex-col md:flex-row bg-[#f7f7f4] dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.09] rounded-xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Left Side: Canvas Preview */}
-        <div className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 bg-black/[0.02] dark:bg-[#07080a] border-b md:border-b-0 md:border-r border-black/10 dark:border-white/[0.08] min-h-[300px] overflow-hidden">
-          <div className="relative w-full h-full flex items-center justify-center max-h-[55vh] md:max-h-[75vh]">
+        <div className="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 bg-black/[0.02] dark:bg-[#07080a] border-b md:border-b-0 md:border-r border-black/10 dark:border-white/[0.08] min-h-[200px] md:min-h-[300px] overflow-hidden">
+          <div className="relative w-full h-full flex items-center justify-center max-h-[32vh] sm:max-h-[48vh] md:max-h-[75vh]">
             <canvas
               ref={canvasRef}
               className="max-h-full max-w-full object-contain rounded shadow-lg border border-black/10 dark:border-white/[0.08] transition-all duration-200"
@@ -410,16 +410,16 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
               }}
             />
           </div>
-          <span className="text-[11px] font-mono text-black/40 dark:text-zinc-500 mt-3">
+          <span className="text-[10px] sm:text-[11px] font-mono text-black/40 dark:text-zinc-500 mt-2 sm:mt-3">
             Previewing {ratio === "story" ? "1080×1920 (Story)" : ratio === "square" ? "1080×1080 (Square)" : "1200×675 (Landscape)"} • High-DPI 2x
           </span>
         </div>
 
         {/* Right Side: Studio Controls & Export */}
-        <div className="w-full md:w-80 p-5 sm:p-6 flex flex-col justify-between bg-white dark:bg-[#0d0f13] overflow-y-auto">
+        <div className="w-full md:w-80 p-4 sm:p-6 flex flex-col justify-between bg-white dark:bg-[#0d0f13] overflow-y-auto max-h-[58vh] md:max-h-none touch-scroll">
           <div>
             {/* Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-black/10 dark:border-white/[0.08] mb-5">
+            <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/[0.08] mb-4 sm:mb-5">
               <div className="flex items-center gap-2">
                 <Sparkles size={16} className="text-[#ff5d2e]" />
                 <h3 className="text-sm font-medium tracking-tight text-black dark:text-white">

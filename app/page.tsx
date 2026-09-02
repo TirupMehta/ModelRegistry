@@ -127,7 +127,7 @@ export default function Home() {
         </article>
       </noscript>
 
-      <section className="section max-w-4xl mx-auto w-full px-6 md:px-20 pb-20">
+      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         {/* Thesis Description */}
         <div className="space-y-4 text-base md:text-[17px] font-light text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
@@ -137,14 +137,14 @@ export default function Home() {
           </TextWithBlur>
 
           {/* Quick Terminal & Developer Strip */}
-          <div className="flex flex-wrap items-center gap-3 pt-1 text-xs font-mono text-black/60 dark:text-zinc-400">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1 text-xs font-mono text-black/60 dark:text-zinc-400">
             <button
               onClick={() => {
                 navigator.clipboard.writeText("curl -s https://modelregistry.tirup.in/latest")
                 setCurlCopied(true)
                 setTimeout(() => setCurlCopied(false), 2000)
               }}
-              className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-pointer select-none"
+              className="group inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-pointer select-none text-[11px] sm:text-xs"
               title="Copy terminal CLI query"
             >
               <Terminal size={12} className="text-[#ff5d2e]" />
@@ -156,7 +156,7 @@ export default function Home() {
               )}
             </button>
 
-            <div className="flex items-center gap-3 text-[11px] text-black/45 dark:text-zinc-500">
+            <div className="flex items-center gap-2.5 sm:gap-3 text-[11px] text-black/45 dark:text-zinc-500">
               <a
                 href="/api/v1/models"
                 target="_blank"
@@ -269,12 +269,12 @@ export default function Home() {
                   <div
                     onClick={() => setActiveModalModel(model)}
                     className={[
-                      "group block py-3.5 -mx-3 px-3 rounded-md cursor-pointer transition-colors duration-150",
+                      "group block py-3.5 -mx-2.5 sm:-mx-3 px-2.5 sm:px-3 rounded-md cursor-pointer transition-colors duration-150",
                       index > 0 ? "border-t border-black/10 dark:border-white/[0.06]" : "",
                       "hover:bg-black/[0.025] dark:hover:bg-white/[0.035]",
                     ].join(" ")}
                   >
-                    <div className="flex items-baseline gap-3.5 sm:gap-5">
+                    <div className="flex items-baseline gap-2.5 sm:gap-5">
                       {/* Monospace Ledger Index */}
                       <span className="font-mono tabular-nums text-xs text-[#ff5d2e]/80 dark:text-[#ff7347] select-none w-5 sm:w-6 shrink-0 transition-colors duration-150 group-hover:text-[#ff5d2e] font-medium">
                         {String(index + 1).padStart(2, "0")}
@@ -306,7 +306,7 @@ export default function Home() {
                         {specializedDrop && activeTab === "flagships" && (
                           <div className="mt-1 flex items-center gap-1.5 text-[11px] font-mono text-black/45 dark:text-zinc-400">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#ff5d2e] shrink-0" />
-                            <span>
+                            <span className="truncate">
                               Checkpoint drop:{" "}
                               <span className="text-black/80 dark:text-zinc-200 underline underline-offset-2 font-normal">
                                 {specializedDrop.name}
@@ -318,7 +318,7 @@ export default function Home() {
                       </div>
 
                       {/* Specs Readout */}
-                      <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 text-right">
+                      <div className="flex items-center gap-2 sm:gap-3 shrink-0 text-right">
                         <time
                           dateTime={model.releaseDate}
                           className="font-mono text-xs text-black/45 dark:text-zinc-400 hidden md:inline"
@@ -326,7 +326,7 @@ export default function Home() {
                           {model.contextWindow.replace(" tokens", "")}
                         </time>
 
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 transition-colors duration-150 group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347]">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 transition-colors duration-150 group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] max-w-[95px] sm:max-w-none truncate block">
                           {model.statusBadge}
                         </span>
 
