@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import TextWithBlur from "@/components/text-with-blur"
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
-import { Radio, Rss, Code2, RefreshCw, Check } from "lucide-react"
+import { Database, Rss, Code2, RefreshCw, Check } from "lucide-react"
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/" },
@@ -137,11 +137,11 @@ export default function Header() {
         <div className="max-w-4xl mx-auto w-full px-6 md:px-20 flex items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 min-w-0">
             <span className="text-accent font-medium uppercase tracking-[0.15em] text-[10px]">
-              CHECKPOINT
+              MODELREGISTRY
             </span>
             <span className="text-black/20 dark:text-white/20 select-none">/</span>
             <span className="truncate">
-              Real-time frontier AI model registry across 9 premier labs.
+              The open public registry for frontier AI models across premier research labs.
             </span>
           </div>
 
@@ -172,20 +172,20 @@ export default function Header() {
             <div className="flex items-center gap-3.5">
               <Link href="/" className="group flex items-center gap-3.5 select-none">
                 <div className="w-11 h-11 rounded-full flex items-center justify-center border border-black/10 dark:border-white/10 bg-black/[0.025] dark:bg-white/[0.035] text-accent transition-transform duration-200 group-hover:scale-105 shadow-sm">
-                  <Radio size={18} className="text-accent" />
+                  <Database size={18} className="text-accent" />
                 </div>
                 <div className="flex items-center gap-2.5">
                   {isHome ? (
                     <h1 className="text-3xl md:text-4xl font-light tracking-tight text-black dark:text-white leading-none">
-                      Checkpoint
+                      ModelRegistry
                     </h1>
                   ) : (
                     <p className="text-3xl md:text-4xl font-light tracking-tight text-black dark:text-white leading-none">
-                      Checkpoint
+                      ModelRegistry
                     </p>
                   )}
                   <span className="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded-full border border-black/10 dark:border-white/10 text-black/45 dark:text-white/45 bg-black/[0.02] dark:bg-white/[0.02]">
-                    LIVE
+                    OPEN
                   </span>
                 </div>
               </Link>

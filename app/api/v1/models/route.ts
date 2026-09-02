@@ -48,8 +48,8 @@ export async function GET(request: Request) {
       total: filtered.length,
       updatedAt: new Date().toISOString(),
       metadata: {
-        registry: "Checkpoint",
-        documentation: "https://checkpoint.dev",
+        registry: "ModelRegistry",
+        documentation: "https://modelregistry.tirup.in",
         license: "Open Data / MIT",
         description: "Open frontier AI model registry tracking primary flagships and research checkpoints across all premier labs.",
       },

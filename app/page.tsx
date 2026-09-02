@@ -5,7 +5,7 @@ import Header from "@/components/header"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, ModelItem } from "@/data/models"
-import { Search, Sparkles, ArrowUpRight, Cpu, Layers } from "lucide-react"
+import { Search, ArrowUpRight } from "lucide-react"
 
 type ViewTab = "flagships" | "latest-drops" | "open-weights" | "all"
 
@@ -64,18 +64,70 @@ export default function Home() {
     <main className="relative min-h-screen">
       <Header />
 
+      {/*
+        ── Semantic Knowledge Vault for AI crawlers & non-JS engines ──
+        Ensures GPTBot, ClaudeBot, PerplexityBot, and Googlebot ingest the full structured
+        dataset with zero hydration latency (inspired by tirup.in).
+      */}
+      <noscript>
+        <article
+          style={{
+            maxWidth: "48rem",
+            margin: "0 auto",
+            padding: "2rem 1.5rem",
+            fontFamily: "sans-serif",
+            lineHeight: 1.7,
+            color: "#111",
+          }}
+        >
+          <h1>ModelRegistry — Open Frontier AI Model &amp; Checkpoint Index</h1>
+          <p>
+            The internet&apos;s open, real-time registry tracking primary foundation flagships and research checkpoints across OpenAI, Anthropic, Google DeepMind, DeepSeek, Meta AI, xAI, Alibaba Cloud (Qwen), Mistral AI, and Cohere.
+          </p>
+
+          <h2>Primary Foundation Flagships by AI Laboratory (September 2026)</h2>
+          <ul>
+            {modelsData
+              .filter((m) => m.isCompanyFlagship)
+              .map((m) => (
+                <li key={m.id}>
+                  <strong>{m.companyName}:</strong> {m.name} — Context: {m.contextWindow}, Parameters: {m.parameters}. Released {m.releaseDate}. {m.highlight}
+                </li>
+              ))}
+          </ul>
+
+          <h2>Latest Research &amp; Specialized Checkpoints</h2>
+          <ul>
+            {modelsData
+              .filter((m) => m.isLatestCheckpoint)
+              .map((m) => (
+                <li key={m.id}>
+                  <strong>{m.companyName}:</strong> {m.name} ({m.categoryLabel}) — Released {m.releaseDate}. {m.highlight}
+                </li>
+              ))}
+          </ul>
+
+          <h2>Developer Endpoints</h2>
+          <p>
+            API: <a href="https://modelregistry.tirup.in/api/v1/models">https://modelregistry.tirup.in/api/v1/models</a><br />
+            RSS: <a href="https://modelregistry.tirup.in/rss.xml">https://modelregistry.tirup.in/rss.xml</a><br />
+            Agent Resource: <a href="https://modelregistry.tirup.in/llms.txt">https://modelregistry.tirup.in/llms.txt</a>
+          </p>
+        </article>
+      </noscript>
+
       <section className="section max-w-4xl mx-auto w-full px-6 md:px-20 pb-20">
         {/* Story Description (tirup.in style) */}
         <div className="space-y-4 text-base md:text-lg font-light text-black/70 dark:text-white/70 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
             <p>
-              Checkpoint is an open registry of the frontier in artificial intelligence. 
-              We index the primary heavyweight foundation models from the world&apos;s leading AI labs, alongside their latest research releases.
+              ModelRegistry is an open public catalog of frontier artificial intelligence. 
+              We index the primary heavyweight foundation models from the world&apos;s leading research labs alongside newly registered model checkpoints.
             </p>
           </TextWithBlur>
         </div>
 
-        {/* View Switcher & Search (Subtle, sleek, tirup.in aesthetic) */}
+        {/* View Switcher & Search (tirup.in aesthetic) */}
         <TextWithBlur delay={180}>
           <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black/5 dark:border-white/5 pb-4">
             {/* Filter Tabs */}
@@ -197,7 +249,7 @@ export default function Home() {
                           <div className="mt-1 flex items-center gap-1.5 text-[11px] font-mono text-black/40 dark:text-white/40">
                             <span className="w-1.5 h-1.5 rounded-full bg-accent/70 shrink-0"></span>
                             <span>
-                              Latest drop:{" "}
+                              Latest checkpoint:{" "}
                               <span className="text-black/65 dark:text-white/65 underline underline-offset-2">
                                 {specializedDrop.name}
                               </span>{" "}
@@ -209,9 +261,12 @@ export default function Home() {
 
                       {/* Right Specs Badges */}
                       <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 text-right">
-                        <span className="font-mono text-xs text-black/40 dark:text-white/40 hidden md:inline">
+                        <time
+                          dateTime={model.releaseDate}
+                          className="font-mono text-xs text-black/40 dark:text-white/40 hidden md:inline"
+                        >
                           {model.contextWindow.replace(" tokens", "")}
-                        </span>
+                        </time>
 
                         <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/5 dark:bg-white/5 text-black/60 dark:text-white/60 border border-black/5 dark:border-white/5">
                           {model.statusBadge}
@@ -264,7 +319,7 @@ export default function Home() {
                 llms.txt <ArrowUpRight size={13} className="opacity-40 group-hover:opacity-100" />
               </a>
               <a
-                href="https://github.com/TirupMehta"
+                href="https://github.com/TirupMehta/Checkpoint"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group hover:text-black dark:hover:text-white transition-colors inline-flex items-center gap-1 w-fit"
@@ -285,7 +340,7 @@ export default function Home() {
       {/* Footer (1:1 tirup.in style) */}
       <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/10 max-w-4xl mx-auto w-full">
         <p className="text-xs font-light text-black/50 dark:text-white/50">
-          © {currentYear} Checkpoint. Built for the open internet.
+          © {currentYear} ModelRegistry. The open public registry for frontier AI models.
         </p>
       </footer>
     </main>

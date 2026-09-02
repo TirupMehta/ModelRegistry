@@ -1,10 +1,11 @@
-# Checkpoint: Frontier AI Model & Checkpoint Registry (September 2026)
+# ModelRegistry: The Open Frontier AI Model & Checkpoint Registry (September 2026)
 
-> The internet's real-time source of truth for the primary foundation flagships and research checkpoints across every major AI lab.
+> The internet's open-source public registry tracking primary foundation flagships and research checkpoints across every major AI lab.
 
-- Website: https://checkpoint.dev
-- JSON API: https://checkpoint.dev/api/v1/models
-- RSS Feed: https://checkpoint.dev/rss.xml
+- Website: https://modelregistry.tirup.in
+- JSON API: https://modelregistry.tirup.in/api/v1/models
+- RSS Feed: https://modelregistry.tirup.in/rss.xml
+- GitHub: https://github.com/TirupMehta/Checkpoint
 - Last Verified: September 2, 2026
 
 ---

@@ -157,7 +157,7 @@ export default function LeaderboardPage() {
       {/* Footer */}
       <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/10 max-w-4xl mx-auto w-full">
         <p className="text-xs font-light text-black/50 dark:text-white/50">
-          © {currentYear} Checkpoint. Built for the open internet.
+          © {currentYear} ModelRegistry. The open public registry for frontier AI models.
         </p>
       </footer>
     </main>

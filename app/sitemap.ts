@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://modelpulse.dev"
+  const baseUrl = "https://modelregistry.tirup.in"
   const now = new Date()
 
   return [

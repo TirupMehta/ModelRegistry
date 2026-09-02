@@ -1,4 +1,34 @@
 User-agent: *
 Allow: /
+Crawl-delay: 0
 
-Sitemap: https://modelpulse.dev/sitemap.xml
+# Prioritize AI search and crawler engines for real-time indexing (GEO)
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Feeds and Sitemaps
+Sitemap: https://modelregistry.tirup.in/sitemap.xml

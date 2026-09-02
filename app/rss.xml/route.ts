@@ -3,7 +3,7 @@ import { modelsData } from "@/data/models"
 export const dynamic = "force-dynamic"
 
 export async function GET() {
-  const siteUrl = "https://checkpoint.dev"
+  const siteUrl = "https://modelregistry.tirup.in"
   const sorted = [...modelsData].sort(
     (a, b) => new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime()
   )
@@ -27,9 +27,9 @@ export async function GET() {
   const rssFeed = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Checkpoint — Frontier AI Models &amp; Releases</title>
+    <title>ModelRegistry — Frontier AI Models &amp; Releases</title>
     <link>${siteUrl}</link>
-    <description>The open registry tracking primary foundation flagships and research checkpoints across all premier AI labs.</description>
+    <description>The open public registry tracking primary foundation flagships and research checkpoints across all premier AI labs.</description>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml"/>
