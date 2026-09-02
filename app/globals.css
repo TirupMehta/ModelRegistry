@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --accent: #ff4400;
-  --accent-hover: #ff5511;
-  --accent-glow: rgba(255, 68, 0, 0.15);
+  --accent: #ff501a;
+  --accent-hover: #ff6533;
+  --accent-glow: rgba(255, 80, 26, 0.20);
   --live-signal: #00d68f;
   --black: #111215;
   --white: #ffffff;
-  --bg: #f6f6f3;
+  --bg: #f7f7f4;
   --card-bg: #ffffff;
   --fg: #111215;
   --border-color: rgba(0, 0, 0, 0.08);
@@ -19,16 +19,16 @@
 }
 
 html.dark {
-  --bg: #0b0c0e;
-  --card-bg: #111317;
-  --fg: #ededed;
+  --bg: #07080a;
+  --card-bg: #0d0f13;
+  --fg: #f4f5f7;
   --border-color: rgba(255, 255, 255, 0.08);
-  --text-muted: rgba(237, 237, 237, 0.42);
-  --text-secondary: rgba(237, 237, 237, 0.68);
-  --text-primary: rgba(237, 237, 237, 0.94);
-  --accent: #ff4400;
-  --accent-hover: #ff5511;
-  --accent-glow: rgba(255, 68, 0, 0.20);
+  --text-muted: rgba(244, 245, 247, 0.42);
+  --text-secondary: rgba(244, 245, 247, 0.68);
+  --text-primary: rgba(244, 245, 247, 0.95);
+  --accent: #ff5d2e;
+  --accent-hover: #ff7347;
+  --accent-glow: rgba(255, 93, 46, 0.28);
   --live-signal: #00e599;
 }
 
@@ -61,36 +61,7 @@ p {
   text-wrap: pretty;
 }
 
-/* Technical registration corner crosshair badge */
-.tech-container {
-  position: relative;
-}
-
-.tech-container::before {
-  content: "+";
-  position: absolute;
-  top: -8px;
-  left: -4px;
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  line-height: 1;
-  color: rgba(255, 255, 255, 0.2);
-  pointer-events: none;
-}
-
-.tech-container::after {
-  content: "+";
-  position: absolute;
-  top: -8px;
-  right: -4px;
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  line-height: 1;
-  color: rgba(255, 255, 255, 0.2);
-  pointer-events: none;
-}
-
-/* Dark mode overrides */
+/* Dark mode utility overrides */
 .dark body {
   background-color: var(--bg);
   color: var(--fg);
@@ -98,20 +69,23 @@ p {
 
 .dark .bg-white { background-color: var(--card-bg) !important; }
 .dark .text-black { color: var(--fg) !important; }
-.dark .text-black\/40 { color: rgba(237, 237, 237, 0.40) !important; }
-.dark .text-black\/45 { color: rgba(237, 237, 237, 0.45) !important; }
+.dark .text-black\/40 { color: rgba(244, 245, 247, 0.40) !important; }
+.dark .text-black\/45 { color: rgba(244, 245, 247, 0.45) !important; }
 .dark .text-black\/50 { color: var(--text-muted) !important; }
-.dark .text-black\/60 { color: rgba(237, 237, 237, 0.60) !important; }
+.dark .text-black\/55 { color: rgba(244, 245, 247, 0.55) !important; }
+.dark .text-black\/60 { color: rgba(244, 245, 247, 0.60) !important; }
+.dark .text-black\/65 { color: rgba(244, 245, 247, 0.65) !important; }
 .dark .text-black\/70 { color: var(--text-secondary) !important; }
+.dark .text-black\/75 { color: rgba(244, 245, 247, 0.75) !important; }
 .dark .text-black\/80 { color: var(--text-primary) !important; }
 .dark .border-black\/5 { border-color: rgba(255, 255, 255, 0.05) !important; }
 .dark .border-black\/10 { border-color: var(--border-color) !important; }
 
-/* Subtle reveal */
-@keyframes techReveal {
+/* Silky smooth entrance keyframes */
+@keyframes silkyReveal {
   from {
     opacity: 0;
-    transform: translateY(4px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -120,28 +94,29 @@ p {
 }
 
 .reveal-in {
-  animation: techReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: silkyReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Sibling dimming for list rows */
-.list-hover-group:hover > * {
-  opacity: 0.45;
-  transition: opacity 120ms ease-out;
-}
-
+/* 
+ * Professional, Minimal Sibling Dimming
+ * Stable layout without horizontal jitter; pure clean contrast enhancement
+ */
 .list-hover-group > * {
-  transition: opacity 120ms ease-out;
+  transition: opacity 180ms ease, background-color 180ms ease !important;
+}
+
+.list-hover-group:hover > * {
+  opacity: 0.60;
 }
 
 .list-hover-group:hover > *:hover {
-  opacity: 1;
-  transition: opacity 80ms ease-out;
+  opacity: 1 !important;
 }
 
-/* Custom technical hairline scrollbar */
+/* Custom silky scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -150,17 +125,15 @@ p {
 
 ::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.15);
-  border-radius: 0px;
+  border-radius: 9999px;
+  transition: background 0.2s ease;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
-}
-
+::-webkit-scrollbar-thumb:hover,
 .dark ::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
 }

@@ -66,19 +66,19 @@ export default function TimelinePage() {
                       <div
                         key={model.id}
                         onClick={() => setActiveModalModel(model)}
-                        className="cursor-pointer p-4 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] hover:border-[#ff4400] transition-all select-none active:scale-[0.99] group"
+                        className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
                         <div className="flex items-center justify-between gap-2 mb-1.5 font-mono text-xs">
                           <div className="flex items-center gap-2">
                             <span
                               className="w-2 h-2 rounded-sm shrink-0"
-                              style={{ backgroundColor: company?.accentColor || "#ff4400" }}
+                              style={{ backgroundColor: company?.accentColor || "#ff5d2e" }}
                             />
                             <span className="text-black/55 dark:text-zinc-400 uppercase">
                               {model.companyName}
                             </span>
                             <span className="text-black/20 dark:text-white/20 select-none">/</span>
-                            <span className="font-sans text-sm font-medium text-black dark:text-white group-hover:text-[#ff4400] transition-colors">
+                            <span className="font-sans text-sm font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                               {model.name}
                             </span>
                           </div>
@@ -97,13 +97,13 @@ export default function TimelinePage() {
                             <span className="text-[11px] text-black/45 dark:text-zinc-400">
                               {model.contextWindow}
                             </span>
-                            <span className="text-[10px] uppercase px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300">
+                            <span className="text-[10px] uppercase px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e]">
                               {model.statusBadge}
                             </span>
                           </div>
 
-                          <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-zinc-400 group-hover:text-[#ff4400] transition-colors">
-                            INSPECT SPEC <ArrowUpRight size={10} />
+                          <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-zinc-400 group-hover:text-[#ff5d2e] transition-colors">
+                            INSPECT SPEC <ArrowUpRight size={10} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                           </span>
                         </div>
                       </div>

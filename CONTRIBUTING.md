@@ -18,7 +18,26 @@ Before submitting a pull request, please ensure your contribution adheres to the
 
 ---
 
-## 🚀 How to Add a New Model
+## 💡 The Single-File Contribution Architecture
+
+**You only need to edit ONE file:**
+👉 [`data/models.ts`](./data/models.ts)
+
+When you add or update an entry in `data/models.ts`, ModelRegistry's dynamic pipeline automatically updates all endpoints with zero manual work:
+- ✅ **Home Manifest** (`/`)
+- ✅ **Lab Breakdown** (`/companies`)
+- ✅ **Competitive Leaderboard** (`/leaderboard`)
+- ✅ **Chronological Timeline** (`/timeline`)
+- ✅ **REST API** (`/api/v1/models`)
+- ✅ **Real-Time RSS Feed** (`/rss.xml`)
+- ✅ **LLM Markdown Files** (`/llms.txt` and `/llms-full.txt`)
+- ✅ **Schema.org JSON-LD & SEO Metadata**
+
+You do **not** need to manually update docs, markdown tables, or schema files.
+
+---
+
+## 🚀 How to Add or Update a Model
 
 ### 1. Fork & Clone
 
@@ -100,10 +119,13 @@ Open [`data/companies.ts`](./data/companies.ts) and add the laboratory definitio
 Before submitting your pull request, verify that the project builds cleanly:
 
 ```bash
-# Verify type correctness and build output
+# 1. Run automated dataset integrity validator
+pnpm test
+
+# 2. Verify TypeScript types and build output
 pnpm run build
 
-# Start local server to preview your changes
+# 3. Start local server to preview your changes
 pnpm run dev
 ```
 

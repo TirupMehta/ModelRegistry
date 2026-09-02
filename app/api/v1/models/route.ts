@@ -53,12 +53,16 @@ export async function GET(request: Request) {
         license: "Open Data / MIT",
         description: "Open frontier AI model registry tracking primary flagships and research checkpoints across all premier labs.",
       },
-      companies: Object.values(companies).map((c) => ({
-        id: c.id,
-        name: c.name,
-        latestFlagship: c.latestFlagship,
-        latestReasoning: c.latestReasoning,
-      })),
+      companies: Object.values(companies).map((c) => {
+        const flagship = modelsData.find((m) => m.companyId === c.id && m.isCompanyFlagship)
+        const checkpoint = modelsData.find((m) => m.companyId === c.id && m.isLatestCheckpoint && !m.isCompanyFlagship)
+        return {
+          id: c.id,
+          name: c.name,
+          latestFlagship: flagship?.name || "",
+          latestCheckpoint: checkpoint?.name || "",
+        }
+      }),
       models: filtered,
     },
     {

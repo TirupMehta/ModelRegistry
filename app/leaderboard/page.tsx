@@ -115,13 +115,13 @@ export default function LeaderboardPage() {
                       <div
                         key={model.id}
                         onClick={() => setActiveModalModel(model)}
-                        className="cursor-pointer p-3 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#15181e] hover:border-[#ff4400] transition-colors flex items-center justify-between gap-3 text-xs active:scale-[0.99]"
+                        className="group cursor-pointer p-3 rounded-md border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 flex items-center justify-between gap-3 text-xs"
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <span className="font-mono text-black/35 dark:text-zinc-500 w-4 shrink-0">
-                            #{mIndex + 1}
+                          <span className="font-mono text-black/35 dark:text-zinc-500 w-5 shrink-0 tabular-nums transition-colors group-hover:text-[#ff5d2e]">
+                            {String(mIndex + 1).padStart(2, "0")}
                           </span>
-                          <span className="font-medium text-black dark:text-zinc-100 truncate">
+                          <span className="font-medium text-black dark:text-zinc-100 truncate group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {model.name}
                           </span>
                           <span className="text-black/40 dark:text-zinc-400 font-mono text-[11px] shrink-0">
@@ -133,10 +133,10 @@ export default function LeaderboardPage() {
                           <span className="text-[11px] text-black/55 dark:text-zinc-400">
                             {model.contextWindow.replace(" tokens", "")}
                           </span>
-                          <span className="text-[10px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300">
+                          <span className="text-[10px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e]">
                             {model.pricing.input === 0 ? "Free" : `$${model.pricing.input}/M`}
                           </span>
-                          <ArrowUpRight size={12} className="opacity-40 group-hover:opacity-100 text-black dark:text-white" />
+                          <ArrowUpRight size={12} className="opacity-30 group-hover:opacity-100 text-black dark:text-white group-hover:text-[#ff5d2e] transition-all duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                         </div>
                       </div>
                     ))}

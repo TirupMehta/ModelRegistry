@@ -16,29 +16,33 @@ export default function Home() {
 
   const currentYear = new Date().getFullYear()
 
-  // URL Hash Deep-Linking: open modal if #model-id is present in URL
+  // URL Deep-Linking via ?model= query parameter (clean, no # hash)
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace("#", "")
-      if (hash) {
-        const found = modelsData.find((m) => m.id === hash)
+    const handleUrlQuery = () => {
+      const params = new URLSearchParams(window.location.search)
+      const modelId = params.get("model")
+      if (modelId) {
+        const found = modelsData.find((m) => m.id === modelId)
         if (found) {
           setActiveModalModel(found)
         }
       }
     }
 
-    handleHashChange()
-    window.addEventListener("hashchange", handleHashChange)
-    return () => window.removeEventListener("hashchange", handleHashChange)
+    handleUrlQuery()
+    window.addEventListener("popstate", handleUrlQuery)
+    return () => window.removeEventListener("popstate", handleUrlQuery)
   }, [])
 
-  // Sync hash with modal state
+  // Sync query parameter with modal state
   useEffect(() => {
+    const url = new URL(window.location.href)
     if (activeModalModel) {
-      window.history.replaceState(null, "", `#${activeModalModel.id}`)
-    } else if (window.location.hash) {
-      window.history.replaceState(null, "", window.location.pathname)
+      url.searchParams.set("model", activeModalModel.id)
+      window.history.replaceState(null, "", url.pathname + url.search)
+    } else if (url.searchParams.has("model")) {
+      url.searchParams.delete("model")
+      window.history.replaceState(null, "", url.pathname + (url.search ? url.search : ""))
     }
   }, [activeModalModel])
 
@@ -139,9 +143,9 @@ export default function Home() {
             <div className="inline-flex items-center p-0.5 rounded bg-black/[0.035] dark:bg-[#131518] border border-black/10 dark:border-white/[0.08] overflow-x-auto max-w-full shrink-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               <button
                 onClick={() => setActiveTab("flagships")}
-                className={`py-1.5 px-2.5 sm:px-3 rounded text-xs font-mono tracking-tight transition-all select-none cursor-pointer whitespace-nowrap ${
+                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-mono tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
                   activeTab === "flagships"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
+                    ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
@@ -150,9 +154,9 @@ export default function Home() {
 
               <button
                 onClick={() => setActiveTab("latest-drops")}
-                className={`py-1.5 px-2.5 sm:px-3 rounded text-xs font-mono tracking-tight transition-all select-none cursor-pointer whitespace-nowrap ${
+                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-mono tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
                   activeTab === "latest-drops"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
+                    ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
@@ -161,9 +165,9 @@ export default function Home() {
 
               <button
                 onClick={() => setActiveTab("open-weights")}
-                className={`py-1.5 px-2.5 sm:px-3 rounded text-xs font-mono tracking-tight transition-all select-none cursor-pointer whitespace-nowrap ${
+                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-mono tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
                   activeTab === "open-weights"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
+                    ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
@@ -172,9 +176,9 @@ export default function Home() {
 
               <button
                 onClick={() => setActiveTab("all")}
-                className={`py-1.5 px-2.5 sm:px-3 rounded text-xs font-mono tracking-tight transition-all select-none cursor-pointer whitespace-nowrap ${
+                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-mono tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
                   activeTab === "all"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
+                    ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
@@ -184,7 +188,7 @@ export default function Home() {
 
             {/* Terminal Style Search Input */}
             <div className="relative w-full md:w-56 shrink-0">
-              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-mono text-[#ff4400] pointer-events-none">
+              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-mono text-[#ff5d2e] pointer-events-none">
                 &gt;
               </span>
               <input
@@ -193,7 +197,7 @@ export default function Home() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="filter index..."
-                className="w-full pl-6 pr-7 py-1.5 text-xs font-mono bg-black/[0.025] dark:bg-[#121418] border border-black/10 dark:border-white/[0.08] rounded focus:outline-none focus:border-[#ff4400] text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-zinc-500 transition-colors"
+                className="w-full pl-6 pr-7 py-1.5 text-xs font-mono bg-black/[0.025] dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.08] rounded-md focus:outline-none focus:border-[#ff5d2e] text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-zinc-500 transition-colors duration-150"
               />
               <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-mono text-black/35 dark:text-zinc-400 bg-black/5 dark:bg-white/[0.06] border border-black/10 dark:border-white/[0.08] rounded pointer-events-none select-none">
                 /
@@ -213,20 +217,18 @@ export default function Home() {
               const specializedDrop = getSpecializedDrop(model.companyId, model.id)
 
               return (
-                <TextWithBlur key={model.id} delay={Math.min(index * 25, 250)}>
+                <TextWithBlur key={model.id} delay={Math.min(index * 20, 200)}>
                   <div
                     onClick={() => setActiveModalModel(model)}
                     className={[
-                      "group block py-4 -mx-3 px-3 rounded cursor-pointer relative",
-                      index > 0 ? "border-t border-black/10 dark:border-white/[0.07]" : "",
-                      "hover:bg-black/[0.025] dark:hover:bg-white/[0.03]",
-                      "hover:border-l-2 hover:border-l-[#ff4400] transition-all duration-100",
-                      "active:scale-[0.99]",
+                      "group block py-3.5 -mx-3 px-3 rounded-md cursor-pointer transition-colors duration-150",
+                      index > 0 ? "border-t border-black/10 dark:border-white/[0.06]" : "",
+                      "hover:bg-black/[0.025] dark:hover:bg-white/[0.035]",
                     ].join(" ")}
                   >
                     <div className="flex items-baseline gap-3.5 sm:gap-5">
                       {/* Monospace Ledger Index */}
-                      <span className="font-mono tabular-nums text-xs text-[#ff4400]/80 dark:text-[#ff5511] select-none w-5 sm:w-6 shrink-0 group-hover:text-[#ff4400] font-medium">
+                      <span className="font-mono tabular-nums text-xs text-[#ff5d2e]/80 dark:text-[#ff7347] select-none w-5 sm:w-6 shrink-0 transition-colors duration-150 group-hover:text-[#ff5d2e] font-medium">
                         {String(index + 1).padStart(2, "0")}
                       </span>
 
@@ -234,7 +236,7 @@ export default function Home() {
                       <div className="flex-1 min-w-0">
                         {/* Title / Lab / Domain Header */}
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-sm md:text-base leading-snug mb-0.5">
-                          <span className="font-medium text-black dark:text-white group-hover:text-[#ff4400] dark:group-hover:text-[#ff5511] transition-colors">
+                          <span className="font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {model.name}
                           </span>
                           <span className="text-black/20 dark:text-white/20 select-none font-mono text-xs">/</span>
@@ -248,14 +250,14 @@ export default function Home() {
                         </div>
 
                         {/* Highlight Description */}
-                        <p className="text-xs sm:text-sm font-light text-black/65 dark:text-zinc-300 leading-relaxed line-clamp-1 group-hover:text-black/90 dark:group-hover:text-white transition-colors">
+                        <p className="text-xs sm:text-sm font-light text-black/65 dark:text-zinc-300 leading-relaxed line-clamp-1 group-hover:text-black/90 dark:group-hover:text-white transition-colors duration-150">
                           {model.highlight}
                         </p>
 
                         {/* Checkpoint Callout */}
                         {specializedDrop && activeTab === "flagships" && (
                           <div className="mt-1 flex items-center gap-1.5 text-[11px] font-mono text-black/45 dark:text-zinc-400">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#ff4400] shrink-0" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#ff5d2e] shrink-0" />
                             <span>
                               Checkpoint drop:{" "}
                               <span className="text-black/80 dark:text-zinc-200 underline underline-offset-2 font-normal">
@@ -276,13 +278,13 @@ export default function Home() {
                           {model.contextWindow.replace(" tokens", "")}
                         </time>
 
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-black/10 dark:border-white/[0.1] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 transition-colors duration-150 group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347]">
                           {model.statusBadge}
                         </span>
 
                         <ArrowUpRight
                           size={12}
-                          className="opacity-25 group-hover:opacity-100 transition-opacity text-black dark:text-white hidden sm:block group-hover:text-[#ff4400]"
+                          className="opacity-25 group-hover:opacity-100 transition-all duration-150 text-black dark:text-white hidden sm:block group-hover:text-[#ff5d2e] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                         />
                       </div>
                     </div>
@@ -299,7 +301,7 @@ export default function Home() {
         <TextWithBlur delay={300}>
           <div className="mt-12 border-t border-black/10 dark:border-white/[0.08] pt-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-[11px] font-mono uppercase tracking-widest text-[#ff4400] font-medium flex items-center gap-1.5">
+              <h2 className="text-[11px] font-mono uppercase tracking-widest text-[#ff5d2e] font-medium flex items-center gap-1.5">
                 <Terminal size={12} />
                 <span>OPEN TELEMETRY &amp; SYNDICATION</span>
               </h2>
@@ -313,37 +315,37 @@ export default function Home() {
                 href="/api/v1/models"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.02] dark:bg-[#121418] hover:border-[#ff4400] hover:text-black dark:hover:text-white transition-colors flex items-center justify-between"
+                className="group p-2.5 rounded-md border border-black/5 dark:border-white/[0.07] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e] hover:-translate-y-0.5 hover:shadow-xs active:scale-[0.96] transition-all duration-200 flex items-center justify-between cursor-pointer"
               >
-                <span>GET /api/v1/models</span>
-                <ArrowUpRight size={11} className="opacity-40" />
+                <span className="group-hover:text-black dark:group-hover:text-white transition-colors duration-200">GET /api/v1/models</span>
+                <ArrowUpRight size={11} className="opacity-40 group-hover:opacity-100 group-hover:text-[#ff5d2e] transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
               <a
                 href="/rss.xml"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.02] dark:bg-[#121418] hover:border-[#ff4400] hover:text-black dark:hover:text-white transition-colors flex items-center justify-between"
+                className="group p-2.5 rounded-md border border-black/5 dark:border-white/[0.07] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e] hover:-translate-y-0.5 hover:shadow-xs active:scale-[0.96] transition-all duration-200 flex items-center justify-between cursor-pointer"
               >
-                <span>GET /rss.xml</span>
-                <ArrowUpRight size={11} className="opacity-40" />
+                <span className="group-hover:text-black dark:group-hover:text-white transition-colors duration-200">GET /rss.xml</span>
+                <ArrowUpRight size={11} className="opacity-40 group-hover:opacity-100 group-hover:text-[#ff5d2e] transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
               <a
                 href="/llms.txt"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.02] dark:bg-[#121418] hover:border-[#ff4400] hover:text-black dark:hover:text-white transition-colors flex items-center justify-between"
+                className="group p-2.5 rounded-md border border-black/5 dark:border-white/[0.07] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e] hover:-translate-y-0.5 hover:shadow-xs active:scale-[0.96] transition-all duration-200 flex items-center justify-between cursor-pointer"
               >
-                <span>GET /llms.txt</span>
-                <ArrowUpRight size={11} className="opacity-40" />
+                <span className="group-hover:text-black dark:group-hover:text-white transition-colors duration-200">GET /llms.txt</span>
+                <ArrowUpRight size={11} className="opacity-40 group-hover:opacity-100 group-hover:text-[#ff5d2e] transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
               <a
                 href="https://github.com/TirupMehta/ModelRegistry"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.02] dark:bg-[#121418] hover:border-[#ff4400] hover:text-black dark:hover:text-white transition-colors flex items-center justify-between"
+                className="group p-2.5 rounded-md border border-black/5 dark:border-white/[0.07] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e] hover:-translate-y-0.5 hover:shadow-xs active:scale-[0.96] transition-all duration-200 flex items-center justify-between cursor-pointer"
               >
-                <span>GITHUB / REPO</span>
-                <ArrowUpRight size={11} className="opacity-40" />
+                <span className="group-hover:text-black dark:group-hover:text-white transition-colors duration-200">GITHUB / REPO</span>
+                <ArrowUpRight size={11} className="opacity-40 group-hover:opacity-100 group-hover:text-[#ff5d2e] transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </div>
           </div>

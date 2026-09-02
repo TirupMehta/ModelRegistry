@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "validate": "node scripts/validate-registry.js",
+    "test": "node scripts/validate-registry.js"
   },
   "dependencies": {
     "clsx": "^2.1.1",

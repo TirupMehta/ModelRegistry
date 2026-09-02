@@ -69,11 +69,11 @@ export default function CompaniesPage() {
                       href={company.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-1 text-xs font-mono text-black/50 dark:text-zinc-400 hover:text-[#ff4400] dark:hover:text-[#ff4400] transition-colors"
+                      className="group inline-flex items-center gap-1 text-xs font-mono text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
                     >
                       <Globe size={12} />
                       <span>{new URL(company.website).hostname}</span>
-                      <ArrowUpRight size={11} className="icon-arrow-hover" />
+                      <ArrowUpRight size={11} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </a>
                   </div>
 
@@ -83,10 +83,10 @@ export default function CompaniesPage() {
                     {flagshipModel && (
                       <div
                         onClick={() => setActiveModalModel(flagshipModel)}
-                        className="cursor-pointer p-4 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#15181e] hover:border-[#ff4400] transition-all select-none active:scale-[0.99] group"
+                        className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
                         <div className="flex items-center justify-between text-xs font-mono mb-1.5">
-                          <span className="text-[#ff4400] dark:text-[#ff5511] font-medium uppercase text-[10px] tracking-wider">
+                          <span className="text-[#ff5d2e] dark:text-[#ff7347] font-medium uppercase text-[10px] tracking-wider">
                             Primary Flagship
                           </span>
                           <span className="text-[11px] text-black/40 dark:text-zinc-400">
@@ -95,7 +95,7 @@ export default function CompaniesPage() {
                         </div>
 
                         <div className="flex items-baseline gap-2 mb-1">
-                          <span className="text-base font-medium text-black dark:text-white group-hover:text-[#ff4400] transition-colors">
+                          <span className="text-base font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {flagshipModel.name}
                           </span>
                         </div>
@@ -110,7 +110,7 @@ export default function CompaniesPage() {
                     {latestDrop ? (
                       <div
                         onClick={() => setActiveModalModel(latestDrop)}
-                        className="cursor-pointer p-4 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#15181e] hover:border-[#ff4400] transition-all select-none active:scale-[0.99] group"
+                        className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
                         <div className="flex items-center justify-between text-xs font-mono mb-1.5">
                           <span className="text-[#00e599] font-medium uppercase text-[10px] tracking-wider flex items-center gap-1">
@@ -122,7 +122,7 @@ export default function CompaniesPage() {
                         </div>
 
                         <div className="flex items-baseline gap-2 mb-1">
-                          <span className="text-base font-medium text-black dark:text-white group-hover:text-[#ff4400] transition-colors">
+                          <span className="text-base font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {latestDrop.name}
                           </span>
                           <span className="text-[11px] font-mono text-black/40 dark:text-zinc-500">

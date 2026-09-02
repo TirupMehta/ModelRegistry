@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import AmbientShader from "@/components/ambient-shader"
+import { modelsData } from "@/data/models"
+import { companies, type Company } from "@/data/companies"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -131,51 +133,27 @@ export default function RootLayout({
     ],
   }
 
+  const dynamicFaqQuestions = Object.values(companies).slice(0, 6).map((c: Company) => {
+    const flagship = modelsData.find((m) => m.companyId === c.id && m.isCompanyFlagship)
+    const checkpoint = modelsData.find((m) => m.companyId === c.id && m.isLatestCheckpoint && !m.isCompanyFlagship)
+    return {
+      "@type": "Question",
+      name: `What is the latest AI model from ${c.name}?`,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: flagship
+          ? `${c.name}'s primary flagship model is ${flagship.name} (${flagship.parameters}, ${flagship.contextWindow} context). ${flagship.highlight}${
+              checkpoint ? ` Their latest research checkpoint is ${checkpoint.name} (${checkpoint.categoryLabel}).` : ""
+            }`
+          : `ModelRegistry tracks verified releases from ${c.name} in its open technical index.`,
+      },
+    }
+  })
+
   const jsonLdFAQ = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "What is the latest AI model from Anthropic?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "As of September 2026, Anthropic's reigning flagship model is Claude Fable 5.1 (released September 1, 2026). It features a 1,000,000 token context window, 128,000 token maximum output, and scored 52.6% on Terminal-Bench-Science with a 75% reduction in cache read pricing.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What is the latest AI model from OpenAI?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "OpenAI's primary general-purpose flagship foundation model is GPT-5.6 Sol (1,050,000 token context window). Additionally, OpenAI announced OpenAI Astra on September 1, 2026 as their first model meeting the 'Critical' cybersecurity capability threshold under their Preparedness Framework.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What is the latest AI model from Meta AI?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Meta's primary open-weights foundation model is Llama 4 Maverick (128-expert MoE with 1,048,576 token context). Meta also announced Muse Voice Transcribe on September 1, 2026, a specialized streaming speech foundation model supporting 70+ languages.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What is the latest AI model from Google DeepMind?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Google DeepMind's flagship model is Gemini 3.8 Flash (released September 2, 2026), offering a 1,048,576 token context window, advanced agentic coding loops, and sub-second real-time multimodal reasoning.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What is the latest AI model from DeepSeek?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "DeepSeek's flagship hosted model is DeepSeek V4-Pro (0813), a 1.6 Trillion parameter MoE (49B activated). Their latest open-weights model is DeepSeek V4 Flash Vision Exp (305B MoE, released under MIT license on August 30, 2026).",
-        },
-      },
-    ],
+    mainEntity: dynamicFaqQuestions,
   }
 
   return (
@@ -184,7 +162,7 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="ModelRegistry RSS Feed" href="/rss.xml" />
       </head>
       <body
-        className={`${inter.variable} ${mono.variable} font-sans antialiased bg-[#f6f6f3] dark:bg-[#0b0c0e] text-[#111215] dark:text-[#ededed] transition-colors duration-200 relative min-h-screen`}
+        className={`${inter.variable} ${mono.variable} font-sans antialiased bg-[#f7f7f4] dark:bg-[#07080a] text-[#111215] dark:text-[#f4f5f7] transition-colors duration-250 relative min-h-screen`}
         suppressHydrationWarning
       >
         {/* Procedural Canvas Architectural Lighting Shader */}
@@ -204,10 +182,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }}
         />
 
-        {/* Inline script to prevent theme flashing */}
+        {/* Inline script to set default light theme unless explicitly dark */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches)){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}window.setTimeout(function(){document.documentElement.classList.remove('no-transitions')},100)})()`,
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}window.setTimeout(function(){document.documentElement.classList.remove('no-transitions')},100)})()`,
           }}
         />
 

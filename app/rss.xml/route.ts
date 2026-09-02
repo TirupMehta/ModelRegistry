@@ -11,7 +11,7 @@ export async function GET() {
   const itemsXml = sorted
     .map((model) => {
       const pubDate = new Date(model.releaseDate).toUTCString()
-      const link = model.links.announcement || `${siteUrl}/#${model.id}`
+      const link = model.links.announcement || `${siteUrl}/?model=${model.id}`
 
       return `
     <item>

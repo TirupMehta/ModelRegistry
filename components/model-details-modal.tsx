@@ -55,7 +55,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
   }
 
   const handleCopyLink = () => {
-    const url = `${window.location.origin}/#${model.id}`
+    const url = `${window.location.origin}/?model=${model.id}`
     navigator.clipboard.writeText(url)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
@@ -66,16 +66,16 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 dark:bg-black/80 backdrop-blur-[2px] animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-xs transition-opacity duration-150 animate-in fade-in"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl bg-white dark:bg-[#111317] border border-black/15 dark:border-white/[0.1] rounded-lg shadow-2xl p-6 sm:p-8 overflow-y-auto max-h-[90vh] [transition:transform_140ms_cubic-bezier(0.16,1,0.3,1)]"
+        className="relative w-full max-w-2xl bg-white dark:bg-[#0e1014] border border-black/10 dark:border-white/[0.08] rounded-xl shadow-2xl p-6 sm:p-8 overflow-y-auto max-h-[90vh] transition-all duration-150 ease-out animate-in fade-in"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar */}
         <div className="flex items-center justify-between gap-2 border-b border-black/10 dark:border-white/[0.08] pb-3 mb-5">
-          <div className="flex items-center gap-2 text-[11px] font-mono text-[#ff4400]">
+          <div className="flex items-center gap-2 text-[11px] font-mono text-[#ff5d2e]">
             <Terminal size={13} />
             <span className="uppercase tracking-widest font-medium">SPEC DATASHEET // {model.id}</span>
           </div>
@@ -84,7 +84,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <button
               onClick={handleCopyLink}
               title="Copy shareable link"
-              className="p-1 rounded text-black/50 dark:text-zinc-400 hover:text-[#ff4400] dark:hover:text-[#ff4400] hover:bg-black/5 dark:hover:bg-white/[0.06] transition-colors cursor-pointer"
+              className="p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] hover:bg-black/5 dark:hover:bg-white/[0.06] transition-colors duration-150 cursor-pointer"
             >
               {copied ? <Check size={15} className="text-emerald-500" /> : <Link2 size={15} />}
             </button>
@@ -92,7 +92,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <button
               onClick={onClose}
               aria-label="Close dialog"
-              className="p-1 rounded text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] transition-colors cursor-pointer"
+              className="p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] transition-colors duration-150 cursor-pointer"
             >
               <X size={16} />
             </button>
@@ -103,7 +103,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         <div className="flex items-center gap-2 mb-2.5 text-xs font-mono">
           <span
             className="w-2.5 h-2.5 rounded-sm shrink-0"
-            style={{ backgroundColor: company?.accentColor || "#ff4400" }}
+            style={{ backgroundColor: company?.accentColor || "#ff5d2e" }}
           />
           <span className="font-medium uppercase tracking-wider text-black/70 dark:text-zinc-300">
             {model.companyName}
@@ -119,7 +119,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           <h2 id="modal-title" className="text-2xl sm:text-3xl font-light tracking-tight text-black dark:text-white">
             {model.name}
           </h2>
-          <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-[#ff4400]/40 text-[#ff4400] bg-[#ff4400]/5 font-medium tracking-wider">
+          <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-[#ff5d2e]/40 text-[#ff5d2e] bg-[#ff5d2e]/5 font-medium tracking-wider">
             {model.statusBadge}
           </span>
         </div>
@@ -131,7 +131,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
 
         {/* Key Hardware Specs Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-6 text-xs font-mono">
-          <div className="p-3 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#15181e]">
+          <div className="p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
             <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px]">
               <Layers size={13} />
               <span>CONTEXT WINDOW</span>
@@ -141,7 +141,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             </p>
           </div>
 
-          <div className="p-3 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#15181e]">
+          <div className="p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
             <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px]">
               <Cpu size={13} />
               <span>ARCHITECTURE</span>
@@ -151,7 +151,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             </p>
           </div>
 
-          <div className="p-3 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#15181e] col-span-2 sm:col-span-1">
+          <div className="p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] col-span-2 sm:col-span-1 hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
             <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px]">
               <DollarSign size={13} />
               <span>PRICING / 1M</span>
@@ -174,7 +174,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {model.benchmarks.sweBench && (
-                <div className="p-2.5 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#15181e]">
+                <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
                   <span className="text-[10px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">SWE-bench</span>
                   <span className="text-base font-mono font-medium text-black dark:text-white">
                     {model.benchmarks.sweBench}
@@ -182,7 +182,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
                 </div>
               )}
               {model.benchmarks.aime2024 && (
-                <div className="p-2.5 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#15181e]">
+                <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
                   <span className="text-[10px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">AIME 2024</span>
                   <span className="text-base font-mono font-medium text-black dark:text-white">
                     {model.benchmarks.aime2024}
@@ -190,7 +190,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
                 </div>
               )}
               {model.benchmarks.mmluPro && (
-                <div className="p-2.5 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#15181e]">
+                <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
                   <span className="text-[10px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">MMLU-Pro</span>
                   <span className="text-base font-mono font-medium text-black dark:text-white">
                     {model.benchmarks.mmluPro}
@@ -198,7 +198,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
                 </div>
               )}
               {model.benchmarks.gpqa && (
-                <div className="p-2.5 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#15181e]">
+                <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
                   <span className="text-[10px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">GPQA Diamond</span>
                   <span className="text-base font-mono font-medium text-black dark:text-white">
                     {model.benchmarks.gpqa}
@@ -238,10 +238,10 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               href={model.links.announcement}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff4400] dark:hover:bg-[#ff4400] dark:hover:text-white transition-colors"
+              className="group inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded-md bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white transition-colors duration-150 cursor-pointer"
             >
               <span>LAB ANNOUNCEMENT</span>
-              <ExternalLink size={12} />
+              <ExternalLink size={12} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           )}
           {model.links.playground && (
@@ -249,10 +249,10 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               href={model.links.playground}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded border border-black/10 dark:border-white/[0.1] hover:border-[#ff4400] hover:text-[#ff4400] transition-colors text-black dark:text-zinc-300"
+              className="group inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
             >
               <span>OPEN PLAYGROUND</span>
-              <ExternalLink size={12} />
+              <ExternalLink size={12} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           )}
           {model.links.weights && (
@@ -260,10 +260,10 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               href={model.links.weights}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded border border-black/10 dark:border-white/[0.1] hover:border-[#ff4400] hover:text-[#ff4400] transition-colors text-black dark:text-zinc-300"
+              className="group inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
             >
               <span>HUGGING FACE WEIGHTS</span>
-              <ExternalLink size={12} />
+              <ExternalLink size={12} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           )}
         </div>

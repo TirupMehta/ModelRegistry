@@ -3,10 +3,11 @@
 import { useEffect, useRef } from "react"
 
 /**
- * AmbientShader Component — "Kinetic Telemetry Grid"
+ * AmbientShader Component — "Cinematic Obsidian Atmosphere"
  * 
- * An architectural precision grid with registration crosshairs and subtle optical falloff.
- * Replaces generic AI blob gradients with a bespoke laboratory apparatus aesthetic.
+ * An ultra-luxurious, procedural ambient lighting canvas.
+ * Delivers deep velvety obsidian blacks with soft, organic top radiance
+ * and zero banding dither.
  */
 export default function AmbientShader() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -68,82 +69,65 @@ export default function AmbientShader() {
 
       const dt = Math.min((time - lastTime) / 1000, 0.1)
       lastTime = time
-      t += dt * 0.15
+      t += dt * 0.2
 
       ctx.clearRect(0, 0, width, height)
 
-      const gridSize = 48
-      const crossSize = 3
-
       if (isDark) {
-        // --- Dark Apparatus Canvas (#0b0c0e base) ---
-        // 1. Subtle top-center optical lens flare with warm amber/orange falloff
-        const lensX = width * 0.5 + Math.sin(t * 0.5) * 40
-        const lensY = -80
-        const lensR = Math.max(width, height) * 0.85
+        // ── LUXURY OBSIDIAN ATMOSPHERE (#07080a) ──────────────────────────
+        // 1. Primary Top Studio Spotlight (Gentle warm coral-amber radiance)
+        const spotlightX = width * 0.5 + Math.sin(t * 0.3) * 60
+        const spotlightY = -120
+        const spotlightRadius = Math.max(width, height) * 0.9
 
-        const gLens = ctx.createRadialGradient(lensX, lensY, 0, lensX, lensY, lensR)
-        gLens.addColorStop(0, "rgba(255, 68, 0, 0.045)")
-        gLens.addColorStop(0.3, "rgba(255, 85, 0, 0.018)")
-        gLens.addColorStop(0.7, "rgba(11, 12, 14, 0.005)")
-        gLens.addColorStop(1, "rgba(11, 12, 14, 0)")
-        ctx.fillStyle = gLens
+        const gSpotlight = ctx.createRadialGradient(
+          spotlightX,
+          spotlightY,
+          0,
+          spotlightX,
+          spotlightY,
+          spotlightRadius
+        )
+        gSpotlight.addColorStop(0, "rgba(255, 93, 46, 0.055)")
+        gSpotlight.addColorStop(0.25, "rgba(30, 41, 59, 0.12)")
+        gSpotlight.addColorStop(0.65, "rgba(13, 16, 23, 0.04)")
+        gSpotlight.addColorStop(1, "rgba(7, 8, 10, 0)")
+        ctx.fillStyle = gSpotlight
         ctx.fillRect(0, 0, width, height)
 
-        // 2. Precision Telemetry Crosshair Grid
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.04)"
-        ctx.lineWidth = 1
+        // 2. Secondary Bottom-Right Twilight Ambient Glow
+        const glowX = width * 0.85
+        const glowY = height * 0.9
+        const glowRadius = Math.max(width, height) * 0.6
 
-        const offsetX = Math.floor((width % gridSize) / 2)
-        const offsetY = Math.floor((height % gridSize) / 2)
-
-        for (let x = offsetX; x < width; x += gridSize) {
-          for (let y = offsetY; y < height; y += gridSize) {
-            // Distance from center for subtle radial fading
-            const dx = (x - width / 2) / (width / 2)
-            const dy = (y - height / 2) / (height / 2)
-            const distSq = dx * dx + dy * dy
-            const opacity = Math.max(0, 1 - distSq * 0.8) * 0.045
-
-            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`
-            ctx.beginPath()
-            ctx.moveTo(x - crossSize, y)
-            ctx.lineTo(x + crossSize, y)
-            ctx.moveTo(x, y - crossSize)
-            ctx.lineTo(x, y + crossSize)
-            ctx.stroke()
-          }
-        }
+        const gSecondary = ctx.createRadialGradient(
+          glowX,
+          glowY,
+          0,
+          glowX,
+          glowY,
+          glowRadius
+        )
+        gSecondary.addColorStop(0, "rgba(51, 65, 85, 0.07)")
+        gSecondary.addColorStop(0.5, "rgba(15, 23, 42, 0.02)")
+        gSecondary.addColorStop(1, "rgba(7, 8, 10, 0)")
+        ctx.fillStyle = gSecondary
+        ctx.fillRect(0, 0, width, height)
       } else {
-        // --- Light Drafting Vellum Canvas (#f6f6f3 base) ---
-        // 1. Warm technical drafting vellum ambient
-        const gLight = ctx.createRadialGradient(width * 0.5, 0, 0, width * 0.5, 0, Math.max(width, height) * 0.8)
-        gLight.addColorStop(0, "rgba(255, 85, 0, 0.025)")
-        gLight.addColorStop(0.5, "rgba(246, 246, 243, 0.01)")
-        gLight.addColorStop(1, "rgba(246, 246, 243, 0)")
+        // ── ARCHIVAL VELLUM ATMOSPHERE (#f7f7f4) ──────────────────────────
+        const gLight = ctx.createRadialGradient(
+          width * 0.5,
+          -60,
+          0,
+          width * 0.5,
+          -60,
+          Math.max(width, height) * 0.8
+        )
+        gLight.addColorStop(0, "rgba(255, 80, 26, 0.04)")
+        gLight.addColorStop(0.4, "rgba(247, 247, 244, 0.02)")
+        gLight.addColorStop(1, "rgba(247, 247, 244, 0)")
         ctx.fillStyle = gLight
         ctx.fillRect(0, 0, width, height)
-
-        // 2. Drafting Crosshairs
-        const offsetX = Math.floor((width % gridSize) / 2)
-        const offsetY = Math.floor((height % gridSize) / 2)
-
-        for (let x = offsetX; x < width; x += gridSize) {
-          for (let y = offsetY; y < height; y += gridSize) {
-            const dx = (x - width / 2) / (width / 2)
-            const dy = (y - height / 2) / (height / 2)
-            const distSq = dx * dx + dy * dy
-            const opacity = Math.max(0, 1 - distSq * 0.8) * 0.06
-
-            ctx.strokeStyle = `rgba(0, 0, 0, ${opacity})`
-            ctx.beginPath()
-            ctx.moveTo(x - crossSize, y)
-            ctx.lineTo(x + crossSize, y)
-            ctx.moveTo(x, y - crossSize)
-            ctx.lineTo(x, y + crossSize)
-            ctx.stroke()
-          }
-        }
       }
 
       animationFrameId = requestAnimationFrame(render)
@@ -168,11 +152,11 @@ export default function AmbientShader() {
         ref={canvasRef}
         className="absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700"
       />
-      {/* Precision Micro-Carbon Texture */}
+      {/* Precision Micro-Film Grain Overlay (Anti-Banding) */}
       <div
-        className="absolute inset-0 w-full h-full opacity-[0.02] dark:opacity-[0.035] mix-blend-overlay pointer-events-none"
+        className="absolute inset-0 w-full h-full opacity-[0.02] dark:opacity-[0.03] mix-blend-overlay pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
         }}
       />
     </div>

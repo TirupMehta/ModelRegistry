@@ -41,7 +41,7 @@ function NavLinks({ pathname }: { pathname: string }) {
 
     if (animate) {
       pill.style.transition =
-        "transform 140ms cubic-bezier(0.16,1,0.3,1), width 140ms cubic-bezier(0.16,1,0.3,1)"
+        "transform 180ms cubic-bezier(0.16, 1, 0.3, 1), width 180ms cubic-bezier(0.16, 1, 0.3, 1)"
     } else {
       pill.style.transition = "none"
     }
@@ -75,11 +75,11 @@ function NavLinks({ pathname }: { pathname: string }) {
 
   return (
     <nav ref={navRef} className="relative flex items-center gap-1 sm:gap-2">
-      {/* Segmented active pill with tactile technical outline */}
+      {/* Segmented active pill */}
       <div
         ref={pillRef}
         aria-hidden="true"
-        className="absolute inset-y-0 rounded bg-black/[0.05] dark:bg-white/[0.06] border border-black/5 dark:border-white/[0.08] pointer-events-none will-change-transform"
+        className="absolute inset-y-0 rounded-md bg-black/[0.04] dark:bg-white/[0.06] border border-black/5 dark:border-white/[0.08] pointer-events-none will-change-transform"
       />
 
       {NAV_ITEMS.map(({ label, href }) => (
@@ -90,7 +90,7 @@ function NavLinks({ pathname }: { pathname: string }) {
           onMouseEnter={() => setHoverHref(href)}
           onMouseLeave={() => setHoverHref(null)}
           className={[
-            "relative z-10 py-1.5 px-3 rounded text-xs sm:text-[13px] font-mono tracking-tight select-none cursor-pointer transition-colors duration-100",
+            "relative z-10 py-1.5 px-3 rounded-md text-xs sm:text-[13px] font-mono tracking-tight select-none cursor-pointer transition-colors duration-150",
             isLinkActive(href)
               ? "text-black dark:text-white font-medium"
               : "text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white",
@@ -110,11 +110,11 @@ export default function Header() {
   return (
     <>
       {/* ── Top Telemetry Readout Bar ────────────────────────────────────── */}
-      <div className="reveal-in w-full bg-black/[0.02] dark:bg-[#0e1013] border-b border-black/5 dark:border-white/[0.07] py-2 text-[11px] font-mono text-black/60 dark:text-zinc-400">
+      <div className="reveal-in w-full bg-black/[0.02] dark:bg-[#0a0c0f] border-b border-black/5 dark:border-white/[0.06] py-2 text-[11px] font-mono text-black/60 dark:text-zinc-400">
         <div className="max-w-4xl mx-auto w-full px-6 md:px-20 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2.5 min-w-0">
-            <span className="inline-flex items-center gap-1.5 font-medium text-[#ff4400] tracking-wider uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00e599] animate-pulse shrink-0" />
+            <span className="inline-flex items-center gap-2 font-medium text-[#ff5d2e] tracking-wider uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00e599] shadow-[0_0_6px_#00e599] shrink-0" />
               SYS://REGISTRY
             </span>
             <span className="text-black/20 dark:text-white/20 select-none">|</span>
@@ -126,17 +126,17 @@ export default function Header() {
           <div className="flex items-center gap-3 shrink-0 text-[11px] font-mono">
             <Link
               href="/rss.xml"
-              className="inline-flex items-center gap-1 hover:text-[#ff4400] dark:hover:text-[#ff5511] transition-colors"
+              className="group inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
             >
-              <Rss size={11} className="text-[#ff4400]" />
+              <Rss size={11} className="text-[#ff5d2e]" />
               <span>RSS</span>
             </Link>
             <span className="opacity-20 select-none">/</span>
             <Link
               href="/api/v1/models"
-              className="inline-flex items-center gap-1 hover:text-[#ff4400] dark:hover:text-[#ff5511] transition-colors"
+              className="group inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
             >
-              <Code2 size={11} className="text-[#ff4400]" />
+              <Code2 size={11} className="text-[#ff5d2e]" />
               <span>API</span>
             </Link>
           </div>
@@ -152,14 +152,14 @@ export default function Header() {
                 <div className="flex items-center gap-2.5">
                   {isHome ? (
                     <h1 className="text-2xl sm:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
-                      Model<span className="font-semibold text-[#ff4400]">Registry</span>
+                      Model<span className="font-semibold text-[#ff5d2e]">Registry</span>
                     </h1>
                   ) : (
                     <p className="text-2xl sm:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
-                      Model<span className="font-semibold text-[#ff4400]">Registry</span>
+                      Model<span className="font-semibold text-[#ff5d2e]">Registry</span>
                     </p>
                   )}
-                  <span className="text-[10px] uppercase font-mono tracking-widest px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.1] text-black/50 dark:text-zinc-400 bg-black/[0.02] dark:bg-white/[0.02]">
+                  <span className="text-[10px] uppercase font-mono tracking-widest px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] text-black/50 dark:text-zinc-400 bg-black/[0.02] dark:bg-white/[0.02] group-hover:border-[#ff5d2e]/40 transition-colors duration-150">
                     v2026.9
                   </span>
                 </div>
@@ -173,19 +173,19 @@ export default function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Contribute a newly released model on GitHub"
-                className="group inline-flex items-center justify-center gap-1.5 h-[28px] px-3 text-[11px] font-mono tracking-wide bg-black/[0.04] dark:bg-white/[0.05] hover:bg-[#ff4400] dark:hover:bg-[#ff4400] border border-black/10 dark:border-white/[0.08] hover:border-[#ff4400] rounded text-black/70 dark:text-zinc-300 hover:text-white dark:hover:text-white transition-all duration-150 select-none cursor-pointer active:scale-[0.97]"
+                className="group inline-flex items-center justify-center gap-1.5 h-[28px] px-3 text-[11px] font-mono tracking-wide bg-black/[0.04] dark:bg-white/[0.04] hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] rounded-md text-black/70 dark:text-zinc-300 hover:text-white dark:hover:text-white transition-colors duration-150 select-none cursor-pointer"
               >
                 <GitPullRequest
                   size={12}
-                  className="text-black/50 dark:text-zinc-400 group-hover:text-white transition-colors"
+                  className="text-black/50 dark:text-zinc-400 group-hover:text-white transition-colors duration-150"
                 />
                 <span>+ CONTRIBUTE</span>
-                <ArrowUpRight size={10} className="opacity-40 group-hover:opacity-100" />
+                <ArrowUpRight size={10} className="opacity-40 group-hover:opacity-100 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
 
               <AnimatedThemeToggler
                 variant="circle"
-                className="flex items-center justify-center w-7 h-7 rounded border border-black/5 dark:border-white/[0.08] text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] transition-all cursor-pointer shrink-0"
+                className="flex items-center justify-center w-7 h-7 rounded-md border border-black/5 dark:border-white/[0.08] text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] transition-colors duration-150 cursor-pointer shrink-0"
               />
             </div>
           </div>
