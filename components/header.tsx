@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import TextWithBlur from "@/components/text-with-blur"
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
-import { Database, Rss, Code2, RefreshCw, Check } from "lucide-react"
+import { Database, Rss, Code2, GitPullRequest, ArrowUpRight } from "lucide-react"
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/" },
@@ -108,26 +108,6 @@ function NavLinks({ pathname }: { pathname: string }) {
 
 export default function Header() {
   const pathname = usePathname()
-  const [isSyncing, setIsSyncing] = useState(false)
-  const [syncSuccess, setSyncSuccess] = useState(false)
-
-  const handleManualSync = async () => {
-    if (isSyncing) return
-    setIsSyncing(true)
-    setSyncSuccess(false)
-    try {
-      const res = await fetch("/api/check-updates")
-      if (res.ok) {
-        setSyncSuccess(true)
-        setTimeout(() => setSyncSuccess(false), 3000)
-      }
-    } catch {
-      // fallback
-    } finally {
-      setIsSyncing(false)
-    }
-  }
-
   const isHome = pathname === "/"
 
   return (
@@ -191,33 +171,22 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Quick Sync & Theme Toggler */}
+            {/* Contribute Pill & Theme Toggler (tirup.in style) */}
             <div className="flex items-center gap-2">
-              <button
-                onClick={handleManualSync}
-                disabled={isSyncing}
-                title="Verify live API feeds"
-                className="group inline-flex items-center justify-center gap-1.5 h-[28px] px-3 text-[11px] font-medium tracking-wide bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/5 dark:border-white/5 hover:border-black/10 dark:hover:border-white/10 rounded-full text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-all duration-150 select-none cursor-pointer active:scale-[0.97]"
+              <a
+                href="https://github.com/TirupMehta/ModelRegistry"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Contribute a newly released model on GitHub"
+                className="group inline-flex items-center justify-center gap-1.5 h-[28px] px-3 text-[11px] font-medium tracking-wide bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/5 dark:border-white/5 hover:border-black/10 dark:hover:border-white/10 rounded-full text-black/65 dark:text-white/65 hover:text-black dark:hover:text-white transition-all duration-150 select-none cursor-pointer active:scale-[0.97]"
               >
-                {syncSuccess ? (
-                  <>
-                    <Check size={12} className="text-emerald-500" />
-                    <span className="text-emerald-600 dark:text-emerald-400">Verified</span>
-                  </>
-                ) : (
-                  <>
-                    <RefreshCw
-                      size={11}
-                      className={`text-black/50 dark:text-white/50 group-hover:text-black dark:group-hover:text-white transition-transform duration-300 ${
-                        isSyncing ? "animate-spin" : "group-hover:rotate-180"
-                      }`}
-                    />
-                    <span className="hidden sm:inline select-none">
-                      {isSyncing ? "Checking..." : "Sync"}
-                    </span>
-                  </>
-                )}
-              </button>
+                <GitPullRequest
+                  size={12}
+                  className="text-black/50 dark:text-white/50 group-hover:text-black dark:group-hover:text-white transition-colors duration-150"
+                />
+                <span className="leading-none select-none">Contribute</span>
+                <ArrowUpRight size={10} className="opacity-40 group-hover:opacity-100 transition-opacity" />
+              </a>
 
               <AnimatedThemeToggler
                 variant="circle"
