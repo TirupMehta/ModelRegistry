@@ -83,7 +83,7 @@ export default function CompaniesPage() {
                     {flagshipModel && (
                       <div
                         onClick={() => setActiveModalModel(flagshipModel)}
-                        className="cursor-pointer p-4 rounded-xl bg-black/[0.025] dark:bg-white/[0.03] border border-black/5 dark:border-white/5 hover:border-black/15 dark:hover:border-white/15 transition-all select-none active:scale-[0.99] group"
+                        className="cursor-pointer p-4 rounded-xl bg-black/[0.025] dark:bg-white/[0.035] border border-black/5 dark:border-white/5 hover:border-black/15 dark:hover:border-white/15 transition-all select-none active:scale-[0.99] group"
                       >
                         <div className="flex items-center justify-between text-xs mb-1.5">
                           <span className="font-mono text-accent font-medium uppercase text-[10px] tracking-wider">
@@ -110,7 +110,7 @@ export default function CompaniesPage() {
                     {latestDrop ? (
                       <div
                         onClick={() => setActiveModalModel(latestDrop)}
-                        className="cursor-pointer p-4 rounded-xl bg-black/[0.025] dark:bg-white/[0.03] border border-black/5 dark:border-white/5 hover:border-black/15 dark:hover:border-white/15 transition-all select-none active:scale-[0.99] group"
+                        className="cursor-pointer p-4 rounded-xl bg-black/[0.025] dark:bg-white/[0.035] border border-black/5 dark:border-white/5 hover:border-black/15 dark:hover:border-white/15 transition-all select-none active:scale-[0.99] group"
                       >
                         <div className="flex items-center justify-between text-xs mb-1.5">
                           <span className="font-mono text-emerald-600 dark:text-emerald-400 font-medium uppercase text-[10px] tracking-wider flex items-center gap-1">
@@ -138,7 +138,7 @@ export default function CompaniesPage() {
                       flagshipModel && (
                         <div className="p-4 rounded-xl bg-black/[0.01] dark:bg-white/[0.015] border border-black/5 dark:border-white/5 flex flex-col justify-center text-xs font-light text-black/45 dark:text-white/45">
                           <p>
-                            {flagshipModel.name} serves as both the primary foundation model and the most recent release from {company.name}.
+                            {company.name}&apos;s reigning foundation flagship is also its newest deployed model.
                           </p>
                         </div>
                       )

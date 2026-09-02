@@ -148,7 +148,7 @@ export default function Home() {
 
       <section className="section max-w-4xl mx-auto w-full px-6 md:px-20 pb-20">
         {/* Story Description (tirup.in style) */}
-        <div className="space-y-4 text-base md:text-lg font-light text-black/70 dark:text-white/70 leading-relaxed max-w-3xl mb-8">
+        <div className="space-y-4 text-base md:text-[17px] font-light text-black/70 dark:text-white/70 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
             <p>
               ModelRegistry is an open public catalog of frontier artificial intelligence. 
@@ -161,13 +161,13 @@ export default function Home() {
         <TextWithBlur delay={180}>
           <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black/5 dark:border-white/5 pb-4">
             {/* Filter Tabs */}
-            <div className="flex items-center gap-1 sm:gap-2 flex-wrap text-xs md:text-sm">
+            <div className="flex items-center gap-1 sm:gap-2 flex-wrap text-xs sm:text-sm">
               <button
                 onClick={() => setActiveTab("flagships")}
                 className={`py-1.5 px-3 rounded-md transition-all select-none cursor-pointer ${
                   activeTab === "flagships"
-                    ? "bg-black/[0.06] dark:bg-white/[0.08] text-black dark:text-white font-medium shadow-sm"
-                    : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white"
+                    ? "bg-black/[0.06] dark:bg-white/[0.08] text-black dark:text-white font-medium shadow-sm border border-black/5 dark:border-white/10"
+                    : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white dark:hover:bg-white/[0.03]"
                 }`}
               >
                 Flagship LLMs <span className="font-mono opacity-50 text-[11px]">({counts.flagships})</span>
@@ -177,8 +177,8 @@ export default function Home() {
                 onClick={() => setActiveTab("latest-drops")}
                 className={`py-1.5 px-3 rounded-md transition-all select-none cursor-pointer ${
                   activeTab === "latest-drops"
-                    ? "bg-black/[0.06] dark:bg-white/[0.08] text-black dark:text-white font-medium shadow-sm"
-                    : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white"
+                    ? "bg-black/[0.06] dark:bg-white/[0.08] text-black dark:text-white font-medium shadow-sm border border-black/5 dark:border-white/10"
+                    : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white dark:hover:bg-white/[0.03]"
                 }`}
               >
                 Newest Drops <span className="font-mono opacity-50 text-[11px]">({counts.latestDrops})</span>
@@ -188,8 +188,8 @@ export default function Home() {
                 onClick={() => setActiveTab("open-weights")}
                 className={`py-1.5 px-3 rounded-md transition-all select-none cursor-pointer ${
                   activeTab === "open-weights"
-                    ? "bg-black/[0.06] dark:bg-white/[0.08] text-black dark:text-white font-medium shadow-sm"
-                    : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white"
+                    ? "bg-black/[0.06] dark:bg-white/[0.08] text-black dark:text-white font-medium shadow-sm border border-black/5 dark:border-white/10"
+                    : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white dark:hover:bg-white/[0.03]"
                 }`}
               >
                 Open Weights <span className="font-mono opacity-50 text-[11px]">({counts.openWeights})</span>
@@ -199,8 +199,8 @@ export default function Home() {
                 onClick={() => setActiveTab("all")}
                 className={`py-1.5 px-3 rounded-md transition-all select-none cursor-pointer ${
                   activeTab === "all"
-                    ? "bg-black/[0.06] dark:bg-white/[0.08] text-black dark:text-white font-medium shadow-sm"
-                    : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white"
+                    ? "bg-black/[0.06] dark:bg-white/[0.08] text-black dark:text-white font-medium shadow-sm border border-black/5 dark:border-white/10"
+                    : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white dark:hover:bg-white/[0.03]"
                 }`}
               >
                 All <span className="font-mono opacity-50 text-[11px]">({counts.all})</span>
@@ -208,9 +208,9 @@ export default function Home() {
             </div>
 
             {/* Quick Search */}
-            <div className="relative w-full sm:w-56">
+            <div className="relative w-full sm:w-60">
               <Search
-                size={13}
+                size={14}
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-black/35 dark:text-white/35 pointer-events-none"
               />
               <input
@@ -219,9 +219,9 @@ export default function Home() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Filter models..."
-                className="w-full pl-8 pr-7 py-1.5 text-xs bg-black/[0.025] dark:bg-white/[0.035] border border-black/5 dark:border-white/5 rounded-md focus:outline-none focus:border-accent text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-white/35 font-light transition-colors"
+                className="w-full pl-8 pr-7 py-1.5 text-xs sm:text-sm bg-black/[0.025] dark:bg-white/[0.035] border border-black/5 dark:border-white/10 rounded-md focus:outline-none focus:border-accent text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-white/35 font-light transition-colors"
               />
-              <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-mono text-black/30 dark:text-white/30 bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 rounded pointer-events-none select-none">
+              <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-mono text-black/30 dark:text-white/30 bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded pointer-events-none select-none">
                 /
               </kbd>
             </div>
@@ -274,17 +274,17 @@ export default function Home() {
                         </div>
 
                         {/* Highlight / Description */}
-                        <p className="text-xs sm:text-sm font-light text-black/60 dark:text-white/60 leading-relaxed line-clamp-1 group-hover:text-black/75 dark:group-hover:text-white/75 transition-colors">
+                        <p className="text-xs sm:text-sm font-light text-black/60 dark:text-white/60 leading-relaxed line-clamp-1 group-hover:text-black/80 dark:group-hover:text-white/80 transition-colors">
                           {model.highlight}
                         </p>
 
                         {/* If this flagship has a specialized newest drop, show note */}
                         {specializedDrop && activeTab === "flagships" && (
-                          <div className="mt-1 flex items-center gap-1.5 text-[11px] font-mono text-black/40 dark:text-white/40">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent/70 shrink-0"></span>
+                          <div className="mt-1 flex items-center gap-1.5 text-[11px] sm:text-xs font-mono text-black/40 dark:text-white/40">
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
                             <span>
                               Latest checkpoint:{" "}
-                              <span className="text-black/65 dark:text-white/65 underline underline-offset-2">
+                              <span className="text-black/70 dark:text-white/70 underline underline-offset-2 font-normal">
                                 {specializedDrop.name}
                               </span>{" "}
                               ({specializedDrop.categoryLabel})
@@ -302,13 +302,13 @@ export default function Home() {
                           {model.contextWindow.replace(" tokens", "")}
                         </time>
 
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-black/5 dark:bg-white/5 text-black/60 dark:text-white/60 border border-black/5 dark:border-white/5">
+                        <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-black/5 dark:bg-white/5 text-black/60 dark:text-white/60 border border-black/5 dark:border-white/5">
                           {model.statusBadge}
                         </span>
 
                         <ArrowUpRight
                           size={13}
-                          className="opacity-25 group-hover:opacity-100 transition-opacity text-black dark:text-white hidden sm:block"
+                          className="opacity-30 group-hover:opacity-100 transition-opacity text-black dark:text-white hidden sm:block"
                         />
                       </div>
                     </div>
@@ -327,7 +327,7 @@ export default function Home() {
             <h2 className="text-xs uppercase tracking-[0.2em] text-black/40 dark:text-white/40 mb-4 font-medium">
               Open Telemetry &amp; Endpoints
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-3 text-xs md:text-sm font-light text-black/60 dark:text-white/60">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-3 text-xs sm:text-sm font-light text-black/60 dark:text-white/60">
               <a
                 href="/api/v1/models"
                 target="_blank"
@@ -353,7 +353,7 @@ export default function Home() {
                 llms.txt <ArrowUpRight size={13} className="opacity-40 group-hover:opacity-100" />
               </a>
               <a
-                href="https://github.com/TirupMehta/Checkpoint"
+                href="https://github.com/TirupMehta/ModelRegistry"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group hover:text-black dark:hover:text-white transition-colors inline-flex items-center gap-1 w-fit"

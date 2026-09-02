@@ -133,10 +133,10 @@ export default function LeaderboardPage() {
                           <span className="font-mono text-[11px] text-black/55 dark:text-white/55">
                             {model.contextWindow.replace(" tokens", "")}
                           </span>
-                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 text-black/60 dark:text-white/60">
+                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 text-black/60 dark:text-white/60 border border-black/5 dark:border-white/5">
                             {model.pricing.input === 0 ? "Free" : `$${model.pricing.input}/M`}
                           </span>
-                          <ArrowUpRight size={13} className="opacity-40 group-hover:opacity-100" />
+                          <ArrowUpRight size={13} className="opacity-40 group-hover:opacity-100 text-black dark:text-white" />
                         </div>
                       </div>
                     ))}

@@ -97,7 +97,7 @@ export default function TimelinePage() {
                             <span className="font-mono text-[11px] text-black/45 dark:text-white/45">
                               {model.contextWindow}
                             </span>
-                            <span className="text-[10px] font-mono uppercase px-1.5 py-0.2 rounded bg-black/5 dark:bg-white/5 text-black/55 dark:text-white/55">
+                            <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 text-black/55 dark:text-white/55 border border-black/5 dark:border-white/5">
                               {model.statusBadge}
                             </span>
                           </div>

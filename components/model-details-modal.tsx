@@ -59,7 +59,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/40 dark:bg-black/75 backdrop-blur-sm animate-in fade-in duration-150 cursor-pointer"
     >
       <div
-        className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-[#fafaf9] dark:bg-[#0f1115] border border-black/10 dark:border-white/10 shadow-2xl p-6 sm:p-8 cursor-default"
+        className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-[#fafaf9] dark:bg-[#111215] border border-black/10 dark:border-white/[0.09] shadow-2xl p-6 sm:p-8 cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Actions: Copy Link & Close */}
@@ -68,7 +68,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             onClick={handleCopyLink}
             aria-label="Copy direct model link"
             title="Copy shareable link to this model"
-            className="p-1.5 rounded-full text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+            className="p-1.5 rounded-full text-black/40 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.08] transition-colors cursor-pointer"
           >
             {copied ? <Check size={16} className="text-emerald-500" /> : <Link2 size={16} />}
           </button>
@@ -76,7 +76,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           <button
             onClick={onClose}
             aria-label="Close dialog"
-            className="p-1.5 rounded-full text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+            className="p-1.5 rounded-full text-black/40 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.08] transition-colors cursor-pointer"
           >
             <X size={18} />
           </button>
@@ -102,7 +102,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           <h2 className="text-2xl sm:text-3xl font-light tracking-tight text-black dark:text-white">
             {model.name}
           </h2>
-          <span className="text-[11px] font-mono uppercase px-2 py-0.5 rounded-md bg-accent/10 dark:bg-accent/20 text-accent font-medium tracking-wide">
+          <span className="text-[11px] font-mono uppercase px-2 py-0.5 rounded-md bg-accent/10 text-accent font-medium tracking-wide">
             {model.statusBadge}
           </span>
         </div>
@@ -114,32 +114,32 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
 
         {/* Key Specs Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
-          <div className="p-3 rounded-xl bg-black/[0.025] dark:bg-white/[0.03] border border-black/5 dark:border-white/5">
+          <div className="p-3 rounded-xl bg-black/[0.025] dark:bg-white/[0.035] border border-black/5 dark:border-white/5">
             <div className="flex items-center gap-1.5 text-xs text-black/40 dark:text-white/40 mb-1">
               <Layers size={13} />
               <span>Context Window</span>
             </div>
-            <p className="font-mono text-sm font-medium text-black dark:text-white">
+            <p className="font-mono text-sm sm:text-[15px] font-medium text-black dark:text-white">
               {model.contextWindow}
             </p>
           </div>
 
-          <div className="p-3 rounded-xl bg-black/[0.025] dark:bg-white/[0.03] border border-black/5 dark:border-white/5">
+          <div className="p-3 rounded-xl bg-black/[0.025] dark:bg-white/[0.035] border border-black/5 dark:border-white/5">
             <div className="flex items-center gap-1.5 text-xs text-black/40 dark:text-white/40 mb-1">
               <Cpu size={13} />
               <span>Architecture</span>
             </div>
-            <p className="font-mono text-sm font-medium text-black dark:text-white truncate">
+            <p className="font-mono text-sm sm:text-[15px] font-medium text-black dark:text-white truncate">
               {model.parameters}
             </p>
           </div>
 
-          <div className="p-3 rounded-xl bg-black/[0.025] dark:bg-white/[0.03] border border-black/5 dark:border-white/5 col-span-2 sm:col-span-1">
+          <div className="p-3 rounded-xl bg-black/[0.025] dark:bg-white/[0.035] border border-black/5 dark:border-white/5 col-span-2 sm:col-span-1">
             <div className="flex items-center gap-1.5 text-xs text-black/40 dark:text-white/40 mb-1">
               <DollarSign size={13} />
               <span>Pricing / 1M tokens</span>
             </div>
-            <p className="font-mono text-sm font-medium text-black dark:text-white">
+            <p className="font-mono text-sm sm:text-[15px] font-medium text-black dark:text-white">
               {model.openWeights ? (
                 <span className="text-emerald-600 dark:text-emerald-400">Open Weights (Free)</span>
               ) : (
@@ -200,7 +200,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               {model.modalities.map((m) => (
                 <span
                   key={m}
-                  className="px-2 py-0.5 rounded bg-black/5 dark:bg-white/5 font-mono text-[10px]"
+                  className="px-2 py-0.5 rounded bg-black/5 dark:bg-white/5 font-mono text-[10px] text-black/70 dark:text-white/70"
                 >
                   {m}
                 </span>
@@ -210,7 +210,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
 
           <div className="flex items-center gap-1.5">
             <ShieldCheck size={13} className="opacity-40" />
-            <span className="font-mono text-[11px]">{model.license}</span>
+            <span className="font-mono text-[11px] text-black/60 dark:text-white/60">{model.license}</span>
           </div>
         </div>
 
