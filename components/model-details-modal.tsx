@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
 import {
@@ -58,7 +59,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
   }
 
   const handleCopyLink = () => {
-    const url = `${window.location.origin}/?model=${model.id}`
+    const url = `${window.location.origin}/models/${model.id}`
     navigator.clipboard.writeText(url)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
@@ -85,6 +86,15 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           </div>
 
           <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+            <Link
+              href={`/models/${model.id}`}
+              title="Open full dedicated page"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[10px] sm:text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
+            >
+              <ExternalLink size={11} className="sm:w-3 sm:h-3" />
+              <span className="hidden sm:inline">PERMALINK</span>
+            </Link>
+
             <button
               onClick={() => setIsShareStudioOpen(true)}
               title="Export Instagram Story / Social Card"
