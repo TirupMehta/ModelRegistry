@@ -31,6 +31,28 @@ Visual craft and interaction design inspired by [tirup.in](https://tirup.in). Ho
 
 ---
 
+## 💻 Terminal CLI Dashboard
+
+Run directly from any terminal without installing anything:
+
+```bash
+curl -s https://modelregistry.tirup.in
+```
+
+---
+
+## 🏷️ Embeddable GitHub Badges
+
+Embed real-time frontier flagship badges directly in your GitHub READMEs:
+
+```markdown
+[![OpenAI Flagship](https://modelregistry.tirup.in/api/badge/openai)](https://modelregistry.tirup.in)
+[![Anthropic Flagship](https://modelregistry.tirup.in/api/badge/anthropic)](https://modelregistry.tirup.in)
+[![Meta AI Flagship](https://modelregistry.tirup.in/api/badge/meta)](https://modelregistry.tirup.in)
+```
+
+---
+
 ## 📡 Public API
 
 ModelRegistry provides free, unauthenticated REST endpoints for bots, CLI tools, and agent workflows:

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import Header from "@/components/header"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
@@ -59,6 +59,36 @@ export default function Home() {
       (m) => m.companyId === companyId && m.isLatestCheckpoint && m.id !== currentModelId
     )
   }
+
+  // Deep link detection from window.location.hash and keyboard shortcuts
+  useEffect(() => {
+    // 1. URL Hash Deep-linking
+    const hash = window.location.hash.replace("#", "")
+    if (hash) {
+      const match = modelsData.find((m) => m.id === hash)
+      if (match) {
+        setActiveModalModel(match)
+      }
+    }
+
+    // 2. Global keyboard shortcut ('/' to search, 'Esc' to clear)
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "/" && document.activeElement?.tagName !== "INPUT") {
+        e.preventDefault()
+        const input = document.getElementById("models-search-input") as HTMLInputElement | null
+        input?.focus()
+      } else if (e.key === "Escape") {
+        const input = document.getElementById("models-search-input") as HTMLInputElement | null
+        if (input && document.activeElement === input) {
+          input.blur()
+          setSearchQuery("")
+        }
+      }
+    }
+
+    window.addEventListener("keydown", handleGlobalKeyDown)
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown)
+  }, [])
 
   return (
     <main className="relative min-h-screen">
@@ -184,12 +214,16 @@ export default function Home() {
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-black/35 dark:text-white/35 pointer-events-none"
               />
               <input
+                id="models-search-input"
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Filter models..."
-                className="w-full pl-8 pr-3 py-1.5 text-xs bg-black/[0.025] dark:bg-white/[0.035] border border-black/5 dark:border-white/5 rounded-md focus:outline-none focus:border-accent text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-white/35 font-light transition-colors"
+                className="w-full pl-8 pr-7 py-1.5 text-xs bg-black/[0.025] dark:bg-white/[0.035] border border-black/5 dark:border-white/5 rounded-md focus:outline-none focus:border-accent text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-white/35 font-light transition-colors"
               />
+              <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-mono text-black/30 dark:text-white/30 bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 rounded pointer-events-none select-none">
+                /
+              </kbd>
             </div>
           </div>
         </TextWithBlur>

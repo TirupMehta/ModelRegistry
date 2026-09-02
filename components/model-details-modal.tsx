@@ -1,9 +1,19 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
-import { X, ExternalLink, Sparkles, Cpu, Layers, DollarSign, BookOpen, Key, ShieldCheck } from "lucide-react"
+import {
+  X,
+  ExternalLink,
+  Sparkles,
+  Cpu,
+  Layers,
+  DollarSign,
+  ShieldCheck,
+  Link2,
+  Check,
+} from "lucide-react"
 import { formatDate } from "@/lib/utils"
 
 interface ModelDetailsModalProps {
@@ -12,6 +22,8 @@ interface ModelDetailsModalProps {
 }
 
 export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalProps) {
+  const [copied, setCopied] = useState(false)
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose()
@@ -19,10 +31,14 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
     if (model) {
       document.body.style.overflow = "hidden"
       window.addEventListener("keydown", handleKeyDown)
+      window.history.replaceState(null, "", `#${model.id}`)
     }
     return () => {
       document.body.style.overflow = "auto"
       window.removeEventListener("keydown", handleKeyDown)
+      if (window.location.hash) {
+        window.history.replaceState(null, "", window.location.pathname)
+      }
     }
   }, [model, onClose])
 
@@ -30,20 +46,41 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
 
   const company = companies[model.companyId]
 
+  const handleCopyLink = () => {
+    const url = `${window.location.origin}/#${model.id}`
+    navigator.clipboard.writeText(url)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/40 dark:bg-black/65 backdrop-blur-sm animate-in fade-in duration-200">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/40 dark:bg-black/75 backdrop-blur-sm animate-in fade-in duration-150 cursor-pointer"
+    >
       <div
-        className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-[#fafaf9] dark:bg-[#0f1115] border border-black/10 dark:border-white/10 shadow-2xl p-6 sm:p-8"
+        className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-[#fafaf9] dark:bg-[#0f1115] border border-black/10 dark:border-white/10 shadow-2xl p-6 sm:p-8 cursor-default"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          aria-label="Close dialog"
-          className="absolute top-5 right-5 p-1.5 rounded-full text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
-        >
-          <X size={18} />
-        </button>
+        {/* Top Actions: Copy Link & Close */}
+        <div className="absolute top-5 right-5 flex items-center gap-1.5">
+          <button
+            onClick={handleCopyLink}
+            aria-label="Copy direct model link"
+            title="Copy shareable link to this model"
+            className="p-1.5 rounded-full text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+          >
+            {copied ? <Check size={16} className="text-emerald-500" /> : <Link2 size={16} />}
+          </button>
+
+          <button
+            onClick={onClose}
+            aria-label="Close dialog"
+            className="p-1.5 rounded-full text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+          >
+            <X size={18} />
+          </button>
+        </div>
 
         {/* Lab info & badges */}
         <div className="flex items-center gap-2 mb-3">
