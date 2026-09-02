@@ -13,6 +13,23 @@ const GREEN = `${ESC}[38;2;0;229;153m`
 const SLATE = `${ESC}[38;2;140;145;155m`
 const WHITE = `${ESC}[38;2;244;245;247m`
 
+const INNER_WIDTH = 72
+
+function stripAnsi(str: string): string {
+  return str.replace(/\x1b\[[0-9;]*m/g, "")
+}
+
+function makeBoxRow(styledContent: string, innerWidth = INNER_WIDTH): string {
+  const visible = stripAnsi(styledContent)
+  const visibleLen = visible.length
+  if (visibleLen > innerWidth) {
+    const trimmed = visible.slice(0, innerWidth - 1) + "…"
+    return `${CORAL}${BOLD}│${RESET}${trimmed}${CORAL}${BOLD}│${RESET}`
+  }
+  const spaces = innerWidth - visibleLen
+  return `${CORAL}${BOLD}│${RESET}${styledContent}${" ".repeat(spaces)}${CORAL}${BOLD}│${RESET}`
+}
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const modelId = searchParams.get("model") || "latest"
@@ -33,57 +50,57 @@ export async function GET(req: NextRequest) {
   const company = companies[model.companyId]
   const labName = company ? company.name : model.companyName
 
-  const lines = [
-    `${CORAL}${BOLD}┌────────────────────────────────────────────────────────────────────────┐${RESET}`,
-    `${CORAL}${BOLD}│${RESET}  ${WHITE}${BOLD}MODELREGISTRY${RESET} ${DIM}// The Open Frontier AI Model & Checkpoint Ledger${RESET}      ${CORAL}${BOLD}│${RESET}`,
-    `${CORAL}${BOLD}├────────────────────────────────────────────────────────────────────────┤${RESET}`,
-    `${CORAL}${BOLD}│${RESET}                                                                        ${CORAL}${BOLD}│${RESET}`,
-    `${CORAL}${BOLD}│${RESET}  ${SLATE}LABORATORY:${RESET}    ${WHITE}${BOLD}${labName.padEnd(25)}${RESET} ${SLATE}STATUS:${RESET}   ${GREEN}${BOLD}${model.statusBadge.padEnd(19)}${RESET}${CORAL}${BOLD}│${RESET}`,
-    `${CORAL}${BOLD}│${RESET}  ${SLATE}MODEL NAME:${RESET}    ${CORAL}${BOLD}${model.name.padEnd(52)}${RESET}${CORAL}${BOLD}│${RESET}`,
-    `${CORAL}${BOLD}│${RESET}  ${SLATE}RELEASE DATE:${RESET}  ${WHITE}${model.releaseDate.padEnd(25)}${RESET} ${SLATE}CATEGORY:${RESET} ${WHITE}${model.categoryLabel.padEnd(19)}${RESET}${CORAL}${BOLD}│${RESET}`,
-    `${CORAL}${BOLD}│${RESET}                                                                        ${CORAL}${BOLD}│${RESET}`,
-    `${CORAL}${BOLD}│${RESET}  ${SLATE}${BOLD}CORE HARDWARE & ARCHITECTURE SPECIFICATIONS${RESET}                          ${CORAL}${BOLD}│${RESET}`,
-    `${CORAL}${BOLD}│${RESET}  • ${SLATE}Context Window:${RESET} ${WHITE}${model.contextWindow.padEnd(49)}${RESET}${CORAL}${BOLD}│${RESET}`,
-    `${CORAL}${BOLD}│${RESET}  • ${SLATE}Architecture:${RESET}   ${WHITE}${model.parameters.padEnd(49)}${RESET}${CORAL}${BOLD}│${RESET}`,
-    `${CORAL}${BOLD}│${RESET}  • ${SLATE}License:${RESET}        ${WHITE}${model.license.padEnd(49)}${RESET}${CORAL}${BOLD}│${RESET}`,
-    `${CORAL}${BOLD}│${RESET}  • ${SLATE}Pricing (1M):${RESET}   ${WHITE}${(model.openWeights ? "Free / Open Weights" : `$${model.pricing.input} in / $${model.pricing.output} out`).padEnd(49)}${RESET}${CORAL}${BOLD}│${RESET}`,
+  const lines: string[] = [
+    `${CORAL}${BOLD}┌${"─".repeat(INNER_WIDTH)}┐${RESET}`,
+    makeBoxRow(`  ${WHITE}${BOLD}MODELREGISTRY${RESET} ${DIM}// The Open Frontier AI Model & Checkpoint Ledger${RESET}`),
+    `${CORAL}${BOLD}├${"─".repeat(INNER_WIDTH)}┤${RESET}`,
+    makeBoxRow(""),
+    makeBoxRow(`  ${SLATE}LABORATORY:${RESET}    ${WHITE}${BOLD}${labName.slice(0, 22).padEnd(23)}${RESET} ${SLATE}STATUS:${RESET}   ${GREEN}${BOLD}${model.statusBadge.slice(0, 18).padEnd(19)}${RESET}`),
+    makeBoxRow(`  ${SLATE}MODEL NAME:${RESET}    ${CORAL}${BOLD}${model.name.slice(0, 52)}${RESET}`),
+    makeBoxRow(`  ${SLATE}RELEASE DATE:${RESET}  ${WHITE}${model.releaseDate.padEnd(23)}${RESET} ${SLATE}CATEGORY:${RESET} ${WHITE}${model.categoryLabel.slice(0, 18).padEnd(19)}${RESET}`),
+    makeBoxRow(""),
+    makeBoxRow(`  ${SLATE}${BOLD}CORE HARDWARE & ARCHITECTURE SPECIFICATIONS${RESET}`),
+    makeBoxRow(`  • ${SLATE}Context Window:${RESET} ${WHITE}${model.contextWindow.slice(0, 48)}${RESET}`),
+    makeBoxRow(`  • ${SLATE}Architecture:${RESET}   ${WHITE}${model.parameters.slice(0, 48)}${RESET}`),
+    makeBoxRow(`  • ${SLATE}License:${RESET}        ${WHITE}${model.license.slice(0, 48)}${RESET}`),
+    makeBoxRow(`  • ${SLATE}Pricing (1M):${RESET}   ${WHITE}${(model.openWeights ? "Free / Open Weights" : `$${model.pricing.input} in / $${model.pricing.output} out`).slice(0, 48)}${RESET}`),
   ]
 
   if (Object.keys(model.benchmarks).length > 0) {
-    lines.push(`${CORAL}${BOLD}│${RESET}                                                                        ${CORAL}${BOLD}│${RESET}`)
-    lines.push(`${CORAL}${BOLD}│${RESET}  ${SLATE}${BOLD}VERIFIED BENCHMARKS${RESET}                                                   ${CORAL}${BOLD}│${RESET}`)
+    lines.push(makeBoxRow(""))
+    lines.push(makeBoxRow(`  ${SLATE}${BOLD}VERIFIED BENCHMARKS${RESET}`))
     const b = model.benchmarks
     const benchEntries: string[] = []
     if (b.sweBench) benchEntries.push(`SWE-bench: ${b.sweBench}`)
     if (b.aime2024) benchEntries.push(`AIME 2024: ${b.aime2024}`)
     if (b.mmluPro) benchEntries.push(`MMLU-Pro: ${b.mmluPro}`)
     if (b.gpqa) benchEntries.push(`GPQA: ${b.gpqa}`)
-    lines.push(`${CORAL}${BOLD}│${RESET}  • ${WHITE}${benchEntries.join("  |  ").padEnd(65)}${RESET}${CORAL}${BOLD}│${RESET}`)
+    lines.push(makeBoxRow(`  • ${WHITE}${benchEntries.join("  |  ")}${RESET}`))
   }
 
-  lines.push(`${CORAL}${BOLD}│${RESET}                                                                        ${CORAL}${BOLD}│${RESET}`)
-  lines.push(`${CORAL}${BOLD}│${RESET}  ${SLATE}HIGHLIGHT:${RESET}                                                            ${CORAL}${BOLD}│${RESET}`)
+  lines.push(makeBoxRow(""))
+  lines.push(makeBoxRow(`  ${SLATE}HIGHLIGHT:${RESET}`))
   
   // Wrap highlight at ~64 chars
   const words = model.highlight.split(" ")
   let cur = ""
   for (const w of words) {
     if ((cur + " " + w).length > 64) {
-      lines.push(`${CORAL}${BOLD}│${RESET}  ${WHITE}${cur.padEnd(68)}${RESET}${CORAL}${BOLD}│${RESET}`)
+      lines.push(makeBoxRow(`  ${WHITE}${cur}${RESET}`))
       cur = w
     } else {
       cur = cur ? `${cur} ${w}` : w
     }
   }
   if (cur) {
-    lines.push(`${CORAL}${BOLD}│${RESET}  ${WHITE}${cur.padEnd(68)}${RESET}${CORAL}${BOLD}│${RESET}`)
+    lines.push(makeBoxRow(`  ${WHITE}${cur}${RESET}`))
   }
 
-  lines.push(`${CORAL}${BOLD}│${RESET}                                                                        ${CORAL}${BOLD}│${RESET}`)
-  lines.push(`${CORAL}${BOLD}├────────────────────────────────────────────────────────────────────────┤${RESET}`)
-  lines.push(`${CORAL}${BOLD}│${RESET}  ${DIM}Web: https://modelregistry.tirup.in/?model=${model.id}${RESET}${CORAL}${BOLD}│${RESET}`)
-  lines.push(`${CORAL}${BOLD}│${RESET}  ${DIM}API: https://modelregistry.tirup.in/api/v1/models${RESET}                           ${CORAL}${BOLD}│${RESET}`)
-  lines.push(`${CORAL}${BOLD}└────────────────────────────────────────────────────────────────────────┘${RESET}`)
+  lines.push(makeBoxRow(""))
+  lines.push(`${CORAL}${BOLD}├${"─".repeat(INNER_WIDTH)}┤${RESET}`)
+  lines.push(makeBoxRow(`  ${DIM}Web: https://modelregistry.tirup.in/?model=${model.id}${RESET}`))
+  lines.push(makeBoxRow(`  ${DIM}API: https://modelregistry.tirup.in/api/v1/models${RESET}`))
+  lines.push(`${CORAL}${BOLD}└${"─".repeat(INNER_WIDTH)}┘${RESET}`)
 
   return new Response(lines.join("\n") + "\n", {
     headers: {
