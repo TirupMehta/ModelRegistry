@@ -269,36 +269,79 @@ export default function Home() {
                   <div
                     onClick={() => setActiveModalModel(model)}
                     className={[
-                      "group block py-3.5 -mx-2.5 sm:-mx-3 px-2.5 sm:px-3 rounded-md cursor-pointer transition-colors duration-150",
+                      "group block py-3 sm:py-3.5 -mx-2 sm:-mx-3 px-2 sm:px-3 rounded-md cursor-pointer transition-colors duration-150",
                       index > 0 ? "border-t border-black/10 dark:border-white/[0.06]" : "",
                       "hover:bg-black/[0.025] dark:hover:bg-white/[0.035]",
                     ].join(" ")}
                   >
-                    <div className="flex items-baseline gap-2.5 sm:gap-5">
+                    {/* Mobile Card Row (< sm) */}
+                    <div className="sm:hidden">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <div className="flex items-baseline gap-2 min-w-0">
+                          <span className="font-mono tabular-nums text-xs text-[#ff5d2e]/80 dark:text-[#ff7347] select-none shrink-0 font-medium">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <span className="font-medium text-sm text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150 truncate">
+                            {model.name}
+                          </span>
+                        </div>
+                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 shrink-0 whitespace-nowrap">
+                          {model.statusBadge}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 text-[11px] font-mono text-black/50 dark:text-zinc-400 mb-1 pl-5">
+                        <span className="uppercase text-black/70 dark:text-zinc-300 font-medium">{model.companyName}</span>
+                        <span>•</span>
+                        <span>{model.contextWindow.replace(" tokens", "")}</span>
+                        <span>•</span>
+                        <span>{model.pricing.input === 0 ? "Open" : `$${model.pricing.input}/M`}</span>
+                      </div>
+
+                      <p className="text-xs font-light text-black/65 dark:text-zinc-300 leading-relaxed line-clamp-2 pl-5">
+                        {model.highlight}
+                      </p>
+
+                      {specializedDrop && activeTab === "flagships" && (
+                        <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-mono text-black/45 dark:text-zinc-400 pl-5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#ff5d2e] shrink-0" />
+                          <span className="truncate">
+                            Checkpoint:{" "}
+                            <span className="text-black/80 dark:text-zinc-200 underline underline-offset-2 font-normal">
+                              {specializedDrop.name}
+                            </span>{" "}
+                            ({specializedDrop.categoryLabel})
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Desktop Ledger Row (sm and up) */}
+                    <div className="hidden sm:flex items-baseline gap-5">
                       {/* Monospace Ledger Index */}
-                      <span className="font-mono tabular-nums text-xs text-[#ff5d2e]/80 dark:text-[#ff7347] select-none w-5 sm:w-6 shrink-0 transition-colors duration-150 group-hover:text-[#ff5d2e] font-medium">
+                      <span className="font-mono tabular-nums text-xs text-[#ff5d2e]/80 dark:text-[#ff7347] select-none w-6 shrink-0 transition-colors duration-150 group-hover:text-[#ff5d2e] font-medium">
                         {String(index + 1).padStart(2, "0")}
                       </span>
 
                       {/* Content Column */}
                       <div className="flex-1 min-w-0">
                         {/* Title / Lab / Domain Header */}
-                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-sm md:text-base leading-snug mb-0.5">
+                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-base leading-snug mb-0.5">
                           <span className="font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {model.name}
                           </span>
                           <span className="text-black/20 dark:text-white/20 select-none font-mono text-xs">/</span>
-                          <span className="text-xs sm:text-[13px] font-mono uppercase text-black/55 dark:text-zinc-400">
+                          <span className="text-[13px] font-mono uppercase text-black/55 dark:text-zinc-400">
                             {model.companyName}
                           </span>
-                          <span className="text-black/20 dark:text-white/20 select-none font-mono text-xs hidden sm:inline">/</span>
-                          <span className="text-xs sm:text-[13px] font-mono text-black/40 dark:text-zinc-500 truncate max-w-xs hidden sm:inline">
+                          <span className="text-black/20 dark:text-white/20 select-none font-mono text-xs">/</span>
+                          <span className="text-[13px] font-mono text-black/40 dark:text-zinc-500 truncate max-w-xs">
                             {model.categoryLabel}
                           </span>
                         </div>
 
                         {/* Highlight Description */}
-                        <p className="text-xs sm:text-sm font-light text-black/65 dark:text-zinc-300 leading-relaxed line-clamp-1 group-hover:text-black/90 dark:group-hover:text-white transition-colors duration-150">
+                        <p className="text-sm font-light text-black/65 dark:text-zinc-300 leading-relaxed line-clamp-1 group-hover:text-black/90 dark:group-hover:text-white transition-colors duration-150">
                           {model.highlight}
                         </p>
 
@@ -318,21 +361,21 @@ export default function Home() {
                       </div>
 
                       {/* Specs Readout */}
-                      <div className="flex items-center gap-2 sm:gap-3 shrink-0 text-right">
+                      <div className="flex items-center gap-3 shrink-0 text-right">
                         <time
                           dateTime={model.releaseDate}
-                          className="font-mono text-xs text-black/45 dark:text-zinc-400 hidden md:inline"
+                          className="font-mono text-xs text-black/45 dark:text-zinc-400"
                         >
                           {model.contextWindow.replace(" tokens", "")}
                         </time>
 
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 transition-colors duration-150 group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] max-w-[95px] sm:max-w-none truncate block">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 transition-colors duration-150 group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347]">
                           {model.statusBadge}
                         </span>
 
                         <ArrowUpRight
                           size={12}
-                          className="opacity-25 group-hover:opacity-100 transition-all duration-150 text-black dark:text-white hidden sm:block group-hover:text-[#ff5d2e] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                          className="opacity-25 group-hover:opacity-100 transition-colors duration-150 text-black dark:text-white group-hover:text-[#ff5d2e]"
                         />
                       </div>
                     </div>

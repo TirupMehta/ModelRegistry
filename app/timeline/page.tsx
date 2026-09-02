@@ -92,8 +92,8 @@ export default function TimelinePage() {
                           {model.highlight}
                         </p>
 
-                        <div className="flex items-center justify-between text-xs pt-2 border-t border-black/5 dark:border-white/[0.06] font-mono">
-                          <div className="flex gap-2">
+                        <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-3 text-xs pt-2 border-t border-black/5 dark:border-white/[0.06] font-mono">
+                          <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-[11px] text-black/45 dark:text-zinc-400">
                               {model.contextWindow}
                             </span>
@@ -102,8 +102,8 @@ export default function TimelinePage() {
                             </span>
                           </div>
 
-                          <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-zinc-400 group-hover:text-[#ff5d2e] transition-colors">
-                            INSPECT SPEC <ArrowUpRight size={10} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                          <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-zinc-400 group-hover:text-[#ff5d2e] transition-colors shrink-0">
+                            INSPECT SPEC <ArrowUpRight size={10} className="opacity-60" />
                           </span>
                         </div>
                       </div>

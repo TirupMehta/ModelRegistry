@@ -80,7 +80,8 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         <div className="flex items-center justify-between gap-2 border-b border-black/10 dark:border-white/[0.08] pb-3 mb-4 sm:mb-5">
           <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] font-mono text-[#ff5d2e] min-w-0">
             <Terminal size={13} className="shrink-0" />
-            <span className="uppercase tracking-widest font-medium truncate max-w-[130px] sm:max-w-none">SPEC // {model.id}</span>
+            <span className="uppercase tracking-widest font-medium sm:hidden">SPEC SHEET</span>
+            <span className="uppercase tracking-widest font-medium hidden sm:inline">SPEC DATASHEET // {model.id}</span>
           </div>
 
           <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
@@ -128,8 +129,8 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         </div>
 
         {/* Model Title & SOTA Badge */}
-        <div className="flex flex-wrap items-center gap-3 mb-3">
-          <h2 id="modal-title" className="text-2xl sm:text-3xl font-light tracking-tight text-black dark:text-white">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
+          <h2 id="modal-title" className="text-xl sm:text-2xl md:text-3xl font-light tracking-tight text-black dark:text-white">
             {model.name}
           </h2>
           <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-[#ff5d2e]/40 text-[#ff5d2e] bg-[#ff5d2e]/5 font-medium tracking-wider">
@@ -138,38 +139,38 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         </div>
 
         {/* Description Highlight */}
-        <p className="text-sm font-light text-black/75 dark:text-zinc-300 leading-relaxed mb-6">
+        <p className="text-xs sm:text-sm font-light text-black/75 dark:text-zinc-300 leading-relaxed mb-5 sm:mb-6">
           {model.highlight}
         </p>
 
         {/* Key Hardware Specs Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-6 text-xs font-mono">
-          <div className="p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
-            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px]">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 mb-5 sm:mb-6 text-xs font-mono">
+          <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
+            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[10px] sm:text-[11px]">
               <Layers size={13} />
               <span>CONTEXT WINDOW</span>
             </div>
-            <p className="text-sm font-medium text-black dark:text-white">
+            <p className="text-xs sm:text-sm font-medium text-black dark:text-white leading-tight">
               {model.contextWindow}
             </p>
           </div>
 
-          <div className="p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
-            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px]">
+          <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
+            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[10px] sm:text-[11px]">
               <Cpu size={13} />
               <span>ARCHITECTURE</span>
             </div>
-            <p className="text-sm font-medium text-black dark:text-white truncate">
+            <p className="text-xs sm:text-sm font-medium text-black dark:text-white leading-tight break-words">
               {model.parameters}
             </p>
           </div>
 
-          <div className="p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] col-span-2 sm:col-span-1 hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
-            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px]">
+          <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] col-span-2 sm:col-span-1 hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
+            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[10px] sm:text-[11px]">
               <DollarSign size={13} />
               <span>PRICING / 1M</span>
             </div>
-            <p className="text-sm font-medium text-black dark:text-white">
+            <p className="text-xs sm:text-sm font-medium text-black dark:text-white leading-tight">
               {model.openWeights ? (
                 <span className="text-[#00e599]">Open Weights (Free)</span>
               ) : (
@@ -254,7 +255,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               className="group inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded-md bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white transition-colors duration-150 cursor-pointer"
             >
               <span>LAB ANNOUNCEMENT</span>
-              <ExternalLink size={12} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ExternalLink size={12} className="opacity-60" />
             </a>
           )}
           {model.links.playground && (
@@ -265,7 +266,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               className="group inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
             >
               <span>OPEN PLAYGROUND</span>
-              <ExternalLink size={12} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ExternalLink size={12} className="opacity-60" />
             </a>
           )}
           {model.links.weights && (
@@ -276,7 +277,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               className="group inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
             >
               <span>HUGGING FACE WEIGHTS</span>
-              <ExternalLink size={12} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ExternalLink size={12} className="opacity-60" />
             </a>
           )}
 

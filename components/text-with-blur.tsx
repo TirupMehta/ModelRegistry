@@ -6,13 +6,6 @@ interface TextWithBlurProps {
   delay?: number
 }
 
-export default function TextWithBlur({ children, className = "", delay = 0 }: TextWithBlurProps) {
-  return (
-    <div
-      className={`relative reveal-in ${className}`}
-      style={{ "--reveal-delay": `${delay}ms` } as CSSProperties}
-    >
-      {children}
-    </div>
-  )
+export default function TextWithBlur({ children, className = "" }: TextWithBlurProps) {
+  return <div className={className}>{children}</div>
 }

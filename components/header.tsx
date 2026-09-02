@@ -113,14 +113,14 @@ export default function Header() {
   return (
     <>
       {/* ── Top Telemetry Readout Bar ────────────────────────────────────── */}
-      <div className="reveal-in w-full bg-black/[0.02] dark:bg-[#0a0c0f] border-b border-black/5 dark:border-white/[0.06] py-2 text-[11px] font-mono text-black/60 dark:text-zinc-400">
+      <div className="w-full bg-black/[0.02] dark:bg-[#0a0c0f] border-b border-black/5 dark:border-white/[0.06] py-2 text-[11px] font-mono text-black/60 dark:text-zinc-400">
         <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
             <span className="inline-flex items-center gap-1.5 sm:gap-2 font-medium text-[#ff5d2e] tracking-wider uppercase text-[10px] sm:text-[11px]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#00e599] shadow-[0_0_6px_#00e599] shrink-0" />
               SYS://REGISTRY
             </span>
-            <span className="text-black/20 dark:text-white/20 select-none">|</span>
+            <span className="text-black/20 dark:text-white/20 select-none hidden sm:inline">|</span>
             <span className="truncate hidden sm:inline text-black/50 dark:text-zinc-400">
               FRONTIER FOUNDATION MODELS &amp; CHECKPOINTS
             </span>
@@ -184,7 +184,7 @@ export default function Header() {
                 />
                 <span className="hidden sm:inline">+ CONTRIBUTE</span>
                 <span className="sm:hidden">+ ADD</span>
-                <ArrowUpRight size={10} className="opacity-40 group-hover:opacity-100 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight size={10} className="opacity-40 group-hover:opacity-100" />
               </a>
 
               <AnimatedThemeToggler

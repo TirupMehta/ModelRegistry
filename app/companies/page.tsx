@@ -73,7 +73,7 @@ export default function CompaniesPage() {
                     >
                       <Globe size={12} />
                       <span>{new URL(company.website).hostname}</span>
-                      <ArrowUpRight size={11} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      <ArrowUpRight size={11} className="opacity-60" />
                     </a>
                   </div>
 

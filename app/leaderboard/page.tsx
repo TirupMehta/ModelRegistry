@@ -136,7 +136,7 @@ export default function LeaderboardPage() {
                           <span className="text-[10px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e]">
                             {model.pricing.input === 0 ? "Free" : `$${model.pricing.input}/M`}
                           </span>
-                          <ArrowUpRight size={12} className="opacity-30 group-hover:opacity-100 text-black dark:text-white group-hover:text-[#ff5d2e] transition-all duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                          <ArrowUpRight size={12} className="opacity-30 group-hover:opacity-100 text-black dark:text-white group-hover:text-[#ff5d2e] transition-colors duration-150" />
                         </div>
                       </div>
                     ))}
