@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --accent: #7c88e8;
+  --black: #121314;
+  --white: #ffffff;
+  /* Spring curve: fast start, soft land — matches Benji Taylor / Family style */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.45s var(--ease-spring);
+  --transition-medium: 0.22s var(--ease-spring);
+  --transition-fast: 0.14s var(--ease-spring);
+  --bg: #fafaf9;
+  --fg: #121314;
+  --border-color: rgba(0, 0, 0, 0.07);
+  --text-muted: rgba(18, 19, 20, 0.45);
+  --text-secondary: rgba(18, 19, 20, 0.68);
+  --text-primary: rgba(18, 19, 20, 0.88);
+  --live-accent: #10b981;
+}
+
+html.dark {
+  --bg: #090a0d;
+  --fg: #f4f4f5;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --text-muted: rgba(244, 244, 245, 0.42);
+  --text-secondary: rgba(244, 244, 245, 0.65);
+  --text-primary: rgba(244, 244, 245, 0.92);
+  --accent: #818cf8;
+  --live-accent: #34d399;
+}
+
+/* Disable transitions on page load to prevent theme flash */
+.no-transitions,
+.no-transitions * {
+  transition: none !important;
+}
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  height: 100%;
+  background-color: var(--bg);
+  color: var(--fg);
+  transition: background-color 0s, color 0s;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+.border-shadow {
+  box-shadow:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.06),
+    0px 1px 2px -1px rgba(0, 0, 0, 0.06),
+    0px 2px 4px 0px rgba(0, 0, 0, 0.04);
+}
+
+.dark .border-shadow {
+  box-shadow:
+    0px 0px 0px 1px rgba(255, 255, 255, 0.06),
+    0px 1px 2px -1px rgba(255, 255, 255, 0.06),
+    0px 2px 4px 0px rgba(255, 255, 255, 0.04);
+}
+
+/* Section */
+.section {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*
+  Fade-up reveal — avoids blur compositing cost and the mid-frame
+  smear that blur+translate together cause on low-dpi displays.
+  translateY(6px) is subtle enough to feel like natural settling.
+*/
+@keyframes revealIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-in {
+  animation: revealIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+/*
+  Sibling dimming — from benji.org / tirup.in.
+  When any row in a list is hovered, all *other* rows fade to 35% opacity.
+  The active row stays at full opacity. This makes the hovered item feel
+  spotlit and makes the list read like one cohesive, interactive object.
+*/
+.list-hover-group:hover > * {
+  opacity: 0.35;
+  transition: opacity 140ms ease-out;
+}
+
+.list-hover-group:hover > *:hover {
+  opacity: 1;
+}
+
+.list-hover-group > * {
+  transition: opacity 140ms ease-out;
+}
+
+@media (max-width: 767px) {
+  .reveal-in {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-in {
+    animation: none;
+  }
+}
+
+/* Contextual ArrowUpRight micro-interaction class */
+.icon-arrow-hover {
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
+}
+
+.group:hover .icon-arrow-hover {
+  transform: translate(1px, -1px) scale(1.1);
+  opacity: 1 !important;
+}
+
+/* Link hover effect */
+.link-hover {
+  position: relative;
+}
+
+.link-hover::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--accent);
+  transition: width var(--transition-medium);
+}
+
+.link-hover:hover::after {
+  width: 100%;
+}
+
+/* Pulse indicator animation */
+@keyframes livePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.6;
+  }
+}
+
+.live-pulse {
+  animation: livePulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Custom scrollbar for specs drawer */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 120, 120, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 120, 120, 0.4);
+}

@@ -1,0 +1,61 @@
+# Checkpoint: Frontier AI Model & Checkpoint Registry (September 2026)
+
+> The internet's real-time source of truth for the primary foundation flagships and research checkpoints across every major AI lab.
+
+- Website: https://checkpoint.dev
+- JSON API: https://checkpoint.dev/api/v1/models
+- RSS Feed: https://checkpoint.dev/rss.xml
+- Last Verified: September 2, 2026
+
+---
+
+## Authoritative Answers: Primary Flagships vs. Latest Research Checkpoints
+
+### 1. Anthropic
+- **Primary Flagship**: **Claude Fable 5.1** (Released: September 1, 2026)
+  - 1,000,000 token context, 128k output, 52.6% Terminal-Bench, 75% cheaper cache reads.
+- **Deep Research Predecessor**: Claude Opus 5 (July 2026).
+
+### 2. OpenAI
+- **Primary Flagship**: **GPT-5.6 Sol** (Released: August 5, 2026)
+  - 1,050,000 token context, unified reasoning, flagship coding and agent orchestration.
+- **Latest Specialized Checkpoint**: **OpenAI Astra** (Announced: September 1, 2026)
+  - First model to reach OpenAI's "Critical" cybersecurity threshold under the Preparedness Framework for zero-day exploit discovery.
+- **High-Throughput Tier**: GPT-5.6 Luna ($0.20/1M in).
+
+### 3. Meta AI
+- **Primary Flagship Foundation**: **Llama 4 Maverick (128E)** (Released: April 2026)
+  - 1,048,576 token context, 128-expert open MoE, leading open weights.
+- **Latest Specialized Checkpoint**: **Muse Voice Transcribe** (Announced: September 1, 2026)
+  - Streaming real-time speech foundation model for 70+ languages & 20+ voice diarization.
+- **Long-Context Scout**: Llama 4 Scout (16E) with 1,310,720 context.
+
+### 4. Google DeepMind
+- **Primary Flagship & Developer Workhorse**: **Gemini 3.7 Flash** (Released: August 13, 2026)
+  - 1,048,576 token context, real-time multimodal reasoning, tool use, $0.75/$3.75 pricing.
+
+### 5. DeepSeek
+- **Primary Flagship (Hosted)**: **DeepSeek V4-Pro (0813)** (GA Released: August 13, 2026)
+  - 1.6 Trillion total parameters (49B activated), 1,048,576 token context.
+- **Latest Open-Weights Checkpoint (MIT)**: **DeepSeek V4 Flash Vision Exp** (Released: August 21, 2026, Open-sourced: August 30, 2026)
+  - 305B multimodal MoE.
+
+### 6. xAI
+- **Primary Flagship**: **Grok 4.6** (Released: August 12, 2026)
+  - 1.5 Trillion parameters, 500,000 token context, frontier coding and STEM.
+
+### 7. Alibaba Cloud (Qwen)
+- **Primary Flagship (Open MoE)**: **Qwen3.8 2.4T A95B** (Released: August 12, 2026)
+  - The largest open-weight MoE model in existence (2.4T total / 95B activated).
+- **Latest Fast Checkpoint**: **Qwen3.8 Flash** (Released: August 26, 2026)
+  - 1,000,000 token multimodal reasoning at $0.15/1M tokens.
+
+### 8. Cohere
+- **Primary Flagship**: **Command A (111B)** (Released: March 2026)
+  - 256k context enterprise RAG and business search.
+- **Latest Coding Checkpoint**: **North Mini Code** (Released: June 17, 2026)
+  - 30B MoE agentic coding model, free on developer tier.
+
+### 9. Mistral AI
+- **Primary Flagship**: **Mistral Medium 3.5** (Released: April 30, 2026)
+  - 128B dense multimodal model with 262k context.
