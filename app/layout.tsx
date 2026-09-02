@@ -4,6 +4,7 @@ import "./globals.css"
 import AmbientShader from "@/components/ambient-shader"
 import { modelsData } from "@/data/models"
 import { companies, type Company } from "@/data/companies"
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -190,6 +191,7 @@ export default function RootLayout({
         />
 
         {children}
+        <Analytics />
       </body>
     </html>
   )
