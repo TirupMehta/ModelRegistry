@@ -13,7 +13,9 @@ import {
   Check,
   Link2,
   Terminal,
+  Share2,
 } from "lucide-react"
+import { ShareCardModal } from "./share-card-modal"
 
 interface ModelDetailsModalProps {
   model: ModelItem | null
@@ -22,6 +24,7 @@ interface ModelDetailsModalProps {
 
 export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalProps) {
   const [copied, setCopied] = useState(false)
+  const [isShareStudioOpen, setIsShareStudioOpen] = useState(false)
 
   // Prevent background scroll and support ESC key
   useEffect(() => {
@@ -81,6 +84,15 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           </div>
 
           <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setIsShareStudioOpen(true)}
+              title="Export Instagram Story / Social Card"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
+            >
+              <Share2 size={12} />
+              <span>EXPORT CARD</span>
+            </button>
+
             <button
               onClick={handleCopyLink}
               title="Copy shareable link"
@@ -266,8 +278,24 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               <ExternalLink size={12} className="transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           )}
+
+          <button
+            onClick={() => setIsShareStudioOpen(true)}
+            className="group inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded-md border border-[#ff5d2e]/40 bg-[#ff5d2e]/10 text-[#ff5d2e] hover:bg-[#ff5d2e] hover:text-white dark:hover:text-black transition-colors duration-150 cursor-pointer"
+          >
+            <Share2 size={12} />
+            <span>SHARE STORY / CARD</span>
+          </button>
         </div>
       </div>
+
+      {isShareStudioOpen && (
+        <ShareCardModal
+          model={model}
+          isOpen={isShareStudioOpen}
+          onClose={() => setIsShareStudioOpen(false)}
+        />
+      )}
     </div>
   )
 }

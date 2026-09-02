@@ -5,7 +5,7 @@ import Header from "@/components/header"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, type ModelItem } from "@/data/models"
-import { Search, ArrowUpRight, Terminal, Sparkles, Layers } from "lucide-react"
+import { Search, ArrowUpRight, Terminal, Sparkles, Layers, Copy, Check } from "lucide-react"
 
 type ViewTab = "flagships" | "latest-drops" | "open-weights" | "all"
 
@@ -13,6 +13,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<ViewTab>("flagships")
   const [searchQuery, setSearchQuery] = useState("")
   const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
+  const [curlCopied, setCurlCopied] = useState(false)
 
   const currentYear = new Date().getFullYear()
 
@@ -134,6 +135,53 @@ export default function Home() {
               ModelRegistry is an open technical ledger indexing primary foundation model architectures alongside specialized research checkpoints across leading AI laboratories.
             </p>
           </TextWithBlur>
+
+          {/* Quick Terminal & Developer Strip */}
+          <div className="flex flex-wrap items-center gap-3 pt-1 text-xs font-mono text-black/60 dark:text-zinc-400">
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText("curl -s https://modelregistry.tirup.in/latest")
+                setCurlCopied(true)
+                setTimeout(() => setCurlCopied(false), 2000)
+              }}
+              className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-pointer select-none"
+              title="Copy terminal CLI query"
+            >
+              <Terminal size={12} className="text-[#ff5d2e]" />
+              <span className="text-black/80 dark:text-zinc-200">curl -s modelregistry.tirup.in/latest</span>
+              {curlCopied ? (
+                <Check size={12} className="text-[#00e599]" />
+              ) : (
+                <Copy size={11} className="opacity-40 group-hover:opacity-100 transition-opacity" />
+              )}
+            </button>
+
+            <div className="flex items-center gap-3 text-[11px] text-black/45 dark:text-zinc-500">
+              <a
+                href="/api/v1/models"
+                target="_blank"
+                className="hover:text-black dark:hover:text-white transition-colors"
+              >
+                REST API
+              </a>
+              <span>•</span>
+              <a
+                href="/api/badge?model=latest"
+                target="_blank"
+                className="hover:text-black dark:hover:text-white transition-colors"
+              >
+                SVG Badges
+              </a>
+              <span>•</span>
+              <a
+                href="/llms.txt"
+                target="_blank"
+                className="hover:text-black dark:hover:text-white transition-colors"
+              >
+                llms.txt
+              </a>
+            </div>
+          </div>
         </div>
 
         {/* View Switcher & Search */}
