@@ -3,35 +3,36 @@
 @tailwind utilities;
 
 :root {
-  --accent: #7c88e8;
-  --black: #121314;
+  --accent: #ff4400;
+  --accent-hover: #ff5511;
+  --accent-glow: rgba(255, 68, 0, 0.15);
+  --live-signal: #00d68f;
+  --black: #111215;
   --white: #ffffff;
-  /* Spring curve: fast start, soft land — matches Benji Taylor / Family style */
-  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-slow: 0.45s var(--ease-spring);
-  --transition-medium: 0.22s var(--ease-spring);
-  --transition-fast: 0.14s var(--ease-spring);
-  --bg: #fafaf9;
-  --fg: #121314;
-  --border-color: rgba(0, 0, 0, 0.07);
-  --text-muted: rgba(18, 19, 20, 0.45);
-  --text-secondary: rgba(18, 19, 20, 0.68);
-  --text-primary: rgba(18, 19, 20, 0.88);
-  --live-accent: #10b981;
+  --bg: #f6f6f3;
+  --card-bg: #ffffff;
+  --fg: #111215;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --text-muted: rgba(17, 18, 21, 0.45);
+  --text-secondary: rgba(17, 18, 21, 0.70);
+  --text-primary: rgba(17, 18, 21, 0.92);
 }
 
 html.dark {
-  --bg: #090a0d;
-  --fg: #f4f4f5;
+  --bg: #0b0c0e;
+  --card-bg: #111317;
+  --fg: #ededed;
   --border-color: rgba(255, 255, 255, 0.08);
-  --text-muted: rgba(244, 244, 245, 0.42);
-  --text-secondary: rgba(244, 244, 245, 0.65);
-  --text-primary: rgba(244, 244, 245, 0.92);
-  --accent: #818cf8;
-  --live-accent: #34d399;
+  --text-muted: rgba(237, 237, 237, 0.42);
+  --text-secondary: rgba(237, 237, 237, 0.68);
+  --text-primary: rgba(237, 237, 237, 0.94);
+  --accent: #ff4400;
+  --accent-hover: #ff5511;
+  --accent-glow: rgba(255, 68, 0, 0.20);
+  --live-signal: #00e599;
 }
 
-/* Disable transitions on page load to prevent theme flash */
+/* Disable transitions on initial render */
 .no-transitions,
 .no-transitions * {
   transition: none !important;
@@ -47,66 +48,70 @@ body {
   height: 100%;
   background-color: var(--bg);
   color: var(--fg);
-  transition: background-color 0s, color 0s;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
+  letter-spacing: -0.025em;
 }
 
 p {
   text-wrap: pretty;
 }
 
-.border-shadow {
-  box-shadow:
-    0px 0px 0px 1px rgba(0, 0, 0, 0.06),
-    0px 1px 2px -1px rgba(0, 0, 0, 0.06),
-    0px 2px 4px 0px rgba(0, 0, 0, 0.04);
+/* Technical registration corner crosshair badge */
+.tech-container {
+  position: relative;
 }
 
-.dark .border-shadow {
-  box-shadow:
-    0px 0px 0px 1px rgba(255, 255, 255, 0.06),
-    0px 1px 2px -1px rgba(255, 255, 255, 0.06),
-    0px 2px 4px 0px rgba(255, 255, 255, 0.04);
+.tech-container::before {
+  content: "+";
+  position: absolute;
+  top: -8px;
+  left: -4px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
 }
 
-/* Dark mode overrides (matches tirup.in) */
+.tech-container::after {
+  content: "+";
+  position: absolute;
+  top: -8px;
+  right: -4px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+}
+
+/* Dark mode overrides */
 .dark body {
   background-color: var(--bg);
   color: var(--fg);
 }
 
-.dark .bg-white { background-color: var(--bg) !important; }
+.dark .bg-white { background-color: var(--card-bg) !important; }
 .dark .text-black { color: var(--fg) !important; }
-.dark .text-black\/40 { color: rgba(244, 244, 245, 0.40) !important; }
-.dark .text-black\/45 { color: rgba(244, 244, 245, 0.45) !important; }
+.dark .text-black\/40 { color: rgba(237, 237, 237, 0.40) !important; }
+.dark .text-black\/45 { color: rgba(237, 237, 237, 0.45) !important; }
 .dark .text-black\/50 { color: var(--text-muted) !important; }
-.dark .text-black\/60 { color: rgba(244, 244, 245, 0.60) !important; }
+.dark .text-black\/60 { color: rgba(237, 237, 237, 0.60) !important; }
 .dark .text-black\/70 { color: var(--text-secondary) !important; }
 .dark .text-black\/80 { color: var(--text-primary) !important; }
-.dark .border-black\/5 { border-color: var(--border-color) !important; }
+.dark .border-black\/5 { border-color: rgba(255, 255, 255, 0.05) !important; }
 .dark .border-black\/10 { border-color: var(--border-color) !important; }
-.dark .bg-accent\/10 { background-color: rgba(165, 180, 252, 0.1) !important; }
 
-/* Section */
-.section {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/*
-  Fade-up reveal — avoids blur compositing cost and the mid-frame
-  smear that blur+translate together cause on low-dpi displays.
-  translateY(6px) is subtle enough to feel like natural settling.
-*/
-@keyframes revealIn {
+/* Subtle reveal */
+@keyframes techReveal {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
@@ -115,14 +120,10 @@ p {
 }
 
 .reveal-in {
-  animation: revealIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: techReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/*
-  Hover Sibling Dimming:
-  When hovering over a list container (.list-hover-group), dim all children,
-  but keep the directly hovered child at full opacity.
-*/
+/* Sibling dimming for list rows */
 .list-hover-group:hover > * {
   opacity: 0.45;
   transition: opacity 120ms ease-out;
@@ -137,10 +138,10 @@ p {
   transition: opacity 80ms ease-out;
 }
 
-/* Custom subtle scrollbar */
+/* Custom technical hairline scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -148,18 +149,18 @@ p {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.12);
-  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 0px;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.22);
+  background: var(--accent);
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.22);
+  background: var(--accent);
 }

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import TextWithBlur from "@/components/text-with-blur"
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
-import { Database, Rss, Code2, GitPullRequest, ArrowUpRight } from "lucide-react"
+import { Rss, Code2, GitPullRequest, ArrowUpRight } from "lucide-react"
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/" },
@@ -41,7 +41,7 @@ function NavLinks({ pathname }: { pathname: string }) {
 
     if (animate) {
       pill.style.transition =
-        "transform 160ms cubic-bezier(0.16,1,0.3,1), width 160ms cubic-bezier(0.16,1,0.3,1)"
+        "transform 140ms cubic-bezier(0.16,1,0.3,1), width 140ms cubic-bezier(0.16,1,0.3,1)"
     } else {
       pill.style.transition = "none"
     }
@@ -74,11 +74,12 @@ function NavLinks({ pathname }: { pathname: string }) {
   }, [targetHref, activeHref])
 
   return (
-    <nav ref={navRef} className="relative flex items-center gap-2 sm:gap-4">
+    <nav ref={navRef} className="relative flex items-center gap-1 sm:gap-2">
+      {/* Segmented active pill with tactile technical outline */}
       <div
         ref={pillRef}
         aria-hidden="true"
-        className="absolute inset-y-0 rounded-md bg-black/[0.045] dark:bg-white/[0.055] pointer-events-none will-change-transform"
+        className="absolute inset-y-0 rounded bg-black/[0.05] dark:bg-white/[0.06] border border-black/5 dark:border-white/[0.08] pointer-events-none will-change-transform"
       />
 
       {NAV_ITEMS.map(({ label, href }) => (
@@ -88,15 +89,11 @@ function NavLinks({ pathname }: { pathname: string }) {
           data-navhref={href}
           onMouseEnter={() => setHoverHref(href)}
           onMouseLeave={() => setHoverHref(null)}
-          style={{ transition: "color 80ms ease-out" }}
           className={[
-            "relative z-10 py-1 px-2 rounded-md",
-            "text-sm md:text-base font-light select-none cursor-pointer",
-            "[transition:color_80ms_ease-out,transform_100ms_cubic-bezier(0.16,1,0.3,1)]",
-            "active:scale-[0.97]",
+            "relative z-10 py-1.5 px-3 rounded text-xs sm:text-[13px] font-mono tracking-tight select-none cursor-pointer transition-colors duration-100",
             isLinkActive(href)
-              ? "text-black dark:text-white"
-              : "text-zinc-400 dark:text-zinc-500 hover:text-black dark:hover:text-white",
+              ? "text-black dark:text-white font-medium"
+              : "text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white",
           ].join(" ")}
         >
           {label}
@@ -112,98 +109,96 @@ export default function Header() {
 
   return (
     <>
-      {/* ── Top notice banner ────────────────────────────────────────────── */}
-      <div className="reveal-in w-full bg-black/[0.015] dark:bg-white/[0.01] border-b border-black/5 dark:border-white/5 py-2 text-xs font-light text-black/50 dark:text-white/50">
+      {/* ── Top Telemetry Readout Bar ────────────────────────────────────── */}
+      <div className="reveal-in w-full bg-black/[0.02] dark:bg-[#0e1013] border-b border-black/5 dark:border-white/[0.07] py-2 text-[11px] font-mono text-black/60 dark:text-zinc-400">
         <div className="max-w-4xl mx-auto w-full px-6 md:px-20 flex items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 min-w-0">
-            <span className="text-accent font-medium uppercase tracking-[0.15em] text-[10.5px]">
-              MODELREGISTRY
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="inline-flex items-center gap-1.5 font-medium text-[#ff4400] tracking-wider uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00e599] animate-pulse shrink-0" />
+              SYS://REGISTRY
             </span>
-            <span className="text-black/20 dark:text-white/20 select-none">/</span>
-            <span className="truncate">
-              The open public registry for frontier AI models across premier research labs.
+            <span className="text-black/20 dark:text-white/20 select-none">|</span>
+            <span className="truncate hidden sm:inline text-black/50 dark:text-zinc-400">
+              FRONTIER FOUNDATION MODELS &amp; CHECKPOINTS
             </span>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0 text-xs">
+          <div className="flex items-center gap-3 shrink-0 text-[11px] font-mono">
             <Link
               href="/rss.xml"
-              className="group inline-flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors"
+              className="inline-flex items-center gap-1 hover:text-[#ff4400] dark:hover:text-[#ff5511] transition-colors"
             >
-              <Rss size={11} className="opacity-50 group-hover:opacity-100" />
-              <span className="hidden sm:inline">RSS</span>
+              <Rss size={11} className="text-[#ff4400]" />
+              <span>RSS</span>
             </Link>
-            <span className="opacity-20 select-none">|</span>
+            <span className="opacity-20 select-none">/</span>
             <Link
               href="/api/v1/models"
-              className="group inline-flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors"
+              className="inline-flex items-center gap-1 hover:text-[#ff4400] dark:hover:text-[#ff5511] transition-colors"
             >
-              <Code2 size={11} className="opacity-50 group-hover:opacity-100" />
-              <span className="hidden sm:inline">API</span>
+              <Code2 size={11} className="text-[#ff4400]" />
+              <span>API</span>
             </Link>
           </div>
         </div>
       </div>
 
-      {/* ── Brand Header (matches tirup.in structure) ────────────────────── */}
-      <header className="max-w-4xl mx-auto w-full px-6 md:px-20 pt-6 md:pt-20 pb-0">
+      {/* ── Industrial Header Unit ────────────────────────────────────────── */}
+      <header className="max-w-4xl mx-auto w-full px-6 md:px-20 pt-6 md:pt-16 pb-0">
         <TextWithBlur>
           <div className="flex items-center justify-between gap-4 mb-4 md:mb-6">
             <div className="flex items-center gap-3.5">
-              <Link href="/" className="group flex items-center gap-3.5 select-none">
-                <div className="w-11 h-11 rounded-full flex items-center justify-center border border-black/10 dark:border-white/10 bg-black/[0.025] dark:bg-white/[0.035] text-accent transition-transform duration-200 group-hover:scale-105 shadow-sm">
-                  <Database size={18} className="text-accent" />
-                </div>
+              <Link href="/" className="group flex items-center gap-2.5 select-none">
                 <div className="flex items-center gap-2.5">
                   {isHome ? (
-                    <h1 className="text-3xl md:text-4xl font-light tracking-tight text-black dark:text-white leading-none">
-                      ModelRegistry
+                    <h1 className="text-2xl sm:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
+                      Model<span className="font-semibold text-[#ff4400]">Registry</span>
                     </h1>
                   ) : (
-                    <p className="text-3xl md:text-4xl font-light tracking-tight text-black dark:text-white leading-none">
-                      ModelRegistry
+                    <p className="text-2xl sm:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
+                      Model<span className="font-semibold text-[#ff4400]">Registry</span>
                     </p>
                   )}
-                  <span className="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded-full border border-black/10 dark:border-white/10 text-black/45 dark:text-white/45 bg-black/[0.02] dark:bg-white/[0.02]">
-                    OPEN
+                  <span className="text-[10px] uppercase font-mono tracking-widest px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.1] text-black/50 dark:text-zinc-400 bg-black/[0.02] dark:bg-white/[0.02]">
+                    v2026.9
                   </span>
                 </div>
               </Link>
             </div>
 
-            {/* Contribute Pill & Theme Toggler (tirup.in style) */}
+            {/* Contribute Action & Theme Toggle */}
             <div className="flex items-center gap-2">
               <a
                 href="https://github.com/TirupMehta/ModelRegistry"
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Contribute a newly released model on GitHub"
-                className="group inline-flex items-center justify-center gap-1.5 h-[28px] px-3 text-[11px] font-medium tracking-wide bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/5 dark:border-white/5 hover:border-black/10 dark:hover:border-white/10 rounded-full text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-all duration-150 select-none cursor-pointer active:scale-[0.97]"
+                className="group inline-flex items-center justify-center gap-1.5 h-[28px] px-3 text-[11px] font-mono tracking-wide bg-black/[0.04] dark:bg-white/[0.05] hover:bg-[#ff4400] dark:hover:bg-[#ff4400] border border-black/10 dark:border-white/[0.08] hover:border-[#ff4400] rounded text-black/70 dark:text-zinc-300 hover:text-white dark:hover:text-white transition-all duration-150 select-none cursor-pointer active:scale-[0.97]"
               >
                 <GitPullRequest
                   size={12}
-                  className="text-black/50 dark:text-white/50 group-hover:text-black dark:group-hover:text-white transition-colors duration-150"
+                  className="text-black/50 dark:text-zinc-400 group-hover:text-white transition-colors"
                 />
-                <span className="leading-none select-none">Contribute</span>
-                <ArrowUpRight size={10} className="opacity-40 group-hover:opacity-100 transition-opacity" />
+                <span>+ CONTRIBUTE</span>
+                <ArrowUpRight size={10} className="opacity-40 group-hover:opacity-100" />
               </a>
 
               <AnimatedThemeToggler
                 variant="circle"
-                className="flex items-center justify-center w-8 h-8 rounded-full text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-150 cursor-pointer shrink-0 active:scale-[0.97]"
+                className="flex items-center justify-center w-7 h-7 rounded border border-black/5 dark:border-white/[0.08] text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] transition-all cursor-pointer shrink-0"
               />
             </div>
           </div>
         </TextWithBlur>
 
-        {/* ── Navigation tabs ─────────────────────────────────────────────── */}
-        <div className="flex justify-between items-center gap-4 mb-6 md:mb-10 border-b border-black/5 dark:border-white/5 pb-3 md:pb-4 flex-nowrap">
+        {/* ── Segmented Navigation Line ──────────────────────────────────── */}
+        <div className="flex justify-between items-center gap-4 mb-6 md:mb-8 border-b border-black/5 dark:border-white/[0.07] pb-3 flex-nowrap">
           <TextWithBlur delay={100} className="min-w-0">
             <NavLinks pathname={pathname} />
           </TextWithBlur>
 
-          <div className="text-xs font-mono text-black/35 dark:text-white/35 select-none hidden sm:block">
-            September 2026
+          <div className="text-[11px] font-mono text-black/40 dark:text-zinc-400 select-none hidden sm:block tracking-wider">
+            [ EPOCH: SEPT 2026 ]
           </div>
         </div>
       </header>

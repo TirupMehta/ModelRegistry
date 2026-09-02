@@ -3,10 +3,10 @@
 import { useEffect, useRef } from "react"
 
 /**
- * AmbientShader Component
+ * AmbientShader Component — "Kinetic Telemetry Grid"
  * 
- * An ultra-subtle, architectural ambient background light field with organic dither.
- * Exact 1:1 implementation from tirup.in.
+ * An architectural precision grid with registration crosshairs and subtle optical falloff.
+ * Replaces generic AI blob gradients with a bespoke laboratory apparatus aesthetic.
  */
 export default function AmbientShader() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -29,7 +29,7 @@ export default function AmbientShader() {
 
     const resize = () => {
       if (!canvas) return
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
       width = window.innerWidth
       height = window.innerHeight
       canvas.width = width * dpr
@@ -68,84 +68,82 @@ export default function AmbientShader() {
 
       const dt = Math.min((time - lastTime) / 1000, 0.1)
       lastTime = time
-      t += dt * 0.12
+      t += dt * 0.15
 
       ctx.clearRect(0, 0, width, height)
 
+      const gridSize = 48
+      const crossSize = 3
+
       if (isDark) {
-        // --- Professional Dark Mode: Architectural Studio Illumination ---
-        
-        // 1. Top primary studio spotlight (breathing apex glow)
-        const topX = width * 0.5 + width * 0.08 * Math.sin(t * 0.4)
-        const topY = -height * 0.1 + height * 0.05 * Math.cos(t * 0.5)
-        const topRadius = Math.max(width, height) * 0.75
+        // --- Dark Apparatus Canvas (#0b0c0e base) ---
+        // 1. Subtle top-center optical lens flare with warm amber/orange falloff
+        const lensX = width * 0.5 + Math.sin(t * 0.5) * 40
+        const lensY = -80
+        const lensR = Math.max(width, height) * 0.85
 
-        const gTop = ctx.createRadialGradient(topX, topY, 0, topX, topY, topRadius)
-        gTop.addColorStop(0, "rgba(58, 72, 115, 0.16)")
-        gTop.addColorStop(0.35, "rgba(35, 45, 75, 0.09)")
-        gTop.addColorStop(0.7, "rgba(18, 22, 38, 0.04)")
-        gTop.addColorStop(1, "rgba(9, 10, 13, 0)")
-        ctx.fillStyle = gTop
+        const gLens = ctx.createRadialGradient(lensX, lensY, 0, lensX, lensY, lensR)
+        gLens.addColorStop(0, "rgba(255, 68, 0, 0.045)")
+        gLens.addColorStop(0.3, "rgba(255, 85, 0, 0.018)")
+        gLens.addColorStop(0.7, "rgba(11, 12, 14, 0.005)")
+        gLens.addColorStop(1, "rgba(11, 12, 14, 0)")
+        ctx.fillStyle = gLens
         ctx.fillRect(0, 0, width, height)
 
-        // 2. Subtle center-right cool slate radiance (adds dimensional depth)
-        const crX = width * 0.85 - width * 0.08 * Math.cos(t * 0.6)
-        const crY = height * 0.45 + height * 0.1 * Math.sin(t * 0.5)
-        const crRadius = Math.max(width, height) * 0.55
+        // 2. Precision Telemetry Crosshair Grid
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.04)"
+        ctx.lineWidth = 1
 
-        const gCR = ctx.createRadialGradient(crX, crY, 0, crX, crY, crRadius)
-        gCR.addColorStop(0, "rgba(40, 52, 85, 0.10)")
-        gCR.addColorStop(0.5, "rgba(22, 28, 48, 0.04)")
-        gCR.addColorStop(1, "rgba(9, 10, 13, 0)")
-        ctx.fillStyle = gCR
-        ctx.fillRect(0, 0, width, height)
+        const offsetX = Math.floor((width % gridSize) / 2)
+        const offsetY = Math.floor((height % gridSize) / 2)
 
-        // 3. Ultra-subtle bottom-left counter-radiance (soft floor shadow balance)
-        const blX = width * 0.15 + width * 0.06 * Math.sin(t * 0.5)
-        const blY = height * 0.85 - height * 0.08 * Math.cos(t * 0.6)
-        const blRadius = Math.max(width, height) * 0.6
+        for (let x = offsetX; x < width; x += gridSize) {
+          for (let y = offsetY; y < height; y += gridSize) {
+            // Distance from center for subtle radial fading
+            const dx = (x - width / 2) / (width / 2)
+            const dy = (y - height / 2) / (height / 2)
+            const distSq = dx * dx + dy * dy
+            const opacity = Math.max(0, 1 - distSq * 0.8) * 0.045
 
-        const gBL = ctx.createRadialGradient(blX, blY, 0, blX, blY, blRadius)
-        gBL.addColorStop(0, "rgba(32, 40, 68, 0.08)")
-        gBL.addColorStop(0.6, "rgba(15, 18, 30, 0.03)")
-        gBL.addColorStop(1, "rgba(9, 10, 13, 0)")
-        ctx.fillStyle = gBL
-        ctx.fillRect(0, 0, width, height)
-
+            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`
+            ctx.beginPath()
+            ctx.moveTo(x - crossSize, y)
+            ctx.lineTo(x + crossSize, y)
+            ctx.moveTo(x, y - crossSize)
+            ctx.lineTo(x, y + crossSize)
+            ctx.stroke()
+          }
+        }
       } else {
-        // --- Light Mode: Warm Alabaster & Pale Iris Radiance ---
-        const x1 = width * (0.25 + 0.15 * Math.sin(t * 0.6))
-        const y1 = height * (0.15 + 0.12 * Math.cos(t * 0.5))
-        const r1 = Math.max(width, height) * 0.6
-
-        const g1 = ctx.createRadialGradient(x1, y1, 0, x1, y1, r1)
-        g1.addColorStop(0, "rgba(215, 225, 255, 0.45)")
-        g1.addColorStop(0.5, "rgba(235, 240, 255, 0.2)")
-        g1.addColorStop(1, "rgba(250, 250, 249, 0)")
-        ctx.fillStyle = g1
+        // --- Light Drafting Vellum Canvas (#f6f6f3 base) ---
+        // 1. Warm technical drafting vellum ambient
+        const gLight = ctx.createRadialGradient(width * 0.5, 0, 0, width * 0.5, 0, Math.max(width, height) * 0.8)
+        gLight.addColorStop(0, "rgba(255, 85, 0, 0.025)")
+        gLight.addColorStop(0.5, "rgba(246, 246, 243, 0.01)")
+        gLight.addColorStop(1, "rgba(246, 246, 243, 0)")
+        ctx.fillStyle = gLight
         ctx.fillRect(0, 0, width, height)
 
-        const x2 = width * (0.8 - 0.15 * Math.cos(t * 0.7))
-        const y2 = height * (0.45 + 0.15 * Math.sin(t * 0.6))
-        const r2 = Math.max(width, height) * 0.65
+        // 2. Drafting Crosshairs
+        const offsetX = Math.floor((width % gridSize) / 2)
+        const offsetY = Math.floor((height % gridSize) / 2)
 
-        const g2 = ctx.createRadialGradient(x2, y2, 0, x2, y2, r2)
-        g2.addColorStop(0, "rgba(240, 225, 255, 0.35)")
-        g2.addColorStop(0.5, "rgba(248, 240, 255, 0.15)")
-        g2.addColorStop(1, "rgba(250, 250, 249, 0)")
-        ctx.fillStyle = g2
-        ctx.fillRect(0, 0, width, height)
+        for (let x = offsetX; x < width; x += gridSize) {
+          for (let y = offsetY; y < height; y += gridSize) {
+            const dx = (x - width / 2) / (width / 2)
+            const dy = (y - height / 2) / (height / 2)
+            const distSq = dx * dx + dy * dy
+            const opacity = Math.max(0, 1 - distSq * 0.8) * 0.06
 
-        const x3 = width * (0.4 + 0.18 * Math.cos(t * 0.5))
-        const y3 = height * (0.8 + 0.12 * Math.sin(t * 0.7))
-        const r3 = Math.max(width, height) * 0.55
-
-        const g3 = ctx.createRadialGradient(x3, y3, 0, x3, y3, r3)
-        g3.addColorStop(0, "rgba(220, 245, 245, 0.3)")
-        g3.addColorStop(0.5, "rgba(235, 250, 250, 0.12)")
-        g3.addColorStop(1, "rgba(250, 250, 249, 0)")
-        ctx.fillStyle = g3
-        ctx.fillRect(0, 0, width, height)
+            ctx.strokeStyle = `rgba(0, 0, 0, ${opacity})`
+            ctx.beginPath()
+            ctx.moveTo(x - crossSize, y)
+            ctx.lineTo(x + crossSize, y)
+            ctx.moveTo(x, y - crossSize)
+            ctx.lineTo(x, y + crossSize)
+            ctx.stroke()
+          }
+        }
       }
 
       animationFrameId = requestAnimationFrame(render)
@@ -166,15 +164,13 @@ export default function AmbientShader() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden select-none"
     >
-      {/* Studio Light Canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full opacity-100 transition-opacity duration-1000"
+        className="absolute inset-0 w-full h-full opacity-100 transition-opacity duration-700"
       />
-
-      {/* Subtle Micro-Noise Film Grain Overlay — gives matte tactile depth and prevents gradient banding */}
+      {/* Precision Micro-Carbon Texture */}
       <div
-        className="absolute inset-0 w-full h-full opacity-[0.024] dark:opacity-[0.032] mix-blend-overlay pointer-events-none"
+        className="absolute inset-0 w-full h-full opacity-[0.02] dark:opacity-[0.035] mix-blend-overlay pointer-events-none"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
         }}

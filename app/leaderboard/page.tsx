@@ -66,7 +66,7 @@ export default function LeaderboardPage() {
       <Header />
 
       <section className="section max-w-4xl mx-auto w-full px-6 md:px-20 pb-20">
-        <div className="space-y-4 text-base md:text-lg font-light text-black/70 dark:text-white/70 leading-relaxed max-w-3xl mb-10">
+        <div className="space-y-4 text-base md:text-[17px] font-light text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
             <p>
               Domain-by-domain evaluation of which foundation models hold the state of the art in September 2026.
@@ -75,24 +75,24 @@ export default function LeaderboardPage() {
         </div>
 
         {/* Categories Stack with Sibling Dimming */}
-        <div className="flex flex-col list-hover-group space-y-8">
+        <div className="flex flex-col list-hover-group space-y-6">
           {categories.map((category, index) => {
             const Icon = category.icon
 
             return (
               <TextWithBlur key={category.title} delay={index * 35}>
-                <div className="p-5 sm:p-6 rounded-2xl border border-black/10 dark:border-white/10 bg-black/[0.015] dark:bg-white/[0.02] [transition:all_140ms_ease-out]">
+                <div className="p-5 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:all_120ms_ease-out]">
                   {/* Category Header */}
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-accent shrink-0">
+                      <div className="w-8 h-8 rounded flex items-center justify-center bg-black/5 dark:bg-[#15181e] border border-black/10 dark:border-white/[0.08] text-[#ff4400] shrink-0">
                         <Icon size={16} />
                       </div>
                       <div>
                         <h2 className="text-lg sm:text-xl font-medium text-black dark:text-white">
                           {category.title}
                         </h2>
-                        <p className="text-xs sm:text-sm font-light text-black/60 dark:text-white/60">
+                        <p className="text-xs sm:text-sm font-light text-black/60 dark:text-zinc-400">
                           {category.description}
                         </p>
                       </div>
@@ -100,11 +100,11 @@ export default function LeaderboardPage() {
                   </div>
 
                   {/* Leader Banner */}
-                  <div className="mb-4 py-2 px-3 rounded-lg bg-accent/5 dark:bg-accent/10 border border-accent/15 flex items-center justify-between text-xs">
-                    <span className="font-mono text-accent font-medium uppercase tracking-wider text-[11px]">
-                      Domain Leader
+                  <div className="mb-4 py-2 px-3 rounded bg-[#ff4400]/5 dark:bg-[#ff4400]/10 border border-[#ff4400]/20 flex items-center justify-between text-xs font-mono">
+                    <span className="text-[#ff4400] font-medium uppercase tracking-wider text-[10px]">
+                      DOMAIN SOTA
                     </span>
-                    <span className="font-medium text-black dark:text-white truncate ml-2">
+                    <span className="font-medium text-black dark:text-zinc-100 truncate ml-2">
                       {category.leader}
                     </span>
                   </div>
@@ -115,28 +115,28 @@ export default function LeaderboardPage() {
                       <div
                         key={model.id}
                         onClick={() => setActiveModalModel(model)}
-                        className="cursor-pointer p-3 rounded-xl border border-black/5 dark:border-white/5 bg-black/[0.01] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 transition-colors flex items-center justify-between gap-3 text-xs active:scale-[0.99]"
+                        className="cursor-pointer p-3 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#15181e] hover:border-[#ff4400] transition-colors flex items-center justify-between gap-3 text-xs active:scale-[0.99]"
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <span className="font-mono text-black/35 dark:text-white/35 w-4 shrink-0">
+                          <span className="font-mono text-black/35 dark:text-zinc-500 w-4 shrink-0">
                             #{mIndex + 1}
                           </span>
-                          <span className="font-medium text-black dark:text-white truncate">
+                          <span className="font-medium text-black dark:text-zinc-100 truncate">
                             {model.name}
                           </span>
-                          <span className="text-black/40 dark:text-white/40 font-mono text-[11px] shrink-0">
+                          <span className="text-black/40 dark:text-zinc-400 font-mono text-[11px] shrink-0">
                             ({model.companyName})
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-3 shrink-0">
-                          <span className="font-mono text-[11px] text-black/55 dark:text-white/55">
+                        <div className="flex items-center gap-3 shrink-0 font-mono">
+                          <span className="text-[11px] text-black/55 dark:text-zinc-400">
                             {model.contextWindow.replace(" tokens", "")}
                           </span>
-                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 text-black/60 dark:text-white/60 border border-black/5 dark:border-white/5">
+                          <span className="text-[10px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300">
                             {model.pricing.input === 0 ? "Free" : `$${model.pricing.input}/M`}
                           </span>
-                          <ArrowUpRight size={13} className="opacity-40 group-hover:opacity-100 text-black dark:text-white" />
+                          <ArrowUpRight size={12} className="opacity-40 group-hover:opacity-100 text-black dark:text-white" />
                         </div>
                       </div>
                     ))}
@@ -155,9 +155,9 @@ export default function LeaderboardPage() {
       />
 
       {/* Footer */}
-      <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/10 max-w-4xl mx-auto w-full">
-        <p className="text-xs font-light text-black/50 dark:text-white/50">
-          © {currentYear} ModelRegistry. The open public registry for frontier AI models.
+      <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/[0.08] max-w-4xl mx-auto w-full">
+        <p className="text-[11px] font-mono text-black/50 dark:text-zinc-400">
+          © {currentYear} ModelRegistry. The open technical index for frontier AI systems.
         </p>
       </footer>
     </main>

@@ -34,7 +34,7 @@ export default function TimelinePage() {
       <Header />
 
       <section className="section max-w-4xl mx-auto w-full px-6 md:px-20 pb-20">
-        <div className="space-y-4 text-base md:text-lg font-light text-black/70 dark:text-white/70 leading-relaxed max-w-3xl mb-10">
+        <div className="space-y-4 text-base md:text-[17px] font-light text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
             <p>
               The chronological release log of major foundation model checkpoints and research breakthroughs.
@@ -43,18 +43,18 @@ export default function TimelinePage() {
         </div>
 
         {/* Timeline Months with Sibling Dimming */}
-        <div className="flex flex-col list-hover-group space-y-10">
+        <div className="flex flex-col list-hover-group space-y-8">
           {Object.entries(groupedTimeline).map(([monthYear, models], gIndex) => (
             <TextWithBlur key={monthYear} delay={gIndex * 40}>
-              <div className="border-l-2 border-black/10 dark:border-white/10 pl-4 sm:pl-6 ml-2 relative">
-                {/* Node indicator */}
-                <div className="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-[#fafaf9] dark:bg-[#090a0d] border-2 border-accent" />
+              <div className="border-l-2 border-black/10 dark:border-white/[0.08] pl-4 sm:pl-6 ml-2 relative">
+                {/* Technical node indicator */}
+                <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-sm bg-[#ff4400]" />
 
-                <h2 className="text-base sm:text-lg font-medium text-black dark:text-white mb-4 flex items-center gap-2">
-                  <Calendar size={15} className="text-accent" />
+                <h2 className="text-base sm:text-lg font-medium text-black dark:text-white mb-4 flex items-center gap-2 font-mono">
+                  <Calendar size={14} className="text-[#ff4400]" />
                   <span>{monthYear}</span>
-                  <span className="text-xs font-mono text-black/40 dark:text-white/40 font-normal">
-                    ({models.length} {models.length === 1 ? "release" : "releases"})
+                  <span className="text-xs text-black/40 dark:text-zinc-400 font-normal">
+                    [{models.length} {models.length === 1 ? "release" : "releases"}]
                   </span>
                 </h2>
 
@@ -66,44 +66,44 @@ export default function TimelinePage() {
                       <div
                         key={model.id}
                         onClick={() => setActiveModalModel(model)}
-                        className="cursor-pointer p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/[0.015] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 transition-all select-none active:scale-[0.99] group"
+                        className="cursor-pointer p-4 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] hover:border-[#ff4400] transition-all select-none active:scale-[0.99] group"
                       >
-                        <div className="flex items-center justify-between gap-2 mb-1.5">
+                        <div className="flex items-center justify-between gap-2 mb-1.5 font-mono text-xs">
                           <div className="flex items-center gap-2">
                             <span
-                              className="w-2 h-2 rounded-full shrink-0"
-                              style={{ backgroundColor: company?.accentColor || "#7c88e8" }}
+                              className="w-2 h-2 rounded-sm shrink-0"
+                              style={{ backgroundColor: company?.accentColor || "#ff4400" }}
                             />
-                            <span className="text-xs font-mono text-black/50 dark:text-white/50">
+                            <span className="text-black/55 dark:text-zinc-400 uppercase">
                               {model.companyName}
                             </span>
                             <span className="text-black/20 dark:text-white/20 select-none">/</span>
-                            <span className="text-sm font-medium text-black dark:text-white group-hover:text-accent transition-colors">
+                            <span className="font-sans text-sm font-medium text-black dark:text-white group-hover:text-[#ff4400] transition-colors">
                               {model.name}
                             </span>
                           </div>
 
-                          <span className="text-xs font-mono text-black/40 dark:text-white/40">
+                          <span className="text-black/40 dark:text-zinc-400">
                             {formatDate(model.releaseDate)}
                           </span>
                         </div>
 
-                        <p className="text-xs sm:text-sm font-light text-black/60 dark:text-white/60 leading-relaxed mb-2 line-clamp-2">
+                        <p className="text-xs sm:text-sm font-light text-black/60 dark:text-zinc-400 leading-relaxed mb-2 line-clamp-2">
                           {model.highlight}
                         </p>
 
-                        <div className="flex items-center justify-between text-xs pt-1.5 border-t border-black/5 dark:border-white/5">
+                        <div className="flex items-center justify-between text-xs pt-2 border-t border-black/5 dark:border-white/[0.06] font-mono">
                           <div className="flex gap-2">
-                            <span className="font-mono text-[11px] text-black/45 dark:text-white/45">
+                            <span className="text-[11px] text-black/45 dark:text-zinc-400">
                               {model.contextWindow}
                             </span>
-                            <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 text-black/55 dark:text-white/55 border border-black/5 dark:border-white/5">
+                            <span className="text-[10px] uppercase px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300">
                               {model.statusBadge}
                             </span>
                           </div>
 
-                          <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-white/40 group-hover:text-accent transition-colors">
-                            Inspect Specs <ArrowUpRight size={11} />
+                          <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-zinc-400 group-hover:text-[#ff4400] transition-colors">
+                            INSPECT SPEC <ArrowUpRight size={10} />
                           </span>
                         </div>
                       </div>
@@ -123,9 +123,9 @@ export default function TimelinePage() {
       />
 
       {/* Footer */}
-      <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/10 max-w-4xl mx-auto w-full">
-        <p className="text-xs font-light text-black/50 dark:text-white/50">
-          © {currentYear} ModelRegistry. The open public registry for frontier AI models.
+      <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/[0.08] max-w-4xl mx-auto w-full">
+        <p className="text-[11px] font-mono text-black/50 dark:text-zinc-400">
+          © {currentYear} ModelRegistry. The open technical index for frontier AI systems.
         </p>
       </footer>
     </main>

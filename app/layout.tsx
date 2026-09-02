@@ -1,11 +1,17 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import AmbientShader from "@/components/ambient-shader"
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+})
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
   display: "swap",
 })
 
@@ -29,7 +35,7 @@ export const metadata: Metadata = {
     "OpenAI GPT-5.6 Sol",
     "Meta Llama 4 Maverick",
     "Anthropic Claude Fable 5.1",
-    "Google Gemini 3.7 Flash",
+    "Google Gemini 3.8 Flash",
     "DeepSeek V4 Pro",
     "xAI Grok 4.6",
     "Qwen 2.4T",
@@ -102,7 +108,7 @@ export default function RootLayout({
     creator: {
       "@type": "Organization",
       name: "ModelRegistry Open Source Contributors",
-      url: "https://github.com/TirupMehta/Checkpoint",
+      url: "https://github.com/TirupMehta/ModelRegistry",
     },
     license: "https://opensource.org/licenses/MIT",
     temporalCoverage: "2026/..",
@@ -158,7 +164,7 @@ export default function RootLayout({
         name: "What is the latest AI model from Google DeepMind?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Google DeepMind's flagship developer workhorse is Gemini 3.7 Flash (released August 13, 2026), offering 1,048,576 token context window, agentic coding capabilities, and multi-step tool use.",
+          text: "Google DeepMind's flagship model is Gemini 3.8 Flash (released September 2, 2026), offering a 1,048,576 token context window, advanced agentic coding loops, and sub-second real-time multimodal reasoning.",
         },
       },
       {
@@ -178,7 +184,7 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="ModelRegistry RSS Feed" href="/rss.xml" />
       </head>
       <body
-        className={`${inter.variable} font-sans antialiased bg-[#fafaf9] dark:bg-[#090a0d] text-[#121314] dark:text-[#f4f4f5] transition-colors duration-300 relative min-h-screen`}
+        className={`${inter.variable} ${mono.variable} font-sans antialiased bg-[#f6f6f3] dark:bg-[#0b0c0e] text-[#111215] dark:text-[#ededed] transition-colors duration-200 relative min-h-screen`}
         suppressHydrationWarning
       >
         {/* Procedural Canvas Architectural Lighting Shader */}

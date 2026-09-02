@@ -29,9 +29,9 @@ git checkout -b feat/register-<model-id>
 pnpm install
 ```
 
-### 2. Add Entry to `lib/models-data.ts`
+### 2. Add Entry to `data/models.ts`
 
-Open [`lib/models-data.ts`](./lib/models-data.ts) and append your model to `modelsData`:
+Open [`data/models.ts`](./data/models.ts) and append your model to `modelsData`:
 
 ```typescript
 {
@@ -80,7 +80,7 @@ Open [`lib/models-data.ts`](./lib/models-data.ts) and append your model to `mode
 
 If the model belongs to a company or AI research lab not yet listed in the registry:
 
-Open [`lib/companies-data.ts`](./lib/companies-data.ts) and add the laboratory definition:
+Open [`data/companies.ts`](./data/companies.ts) and add the laboratory definition:
 
 ```typescript
 "lab-id": {

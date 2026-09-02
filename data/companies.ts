@@ -44,8 +44,8 @@ export const companies: Record<string, Company> = {
     headquarters: "London, UK / Mountain View, CA",
     accentColor: "#4285f4",
     description: "Creators of the Gemini 3 family, leading ultra-fast agentic coding, multi-step workflows, and 1M+ token real-time multimodal streaming.",
-    latestFlagship: "Gemini 3.7 Flash",
-    latestReasoning: "Gemini 3.1 Pro / Gemini 3.7 Flash",
+    latestFlagship: "Gemini 3.8 Flash",
+    latestReasoning: "Gemini 3.8 Flash / Gemini 3.1 Pro",
     openWeightsAdvocate: true,
   },
   deepseek: {

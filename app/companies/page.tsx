@@ -20,7 +20,7 @@ export default function CompaniesPage() {
       <Header />
 
       <section className="section max-w-4xl mx-auto w-full px-6 md:px-20 pb-20">
-        <div className="space-y-4 text-base md:text-lg font-light text-black/70 dark:text-white/70 leading-relaxed max-w-3xl mb-10">
+        <div className="space-y-4 text-base md:text-[17px] font-light text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
             <p>
               Frontier research laboratories driving machine intelligence forward. 
@@ -42,12 +42,12 @@ export default function CompaniesPage() {
 
             return (
               <TextWithBlur key={company.id} delay={index * 35}>
-                <div className="p-5 sm:p-6 rounded-2xl border border-black/10 dark:border-white/10 bg-black/[0.015] dark:bg-white/[0.02] [transition:all_140ms_ease-out]">
+                <div className="p-5 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:all_120ms_ease-out]">
                   {/* Lab Header */}
                   <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-3.5 h-3.5 rounded-full shrink-0 shadow-sm"
+                        className="w-3.5 h-3.5 rounded-sm shrink-0 shadow-sm"
                         style={{ backgroundColor: company.accentColor }}
                       />
                       <div>
@@ -55,11 +55,11 @@ export default function CompaniesPage() {
                           <h2 className="text-xl font-medium text-black dark:text-white">
                             {company.name}
                           </h2>
-                          <span className="text-xs font-mono text-black/40 dark:text-white/40">
+                          <span className="text-xs font-mono text-black/40 dark:text-zinc-400">
                             ({company.headquarters})
                           </span>
                         </div>
-                        <p className="text-xs sm:text-sm font-light text-black/60 dark:text-white/60 mt-0.5 max-w-xl">
+                        <p className="text-xs sm:text-sm font-light text-black/60 dark:text-zinc-400 mt-0.5 max-w-xl">
                           {company.description}
                         </p>
                       </div>
@@ -69,7 +69,7 @@ export default function CompaniesPage() {
                       href={company.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-1 text-xs font-mono text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white transition-colors"
+                      className="group inline-flex items-center gap-1 text-xs font-mono text-black/50 dark:text-zinc-400 hover:text-[#ff4400] dark:hover:text-[#ff4400] transition-colors"
                     >
                       <Globe size={12} />
                       <span>{new URL(company.website).hostname}</span>
@@ -83,24 +83,24 @@ export default function CompaniesPage() {
                     {flagshipModel && (
                       <div
                         onClick={() => setActiveModalModel(flagshipModel)}
-                        className="cursor-pointer p-4 rounded-xl bg-black/[0.025] dark:bg-white/[0.035] border border-black/5 dark:border-white/5 hover:border-black/15 dark:hover:border-white/15 transition-all select-none active:scale-[0.99] group"
+                        className="cursor-pointer p-4 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#15181e] hover:border-[#ff4400] transition-all select-none active:scale-[0.99] group"
                       >
-                        <div className="flex items-center justify-between text-xs mb-1.5">
-                          <span className="font-mono text-accent font-medium uppercase text-[10px] tracking-wider">
+                        <div className="flex items-center justify-between text-xs font-mono mb-1.5">
+                          <span className="text-[#ff4400] dark:text-[#ff5511] font-medium uppercase text-[10px] tracking-wider">
                             Primary Flagship
                           </span>
-                          <span className="font-mono text-[11px] text-black/40 dark:text-white/40">
+                          <span className="text-[11px] text-black/40 dark:text-zinc-400">
                             {flagshipModel.contextWindow.replace(" tokens", "")}
                           </span>
                         </div>
 
                         <div className="flex items-baseline gap-2 mb-1">
-                          <span className="text-base font-medium text-black dark:text-white group-hover:text-accent transition-colors">
+                          <span className="text-base font-medium text-black dark:text-white group-hover:text-[#ff4400] transition-colors">
                             {flagshipModel.name}
                           </span>
                         </div>
 
-                        <p className="text-xs font-light text-black/60 dark:text-white/60 leading-relaxed line-clamp-2">
+                        <p className="text-xs font-light text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-2">
                           {flagshipModel.highlight}
                         </p>
                       </div>
@@ -110,33 +110,33 @@ export default function CompaniesPage() {
                     {latestDrop ? (
                       <div
                         onClick={() => setActiveModalModel(latestDrop)}
-                        className="cursor-pointer p-4 rounded-xl bg-black/[0.025] dark:bg-white/[0.035] border border-black/5 dark:border-white/5 hover:border-black/15 dark:hover:border-white/15 transition-all select-none active:scale-[0.99] group"
+                        className="cursor-pointer p-4 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#15181e] hover:border-[#ff4400] transition-all select-none active:scale-[0.99] group"
                       >
-                        <div className="flex items-center justify-between text-xs mb-1.5">
-                          <span className="font-mono text-emerald-600 dark:text-emerald-400 font-medium uppercase text-[10px] tracking-wider flex items-center gap-1">
+                        <div className="flex items-center justify-between text-xs font-mono mb-1.5">
+                          <span className="text-[#00e599] font-medium uppercase text-[10px] tracking-wider flex items-center gap-1">
                             <Sparkles size={11} /> Latest Checkpoint
                           </span>
-                          <span className="font-mono text-[11px] text-black/40 dark:text-white/40">
+                          <span className="text-[11px] text-black/40 dark:text-zinc-400">
                             {formatDate(latestDrop.releaseDate)}
                           </span>
                         </div>
 
                         <div className="flex items-baseline gap-2 mb-1">
-                          <span className="text-base font-medium text-black dark:text-white group-hover:text-accent transition-colors">
+                          <span className="text-base font-medium text-black dark:text-white group-hover:text-[#ff4400] transition-colors">
                             {latestDrop.name}
                           </span>
-                          <span className="text-[11px] font-mono text-black/40 dark:text-white/40">
+                          <span className="text-[11px] font-mono text-black/40 dark:text-zinc-500">
                             ({latestDrop.categoryLabel})
                           </span>
                         </div>
 
-                        <p className="text-xs font-light text-black/60 dark:text-white/60 leading-relaxed line-clamp-2">
+                        <p className="text-xs font-light text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-2">
                           {latestDrop.highlight}
                         </p>
                       </div>
                     ) : (
                       flagshipModel && (
-                        <div className="p-4 rounded-xl bg-black/[0.01] dark:bg-white/[0.015] border border-black/5 dark:border-white/5 flex flex-col justify-center text-xs font-light text-black/45 dark:text-white/45">
+                        <div className="p-4 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#131518] flex flex-col justify-center text-xs font-mono text-black/45 dark:text-zinc-400">
                           <p>
                             {company.name}&apos;s reigning foundation flagship is also its newest deployed model.
                           </p>
@@ -158,9 +158,9 @@ export default function CompaniesPage() {
       />
 
       {/* Footer */}
-      <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/10 max-w-4xl mx-auto w-full">
-        <p className="text-xs font-light text-black/50 dark:text-white/50">
-          © {currentYear} ModelRegistry. The open public registry for frontier AI models.
+      <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/[0.08] max-w-4xl mx-auto w-full">
+        <p className="text-[11px] font-mono text-black/50 dark:text-zinc-400">
+          © {currentYear} ModelRegistry. The open technical index for frontier AI systems.
         </p>
       </footer>
     </main>
