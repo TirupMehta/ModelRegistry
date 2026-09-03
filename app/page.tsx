@@ -281,11 +281,11 @@ export default function Home() {
                           <span className="font-mono tabular-nums text-xs text-[#ff5d2e]/80 dark:text-[#ff7347] select-none shrink-0 font-medium">
                             {String(index + 1).padStart(2, "0")}
                           </span>
-                          <span className="font-medium text-sm text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150 truncate">
+                          <span className="font-display font-semibold text-base tracking-tight text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150 truncate">
                             {model.name}
                           </span>
                         </div>
-                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 shrink-0 whitespace-nowrap">
+                        <span className="text-[10px] font-mono tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/75 dark:text-zinc-300 shrink-0 whitespace-nowrap font-medium">
                           {model.statusBadge}
                         </span>
                       </div>
@@ -326,22 +326,22 @@ export default function Home() {
                       {/* Content Column */}
                       <div className="flex-1 min-w-0">
                         {/* Title / Lab / Domain Header */}
-                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-base leading-snug mb-0.5">
-                          <span className="font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
+                        <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 text-base leading-snug mb-1">
+                          <span className="font-display font-semibold text-[17px] tracking-tight text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {model.name}
                           </span>
-                          <span className="text-black/20 dark:text-white/20 select-none font-mono text-xs">/</span>
-                          <span className="text-[13px] font-mono uppercase text-black/55 dark:text-zinc-400">
+                          <span className="text-black/25 dark:text-white/20 select-none font-mono text-xs">/</span>
+                          <span className="text-[12px] font-mono uppercase tracking-wider text-black/60 dark:text-zinc-400 font-medium">
                             {model.companyName}
                           </span>
-                          <span className="text-black/20 dark:text-white/20 select-none font-mono text-xs">/</span>
-                          <span className="text-[13px] font-mono text-black/40 dark:text-zinc-500 truncate max-w-xs">
+                          <span className="text-black/25 dark:text-white/20 select-none font-mono text-xs">/</span>
+                          <span className="text-[12px] font-mono text-black/45 dark:text-zinc-400 truncate max-w-xs">
                             {model.categoryLabel}
                           </span>
                         </div>
 
                         {/* Highlight Description */}
-                        <p className="text-sm font-light text-black/65 dark:text-zinc-300 leading-relaxed line-clamp-1 group-hover:text-black/90 dark:group-hover:text-white transition-colors duration-150">
+                        <p className="text-[13.5px] font-normal text-black/70 dark:text-zinc-300 leading-relaxed line-clamp-1 group-hover:text-black/95 dark:group-hover:text-white transition-colors duration-150">
                           {model.highlight}
                         </p>
 

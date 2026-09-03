@@ -140,7 +140,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
 
         {/* Model Title & SOTA Badge */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
-          <h2 id="modal-title" className="text-xl sm:text-2xl md:text-3xl font-light tracking-tight text-black dark:text-white">
+          <h2 id="modal-title" className="text-xl sm:text-2xl md:text-3xl font-display font-semibold tracking-tight text-black dark:text-white">
             {model.name}
           </h2>
           <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-[#ff5d2e]/40 text-[#ff5d2e] bg-[#ff5d2e]/5 font-medium tracking-wider">
@@ -149,7 +149,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         </div>
 
         {/* Description Highlight */}
-        <p className="text-xs sm:text-sm font-light text-black/75 dark:text-zinc-300 leading-relaxed mb-5 sm:mb-6">
+        <p className="text-xs sm:text-sm font-normal text-black/80 dark:text-zinc-200 leading-relaxed mb-5 sm:mb-6">
           {model.highlight}
         </p>
 

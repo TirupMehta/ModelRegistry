@@ -94,12 +94,12 @@ export default function Header() {
             <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
               <Link href="/" className="group inline-flex items-end gap-1.5 sm:gap-2 select-none">
                 {isHome ? (
-                  <h1 className="text-xl sm:text-2xl md:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
-                    Model<span className="font-semibold text-[#ff5d2e]">Registry</span>
+                  <h1 className="text-xl sm:text-2xl md:text-3xl font-display font-medium tracking-tight text-black dark:text-white leading-none">
+                    Model<span className="font-bold text-[#ff5d2e]">Registry</span>
                   </h1>
                 ) : (
-                  <p className="text-xl sm:text-2xl md:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
-                    Model<span className="font-semibold text-[#ff5d2e]">Registry</span>
+                  <p className="text-xl sm:text-2xl md:text-3xl font-display font-medium tracking-tight text-black dark:text-white leading-none">
+                    Model<span className="font-bold text-[#ff5d2e]">Registry</span>
                   </p>
                 )}
                 <span className="mb-0.5 sm:mb-1 inline-flex items-center text-[8px] sm:text-[9px] uppercase font-mono tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] text-black/45 dark:text-zinc-400 bg-black/[0.02] dark:bg-white/[0.03] group-hover:border-[#ff5d2e]/50 group-hover:text-[#ff5d2e] transition-colors duration-150 leading-none shrink-0 font-medium">

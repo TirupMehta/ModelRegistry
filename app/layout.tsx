@@ -1,21 +1,30 @@
 import type { Metadata } from "next"
-import { Inter, JetBrains_Mono } from "next/font/google"
+import { Plus_Jakarta_Sans, Space_Grotesk, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import AmbientShader from "@/components/ambient-shader"
 import { modelsData } from "@/data/models"
 import { companies, type Company } from "@/data/companies"
 import { Analytics } from "@vercel/analytics/next"
 
-const inter = Inter({
+const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans",
   display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+})
+
+const display = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 })
 
 const mono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",
+  weight: ["400", "500", "600"],
 })
 
 export const metadata: Metadata = {
@@ -77,9 +86,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/icon" },
     ],
-    apple: "/apple-icon",
   },
   alternates: {
     canonical: "https://modelregistry.tirup.in",
@@ -170,7 +177,7 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="ModelRegistry RSS Feed" href="/rss.xml" />
       </head>
       <body
-        className={`${inter.variable} ${mono.variable} font-sans antialiased bg-[#f7f7f4] dark:bg-[#07080a] text-[#111215] dark:text-[#f4f5f7] transition-colors duration-250 relative min-h-screen`}
+        className={`${sans.variable} ${display.variable} ${mono.variable} font-sans antialiased bg-[#f7f7f4] dark:bg-[#07080a] text-[#111215] dark:text-[#f4f5f7] transition-colors duration-250 relative min-h-screen`}
         suppressHydrationWarning
       >
         {/* Procedural Canvas Architectural Lighting Shader */}

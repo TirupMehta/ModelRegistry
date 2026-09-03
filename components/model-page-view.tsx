@@ -169,7 +169,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
           {/* Model Title & SOTA Badge */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight text-black dark:text-white">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white">
               {model.name}
             </h1>
             <span className="text-[11px] font-mono uppercase px-2.5 py-0.5 rounded border border-[#ff5d2e]/40 text-[#ff5d2e] bg-[#ff5d2e]/5 font-medium tracking-wider">
@@ -178,7 +178,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           </div>
 
           {/* Description Highlight */}
-          <p className="text-sm sm:text-base font-light text-black/75 dark:text-zinc-300 leading-relaxed mb-6 sm:mb-8">
+          <p className="text-sm sm:text-base font-normal text-black/80 dark:text-zinc-200 leading-relaxed mb-6 sm:mb-8">
             {model.highlight}
           </p>
 
