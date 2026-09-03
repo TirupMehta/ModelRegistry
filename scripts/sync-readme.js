@@ -46,10 +46,11 @@ function formatContext(tokens) {
 }
 
 function formatPricing(model) {
-  if (model.openWeights && model.pricing.input === 0) {
-    return "Free (Open)"
+  const base = `$${model.pricing.input} in / $${model.pricing.output} out`
+  if (model.openWeights) {
+    return `${base} *(Open)*`
   }
-  return `$${model.pricing.input} in / $${model.pricing.output} out`
+  return base
 }
 
 function generateMarkdownTable() {

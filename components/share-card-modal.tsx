@@ -225,8 +225,8 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       { label: "CONTEXT WINDOW", value: model.contextWindow.replace(" tokens", "") },
       { label: "ARCHITECTURE", value: model.parameters },
       {
-        label: "PRICING / 1M",
-        value: model.openWeights ? "Free / Open" : `$${model.pricing.input} in / $${model.pricing.output} out`,
+        label: "OFFICIAL API / 1M",
+        value: `$${model.pricing.input} in / $${model.pricing.output} out${model.openWeights ? " (Open)" : ""}`,
       },
     ]
 

@@ -362,6 +362,9 @@ export default function Home() {
 
                       {/* Specs Readout */}
                       <div className="flex items-center gap-3 shrink-0 text-right">
+                        <span className="hidden md:inline font-mono text-[11px] text-black/45 dark:text-zinc-400">
+                          ${model.pricing.input}/${model.pricing.output}
+                        </span>
                         <time
                           dateTime={model.releaseDate}
                           className="font-mono text-xs text-black/45 dark:text-zinc-400"

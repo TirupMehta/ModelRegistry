@@ -207,14 +207,15 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
             <div className="p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c]">
               <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px]">
                 <DollarSign size={13} />
-                <span className="uppercase">Pricing (1M)</span>
+                <span className="uppercase">Official API (1M)</span>
               </div>
               <div className="font-semibold text-black dark:text-white text-xs sm:text-sm">
-                {model.openWeights ? (
-                  <span className="text-emerald-500">Free / Open</span>
-                ) : (
-                  <span>
-                    ${model.pricing.input} in / ${model.pricing.output} out
+                <span>
+                  ${model.pricing.input} in / ${model.pricing.output} out
+                </span>
+                {model.openWeights && (
+                  <span className="block text-[10px] font-mono text-emerald-500 font-normal mt-0.5">
+                    + Weights Free to Self-Host
                   </span>
                 )}
               </div>

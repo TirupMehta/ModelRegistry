@@ -178,15 +178,18 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] col-span-2 sm:col-span-1 hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
             <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[10px] sm:text-[11px]">
               <DollarSign size={13} />
-              <span>PRICING / 1M</span>
+              <span>OFFICIAL API / 1M</span>
             </div>
-            <p className="text-xs sm:text-sm font-medium text-black dark:text-white leading-tight">
-              {model.openWeights ? (
-                <span className="text-[#00e599]">Open Weights (Free)</span>
-              ) : (
-                `$${model.pricing.input} in / $${model.pricing.output} out`
+            <div className="text-xs sm:text-sm font-medium text-black dark:text-white leading-tight">
+              <span>
+                ${model.pricing.input} in / ${model.pricing.output} out
+              </span>
+              {model.openWeights && (
+                <span className="block text-[10px] font-mono text-[#00e599] font-normal mt-0.5">
+                  + Weights Free to Self-Host
+                </span>
               )}
-            </p>
+            </div>
           </div>
         </div>
 

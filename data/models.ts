@@ -343,8 +343,8 @@ export const modelsData: ModelItem[] = [
     parameters: "14B Dense Real-time Multimodal",
     openWeights: true,
     license: "Meta Community License",
-    pricing: { input: 0.15, output: 0.45 },
-    highlight: "Released Sept 3, 2026; Meta's latest breakthrough real-time multimodal model with native simultaneous voice, vision, and ultra-low latency response under 80ms.",
+    pricing: { input: 0.05, output: 0.15 },
+    highlight: "Released Sept 3, 2026; Meta's ultra-cheap ($0.05/M in, $0.15/M out) real-time multimodal model with native simultaneous voice, vision, and ultra-low latency response under 80ms.",
     modalities: ["Text", "Vision", "Audio", "Code"],
     benchmarks: {
       mmluPro: "81.9%",
@@ -431,8 +431,8 @@ export const modelsData: ModelItem[] = [
     parameters: "Streaming Audio Foundation",
     openWeights: true,
     license: "Meta Community License",
-    pricing: { input: 0.1, output: 0.3 },
-    highlight: "Announced Sept 1, 2026; streaming speech-to-text foundation model supporting 70+ languages, 20+ voice diarization, and multilingual code-switching.",
+    pricing: { input: 0.04, output: 0.12 },
+    highlight: "Announced Sept 1, 2026; streaming speech-to-text foundation model supporting 70+ languages, with ultra-cheap $0.04/$0.12 official hosted API pricing and open community weights.",
     modalities: ["Audio", "Text"],
     benchmarks: {},
     links: {
@@ -459,7 +459,7 @@ export const modelsData: ModelItem[] = [
     parameters: "2.4 Trillion Total (95B Activated)",
     openWeights: true,
     license: "Qwen Community License",
-    pricing: { input: 1.8, output: 5.4 },
+    pricing: { input: 0.8, output: 2.4 },
     highlight: "The largest open-weight MoE model in existence. 2.4 Trillion parameters with 95B activated per token and 1M context, available on HuggingFace and ModelScope.",
     modalities: ["Text", "Code"],
     benchmarks: {
@@ -521,7 +521,7 @@ export const modelsData: ModelItem[] = [
     parameters: "128B Dense Multimodal",
     openWeights: true,
     license: "Mistral Commercial API / Research",
-    pricing: { input: 1.5, output: 7.5 },
+    pricing: { input: 0.9, output: 2.7 },
     highlight: "Dense 128B multimodal instruction-following model with native text and image understanding, tuned for European enterprise compliance.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {
