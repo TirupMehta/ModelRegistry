@@ -113,5 +113,14 @@ if (errors.length > 0) {
   console.log(
     `\n✔ Dataset verified successfully: ${modelsData.length} models across ${validCompanyIds.size} laboratories.`
   )
+
+  // Automatically synchronize README.md table
+  try {
+    const { execFileSync } = require("child_process")
+    execFileSync(process.execPath, [path.resolve(__dirname, "sync-readme.js")], { stdio: "inherit" })
+  } catch (err) {
+    console.warn("⚠️ Note: Could not auto-sync README table:", err.message)
+  }
+
   process.exit(0)
 }

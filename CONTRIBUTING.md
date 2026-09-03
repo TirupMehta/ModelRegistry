@@ -30,7 +30,7 @@ When you add or update an entry in `data/models.ts`, ModelRegistry's dynamic pip
 - ✅ **Chronological Timeline** (`/timeline`)
 - ✅ **REST API** (`/api/v1/models`)
 - ✅ **Real-Time RSS Feed** (`/rss.xml`)
-- ✅ **LLM Markdown Files** (`/llms.txt` and `/llms-full.txt`)
+- ✅ **GitHub README Table** (`README.md` auto-synced on test & CI)
 - ✅ **Schema.org JSON-LD & SEO Metadata**
 
 You do **not** need to manually update docs, markdown tables, or schema files.
