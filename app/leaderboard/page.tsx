@@ -33,9 +33,9 @@ export default function LeaderboardPage() {
       title: "Agentic Software Engineering & Coding",
       icon: Code,
       description: "Frontier performance on long-horizon code refactoring, Terminal-Bench execution, and tool orchestration.",
-      leader: "Claude Fable 5.1 (Terminal-Bench 52.6% SOTA) / Gemini 3.7 Flash",
+      leader: "Claude Fable 5.1 (Terminal-Bench 52.6% SOTA) / Gemini 3.8 Flash",
       models: modelsData.filter((m) =>
-        ["claude-fable-5-1", "gemini-3-7-flash", "grok-4-6", "cohere-north-mini-code"].includes(m.id)
+        ["claude-fable-5-1", "gemini-3-8-flash", "grok-4-6", "gpt-5-6-sol"].includes(m.id)
       ),
     },
     {
@@ -49,14 +49,14 @@ export default function LeaderboardPage() {
       title: "Context Window Capacity",
       icon: Maximize,
       description: "Maximum tokens accommodated in a single inference session without losing retrieval precision or needle recall.",
-      leader: "Llama 4 Scout (1.31M) / OpenAI Astra (1.05M) / Gemini 3.7 (1.048M)",
+      leader: "Llama 4 Scout (1.31M) / OpenAI Astra (1.05M) / Gemini 3.8 (1.048M)",
       models: [...modelsData].sort((a, b) => b.contextWindowTokens - a.contextWindowTokens).slice(0, 5),
     },
     {
       title: "Inference Cost & Value",
       icon: Coins,
       description: "Lowest input/output pricing per 1M tokens combined with near-frontier intelligence for production applications.",
-      leader: "North Mini Code (Free) / Muse Voice ($0.10/M) / Qwen3.8 Flash ($0.15/M)",
+      leader: "Muse Voice ($0.10/M) / DeepSeek Flash ($0.12/M) / Qwen3.8 Flash ($0.15/M)",
       models: [...modelsData].sort((a, b) => a.pricing.input - b.pricing.input).slice(0, 5),
     },
   ]
@@ -100,11 +100,11 @@ export default function LeaderboardPage() {
                   </div>
 
                   {/* Leader Banner */}
-                  <div className="mb-4 py-2 px-3 rounded bg-[#ff5d2e]/5 dark:bg-[#ff5d2e]/10 border border-[#ff5d2e]/20 flex items-center justify-between text-xs font-mono">
+                  <div className="mb-4 py-2 px-3 rounded bg-[#ff5d2e]/5 dark:bg-[#ff5d2e]/10 border border-[#ff5d2e]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 text-xs font-mono">
                     <span className="text-[#ff5d2e] font-medium uppercase tracking-wider text-[10px] shrink-0">
                       DOMAIN SOTA
                     </span>
-                    <span className="font-medium text-black dark:text-zinc-100 truncate ml-2 text-[11px] sm:text-xs">
+                    <span className="font-medium text-black dark:text-zinc-100 text-[11px] sm:text-xs break-words">
                       {category.leader}
                     </span>
                   </div>

@@ -125,26 +125,29 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           <div className="flex items-center justify-between gap-2 border-b border-black/10 dark:border-white/[0.08] pb-3 mb-5">
             <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] font-mono text-[#ff5d2e] min-w-0">
               <Terminal size={13} className="shrink-0" />
-              <span className="uppercase tracking-widest font-medium">SPEC DATASHEET // {model.id}</span>
+              <span className="uppercase tracking-widest font-medium truncate hidden sm:inline">SPEC DATASHEET // {model.id}</span>
+              <span className="uppercase tracking-widest font-medium truncate sm:hidden">DATASHEET</span>
             </div>
 
             <div className="flex items-center gap-1.5 shrink-0">
               <button
                 onClick={() => setIsShareStudioOpen(true)}
                 title="Export Instagram Story / Social Card"
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
+                className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[10px] sm:text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
               >
-                <Share2 size={12} />
-                <span>EXPORT CARD</span>
+                <Share2 size={12} className="shrink-0" />
+                <span className="hidden sm:inline">EXPORT CARD</span>
+                <span className="sm:hidden">EXPORT</span>
               </button>
 
               <button
                 onClick={handleCopyLink}
                 title="Copy shareable permalink"
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
+                className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[10px] sm:text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
               >
-                {copiedLink ? <Check size={12} className="text-emerald-500" /> : <Link2 size={12} />}
-                <span>{copiedLink ? "COPIED" : "SHARE LINK"}</span>
+                {copiedLink ? <Check size={12} className="text-emerald-500 shrink-0" /> : <Link2 size={12} className="shrink-0" />}
+                <span className="hidden sm:inline">{copiedLink ? "COPIED" : "SHARE LINK"}</span>
+                <span className="sm:hidden">{copiedLink ? "COPIED" : "SHARE"}</span>
               </button>
             </div>
           </div>

@@ -144,15 +144,15 @@ export default function Home() {
                 setCurlCopied(true)
                 setTimeout(() => setCurlCopied(false), 2000)
               }}
-              className="group inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-pointer select-none text-[11px] sm:text-xs"
+              className="group inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-pointer select-none text-[11px] sm:text-xs max-w-full"
               title="Copy terminal CLI query"
             >
-              <Terminal size={12} className="text-[#ff5d2e]" />
-              <span className="text-black/80 dark:text-zinc-200">curl -s modelregistry.tirup.in/latest</span>
+              <Terminal size={12} className="text-[#ff5d2e] shrink-0" />
+              <span className="text-black/80 dark:text-zinc-200 truncate">curl -s modelregistry.tirup.in/latest</span>
               {curlCopied ? (
-                <Check size={12} className="text-[#00e599]" />
+                <Check size={12} className="text-[#00e599] shrink-0" />
               ) : (
-                <Copy size={11} className="opacity-40 group-hover:opacity-100 transition-opacity" />
+                <Copy size={11} className="opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
               )}
             </button>
 

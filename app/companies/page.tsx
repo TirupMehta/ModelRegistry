@@ -51,7 +51,7 @@ export default function CompaniesPage() {
                         style={{ backgroundColor: company.accentColor }}
                       />
                       <div>
-                        <div className="flex items-baseline gap-2">
+                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                           <h2 className="text-xl font-medium text-black dark:text-white">
                             {company.name}
                           </h2>

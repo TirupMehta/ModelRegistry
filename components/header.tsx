@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
 import TextWithBlur from "@/components/text-with-blur"
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
 import { Rss, Code2, GitPullRequest, ArrowUpRight } from "lucide-react"
@@ -15,93 +14,35 @@ const NAV_ITEMS = [
 ] as const
 
 function NavLinks({ pathname }: { pathname: string }) {
-  const navRef = useRef<HTMLElement>(null)
-  const pillRef = useRef<HTMLDivElement>(null)
-  const ready = useRef(false)
-  const [hoverHref, setHoverHref] = useState<string | null>(null)
-
   function isLinkActive(href: string) {
     if (href === "/") return pathname === "/"
     return pathname.startsWith(href)
   }
 
-  const activeHref = NAV_ITEMS.find((n) => isLinkActive(n.href))?.href ?? "/"
-  const targetHref = hoverHref ?? activeHref
-
-  function positionPill(href: string, animate: boolean) {
-    const nav = navRef.current
-    const pill = pillRef.current
-    if (!nav || !pill) return
-
-    const anchor = nav.querySelector<HTMLElement>(`[data-navhref="${href}"]`)
-    if (!anchor) return
-
-    const nRect = nav.getBoundingClientRect()
-    const aRect = anchor.getBoundingClientRect()
-
-    if (animate) {
-      pill.style.transition =
-        "transform 180ms cubic-bezier(0.16, 1, 0.3, 1), width 180ms cubic-bezier(0.16, 1, 0.3, 1)"
-    } else {
-      pill.style.transition = "none"
-    }
-
-    pill.style.width = `${aRect.width}px`
-    pill.style.transform = `translateX(${aRect.left - nRect.left}px)`
-  }
-
-  useEffect(() => {
-    const id = requestAnimationFrame(() => {
-      positionPill(activeHref, false)
-      requestAnimationFrame(() => {
-        ready.current = true
-      })
-    })
-    return () => cancelAnimationFrame(id)
-  }, [activeHref])
-
-  useEffect(() => {
-    if (!ready.current) return
-    positionPill(targetHref, true)
-  }, [targetHref])
-
-  useEffect(() => {
-    const ro = new ResizeObserver(() => {
-      positionPill(ready.current ? targetHref : activeHref, false)
-    })
-    if (navRef.current) ro.observe(navRef.current)
-    return () => ro.disconnect()
-  }, [targetHref, activeHref])
-
   return (
-    <nav
-      ref={navRef}
-      className="relative flex items-center gap-1 sm:gap-2 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden max-w-full py-0.5 touch-scroll"
-    >
-      {/* Segmented active pill */}
-      <div
-        ref={pillRef}
-        aria-hidden="true"
-        className="absolute inset-y-0 rounded-md bg-black/[0.04] dark:bg-white/[0.06] border border-black/5 dark:border-white/[0.08] pointer-events-none will-change-transform"
-      />
-
-      {NAV_ITEMS.map(({ label, href }) => (
-        <Link
-          key={href}
-          href={href}
-          data-navhref={href}
-          onMouseEnter={() => setHoverHref(href)}
-          onMouseLeave={() => setHoverHref(null)}
-          className={[
-            "relative z-10 py-1.5 px-2.5 sm:px-3 rounded-md text-xs sm:text-[13px] font-mono tracking-tight select-none cursor-pointer transition-colors duration-150 whitespace-nowrap",
-            isLinkActive(href)
-              ? "text-black dark:text-white font-medium"
-              : "text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white",
-          ].join(" ")}
-        >
-          {label}
-        </Link>
-      ))}
+    <nav className="inline-flex items-center gap-1 p-1 rounded-lg bg-black/[0.03] dark:bg-[#13161b] border border-black/10 dark:border-white/[0.08] overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden max-w-full touch-scroll">
+      {NAV_ITEMS.map(({ label, href }) => {
+        const active = isLinkActive(href)
+        return (
+          <Link
+            key={href}
+            href={href}
+            className={[
+              "group relative inline-flex items-center gap-1.5 sm:gap-2 py-1.5 px-2.5 sm:px-3 rounded-md text-xs sm:text-[13px] font-mono tracking-tight select-none cursor-pointer whitespace-nowrap transition-all duration-150 ease-out",
+              active
+                ? "bg-white dark:bg-[#1e222a] text-black dark:text-white font-medium shadow-xs border border-black/10 dark:border-white/10"
+                : "text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]",
+            ].join(" ")}
+          >
+            {active ? (
+              <span className="w-1.5 h-1.5 rounded-full bg-[#ff5d2e] shadow-[0_0_6px_rgba(255,93,46,0.8)] shrink-0" />
+            ) : (
+              <span className="w-1.5 h-1.5 rounded-full bg-transparent group-hover:bg-black/20 dark:group-hover:bg-white/20 transition-colors shrink-0" />
+            )}
+            <span>{label}</span>
+          </Link>
+        )
+      })}
     </nav>
   )
 }
@@ -151,21 +92,19 @@ export default function Header() {
         <TextWithBlur>
           <div className="flex items-center justify-between gap-3 mb-4 md:mb-6">
             <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
-              <Link href="/" className="group flex items-center gap-2 sm:gap-2.5 select-none">
-                <div className="flex items-center gap-2 sm:gap-2.5">
-                  {isHome ? (
-                    <h1 className="text-xl sm:text-2xl md:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
-                      Model<span className="font-semibold text-[#ff5d2e]">Registry</span>
-                    </h1>
-                  ) : (
-                    <p className="text-xl sm:text-2xl md:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
-                      Model<span className="font-semibold text-[#ff5d2e]">Registry</span>
-                    </p>
-                  )}
-                  <span className="hidden sm:inline text-[10px] uppercase font-mono tracking-widest px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] text-black/50 dark:text-zinc-400 bg-black/[0.02] dark:bg-white/[0.02] group-hover:border-[#ff5d2e]/40 transition-colors duration-150">
-                    v2026.9
-                  </span>
-                </div>
+              <Link href="/" className="group inline-flex items-end gap-1.5 sm:gap-2 select-none">
+                {isHome ? (
+                  <h1 className="text-xl sm:text-2xl md:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
+                    Model<span className="font-semibold text-[#ff5d2e]">Registry</span>
+                  </h1>
+                ) : (
+                  <p className="text-xl sm:text-2xl md:text-3xl font-light tracking-tight text-black dark:text-white leading-none">
+                    Model<span className="font-semibold text-[#ff5d2e]">Registry</span>
+                  </p>
+                )}
+                <span className="mb-0.5 sm:mb-1 inline-flex items-center text-[8px] sm:text-[9px] uppercase font-mono tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] text-black/45 dark:text-zinc-400 bg-black/[0.02] dark:bg-white/[0.03] group-hover:border-[#ff5d2e]/50 group-hover:text-[#ff5d2e] transition-colors duration-150 leading-none shrink-0 font-medium">
+                  v2026.9
+                </span>
               </Link>
             </div>
 
