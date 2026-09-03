@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <rect width="32" height="32" rx="7" fill="#090a0d" />
-  <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
-  <!-- M (White) -->
-  <path d="M 5.5 23.5 L 5.5 8.5 L 9 8.5 L 11 15.2 L 13 8.5 L 16.5 8.5 L 16.5 23.5 L 13.8 23.5 L 13.8 12.8 L 11.9 19.2 L 10.1 19.2 L 8.2 12.8 L 8.2 23.5 Z" fill="#ffffff" />
-  <!-- R (Coral #ff5d2e) -->
-  <path d="M 18 23.5 L 18 8.5 L 23.5 8.5 C 25.8 8.5 27 9.8 27 12 C 27 13.8 26 15 24.2 15.4 L 27 23.5 L 23.8 23.5 L 21.4 16.2 L 20.6 16.2 L 20.6 23.5 Z M 20.6 13.8 L 23 13.8 C 24 13.8 24.6 13.2 24.6 12 C 24.6 10.8 24 10.2 23 10.2 L 20.6 10.2 Z" fill="#ff5d2e" />
-</svg>
