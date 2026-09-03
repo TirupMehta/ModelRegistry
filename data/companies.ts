@@ -79,9 +79,9 @@ export const companies: Record<string, Company> = {
     website: "https://ai.meta.com",
     headquarters: "Menlo Park, CA",
     accentColor: "#0668e1",
-    description: "Global open-source foundation leader with Llama 4 (Maverick, Scout) and real-time speech foundation model Muse Voice Transcribe.",
+    description: "Global open-source foundation leader with Llama 4 (Maverick, Scout) and real-time multimodal foundation family Muse (Spark 1.3, Voice Transcribe).",
     latestFlagship: "Llama 4 Maverick (128E)",
-    latestReasoning: "Llama 4 Scout (16E)",
+    latestReasoning: "Muse Spark 1.3 / Llama 4 Scout",
     openWeightsAdvocate: true,
   },
   qwen: {
