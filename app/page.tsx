@@ -144,7 +144,7 @@ export default function Home() {
                 setCurlCopied(true)
                 setTimeout(() => setCurlCopied(false), 2000)
               }}
-              className="group inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-pointer select-none text-[11px] sm:text-xs max-w-full"
+              className="group inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:bg-black/[0.04] dark:hover:bg-white/[0.05] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-all duration-150 cursor-pointer select-none text-[11px] sm:text-xs max-w-full"
               title="Copy terminal CLI query"
             >
               <Terminal size={12} className="text-[#ff5d2e] shrink-0" />
@@ -414,45 +414,70 @@ export default function Home() {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono text-black/65 dark:text-zinc-400">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs font-mono">
               <a
                 href="/api/v1/models"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-2.5 rounded-md border border-black/5 dark:border-white/[0.07] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e] hover:-translate-y-0.5 hover:shadow-xs active:scale-[0.96] transition-all duration-200 flex items-center justify-between cursor-pointer"
+                className="group p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-black/[0.045] dark:hover:bg-[#13161c] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
               >
-                <span className="group-hover:text-black dark:group-hover:text-white transition-colors duration-200">GET /api/v1/models</span>
-                <ArrowUpRight size={11} className="opacity-40 group-hover:opacity-100 group-hover:text-[#ff5d2e] transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <span className="text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
+                  GET /api/v1/models
+                </span>
+                <ArrowUpRight
+                  size={12}
+                  className="text-black/35 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-150 ease-out shrink-0"
+                />
               </a>
+
               <a
                 href="/rss.xml"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-2.5 rounded-md border border-black/5 dark:border-white/[0.07] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e] hover:-translate-y-0.5 hover:shadow-xs active:scale-[0.96] transition-all duration-200 flex items-center justify-between cursor-pointer"
+                className="group p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-black/[0.045] dark:hover:bg-[#13161c] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
               >
-                <span className="group-hover:text-black dark:group-hover:text-white transition-colors duration-200">GET /rss.xml</span>
-                <ArrowUpRight size={11} className="opacity-40 group-hover:opacity-100 group-hover:text-[#ff5d2e] transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <span className="text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
+                  GET /rss.xml
+                </span>
+                <ArrowUpRight
+                  size={12}
+                  className="text-black/35 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-150 ease-out shrink-0"
+                />
               </a>
+
               <a
                 href="/llms.txt"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-2.5 rounded-md border border-black/5 dark:border-white/[0.07] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e] hover:-translate-y-0.5 hover:shadow-xs active:scale-[0.96] transition-all duration-200 flex items-center justify-between cursor-pointer"
+                className="group p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-black/[0.045] dark:hover:bg-[#13161c] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
               >
-                <span className="group-hover:text-black dark:group-hover:text-white transition-colors duration-200">GET /llms.txt</span>
-                <ArrowUpRight size={11} className="opacity-40 group-hover:opacity-100 group-hover:text-[#ff5d2e] transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <span className="text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
+                  GET /llms.txt
+                </span>
+                <ArrowUpRight
+                  size={12}
+                  className="text-black/35 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-150 ease-out shrink-0"
+                />
               </a>
+
               <a
                 href="https://github.com/TirupMehta/ModelRegistry/blob/main/CONTRIBUTING.md"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-2.5 rounded-md border border-[#ff5d2e]/30 dark:border-[#ff5d2e]/40 bg-[#ff5d2e]/[0.03] dark:bg-[#ff5d2e]/[0.06] hover:border-[#ff5d2e] hover:-translate-y-0.5 hover:shadow-xs active:scale-[0.96] transition-all duration-200 flex items-center justify-between cursor-pointer"
+                className="group p-2.5 sm:p-3 rounded-lg border border-[#ff5d2e]/30 dark:border-[#ff5d2e]/35 bg-[#ff5d2e]/[0.03] dark:bg-[#ff5d2e]/[0.05] hover:bg-[#ff5d2e]/[0.07] dark:hover:bg-[#ff5d2e]/[0.09] hover:border-[#ff5d2e]/55 dark:hover:border-[#ff5d2e]/55 active:scale-[0.985] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
               >
-                <div className="flex flex-col">
-                  <span className="font-semibold text-xs text-[#ff5d2e] dark:text-[#ff7347]">CONTRIBUTE (60s)</span>
-                  <span className="text-[10px] text-black/45 dark:text-zinc-400">Edit 1 file • Auto-sync</span>
+                <div className="flex flex-col min-w-0 pr-1">
+                  <span className="font-semibold text-xs text-[#ff5d2e] dark:text-[#ff7347]">
+                    CONTRIBUTE (60s)
+                  </span>
+                  <span className="text-[10px] text-black/50 dark:text-zinc-400 truncate">
+                    Edit 1 file • Auto-sync
+                  </span>
                 </div>
-                <ArrowUpRight size={13} className="text-[#ff5d2e] opacity-80 group-hover:opacity-100 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
+                <ArrowUpRight
+                  size={13}
+                  className="text-[#ff5d2e] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-150 ease-out shrink-0"
+                />
               </a>
             </div>
           </div>

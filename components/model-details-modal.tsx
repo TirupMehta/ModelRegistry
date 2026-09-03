@@ -89,7 +89,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <Link
               href={`/models/${model.id}`}
               title="Open full dedicated page"
-              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[10px] sm:text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.985] text-[10px] sm:text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-all duration-150 cursor-pointer"
             >
               <ExternalLink size={11} className="sm:w-3 sm:h-3" />
               <span className="hidden sm:inline">PERMALINK</span>
@@ -98,7 +98,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <button
               onClick={() => setIsShareStudioOpen(true)}
               title="Export Instagram Story / Social Card"
-              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[10px] sm:text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.985] text-[10px] sm:text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-all duration-150 cursor-pointer"
             >
               <Share2 size={11} className="sm:w-3 sm:h-3" />
               <span className="hidden sm:inline">EXPORT CARD</span>
@@ -108,7 +108,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <button
               onClick={handleCopyLink}
               title="Copy shareable link"
-              className="p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] hover:bg-black/5 dark:hover:bg-white/[0.06] transition-colors duration-150 cursor-pointer"
+              className="p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-[0.985] transition-all duration-150 cursor-pointer"
             >
               {copied ? <Check size={15} className="text-emerald-500" /> : <Link2 size={15} />}
             </button>
@@ -116,7 +116,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <button
               onClick={onClose}
               aria-label="Close dialog"
-              className="p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] transition-colors duration-150 cursor-pointer"
+              className="p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-[0.985] transition-all duration-150 cursor-pointer"
             >
               <X size={16} />
             </button>
