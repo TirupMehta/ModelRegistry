@@ -74,6 +74,13 @@ export const metadata: Metadata = {
     description:
       "Real-time open community registry tracking the latest frontier AI flagships and research checkpoints across all premier AI labs.",
   },
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon" },
+    ],
+    apple: "/apple-icon",
+  },
   alternates: {
     canonical: "https://modelregistry.tirup.in",
     types: {
