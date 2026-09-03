@@ -27,7 +27,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**Google DeepMind**](https://deepmind.google) | [Gemini 3.8 Flash](https://modelregistry.tirup.in/models/gemini-3-8-flash) | — | 1M | Proprietary | $0.75 in / $3.75 out |
 | [**xAI**](https://x.ai) | [Grok 4.6](https://modelregistry.tirup.in/models/grok-4-6) | — | 500k | Proprietary | $2 in / $6 out |
 | [**DeepSeek**](https://www.deepseek.com) | [DeepSeek V4-Pro (0813)](https://modelregistry.tirup.in/models/deepseek-v4-pro-0813) | [DeepSeek V4 Flash Vision Exp](https://modelregistry.tirup.in/models/deepseek-v4-flash-vision-exp) | 1M | Proprietary | $1.12 in / $3.35 out |
-| [**Meta AI**](https://ai.meta.com) | [Llama 4 Maverick (128E)](https://modelregistry.tirup.in/models/llama-4-maverick) | — | 1M | Open (Meta Community) | $0.45 in / $1.35 out |
+| [**Meta AI**](https://ai.meta.com) | [Muse Spark 1.3](https://modelregistry.tirup.in/models/meta-muse-spark-1-3) | — | 262k | Open (Meta Community) | $0.15 in / $0.45 out |
 | [**Alibaba Cloud (Qwen)**](https://qwenlm.github.io) | [Qwen3.8 2.4T A95B](https://modelregistry.tirup.in/models/qwen-3-8-2-4t-a95b) | [Qwen3.8 Flash](https://modelregistry.tirup.in/models/qwen-3-8-flash) | 1M | Open (Qwen Community) | $1.8 in / $5.4 out |
 | [**Mistral AI**](https://mistral.ai) | [Mistral Medium 3.5](https://modelregistry.tirup.in/models/mistral-medium-3-5) | — | 262k | Open (Mistral Commercial API) | $1.5 in / $7.5 out |
 <!-- REGISTRY_TABLE_END -->

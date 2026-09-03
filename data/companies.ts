@@ -79,9 +79,9 @@ export const companies: Record<string, Company> = {
     website: "https://ai.meta.com",
     headquarters: "Menlo Park, CA",
     accentColor: "#0668e1",
-    description: "Global open-source foundation leader with Llama 4 (Maverick, Scout) and the Muse multimodal research family.",
-    latestFlagship: "Llama 4 Maverick (128E)",
-    latestReasoning: "Llama 4 Scout (16E) / Llama 4 Maverick",
+    description: "Global AI foundation leader with the newly dropped Muse Spark 1.3 real-time multimodal model and the Llama 4 family.",
+    latestFlagship: "Muse Spark 1.3",
+    latestReasoning: "Llama 4 Maverick (128E) / Scout (16E)",
     openWeightsAdvocate: true,
   },
   qwen: {
