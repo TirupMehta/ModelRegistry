@@ -1,148 +1,84 @@
 # Contributing to ModelRegistry
 
-Thank you for your interest in contributing to **ModelRegistry**! 
+Contributing takes less than 60 seconds. You only need to touch **one file**: [`data/models.ts`](./data/models.ts). 
 
-ModelRegistry is an open public catalog indexing frontier foundation models and major AI research checkpoints. We depend on community researchers, engineers, and contributors to keep the registry accurate, comprehensive, and up-to-date.
-
----
-
-## 📋 Contribution Guidelines
-
-Before submitting a pull request, please ensure your contribution adheres to these standards:
-
-1. **Official Verification Required**: Every model addition or benchmark update must include a verifiable primary source link (official lab announcement, technical report, arXiv paper, or Hugging Face model repository). Social media claims without official verification will not be merged.
-2. **Dual-Tier Model Philosophy**:
-   - **Company Flagship**: A lab's reigning general-purpose foundation model (typically only 1 active flagship per company at any time).
-   - **Latest Checkpoint**: Specialized models, reasoning variants, code specialists, or voice/multimodal models recently released.
-3. **TypeScript & Schema Strictness**: All contributions must pass type validation (`pnpm run build`) without any compiler or linter errors.
+Our automated pipeline handles everything else — the website, REST API, RSS feed, and README table sync automatically.
 
 ---
 
-## 💡 The Single-File Contribution Architecture
+## ⚡ 3-Step Quickstart
 
-**You only need to edit ONE file:**
-👉 [`data/models.ts`](./data/models.ts)
-
-When you add or update an entry in `data/models.ts`, ModelRegistry's dynamic pipeline automatically updates all endpoints with zero manual work:
-- ✅ **Home Manifest** (`/`)
-- ✅ **Lab Breakdown** (`/companies`)
-- ✅ **Competitive Leaderboard** (`/leaderboard`)
-- ✅ **Chronological Timeline** (`/timeline`)
-- ✅ **REST API** (`/api/v1/models`)
-- ✅ **Real-Time RSS Feed** (`/rss.xml`)
-- ✅ **GitHub README Table** (`README.md` auto-synced on test & CI)
-- ✅ **Schema.org JSON-LD & SEO Metadata**
-
-You do **not** need to manually update docs, markdown tables, or schema files.
-
----
-
-## 🚀 How to Add or Update a Model
-
-### 1. Fork & Clone
-
+### 1. Clone the repo
 ```bash
-git clone https://github.com/<your-username>/ModelRegistry.git
+git clone https://github.com/TirupMehta/ModelRegistry.git
 cd ModelRegistry
-git checkout -b feat/register-<model-id>
 pnpm install
 ```
 
-### 2. Add Entry to `data/models.ts`
-
-Open [`data/models.ts`](./data/models.ts) and append your model to `modelsData`:
+### 2. Add your model to [`data/models.ts`](./data/models.ts)
+Open `data/models.ts` and add your model to the `modelsData` array:
 
 ```typescript
 {
-  id: "meta-llama-4-maverick",
-  companyId: "meta",
+  id: "meta-muse-spark-1-3",           // Unique lowercase kebab-case ID
+  companyId: "meta",                   // openai | anthropic | google | xai | deepseek | meta | qwen | mistral
   companyName: "Meta AI",
-  name: "Llama 4 Maverick",
-  version: "4.0",
-  releaseDate: "2026-07-23",
-  isCompanyFlagship: true,      // Set to true if this is the lab's primary frontier LLM
-  isLatestCheckpoint: false,    // Set to true if this is the newest release from this lab
-  statusBadge: "FLAGSHIP",       // E.g. "FLAGSHIP", "NEW DROP", "OPEN WEIGHTS"
-  category: "flagship",         // "flagship" | "agentic" | "reasoning" | "voice" | "code" | "multimodal"
-  categoryLabel: "Frontier Foundation",
-  contextWindow: "1,000,000 tokens",
-  contextWindowTokens: 1000000,
-  maxOutputTokens: "32,768 tokens",
-  parameters: "1.2T parameters (MoE 48x25B)",
-  openWeights: true,
-  license: "Llama 4 Community License",
+  name: "Muse Spark 1.3",
+  version: "1.3",
+  releaseDate: "2026-09-03",           // YYYY-MM-DD
+  isCompanyFlagship: true,             // true = lab's primary flagship, false = specialized checkpoint
+  isLatestCheckpoint: false,           // true if it is the lab's newest secondary release
+  statusBadge: "LATEST SOTA",          // Short pill badge: "FLAGSHIP", "NEW DROP", "OPEN WEIGHTS"
+  category: "flagship",                // "flagship" | "agentic" | "reasoning" | "voice" | "code" | "multimodal"
+  categoryLabel: "Frontier Multimodal",
+  contextWindow: "262k tokens",
+  contextWindowTokens: 262144,
+  maxOutputTokens: "16,384 tokens",
+  parameters: "14B parameters",
+  openWeights: true,                   // true if weights are downloadable, false if proprietary
+  license: "Meta Community License",
   pricing: {
-    input: 0,
-    output: 0,
+    input: 0.05,                       // Official hosted API price per 1M input tokens (USD)
+    output: 0.15,                      // Official hosted API price per 1M output tokens (USD)
   },
-  highlight: "Meta's trillion-parameter mixture-of-experts open flagship featuring native multimodal reasoning.",
-  modalities: ["Text", "Code", "Vision"],
-  benchmarks: {
-    sweBench: "72.4%",
-    aime2024: "84.2%",
-    mmluPro: "86.1%",
-    gpqa: "68.5%",
-  },
+  highlight: "Sub-80ms real-time audio-visual foundation model for live voice & vision reasoning.",
+  modalities: ["Text", "Vision", "Audio"],
   links: {
-    announcement: "https://ai.meta.com/blog/llama-4-maverick",
-    playground: "https://llama.meta.com",
-    weights: "https://huggingface.co/meta-llama/Llama-4-Maverick",
+    announcement: "https://ai.meta.com/blog/...", // Official announcement / paper (MANDATORY)
+    playground: "https://...",                    // Optional API playground or chat URL
+    weights: "https://huggingface.co/...",       // Optional Hugging Face weights URL
   },
 }
 ```
 
-> **Note**: If `isCompanyFlagship` is set to `true`, ensure that any previous flagship for that `companyId` has its `isCompanyFlagship` updated to `false`.
+> **💡 The Flagship Rule**: Each company has exactly **1 active flagship** (`isCompanyFlagship: true`). If your new model is the lab's primary flagship, set `isCompanyFlagship: true` on it and set `isCompanyFlagship: false` on the lab's previous flagship.
+
+### 3. Validate & Submit
+```bash
+pnpm test
+```
+*`pnpm test` automatically verifies the data schema and **auto-syncs the README table**.*
+
+Once it passes, commit and open a Pull Request! 🎉
 
 ---
 
-## 🏢 Adding a New Laboratory
-
-If the model belongs to a company or AI research lab not yet listed in the registry:
-
-Open [`data/companies.ts`](./data/companies.ts) and add the laboratory definition:
+## 🏢 Adding a New AI Lab (Optional)
+If the model is from a laboratory not yet tracked, add it to [`data/companies.ts`](./data/companies.ts):
 
 ```typescript
-"lab-id": {
-  id: "lab-id",
+"laboratory-id": {
+  id: "laboratory-id",
   name: "Laboratory Name",
-  description: "Brief 1-2 sentence description of the lab's primary research focus.",
-  website: "https://example.com",
-  headquarters: "City, Country",
-  accentColor: "#hexColor", // Brand color used for badges and timeline dots
+  description: "Brief 1-line overview of the lab.",
+  website: "https://...",
+  headquarters: "San Francisco, CA",
+  accentColor: "#ff5d2e",
 }
 ```
 
 ---
 
-## 🧪 Testing Your Changes
-
-Before submitting your pull request, verify that the project builds cleanly:
-
-```bash
-# 1. Run automated dataset integrity validator
-pnpm test
-
-# 2. Verify TypeScript types and build output
-pnpm run build
-
-# 3. Start local server to preview your changes
-pnpm run dev
-```
-
-Visit `http://localhost:3000` to inspect:
-- The Overview list row and modal card.
-- The `/companies` laboratory breakdown.
-- The `/timeline` chronological drop log.
-- The `/api/v1/models` JSON API output.
-
----
-
-## 📦 Pull Request Guidelines
-
-1. **Title format**: `feat: register [Model Name] ([Lab])` or `fix: update [Model Name] benchmarks`.
-2. **Description**:
-   - Summary of model or changes.
-   - Primary source URL (announcement, tech report, or paper).
-3. Ensure CI checks pass.
-
-Thank you for contributing to an open, transparent AI model index!
+## 📋 Quality Standards
+- **Official Source Required**: Every model must link to an official announcement, technical report, arXiv paper, or verified Hugging Face repository. No rumors or social leaks.
+- **Accurate API Pricing**: For open-weights models, provide the lab's official hosted API rate per 1M tokens.

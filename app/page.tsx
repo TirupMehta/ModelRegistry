@@ -180,6 +180,16 @@ export default function Home() {
               >
                 llms.txt
               </a>
+              <span>•</span>
+              <a
+                href="https://github.com/TirupMehta/ModelRegistry/blob/main/CONTRIBUTING.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#ff5d2e] transition-colors flex items-center gap-1 font-medium text-[#ff5d2e]"
+              >
+                <span>+ Add Model (60s)</span>
+                <ArrowUpRight size={10} />
+              </a>
             </div>
           </div>
         </div>
@@ -433,13 +443,16 @@ export default function Home() {
                 <ArrowUpRight size={11} className="opacity-40 group-hover:opacity-100 group-hover:text-[#ff5d2e] transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
               <a
-                href="https://github.com/TirupMehta/ModelRegistry"
+                href="https://github.com/TirupMehta/ModelRegistry/blob/main/CONTRIBUTING.md"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-2.5 rounded-md border border-black/5 dark:border-white/[0.07] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e] hover:-translate-y-0.5 hover:shadow-xs active:scale-[0.96] transition-all duration-200 flex items-center justify-between cursor-pointer"
+                className="group p-2.5 rounded-md border border-[#ff5d2e]/30 dark:border-[#ff5d2e]/40 bg-[#ff5d2e]/[0.03] dark:bg-[#ff5d2e]/[0.06] hover:border-[#ff5d2e] hover:-translate-y-0.5 hover:shadow-xs active:scale-[0.96] transition-all duration-200 flex items-center justify-between cursor-pointer"
               >
-                <span className="group-hover:text-black dark:group-hover:text-white transition-colors duration-200">GITHUB / REPO</span>
-                <ArrowUpRight size={11} className="opacity-40 group-hover:opacity-100 group-hover:text-[#ff5d2e] transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <div className="flex flex-col">
+                  <span className="font-semibold text-xs text-[#ff5d2e] dark:text-[#ff7347]">CONTRIBUTE (60s)</span>
+                  <span className="text-[10px] text-black/45 dark:text-zinc-400">Edit 1 file • Auto-sync</span>
+                </div>
+                <ArrowUpRight size={13} className="text-[#ff5d2e] opacity-80 group-hover:opacity-100 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
               </a>
             </div>
           </div>

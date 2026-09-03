@@ -74,6 +74,50 @@ Embed real-time frontier flagship badges directly in your GitHub READMEs:
 ModelRegistry provides free, unauthenticated REST endpoints for bots, CLI tools, and agent workflows:
 
 ```bash
+<!-- REGISTRY_TABLE_END -->
+
+---
+
+## ⚡ Highlights
+
+- **Dual-Tier Model Organization**: Immediate distinction between heavyweight general foundation models and newly trained checkpoints.
+- **SOTA Domain Leaderboard**: Head-to-head verified evaluations across Reasoning, Agentic Coding, Context Capacity, and Inference Value.
+- **Open Telemetry & Syndication**:
+  - `GET /api/v1/models` — Public JSON REST API with filtering parameters.
+  - `GET /rss.xml` — Live RSS 2.0 syndication feed for newly registered models.
+  - `GET /llms.txt` — Machine-readable ground truth formatted for AI answer engines and web crawlers.
+
+---
+
+## 💻 Terminal CLI Dashboard
+
+Query the registry directly from your terminal without installing anything:
+
+```bash
+curl -s https://modelregistry.tirup.in
+```
+
+---
+
+## 🏷️ Embeddable GitHub Badges
+
+Embed real-time frontier flagship badges directly in your GitHub READMEs:
+
+```markdown
+[![OpenAI Flagship](https://modelregistry.tirup.in/api/badge/openai)](https://modelregistry.tirup.in)
+[![Anthropic Flagship](https://modelregistry.tirup.in/api/badge/anthropic)](https://modelregistry.tirup.in)
+[![Meta AI Flagship](https://modelregistry.tirup.in/api/badge/meta)](https://modelregistry.tirup.in)
+[![Google Flagship](https://modelregistry.tirup.in/api/badge/google)](https://modelregistry.tirup.in)
+[![DeepSeek Flagship](https://modelregistry.tirup.in/api/badge/deepseek)](https://modelregistry.tirup.in)
+```
+
+---
+
+## 📡 Public API
+
+ModelRegistry provides free, unauthenticated REST endpoints for bots, CLI tools, and agent workflows:
+
+```bash
 # Fetch all registered models
 curl -s https://modelregistry.tirup.in/api/v1/models
 
@@ -89,15 +133,15 @@ curl -s "https://modelregistry.tirup.in/api/v1/models?company=anthropic"
 
 ---
 
-## 🤝 Contributing
+## 🤝 Contributing (Takes 60 Seconds)
 
-We welcome community contributions. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for full instructions on how to submit a new model entry or update benchmark metrics.
+ModelRegistry uses a **single-file contribution workflow**. You only ever edit **one file**: [`data/models.ts`](./data/models.ts).
 
-```bash
-# Verify schema & build before submitting PR
-pnpm install
-pnpm run build
-```
+1. **Add your model** to [`data/models.ts`](./data/models.ts).
+2. **Run `pnpm test`** — it validates the schema and **auto-syncs this README table**.
+3. **Open a Pull Request**!
+
+See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the copy-paste snippet.
 
 ---
 
