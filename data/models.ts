@@ -421,7 +421,7 @@ export const modelsData: ModelItem[] = [
     version: "1.0",
     releaseDate: "2026-09-01",
     isCompanyFlagship: false,
-    isLatestCheckpoint: false,
+    isLatestCheckpoint: true,
     statusBadge: "AUDIO CHECKPOINT",
     category: "audio",
     categoryLabel: "Streaming Speech",

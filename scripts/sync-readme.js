@@ -59,9 +59,8 @@ function generateMarkdownTable() {
   const rows = companyKeys.map((companyId) => {
     const company = companies[companyId]
     const flagship = modelsData.find((m) => m.companyId === companyId && m.isCompanyFlagship)
-    const latestDrop = modelsData.find(
-      (m) => m.companyId === companyId && m.isLatestCheckpoint && m.id !== flagship?.id
-    )
+    const nonFlagships = modelsData.filter((m) => m.companyId === companyId && m.id !== flagship?.id)
+    const latestDrop = nonFlagships.find((m) => m.isLatestCheckpoint) || nonFlagships[0]
 
     const flagshipCell = flagship
       ? `[${flagship.name}](https://modelregistry.tirup.in/models/${flagship.id})`
