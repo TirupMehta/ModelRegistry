@@ -86,7 +86,7 @@ export default function CompaniesPage() {
                         className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
                         <div className="flex items-center justify-between text-xs font-mono mb-1.5">
-                          <span className="text-[#ff5d2e] dark:text-[#ff7347] font-medium uppercase text-[10px] tracking-wider">
+                          <span className="text-[#ff5d2e] dark:text-[#ff7347] font-medium uppercase text-[11px] tracking-wider">
                             Primary Flagship
                           </span>
                           <span className="text-[11px] text-black/40 dark:text-zinc-400">
@@ -113,7 +113,7 @@ export default function CompaniesPage() {
                         className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
                         <div className="flex items-center justify-between text-xs font-mono mb-1.5">
-                          <span className="text-[#00e599] font-medium uppercase text-[10px] tracking-wider flex items-center gap-1">
+                          <span className="text-[#00e599] font-medium uppercase text-[11px] tracking-wider flex items-center gap-1">
                             <Sparkles size={11} /> Latest Checkpoint
                           </span>
                           <span className="text-[11px] text-black/40 dark:text-zinc-400">

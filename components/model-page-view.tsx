@@ -214,7 +214,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   ${model.pricing.input} in / ${model.pricing.output} out
                 </span>
                 {model.openWeights && (
-                  <span className="block text-[10px] font-mono text-emerald-500 font-normal mt-0.5">
+                  <span className="block text-[11px] font-mono text-emerald-500 font-normal mt-0.5">
                     + Weights Free to Self-Host
                   </span>
                 )}
@@ -241,25 +241,25 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
                 {model.benchmarks.sweBench && (
                   <div className="border border-black/10 dark:border-white/[0.08] rounded p-2.5 bg-white dark:bg-[#0e1014]">
-                    <div className="text-[10px] text-black/40 dark:text-zinc-400 mb-0.5">SWE-BENCH</div>
+                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-0.5">SWE-BENCH</div>
                     <div className="text-base font-semibold text-[#ff5d2e]">{model.benchmarks.sweBench}</div>
                   </div>
                 )}
                 {model.benchmarks.aime2024 && (
                   <div className="border border-black/10 dark:border-white/[0.08] rounded p-2.5 bg-white dark:bg-[#0e1014]">
-                    <div className="text-[10px] text-black/40 dark:text-zinc-400 mb-0.5">AIME 2024</div>
+                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-0.5">AIME 2024</div>
                     <div className="text-base font-semibold text-black dark:text-white">{model.benchmarks.aime2024}</div>
                   </div>
                 )}
                 {model.benchmarks.mmluPro && (
                   <div className="border border-black/10 dark:border-white/[0.08] rounded p-2.5 bg-white dark:bg-[#0e1014]">
-                    <div className="text-[10px] text-black/40 dark:text-zinc-400 mb-0.5">MMLU-PRO</div>
+                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-0.5">MMLU-PRO</div>
                     <div className="text-base font-semibold text-black dark:text-white">{model.benchmarks.mmluPro}</div>
                   </div>
                 )}
                 {model.benchmarks.gpqa && (
                   <div className="border border-black/10 dark:border-white/[0.08] rounded p-2.5 bg-white dark:bg-[#0e1014]">
-                    <div className="text-[10px] text-black/40 dark:text-zinc-400 mb-0.5">GPQA DIAMOND</div>
+                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-0.5">GPQA DIAMOND</div>
                     <div className="text-base font-semibold text-black dark:text-white">{model.benchmarks.gpqa}</div>
                   </div>
                 )}

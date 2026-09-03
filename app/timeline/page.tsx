@@ -97,7 +97,7 @@ export default function TimelinePage() {
                             <span className="text-[11px] text-black/45 dark:text-zinc-400">
                               {model.contextWindow}
                             </span>
-                            <span className="text-[10px] uppercase px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e]">
+                            <span className="text-[11px] uppercase px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e]">
                               {model.statusBadge}
                             </span>
                           </div>

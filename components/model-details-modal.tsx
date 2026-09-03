@@ -143,7 +143,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           <h2 id="modal-title" className="text-xl sm:text-2xl md:text-3xl font-display font-semibold tracking-tight text-black dark:text-white">
             {model.name}
           </h2>
-          <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded border border-[#ff5d2e]/40 text-[#ff5d2e] bg-[#ff5d2e]/5 font-medium tracking-wider">
+          <span className="text-[11px] font-mono uppercase px-2 py-0.5 rounded border border-[#ff5d2e]/40 text-[#ff5d2e] bg-[#ff5d2e]/5 font-medium tracking-wider">
             {model.statusBadge}
           </span>
         </div>
@@ -156,7 +156,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         {/* Key Hardware Specs Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 mb-5 sm:mb-6 text-xs font-mono">
           <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
-            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[10px] sm:text-[11px]">
+            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px] sm:text-xs">
               <Layers size={13} />
               <span>CONTEXT WINDOW</span>
             </div>
@@ -166,7 +166,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           </div>
 
           <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
-            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[10px] sm:text-[11px]">
+            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px] sm:text-xs">
               <Cpu size={13} />
               <span>ARCHITECTURE</span>
             </div>
@@ -176,7 +176,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           </div>
 
           <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] col-span-2 sm:col-span-1 hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
-            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[10px] sm:text-[11px]">
+            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px] sm:text-xs">
               <DollarSign size={13} />
               <span>OFFICIAL API / 1M</span>
             </div>
@@ -185,7 +185,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
                 ${model.pricing.input} in / ${model.pricing.output} out
               </span>
               {model.openWeights && (
-                <span className="block text-[10px] font-mono text-[#00e599] font-normal mt-0.5">
+                <span className="block text-[11px] font-mono text-[#00e599] font-normal mt-0.5">
                   + Weights Free to Self-Host
                 </span>
               )}
@@ -196,13 +196,13 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         {/* Verified Benchmarks Section */}
         {Object.keys(model.benchmarks).length > 0 && (
           <div className="mb-6">
-            <h3 className="text-[11px] font-mono uppercase tracking-wider text-black/50 dark:text-zinc-400 font-medium mb-2.5">
+            <h3 className="text-xs font-mono uppercase tracking-wider text-black/50 dark:text-zinc-400 font-medium mb-2.5">
               VERIFIED BENCHMARKS
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {model.benchmarks.sweBench && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[10px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">SWE-bench</span>
+                  <span className="text-[11px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">SWE-bench</span>
                   <span className="text-base font-mono font-medium text-black dark:text-white">
                     {model.benchmarks.sweBench}
                   </span>
@@ -210,7 +210,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               )}
               {model.benchmarks.aime2024 && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[10px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">AIME 2024</span>
+                  <span className="text-[11px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">AIME 2024</span>
                   <span className="text-base font-mono font-medium text-black dark:text-white">
                     {model.benchmarks.aime2024}
                   </span>
@@ -218,7 +218,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               )}
               {model.benchmarks.mmluPro && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[10px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">MMLU-Pro</span>
+                  <span className="text-[11px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">MMLU-Pro</span>
                   <span className="text-base font-mono font-medium text-black dark:text-white">
                     {model.benchmarks.mmluPro}
                   </span>
@@ -226,7 +226,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               )}
               {model.benchmarks.gpqa && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[10px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">GPQA Diamond</span>
+                  <span className="text-[11px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">GPQA Diamond</span>
                   <span className="text-base font-mono font-medium text-black dark:text-white">
                     {model.benchmarks.gpqa}
                   </span>

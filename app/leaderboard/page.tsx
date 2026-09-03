@@ -101,7 +101,7 @@ export default function LeaderboardPage() {
 
                   {/* Leader Banner */}
                   <div className="mb-4 py-2 px-3 rounded bg-[#ff5d2e]/5 dark:bg-[#ff5d2e]/10 border border-[#ff5d2e]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 text-xs font-mono">
-                    <span className="text-[#ff5d2e] font-medium uppercase tracking-wider text-[10px] shrink-0">
+                    <span className="text-[#ff5d2e] font-medium uppercase tracking-wider text-[11px] shrink-0">
                       DOMAIN SOTA
                     </span>
                     <span className="font-medium text-black dark:text-zinc-100 text-[11px] sm:text-xs break-words">
@@ -133,7 +133,7 @@ export default function LeaderboardPage() {
                           <span className="text-[11px] text-black/55 dark:text-zinc-400 hidden sm:inline">
                             {model.contextWindow.replace(" tokens", "")}
                           </span>
-                          <span className="text-[10px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e]">
+                          <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e]">
                             {model.pricing.input === 0 ? "Free" : `$${model.pricing.input}/M`}
                           </span>
                           <ArrowUpRight size={12} className="opacity-30 group-hover:opacity-100 text-black dark:text-white group-hover:text-[#ff5d2e] transition-colors duration-150" />

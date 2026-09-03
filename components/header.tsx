@@ -57,7 +57,7 @@ export default function Header() {
       <div className="w-full bg-black/[0.02] dark:bg-[#0a0c0f] border-b border-black/5 dark:border-white/[0.06] py-2 text-[11px] font-mono text-black/60 dark:text-zinc-400">
         <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-            <span className="inline-flex items-center gap-1.5 sm:gap-2 font-medium text-[#ff5d2e] tracking-wider uppercase text-[10px] sm:text-[11px]">
+            <span className="inline-flex items-center gap-1.5 sm:gap-2 font-medium text-[#ff5d2e] tracking-wider uppercase text-[11px] sm:text-[12px]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#00e599] shadow-[0_0_6px_#00e599] shrink-0" />
               SYS://REGISTRY
             </span>
@@ -67,7 +67,7 @@ export default function Header() {
             </span>
           </div>
 
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 text-[10px] sm:text-[11px] font-mono">
+          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 text-[11px] sm:text-[12px] font-mono">
             <Link
               href="/rss.xml"
               className="group inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
@@ -102,7 +102,7 @@ export default function Header() {
                     Model<span className="font-bold text-[#ff5d2e]">Registry</span>
                   </p>
                 )}
-                <span className="mb-0.5 sm:mb-1 inline-flex items-center text-[8px] sm:text-[9px] uppercase font-mono tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] text-black/45 dark:text-zinc-400 bg-black/[0.02] dark:bg-white/[0.03] group-hover:border-[#ff5d2e]/50 group-hover:text-[#ff5d2e] transition-colors duration-150 leading-none shrink-0 font-medium">
+                <span className="mb-0.5 sm:mb-1 inline-flex items-center text-[10px] sm:text-[11px] uppercase font-mono tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] text-black/45 dark:text-zinc-400 bg-black/[0.02] dark:bg-white/[0.03] group-hover:border-[#ff5d2e]/50 group-hover:text-[#ff5d2e] transition-colors duration-150 leading-none shrink-0 font-medium">
                   v2026.9
                 </span>
               </Link>
@@ -115,7 +115,7 @@ export default function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Contribute a newly released model on GitHub"
-                className="group inline-flex items-center justify-center gap-1 sm:gap-1.5 h-[28px] px-2.5 sm:px-3 text-[10px] sm:text-[11px] font-mono tracking-wide bg-black/[0.04] dark:bg-white/[0.04] hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] rounded-md text-black/70 dark:text-zinc-300 hover:text-white dark:hover:text-white transition-colors duration-150 select-none cursor-pointer"
+                className="group inline-flex items-center justify-center gap-1 sm:gap-1.5 h-[28px] px-2.5 sm:px-3 text-[11px] sm:text-[12px] font-mono tracking-wide bg-black/[0.04] dark:bg-white/[0.04] hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] rounded-md text-black/70 dark:text-zinc-300 hover:text-white dark:hover:text-white transition-colors duration-150 select-none cursor-pointer"
               >
                 <GitPullRequest
                   size={12}

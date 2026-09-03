@@ -207,7 +207,7 @@ export default function Home() {
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
-                Flagships <span className="opacity-60 text-[10px]">[{counts.flagships}]</span>
+                Flagships <span className="opacity-60 text-[11px]">[{counts.flagships}]</span>
               </button>
 
               <button
@@ -218,7 +218,7 @@ export default function Home() {
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
-                New Drops <span className="opacity-60 text-[10px]">[{counts.latestDrops}]</span>
+                New Drops <span className="opacity-60 text-[11px]">[{counts.latestDrops}]</span>
               </button>
 
               <button
@@ -229,7 +229,7 @@ export default function Home() {
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
-                Open Weights <span className="opacity-60 text-[10px]">[{counts.openWeights}]</span>
+                Open Weights <span className="opacity-60 text-[11px]">[{counts.openWeights}]</span>
               </button>
 
               <button
@@ -240,7 +240,7 @@ export default function Home() {
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
-                All <span className="opacity-60 text-[10px]">[{counts.all}]</span>
+                All <span className="opacity-60 text-[11px]">[{counts.all}]</span>
               </button>
             </div>
 
@@ -257,7 +257,7 @@ export default function Home() {
                 placeholder="filter index..."
                 className="w-full pl-6 pr-7 py-1.5 text-xs font-mono bg-black/[0.025] dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.08] rounded-md focus:outline-none focus:border-[#ff5d2e] text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-zinc-500 transition-colors duration-150"
               />
-              <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-mono text-black/35 dark:text-zinc-400 bg-black/5 dark:bg-white/[0.06] border border-black/10 dark:border-white/[0.08] rounded pointer-events-none select-none">
+              <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 text-[11px] font-mono text-black/35 dark:text-zinc-400 bg-black/5 dark:bg-white/[0.06] border border-black/10 dark:border-white/[0.08] rounded pointer-events-none select-none">
                 /
               </kbd>
             </div>
@@ -295,7 +295,7 @@ export default function Home() {
                             {model.name}
                           </span>
                         </div>
-                        <span className="text-[10px] font-mono tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/75 dark:text-zinc-300 shrink-0 whitespace-nowrap font-medium">
+                        <span className="text-[11px] font-mono tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/75 dark:text-zinc-300 shrink-0 whitespace-nowrap font-medium">
                           {model.statusBadge}
                         </span>
                       </div>
@@ -382,7 +382,7 @@ export default function Home() {
                           {model.contextWindow.replace(" tokens", "")}
                         </time>
 
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 transition-colors duration-150 group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347]">
+                        <span className="text-[11px] font-mono px-2 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 transition-colors duration-150 group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347]">
                           {model.statusBadge}
                         </span>
 
@@ -405,11 +405,11 @@ export default function Home() {
         <TextWithBlur delay={300}>
           <div className="mt-12 border-t border-black/10 dark:border-white/[0.08] pt-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-[11px] font-mono uppercase tracking-widest text-[#ff5d2e] font-medium flex items-center gap-1.5">
+              <h2 className="text-xs font-mono uppercase tracking-widest text-[#ff5d2e] font-medium flex items-center gap-1.5">
                 <Terminal size={12} />
                 <span>OPEN TELEMETRY &amp; SYNDICATION</span>
               </h2>
-              <span className="text-[10px] font-mono text-black/35 dark:text-zinc-400">
+              <span className="text-[11px] font-mono text-black/35 dark:text-zinc-400">
                 curl -s https://modelregistry.tirup.in
               </span>
             </div>
@@ -470,7 +470,7 @@ export default function Home() {
                   <span className="font-semibold text-xs text-[#ff5d2e] dark:text-[#ff7347]">
                     CONTRIBUTE (60s)
                   </span>
-                  <span className="text-[10px] text-black/50 dark:text-zinc-400 truncate">
+                  <span className="text-[11px] text-black/50 dark:text-zinc-400 truncate">
                     Edit 1 file • Auto-sync
                   </span>
                 </div>
@@ -492,7 +492,7 @@ export default function Home() {
 
       {/* Industrial Footer */}
       <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/[0.08] max-w-4xl mx-auto w-full">
-        <p className="text-[11px] font-mono text-black/50 dark:text-zinc-400">
+        <p className="text-xs font-mono text-black/50 dark:text-zinc-400">
           © {currentYear} ModelRegistry. The open technical index for frontier AI systems.
         </p>
       </footer>
