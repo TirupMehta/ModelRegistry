@@ -31,9 +31,9 @@ export const companies: Record<string, Company> = {
     website: "https://openai.com",
     headquarters: "San Francisco, CA",
     accentColor: "#10a37f",
-    description: "Pioneered unified foundation models with GPT-5.6 (Sol, Terra, Luna) and the Astra critical-capability cybersecurity model.",
-    latestFlagship: "GPT-5.6 Sol / Terra Pro",
-    latestReasoning: "OpenAI Astra (Cybersecurity) / GPT-5.6 Sol",
+    description: "Pioneered the AGI era with GPT-6 Astra, unified foundation models (GPT-5.6 Sol), and the Astra critical-capability cybersecurity model.",
+    latestFlagship: "GPT-6 Astra",
+    latestReasoning: "GPT-6 Astra / OpenAI Astra",
     openWeightsAdvocate: false,
   },
   google: {

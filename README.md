@@ -23,7 +23,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | Laboratory | Primary Flagship | Latest Checkpoint | Context | Access | Pricing (1M) |
 |:---|:---|:---|:---|:---|:---|
 | [**Anthropic**](https://www.anthropic.com) | [Claude Fable 5.1](https://modelregistry.tirup.in/models/claude-fable-5-1) | [Claude Opus 5](https://modelregistry.tirup.in/models/claude-opus-5) | 1M | Proprietary | $10 in / $50 out |
-| [**OpenAI**](https://openai.com) | [GPT-5.6 Sol](https://modelregistry.tirup.in/models/gpt-5-6-sol) | [OpenAI Astra](https://modelregistry.tirup.in/models/openai-astra) | 1M | Proprietary | $3 in / $12 out |
+| [**OpenAI**](https://openai.com) | [GPT-6 Astra](https://modelregistry.tirup.in/models/gpt-6-astra) | [OpenAI Astra](https://modelregistry.tirup.in/models/openai-astra) | 1M | Proprietary | $10 in / $50 out |
 | [**Google DeepMind**](https://deepmind.google) | [Gemini 3.8 Flash](https://modelregistry.tirup.in/models/gemini-3-8-flash) | — | 1M | Proprietary | $0.75 in / $3.75 out |
 | [**xAI**](https://x.ai) | [Grok 4.6](https://modelregistry.tirup.in/models/grok-4-6) | — | 500k | Proprietary | $2 in / $6 out |
 | [**DeepSeek**](https://www.deepseek.com) | [DeepSeek V4-Pro (0813)](https://modelregistry.tirup.in/models/deepseek-v4-pro-0813) | [DeepSeek V4 Flash Vision Exp](https://modelregistry.tirup.in/models/deepseek-v4-flash-vision-exp) | 1M | Proprietary | $1.12 in / $3.35 out |
