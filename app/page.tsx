@@ -137,14 +137,14 @@ export default function Home() {
           </TextWithBlur>
 
           {/* Quick Terminal & Developer Strip */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1 text-xs font-mono text-black/60 dark:text-zinc-400">
+          <div className="flex items-center justify-between gap-2 sm:gap-3 pt-1 text-xs font-mono text-black/60 dark:text-zinc-400 w-full">
             <button
               onClick={() => {
                 navigator.clipboard.writeText("curl -s https://modelregistry.tirup.in/latest")
                 setCurlCopied(true)
                 setTimeout(() => setCurlCopied(false), 2000)
               }}
-              className="group inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:bg-black/[0.04] dark:hover:bg-white/[0.05] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-all duration-150 cursor-pointer select-none text-[11px] sm:text-xs max-w-full"
+              className="group inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:bg-black/[0.04] dark:hover:bg-white/[0.05] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-all duration-150 cursor-pointer select-none text-[11px] sm:text-xs max-w-full shrink-0"
               title="Copy terminal CLI query"
             >
               <Terminal size={12} className="text-[#ff5d2e] shrink-0" />
@@ -160,7 +160,7 @@ export default function Home() {
               href="https://github.com/TirupMehta/ModelRegistry/blob/main/CONTRIBUTING.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-[#ff5d2e] transition-colors inline-flex items-center gap-1 font-medium text-[#ff5d2e] text-[11px] sm:text-xs"
+              className="ml-auto hover:text-[#ff5d2e] transition-colors inline-flex items-center gap-1 font-medium text-[#ff5d2e] text-[11px] sm:text-xs shrink-0"
             >
               <span>+ Add Model (60s)</span>
               <ArrowUpRight size={10} />
