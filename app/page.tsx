@@ -156,41 +156,15 @@ export default function Home() {
               )}
             </button>
 
-            <div className="flex items-center gap-2.5 sm:gap-3 text-[11px] text-black/45 dark:text-zinc-500">
-              <a
-                href="/api/v1/models"
-                target="_blank"
-                className="hover:text-black dark:hover:text-white transition-colors"
-              >
-                REST API
-              </a>
-              <span>•</span>
-              <a
-                href="/api/badge?model=latest"
-                target="_blank"
-                className="hover:text-black dark:hover:text-white transition-colors"
-              >
-                SVG Badges
-              </a>
-              <span>•</span>
-              <a
-                href="/llms.txt"
-                target="_blank"
-                className="hover:text-black dark:hover:text-white transition-colors"
-              >
-                llms.txt
-              </a>
-              <span>•</span>
-              <a
-                href="https://github.com/TirupMehta/ModelRegistry/blob/main/CONTRIBUTING.md"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#ff5d2e] transition-colors flex items-center gap-1 font-medium text-[#ff5d2e]"
-              >
-                <span>+ Add Model (60s)</span>
-                <ArrowUpRight size={10} />
-              </a>
-            </div>
+            <a
+              href="https://github.com/TirupMehta/ModelRegistry/blob/main/CONTRIBUTING.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#ff5d2e] transition-colors inline-flex items-center gap-1 font-medium text-[#ff5d2e] text-[11px] sm:text-xs"
+            >
+              <span>+ Add Model (60s)</span>
+              <ArrowUpRight size={10} />
+            </a>
           </div>
         </div>
 
