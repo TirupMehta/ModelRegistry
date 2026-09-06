@@ -38,7 +38,7 @@ export default function ModelCardRow({ model, index, onSelect }: ModelCardRowPro
         {/* Left: Index + Company + Model Name + Highlights */}
         <div className="flex items-baseline gap-3 sm:gap-5 min-w-0">
           {/* Index Number */}
-          <span className="font-mono tabular-nums text-xs md:text-sm text-black/35 dark:text-white/35 select-none w-5 sm:w-6 shrink-0 group-hover:text-black/60 dark:group-hover:text-white/60 [transition:color_80ms_ease-out]">
+          <span className="font-sans tabular-nums text-xs md:text-sm text-black/35 dark:text-white/35 select-none w-5 sm:w-6 shrink-0 group-hover:text-black/60 dark:group-hover:text-white/60 [transition:color_80ms_ease-out]">
             {String(index + 1).padStart(2, "0")}
           </span>
 
@@ -52,7 +52,7 @@ export default function ModelCardRow({ model, index, onSelect }: ModelCardRowPro
                 title={model.companyName}
               />
               
-              <span className="text-xs font-mono tracking-tight text-black/45 dark:text-white/45">
+              <span className="text-xs font-sans tracking-tight text-black/45 dark:text-white/45">
                 {model.companyName}
               </span>
 
@@ -64,17 +64,17 @@ export default function ModelCardRow({ model, index, onSelect }: ModelCardRowPro
               </span>
 
               {/* Badge */}
-              <span className="text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]">
+              <span className="text-[10px] font-sans uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]">
                 {model.statusBadge}
               </span>
 
               {model.isCompanyFlagship && (
-                <span className="text-[10px] font-mono tracking-tight text-accent font-medium">
+                <span className="text-[10px] font-sans tracking-tight text-accent font-medium">
                   • Flagship
                 </span>
               )}
               {model.isLatestCheckpoint && !model.isCompanyFlagship && (
-                <span className="text-[10px] font-mono tracking-tight text-emerald-600 dark:text-emerald-400 font-medium">
+                <span className="text-[10px] font-sans tracking-tight text-emerald-600 dark:text-emerald-400 font-medium">
                   • Latest Drop
                 </span>
               )}
@@ -90,10 +90,10 @@ export default function ModelCardRow({ model, index, onSelect }: ModelCardRowPro
         {/* Right Metadata: Context, Date & Arrow */}
         <div className="flex items-center gap-3 sm:gap-5 shrink-0 text-right">
           <div className="hidden sm:flex flex-col items-end">
-            <span className="font-mono text-xs text-black/60 dark:text-white/60">
+            <span className="font-sans text-xs text-black/60 dark:text-white/60">
               {model.contextWindow.replace(" tokens", "")}
             </span>
-            <span className="text-[11px] font-mono text-black/35 dark:text-white/35">
+            <span className="text-[11px] font-sans text-black/35 dark:text-white/35">
               {relativeTime}
             </span>
           </div>

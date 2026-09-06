@@ -42,10 +42,10 @@ export default function LiveSearchHeader({
           className="w-full pl-10 pr-16 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/10 text-xs sm:text-sm text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-white/35 focus:outline-none focus:border-accent/60 transition-colors"
         />
         <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-none">
-          <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono text-black/40 dark:text-white/40 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded">
+          <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-sans text-black/40 dark:text-white/40 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded">
             /
           </kbd>
-          <span className="text-[11px] font-mono text-black/40 dark:text-white/40 tabular-nums">
+          <span className="text-[11px] font-sans text-black/40 dark:text-white/40 tabular-nums">
             {totalCount}
           </span>
         </div>

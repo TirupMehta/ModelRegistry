@@ -90,7 +90,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
       >
         {/* Top Control Bar */}
         <div className="flex items-center justify-between gap-2 border-b border-black/10 dark:border-white/[0.08] pb-3 mb-4 sm:mb-5">
-          <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] font-mono text-[#ff5d2e] min-w-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] font-sans text-[#ff5d2e] min-w-0">
             <Terminal size={13} className="shrink-0" />
             <span className="uppercase tracking-widest font-medium sm:hidden">SPEC SHEET</span>
             <span className="uppercase tracking-widest font-medium hidden sm:inline">SPEC DATASHEET // {model.id}</span>
@@ -100,7 +100,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <Link
               href={`/models/${model.id}`}
               title="Open full dedicated page"
-              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.985] text-[10px] sm:text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-all duration-150 cursor-pointer"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.985] text-[10px] sm:text-[11px] font-sans text-black/60 dark:text-zinc-400 transition-all duration-150 cursor-pointer"
             >
               <ExternalLink size={11} className="sm:w-3 sm:h-3" />
               <span className="hidden sm:inline">PERMALINK</span>
@@ -109,7 +109,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <button
               onClick={() => setIsShareStudioOpen(true)}
               title="Export Instagram Story / Social Card"
-              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.985] text-[10px] sm:text-[11px] font-mono text-black/60 dark:text-zinc-400 transition-all duration-150 cursor-pointer"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.985] text-[10px] sm:text-[11px] font-sans text-black/60 dark:text-zinc-400 transition-all duration-150 cursor-pointer"
             >
               <Share2 size={11} className="sm:w-3 sm:h-3" />
               <span className="hidden sm:inline">EXPORT CARD</span>
@@ -135,7 +135,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         </div>
 
         {/* Lab info & Release Stamp */}
-        <div className="flex items-center gap-2 mb-2.5 text-xs font-mono">
+        <div className="flex items-center gap-2 mb-2.5 text-xs font-sans">
           <span
             className="w-2.5 h-2.5 rounded-sm shrink-0"
             style={{ backgroundColor: company?.accentColor || "#ff5d2e" }}
@@ -154,7 +154,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           <h2 id="modal-title" className="text-xl sm:text-2xl md:text-3xl font-display font-semibold tracking-tight text-black dark:text-white">
             {model.name}
           </h2>
-          <span className="text-[11px] font-mono uppercase px-2 py-0.5 rounded border border-[#ff5d2e]/40 text-[#ff5d2e] bg-[#ff5d2e]/5 font-medium tracking-wider">
+          <span className="text-[11px] font-sans uppercase px-2 py-0.5 rounded border border-[#ff5d2e]/40 text-[#ff5d2e] bg-[#ff5d2e]/5 font-medium tracking-wider">
             {model.statusBadge}
           </span>
         </div>
@@ -165,7 +165,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         </p>
 
         {/* Key Hardware Specs Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 mb-5 sm:mb-6 text-xs font-mono">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 mb-5 sm:mb-6 text-xs font-sans">
           <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
             <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px] sm:text-xs">
               <Layers size={13} />
@@ -196,7 +196,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
                 ${model.pricing.input} in / ${model.pricing.output} out
               </span>
               {model.openWeights && (
-                <span className="block text-[11px] font-mono text-[#00e599] font-normal mt-0.5">
+                <span className="block text-[11px] font-sans text-[#00e599] font-normal mt-0.5">
                   + Weights Free to Self-Host
                 </span>
               )}
@@ -207,38 +207,38 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         {/* Verified Benchmarks Section */}
         {Object.keys(model.benchmarks).length > 0 && (
           <div className="mb-6">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-black/50 dark:text-zinc-400 font-medium mb-2.5">
+            <h3 className="text-xs font-sans uppercase tracking-wider text-black/50 dark:text-zinc-400 font-medium mb-2.5">
               VERIFIED BENCHMARKS
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {model.benchmarks.sweBench && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[11px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">SWE-bench</span>
-                  <span className="text-base font-mono font-medium text-black dark:text-white">
+                  <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">SWE-bench</span>
+                  <span className="text-base font-sans font-medium text-black dark:text-white">
                     {model.benchmarks.sweBench}
                   </span>
                 </div>
               )}
               {model.benchmarks.aime2024 && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[11px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">AIME 2024</span>
-                  <span className="text-base font-mono font-medium text-black dark:text-white">
+                  <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">AIME 2024</span>
+                  <span className="text-base font-sans font-medium text-black dark:text-white">
                     {model.benchmarks.aime2024}
                   </span>
                 </div>
               )}
               {model.benchmarks.mmluPro && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[11px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">MMLU-Pro</span>
-                  <span className="text-base font-mono font-medium text-black dark:text-white">
+                  <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">MMLU-Pro</span>
+                  <span className="text-base font-sans font-medium text-black dark:text-white">
                     {model.benchmarks.mmluPro}
                   </span>
                 </div>
               )}
               {model.benchmarks.gpqa && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[11px] font-mono text-black/40 dark:text-zinc-400 block mb-0.5">GPQA Diamond</span>
-                  <span className="text-base font-mono font-medium text-black dark:text-white">
+                  <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">GPQA Diamond</span>
+                  <span className="text-base font-sans font-medium text-black dark:text-white">
                     {model.benchmarks.gpqa}
                   </span>
                 </div>
@@ -248,7 +248,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         )}
 
         {/* Modalities & License */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3.5 border-t border-black/10 dark:border-white/[0.08] mb-6 text-xs font-mono text-black/60 dark:text-zinc-400">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-3.5 border-t border-black/10 dark:border-white/[0.08] mb-6 text-xs font-sans text-black/60 dark:text-zinc-400">
           <div className="flex items-center gap-2">
             <span className="text-black/40 dark:text-zinc-400">MODALITIES:</span>
             <div className="flex gap-1">
@@ -276,7 +276,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               href={model.links.announcement}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded-md bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white transition-colors duration-150 cursor-pointer"
+              className="group inline-flex items-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white transition-colors duration-150 cursor-pointer"
             >
               <span>LAB ANNOUNCEMENT</span>
               <ExternalLink size={12} className="opacity-60" />
@@ -287,7 +287,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               href={model.links.playground}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
+              className="group inline-flex items-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
             >
               <span>OPEN PLAYGROUND</span>
               <ExternalLink size={12} className="opacity-60" />
@@ -298,7 +298,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               href={model.links.weights}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
+              className="group inline-flex items-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
             >
               <span>HUGGING FACE WEIGHTS</span>
               <ExternalLink size={12} className="opacity-60" />
@@ -307,7 +307,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
 
           <button
             onClick={() => setIsShareStudioOpen(true)}
-            className="group inline-flex items-center gap-1.5 text-xs font-mono font-medium px-3.5 py-2 rounded-md border border-[#ff5d2e]/40 bg-[#ff5d2e]/10 text-[#ff5d2e] hover:bg-[#ff5d2e] hover:text-white dark:hover:text-black transition-colors duration-150 cursor-pointer"
+            className="group inline-flex items-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-[#ff5d2e]/40 bg-[#ff5d2e]/10 text-[#ff5d2e] hover:bg-[#ff5d2e] hover:text-white dark:hover:text-black transition-colors duration-150 cursor-pointer"
           >
             <Share2 size={12} />
             <span>SHARE STORY / CARD</span>

@@ -79,7 +79,7 @@ export async function GET(req: NextRequest) {
                 style={{
                   display: "flex",
                   fontSize: "12px",
-                  fontFamily: "monospace",
+                  fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
                   padding: "4px 8px",
                   borderRadius: "4px",
                   border: "1px solid rgba(255, 255, 255, 0.15)",
@@ -96,7 +96,7 @@ export async function GET(req: NextRequest) {
                 alignItems: "center",
                 gap: "8px",
                 fontSize: "13px",
-                fontFamily: "monospace",
+                fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
                 color: "#00e599",
               }}
             >
@@ -128,7 +128,7 @@ export async function GET(req: NextRequest) {
               <span
                 style={{
                   fontSize: "16px",
-                  fontFamily: "monospace",
+                  fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
                   textTransform: "uppercase",
                   letterSpacing: "0.1em",
                   color: "rgba(255, 255, 255, 0.6)",
@@ -140,7 +140,7 @@ export async function GET(req: NextRequest) {
               <span
                 style={{
                   fontSize: "12px",
-                  fontFamily: "monospace",
+                  fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
                   padding: "3px 8px",
                   borderRadius: "4px",
                   border: `1px solid ${accentColor}60`,
@@ -188,14 +188,14 @@ export async function GET(req: NextRequest) {
           >
             <div style={{ display: "flex", gap: "32px" }}>
               <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                <span style={{ fontSize: "12px", fontFamily: "monospace", color: "rgba(255, 255, 255, 0.4)" }}>
+                <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
                   CONTEXT WINDOW
                 </span>
                 <span style={{ fontSize: "18px", fontWeight: 600 }}>{context}</span>
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                <span style={{ fontSize: "12px", fontFamily: "monospace", color: "rgba(255, 255, 255, 0.4)" }}>
+                <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
                   ARCHITECTURE
                 </span>
                 <span style={{ fontSize: "18px", fontWeight: 600 }}>{architecture}</span>
@@ -203,7 +203,7 @@ export async function GET(req: NextRequest) {
 
               {model && (
                 <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                  <span style={{ fontSize: "12px", fontFamily: "monospace", color: "rgba(255, 255, 255, 0.4)" }}>
+                  <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
                     PRICING / 1M
                   </span>
                   <span style={{ fontSize: "18px", fontWeight: 600 }}>
@@ -217,7 +217,7 @@ export async function GET(req: NextRequest) {
               style={{
                 display: "flex",
                 fontSize: "14px",
-                fontFamily: "monospace",
+                fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
                 color: "rgba(255, 255, 255, 0.4)",
               }}
             >

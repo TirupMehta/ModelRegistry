@@ -111,7 +111,7 @@ export default function Home() {
         SSR Knowledge Vault for AI Answer Engines & Web Crawlers
       */}
       <noscript>
-        <article style={{ maxWidth: "48rem", margin: "0 auto", padding: "2rem 1.5rem", fontFamily: "monospace", lineHeight: 1.6, color: "#111" }}>
+        <article style={{ maxWidth: "48rem", margin: "0 auto", padding: "2rem 1.5rem", fontFamily: "Plus Jakarta Sans, system-ui, sans-serif", lineHeight: 1.6, color: "#111" }}>
           <h1>ModelRegistry — Frontier AI Model Telemetry Index</h1>
           <p>
             Official open machine-readable registry of premier frontier artificial intelligence models across OpenAI, Anthropic, Google DeepMind, DeepSeek, Meta AI, xAI, Mistral, Alibaba Cloud, Tencent Hunyuan, Z.ai, MiniMax, NVIDIA, Xiaomi, and Moonshot AI.
@@ -137,7 +137,7 @@ export default function Home() {
           </TextWithBlur>
 
           {/* Quick Terminal & Developer Strip */}
-          <div className="flex items-center justify-between gap-2 sm:gap-3 pt-1 text-xs font-mono text-black/60 dark:text-zinc-400 w-full">
+          <div className="flex items-center justify-between gap-2 sm:gap-3 pt-1 text-xs font-sans text-black/60 dark:text-zinc-400 w-full">
             <button
               onClick={() => {
                 navigator.clipboard.writeText("curl -s https://modelregistry.tirup.in/latest")
@@ -175,7 +175,7 @@ export default function Home() {
             <div className="inline-flex items-center p-0.5 rounded bg-black/[0.035] dark:bg-[#131518] border border-black/10 dark:border-white/[0.08] overflow-x-auto max-w-full shrink-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               <button
                 onClick={() => setActiveTab("flagships")}
-                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-mono tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
+                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
                   activeTab === "flagships"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
@@ -186,7 +186,7 @@ export default function Home() {
 
               <button
                 onClick={() => setActiveTab("latest-drops")}
-                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-mono tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
+                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
                   activeTab === "latest-drops"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
@@ -197,7 +197,7 @@ export default function Home() {
 
               <button
                 onClick={() => setActiveTab("open-weights")}
-                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-mono tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
+                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
                   activeTab === "open-weights"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
@@ -208,7 +208,7 @@ export default function Home() {
 
               <button
                 onClick={() => setActiveTab("all")}
-                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-mono tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
+                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
                   activeTab === "all"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
@@ -220,7 +220,7 @@ export default function Home() {
 
             {/* Terminal Style Search Input */}
             <div className="relative w-full md:w-56 shrink-0">
-              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-mono text-[#ff5d2e] pointer-events-none">
+              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-sans text-[#ff5d2e] pointer-events-none">
                 &gt;
               </span>
               <input
@@ -229,9 +229,9 @@ export default function Home() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="filter index..."
-                className="w-full pl-6 pr-7 py-1.5 text-xs font-mono bg-black/[0.025] dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.08] rounded-md focus:outline-none focus:border-[#ff5d2e] text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-zinc-500 transition-colors duration-150"
+                className="w-full pl-6 pr-7 py-1.5 text-xs font-sans bg-black/[0.025] dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.08] rounded-md focus:outline-none focus:border-[#ff5d2e] text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-zinc-500 transition-colors duration-150"
               />
-              <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 text-[11px] font-mono text-black/35 dark:text-zinc-400 bg-black/5 dark:bg-white/[0.06] border border-black/10 dark:border-white/[0.08] rounded pointer-events-none select-none">
+              <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 text-[11px] font-sans text-black/35 dark:text-zinc-400 bg-black/5 dark:bg-white/[0.06] border border-black/10 dark:border-white/[0.08] rounded pointer-events-none select-none">
                 /
               </kbd>
             </div>
@@ -241,7 +241,7 @@ export default function Home() {
         {/* Technical Ledger Manifest */}
         <div className="flex flex-col list-hover-group">
           {filteredModels.length === 0 ? (
-            <div className="py-12 text-center text-xs font-mono text-black/40 dark:text-zinc-500">
+            <div className="py-12 text-center text-xs font-sans text-black/40 dark:text-zinc-500">
               [ NO MODELS MATCHING QUERY &quot;{searchQuery}&quot; ]
             </div>
           ) : (
@@ -262,19 +262,19 @@ export default function Home() {
                     <div className="sm:hidden">
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <div className="flex items-baseline gap-2 min-w-0">
-                          <span className="font-mono tabular-nums text-xs text-[#ff5d2e]/80 dark:text-[#ff7347] select-none shrink-0 font-medium">
+                          <span className="font-sans tabular-nums text-xs text-[#ff5d2e]/80 dark:text-[#ff7347] select-none shrink-0 font-medium">
                             {String(index + 1).padStart(2, "0")}
                           </span>
                           <span className="font-display font-semibold text-base tracking-tight text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150 truncate">
                             {model.name}
                           </span>
                         </div>
-                        <span className="text-[11px] font-mono tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/75 dark:text-zinc-300 shrink-0 whitespace-nowrap font-medium">
+                        <span className="text-[11px] font-sans tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/75 dark:text-zinc-300 shrink-0 whitespace-nowrap font-medium">
                           {model.statusBadge}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-1.5 text-[11px] font-mono text-black/50 dark:text-zinc-400 mb-1 pl-5">
+                      <div className="flex items-center gap-1.5 text-[11px] font-sans text-black/50 dark:text-zinc-400 mb-1 pl-5">
                         <span className="uppercase text-black/70 dark:text-zinc-300 font-medium">{model.companyName}</span>
                         <span>•</span>
                         <span>{model.contextWindow.replace(" tokens", "")}</span>
@@ -287,7 +287,7 @@ export default function Home() {
                       </p>
 
                       {specializedDrop && activeTab === "flagships" && (
-                        <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-mono text-black/45 dark:text-zinc-400 pl-5">
+                        <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-sans text-black/45 dark:text-zinc-400 pl-5">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#ff5d2e] shrink-0" />
                           <span className="truncate">
                             Checkpoint:{" "}
@@ -303,7 +303,7 @@ export default function Home() {
                     {/* Desktop Ledger Row (sm and up) */}
                     <div className="hidden sm:flex items-baseline gap-5">
                       {/* Monospace Ledger Index */}
-                      <span className="font-mono tabular-nums text-xs text-[#ff5d2e]/80 dark:text-[#ff7347] select-none w-6 shrink-0 transition-colors duration-150 group-hover:text-[#ff5d2e] font-medium">
+                      <span className="font-sans tabular-nums text-xs text-[#ff5d2e]/80 dark:text-[#ff7347] select-none w-6 shrink-0 transition-colors duration-150 group-hover:text-[#ff5d2e] font-medium">
                         {String(index + 1).padStart(2, "0")}
                       </span>
 
@@ -314,12 +314,12 @@ export default function Home() {
                           <span className="font-display font-semibold text-[17px] tracking-tight text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {model.name}
                           </span>
-                          <span className="text-black/25 dark:text-white/20 select-none font-mono text-xs">/</span>
-                          <span className="text-[12px] font-mono uppercase tracking-wider text-black/60 dark:text-zinc-400 font-medium">
+                          <span className="text-black/25 dark:text-white/20 select-none font-sans text-xs">/</span>
+                          <span className="text-[12px] font-sans uppercase tracking-wider text-black/60 dark:text-zinc-400 font-medium">
                             {model.companyName}
                           </span>
-                          <span className="text-black/25 dark:text-white/20 select-none font-mono text-xs">/</span>
-                          <span className="text-[12px] font-mono text-black/45 dark:text-zinc-400 truncate max-w-xs">
+                          <span className="text-black/25 dark:text-white/20 select-none font-sans text-xs">/</span>
+                          <span className="text-[12px] font-sans text-black/45 dark:text-zinc-400 truncate max-w-xs">
                             {model.categoryLabel}
                           </span>
                         </div>
@@ -331,7 +331,7 @@ export default function Home() {
 
                         {/* Checkpoint Callout */}
                         {specializedDrop && activeTab === "flagships" && (
-                          <div className="mt-1 flex items-center gap-1.5 text-[11px] font-mono text-black/45 dark:text-zinc-400">
+                          <div className="mt-1 flex items-center gap-1.5 text-[11px] font-sans text-black/45 dark:text-zinc-400">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#ff5d2e] shrink-0" />
                             <span className="truncate">
                               Checkpoint drop:{" "}
@@ -346,17 +346,17 @@ export default function Home() {
 
                       {/* Specs Readout */}
                       <div className="flex items-center gap-3 shrink-0 text-right">
-                        <span className="hidden md:inline font-mono text-[11px] text-black/45 dark:text-zinc-400">
+                        <span className="hidden md:inline font-sans text-[11px] text-black/45 dark:text-zinc-400">
                           ${model.pricing.input}/${model.pricing.output}
                         </span>
                         <time
                           dateTime={model.releaseDate}
-                          className="font-mono text-xs text-black/45 dark:text-zinc-400"
+                          className="font-sans text-xs text-black/45 dark:text-zinc-400"
                         >
                           {model.contextWindow.replace(" tokens", "")}
                         </time>
 
-                        <span className="text-[11px] font-mono px-2 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 transition-colors duration-150 group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347]">
+                        <span className="text-[11px] font-sans px-2 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 transition-colors duration-150 group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347]">
                           {model.statusBadge}
                         </span>
 
@@ -379,16 +379,16 @@ export default function Home() {
         <TextWithBlur delay={300}>
           <div className="mt-12 border-t border-black/10 dark:border-white/[0.08] pt-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xs font-mono uppercase tracking-widest text-[#ff5d2e] font-medium flex items-center gap-1.5">
+              <h2 className="text-xs font-sans uppercase tracking-widest text-[#ff5d2e] font-medium flex items-center gap-1.5">
                 <Terminal size={12} />
                 <span>OPEN TELEMETRY &amp; SYNDICATION</span>
               </h2>
-              <span className="text-[11px] font-mono text-black/35 dark:text-zinc-400">
+              <span className="text-[11px] font-sans text-black/35 dark:text-zinc-400">
                 curl -s https://modelregistry.tirup.in
               </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs font-mono">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs font-sans">
               <a
                 href="/api/v1/models"
                 target="_blank"
@@ -466,7 +466,7 @@ export default function Home() {
 
       {/* Industrial Footer */}
       <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/[0.08] max-w-4xl mx-auto w-full">
-        <p className="text-xs font-mono text-black/50 dark:text-zinc-400">
+        <p className="text-xs font-sans text-black/50 dark:text-zinc-400">
           © {currentYear} ModelRegistry. The open technical index for frontier AI systems.
         </p>
       </footer>

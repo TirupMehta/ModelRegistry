@@ -110,7 +110,7 @@ export default function LeaderboardPage() {
                   </div>
 
                   {/* Leader Banner */}
-                  <div className="mb-4 py-2 px-3 rounded bg-[#ff5d2e]/5 dark:bg-[#ff5d2e]/10 border border-[#ff5d2e]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 text-xs font-mono">
+                  <div className="mb-4 py-2 px-3 rounded bg-[#ff5d2e]/5 dark:bg-[#ff5d2e]/10 border border-[#ff5d2e]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 text-xs font-sans">
                     <span className="text-[#ff5d2e] font-medium uppercase tracking-wider text-[11px] shrink-0">
                       DOMAIN SOTA
                     </span>
@@ -128,18 +128,18 @@ export default function LeaderboardPage() {
                         className="group cursor-pointer p-2.5 sm:p-3 rounded-md border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 flex items-center justify-between gap-2.5 sm:gap-3 text-xs"
                       >
                         <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-                          <span className="font-mono text-black/35 dark:text-zinc-500 w-5 shrink-0 tabular-nums transition-colors group-hover:text-[#ff5d2e]">
+                          <span className="font-sans text-black/35 dark:text-zinc-500 w-5 shrink-0 tabular-nums transition-colors group-hover:text-[#ff5d2e]">
                             {String(mIndex + 1).padStart(2, "0")}
                           </span>
                           <span className="font-medium text-black dark:text-zinc-100 truncate group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {model.name}
                           </span>
-                          <span className="text-black/40 dark:text-zinc-400 font-mono text-[11px] shrink-0 hidden sm:inline">
+                          <span className="text-black/40 dark:text-zinc-400 font-sans text-[11px] shrink-0 hidden sm:inline">
                             ({model.companyName})
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-2 sm:gap-3 shrink-0 font-mono">
+                        <div className="flex items-center gap-2 sm:gap-3 shrink-0 font-sans">
                           <span className="text-[11px] text-black/55 dark:text-zinc-400 hidden sm:inline">
                             {model.contextWindow.replace(" tokens", "")}
                           </span>
@@ -166,7 +166,7 @@ export default function LeaderboardPage() {
 
       {/* Footer */}
       <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/[0.08] max-w-4xl mx-auto w-full">
-        <p className="text-[11px] font-mono text-black/50 dark:text-zinc-400">
+        <p className="text-[11px] font-sans text-black/50 dark:text-zinc-400">
           © {currentYear} ModelRegistry. The open technical index for frontier AI systems.
         </p>
       </footer>

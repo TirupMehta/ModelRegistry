@@ -50,7 +50,7 @@ export default function TimelinePage() {
                 {/* Technical node indicator */}
                 <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-sm bg-[#ff5d2e]" />
 
-                <h2 className="text-base sm:text-lg font-medium text-black dark:text-white mb-4 flex items-center gap-2 font-mono">
+                <h2 className="text-base sm:text-lg font-medium text-black dark:text-white mb-4 flex items-center gap-2 font-sans">
                   <Calendar size={14} className="text-[#ff5d2e]" />
                   <span>{monthYear}</span>
                   <span className="text-xs text-black/40 dark:text-zinc-400 font-normal">
@@ -68,7 +68,7 @@ export default function TimelinePage() {
                         onClick={() => setActiveModalModel(model)}
                         className="cursor-pointer p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
-                        <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 mb-1.5 font-mono text-xs">
+                        <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 mb-1.5 font-sans text-xs">
                           <div className="flex items-center gap-2 min-w-0">
                             <span
                               className="w-2 h-2 rounded-sm shrink-0"
@@ -92,7 +92,7 @@ export default function TimelinePage() {
                           {model.highlight}
                         </p>
 
-                        <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-3 text-xs pt-2 border-t border-black/5 dark:border-white/[0.06] font-mono">
+                        <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-3 text-xs pt-2 border-t border-black/5 dark:border-white/[0.06] font-sans">
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-[11px] text-black/45 dark:text-zinc-400">
                               {model.contextWindow}
@@ -124,7 +124,7 @@ export default function TimelinePage() {
 
       {/* Footer */}
       <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/[0.08] max-w-4xl mx-auto w-full">
-        <p className="text-[11px] font-mono text-black/50 dark:text-zinc-400">
+        <p className="text-[11px] font-sans text-black/50 dark:text-zinc-400">
           © {currentYear} ModelRegistry. The open technical index for frontier AI systems.
         </p>
       </footer>

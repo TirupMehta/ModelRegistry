@@ -40,7 +40,7 @@ export default async function Image() {
             <span
               style={{
                 fontSize: "18px",
-                fontFamily: "monospace",
+                fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
                 textTransform: "uppercase",
                 letterSpacing: "0.2em",
                 color: "#818cf8",
@@ -58,7 +58,7 @@ export default async function Image() {
               backgroundColor: "rgba(255, 255, 255, 0.05)",
               border: "1px solid rgba(255, 255, 255, 0.1)",
               fontSize: "14px",
-              fontFamily: "monospace",
+              fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
               color: "rgba(255, 255, 255, 0.6)",
             }}
           >
@@ -106,7 +106,7 @@ export default async function Image() {
         >
           <div style={{ display: "flex", gap: "32px" }}>
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <span style={{ fontSize: "12px", fontFamily: "monospace", color: "rgba(255, 255, 255, 0.4)" }}>
+              <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
                 PRIMARY FLAGSHIPS
               </span>
               <span style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>
@@ -114,7 +114,7 @@ export default async function Image() {
               </span>
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <span style={{ fontSize: "12px", fontFamily: "monospace", color: "rgba(255, 255, 255, 0.4)" }}>
+              <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
                 PEAK CONTEXT
               </span>
               <span style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>
@@ -122,7 +122,7 @@ export default async function Image() {
               </span>
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <span style={{ fontSize: "12px", fontFamily: "monospace", color: "rgba(255, 255, 255, 0.4)" }}>
+              <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
                 FRESHNESS
               </span>
               <span style={{ fontSize: "20px", fontWeight: 500, color: "#10b981" }}>
@@ -134,7 +134,7 @@ export default async function Image() {
           <span
             style={{
               fontSize: "18px",
-              fontFamily: "monospace",
+              fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
               color: "rgba(255, 255, 255, 0.5)",
             }}
           >

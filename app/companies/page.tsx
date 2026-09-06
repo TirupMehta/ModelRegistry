@@ -61,7 +61,7 @@ export default function CompaniesPage() {
                           <h2 className="text-xl font-medium text-black dark:text-white">
                             {company.name}
                           </h2>
-                          <span className="text-xs font-mono text-black/40 dark:text-zinc-400">
+                          <span className="text-xs font-sans text-black/40 dark:text-zinc-400">
                             ({company.headquarters})
                           </span>
                         </div>
@@ -75,7 +75,7 @@ export default function CompaniesPage() {
                       href={company.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-1 text-xs font-mono text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150 shrink-0 whitespace-nowrap pt-1"
+                      className="group inline-flex items-center gap-1 text-xs font-sans text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150 shrink-0 whitespace-nowrap pt-1"
                     >
                       <Globe size={12} />
                       <span>{new URL(company.website).hostname}</span>
@@ -91,7 +91,7 @@ export default function CompaniesPage() {
                         onClick={() => setActiveModalModel(flagshipModel)}
                         className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
-                        <div className="flex items-center justify-between text-xs font-mono mb-1.5">
+                        <div className="flex items-center justify-between text-xs font-sans mb-1.5">
                           <span className="text-[#ff5d2e] dark:text-[#ff7347] font-medium uppercase text-[11px] tracking-wider">
                             Primary Flagship
                           </span>
@@ -118,7 +118,7 @@ export default function CompaniesPage() {
                         onClick={() => setActiveModalModel(second)}
                         className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
-                        <div className="flex items-center justify-between text-xs font-mono mb-1.5">
+                        <div className="flex items-center justify-between text-xs font-sans mb-1.5">
                           <span className="font-medium uppercase text-[11px] tracking-wider flex items-center gap-1">
                             {latestDrop ? (
                               <span className="text-[#00e599] flex items-center gap-1">
@@ -139,7 +139,7 @@ export default function CompaniesPage() {
                           <span className="text-base font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {second.name}
                           </span>
-                          <span className="text-[11px] font-mono text-black/40 dark:text-zinc-500">
+                          <span className="text-[11px] font-sans text-black/40 dark:text-zinc-500">
                             ({second.categoryLabel})
                           </span>
                         </div>
@@ -150,7 +150,7 @@ export default function CompaniesPage() {
                       </div>
                     ) : (
                       flagshipModel && (
-                        <div className="p-4 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#131518] flex flex-col justify-center text-xs font-mono text-black/45 dark:text-zinc-400">
+                        <div className="p-4 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#131518] flex flex-col justify-center text-xs font-sans text-black/45 dark:text-zinc-400">
                           <p>
                             {company.name}&apos;s reigning foundation flagship is also its newest deployed model.
                           </p>
@@ -173,7 +173,7 @@ export default function CompaniesPage() {
 
       {/* Footer */}
       <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/[0.08] max-w-4xl mx-auto w-full">
-        <p className="text-[11px] font-mono text-black/50 dark:text-zinc-400">
+        <p className="text-[11px] font-sans text-black/50 dark:text-zinc-400">
           © {currentYear} ModelRegistry. The open technical index for frontier AI systems.
         </p>
       </footer>

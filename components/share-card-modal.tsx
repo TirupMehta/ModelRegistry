@@ -26,15 +26,14 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   const accentColor = company?.accentColor || "#ff5d2e"
 
   // Site type system — must match app/layout.tsx (next/font):
-  // Display = Space Grotesk, Body = Plus Jakarta Sans, Mono = JetBrains Mono.
+  // Display = Space Grotesk, Body/labels = Plus Jakarta Sans.
   // Canvas can only use document-loaded fonts, so every render is preceded
   // by ensureCardFonts() (document.fonts.load + fonts.ready).
   const F_DISPLAY = '"Space Grotesk", "Plus Jakarta Sans", sans-serif'
   const F_SANS = '"Plus Jakarta Sans", system-ui, -apple-system, sans-serif'
-  const F_MONO = '"JetBrains Mono", ui-monospace, SFMono-Regular, monospace'
+  const F_MONO = '"Plus Jakarta Sans", system-ui, -apple-system, sans-serif'
 
-  // next/font serves: Sans 300-700, Display 400-700, Mono 400-600.
-  // Mono tops out at 600 — never request 700/bold for it (would faux-bolden).
+  // next/font serves: Sans 300-700, Display 400-700.
   // Tracking: card text felt congested — open letter/word spacing a touch.
   const TRACK_LETTER = "0.02em"
   const TRACK_WORD = "0.06em"
@@ -45,8 +44,8 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       '400 24px "Plus Jakarta Sans"',
       '300 24px "Plus Jakarta Sans"',
       '700 24px "Plus Jakarta Sans"',
-      '500 16px "JetBrains Mono"',
-      '600 16px "JetBrains Mono"',
+      '500 16px "Plus Jakarta Sans"',
+      '600 16px "Plus Jakarta Sans"',
     ]
     await Promise.all(specs.map((s) => document.fonts.load(s)))
     await document.fonts.ready
@@ -492,7 +491,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
               }}
             />
           </div>
-          <span className="text-[10px] sm:text-[11px] font-mono text-black/40 dark:text-zinc-500 mt-2 sm:mt-3">
+          <span className="text-[10px] sm:text-[11px] font-sans text-black/40 dark:text-zinc-500 mt-2 sm:mt-3">
             Previewing {ratio === "story" ? "1080×1920 (Story)" : ratio === "square" ? "1080×1080 (Square)" : "1200×675 (Landscape)"} • High-DPI 2x
           </span>
         </div>
@@ -518,13 +517,13 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
             {/* Format / Aspect Ratio Selector */}
             <div className="mb-5">
-              <label className="text-[11px] font-mono uppercase tracking-wider text-black/40 dark:text-zinc-400 block mb-2 font-medium">
+              <label className="text-[11px] font-sans uppercase tracking-wider text-black/40 dark:text-zinc-400 block mb-2 font-medium">
                 FORMAT & RATIO
               </label>
               <div className="grid grid-cols-3 gap-1.5 p-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.04] border border-black/5 dark:border-white/[0.06]">
                 <button
                   onClick={() => setRatio("story")}
-                  className={`px-2.5 py-2 rounded text-xs font-mono transition-colors cursor-pointer flex flex-col items-center gap-1 ${
+                  className={`px-2.5 py-2 rounded text-xs font-sans transition-colors cursor-pointer flex flex-col items-center gap-1 ${
                     ratio === "story"
                       ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
                       : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
@@ -535,7 +534,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
                 </button>
                 <button
                   onClick={() => setRatio("square")}
-                  className={`px-2.5 py-2 rounded text-xs font-mono transition-colors cursor-pointer flex flex-col items-center gap-1 ${
+                  className={`px-2.5 py-2 rounded text-xs font-sans transition-colors cursor-pointer flex flex-col items-center gap-1 ${
                     ratio === "square"
                       ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
                       : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
@@ -546,7 +545,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
                 </button>
                 <button
                   onClick={() => setRatio("landscape")}
-                  className={`px-2.5 py-2 rounded text-xs font-mono transition-colors cursor-pointer flex flex-col items-center gap-1 ${
+                  className={`px-2.5 py-2 rounded text-xs font-sans transition-colors cursor-pointer flex flex-col items-center gap-1 ${
                     ratio === "landscape"
                       ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
                       : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
@@ -560,13 +559,13 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
             {/* Card Theme Palette */}
             <div className="mb-6">
-              <label className="text-[11px] font-mono uppercase tracking-wider text-black/40 dark:text-zinc-400 block mb-2 font-medium">
+              <label className="text-[11px] font-sans uppercase tracking-wider text-black/40 dark:text-zinc-400 block mb-2 font-medium">
                 CARD PALETTE
               </label>
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setCardTheme("dark")}
-                  className={`p-2.5 rounded-md border text-xs font-mono flex items-center justify-between cursor-pointer transition-colors ${
+                  className={`p-2.5 rounded-md border text-xs font-sans flex items-center justify-between cursor-pointer transition-colors ${
                     cardTheme === "dark"
                       ? "border-[#ff5d2e] bg-black/5 dark:bg-white/[0.06] text-black dark:text-white font-medium"
                       : "border-black/10 dark:border-white/[0.08] text-black/60 dark:text-zinc-400 hover:border-black/30 dark:hover:border-white/20"
@@ -577,7 +576,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
                 </button>
                 <button
                   onClick={() => setCardTheme("light")}
-                  className={`p-2.5 rounded-md border text-xs font-mono flex items-center justify-between cursor-pointer transition-colors ${
+                  className={`p-2.5 rounded-md border text-xs font-sans flex items-center justify-between cursor-pointer transition-colors ${
                     cardTheme === "light"
                       ? "border-[#ff5d2e] bg-black/5 dark:bg-white/[0.06] text-black dark:text-white font-medium"
                       : "border-black/10 dark:border-white/[0.08] text-black/60 dark:text-zinc-400 hover:border-black/30 dark:hover:border-white/20"
@@ -596,7 +595,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
             <button
               onClick={handleCopyImage}
               disabled={isRendering}
-              className="w-full py-2.5 px-3.5 rounded-md bg-black text-white dark:bg-white dark:text-black font-mono text-xs font-medium hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+              className="w-full py-2.5 px-3.5 rounded-md bg-black text-white dark:bg-white dark:text-black font-sans text-xs font-medium hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
             >
               {isCopied ? (
                 <>
@@ -615,7 +614,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
             <button
               onClick={handleDownload}
               disabled={isRendering}
-              className="w-full py-2.5 px-3.5 rounded-md border border-black/10 dark:border-white/[0.09] text-black dark:text-zinc-200 font-mono text-xs font-medium hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer bg-black/[0.015] dark:bg-white/[0.03]"
+              className="w-full py-2.5 px-3.5 rounded-md border border-black/10 dark:border-white/[0.09] text-black dark:text-zinc-200 font-sans text-xs font-medium hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer bg-black/[0.015] dark:bg-white/[0.03]"
             >
               <Download size={14} />
               <span>DOWNLOAD PNG ({ratio.toUpperCase()})</span>
@@ -624,7 +623,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
             {/* Native Mobile Share (if supported) */}
             <button
               onClick={handleNativeShare}
-              className="w-full py-2 px-3 rounded text-[11px] font-mono text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full py-2 px-3 rounded text-[11px] font-sans text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <Share2 size={12} />
               <span>Share to Instagram Story / Apps</span>
@@ -633,7 +632,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
             {/* GitHub README Badge Option */}
             <button
               onClick={handleCopyBadge}
-              className="w-full py-2 px-3 rounded border border-dashed border-black/10 dark:border-white/[0.08] text-[11px] font-mono text-black/55 dark:text-zinc-400 hover:border-[#ff5d2e]/40 hover:text-[#ff5d2e] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full py-2 px-3 rounded border border-dashed border-black/10 dark:border-white/[0.08] text-[11px] font-sans text-black/55 dark:text-zinc-400 hover:border-[#ff5d2e]/40 hover:text-[#ff5d2e] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
             >
               {isBadgeCopied ? (
                 <>
