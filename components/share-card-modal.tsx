@@ -17,6 +17,12 @@ type ThemeMode = "dark" | "light"
 export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [ratio, setRatio] = useState<AspectRatio>("square")
+
+  // Mobile opens on 9:16 Story (reads best on phones); desktop keeps Square.
+  // Mount-only so an explicit user pick is never overridden.
+  useEffect(() => {
+    if (window.innerWidth < 768) setRatio("story")
+  }, [])
   const [cardTheme, setCardTheme] = useState<ThemeMode>("dark")
   const [isCopied, setIsCopied] = useState(false)
   const [isBadgeCopied, setIsBadgeCopied] = useState(false)
@@ -544,11 +550,11 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-5 bg-black/60 backdrop-blur-md animate-in fade-in duration-150">
       <div
-        className="relative w-full max-w-4xl max-h-[95vh] flex flex-col md:flex-row bg-[#f7f7f4] dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.09] rounded-xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-4xl max-h-[95dvh] flex flex-col md:flex-row bg-[#f7f7f4] dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.09] rounded-xl shadow-2xl overflow-y-auto overscroll-contain md:overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Left Side: Canvas Preview */}
-        <div className="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 bg-black/[0.02] dark:bg-[#07080a] border-b md:border-b-0 md:border-r border-black/10 dark:border-white/[0.08] min-h-[200px] md:min-h-[300px] overflow-hidden">
+        <div className="shrink-0 md:shrink flex flex-col items-center justify-center p-3 sm:p-6 bg-black/[0.02] dark:bg-[#07080a] border-b md:border-b-0 md:border-r border-black/10 dark:border-white/[0.08] min-h-[200px] md:min-h-[300px] md:flex-1 overflow-hidden">
           <div
             onClick={openZoom}
             title="Click to view full size"
@@ -570,8 +576,8 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
           </span>
         </div>
 
-        {/* Right Side: Studio Controls & Export */}
-        <div className="w-full md:w-80 p-4 sm:p-6 flex flex-col justify-between bg-white dark:bg-[#0d0f13] overflow-y-auto overscroll-contain max-h-[58vh] md:max-h-none touch-scroll">
+        {/* Right Side: Studio Controls & Export (panel scrolls on mobile) */}
+        <div className="w-full md:w-80 p-4 sm:p-6 pb-[max(1rem,env(safe-area-inset-bottom))] flex flex-col justify-between bg-white dark:bg-[#0d0f13] md:overflow-y-auto md:overscroll-contain md:max-h-none touch-scroll">
           <div>
             {/* Header */}
             <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/[0.08] mb-4 sm:mb-5">
