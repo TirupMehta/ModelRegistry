@@ -25,6 +25,29 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   const company = companies[model.companyId]
   const accentColor = company?.accentColor || "#ff5d2e"
 
+  // Site type system — must match app/layout.tsx (next/font):
+  // Display = Space Grotesk, Body = Plus Jakarta Sans, Mono = JetBrains Mono.
+  // Canvas can only use document-loaded fonts, so every render is preceded
+  // by ensureCardFonts() (document.fonts.load + fonts.ready).
+  const F_DISPLAY = '"Space Grotesk", "Plus Jakarta Sans", sans-serif'
+  const F_SANS = '"Plus Jakarta Sans", system-ui, -apple-system, sans-serif'
+  const F_MONO = '"JetBrains Mono", ui-monospace, SFMono-Regular, monospace'
+
+  // next/font serves: Sans 300-700, Display 400-700, Mono 400-600.
+  // Mono tops out at 600 — never request 700/bold for it (would faux-bolden).
+  async function ensureCardFonts() {
+    const specs = [
+      '700 80px "Space Grotesk"',
+      '400 24px "Plus Jakarta Sans"',
+      '300 24px "Plus Jakarta Sans"',
+      '700 24px "Plus Jakarta Sans"',
+      '500 16px "JetBrains Mono"',
+      '600 16px "JetBrains Mono"',
+    ]
+    await Promise.all(specs.map((s) => document.fonts.load(s)))
+    await document.fonts.ready
+  }
+
   // Render the card to HTML5 canvas
   const drawCard = useCallback(() => {
     const canvas = canvasRef.current
@@ -139,10 +162,30 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       return y + lineHeight
     }
 
+    // Shrink font size until text fits maxWidth (long model names).
+    // Sets ctx.font as a side effect and returns the fitted size.
+    function fitFont(weight: number, family: string, baseSize: number, text: string, maxWidth: number, minSize = 12) {
+      let size = baseSize
+      ctx!.font = `${weight} ${size}px ${family}`
+      while (size > minSize && ctx!.measureText(text).width > maxWidth) {
+        size -= 2
+        ctx!.font = `${weight} ${size}px ${family}`
+      }
+      return size
+    }
+
+    // Truncate with ellipsis to fit maxWidth (uses currently-set font)
+    function ellipsis(text: string, maxWidth: number) {
+      if (ctx!.measureText(text).width <= maxWidth) return text
+      let t = text
+      while (t.length > 1 && ctx!.measureText(t + "…").width > maxWidth) t = t.slice(0, -1)
+      return t + "…"
+    }
+
     let curY = padding
 
     // 3. Top Header / Brand
-    ctx.font = "bold 24px -apple-system, BlinkMacSystemFont, sans-serif"
+    ctx.font = `700 24px ${F_DISPLAY}`
     ctx.fillStyle = textColor
     ctx.fillText("Model", padding, curY + 24)
     const brandWidth = ctx.measureText("Model").width
@@ -150,7 +193,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     ctx.fillText("Registry", padding + brandWidth, curY + 24)
 
     // Top Sub-tag
-    ctx.font = "500 13px monospace"
+    ctx.font = `500 13px ${F_MONO}`
     ctx.fillStyle = textMuted
     const tagText = "OPEN FRONTIER AI SPECIFICATION"
     const tagWidth = ctx.measureText(tagText).width
@@ -175,13 +218,13 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     ctx.arc(padding + 7, curY + 7, 7, 0, Math.PI * 2)
     ctx.fill()
 
-    ctx.font = "600 16px monospace"
+    ctx.font = `600 16px ${F_MONO}`
     ctx.fillStyle = textMuted
     ctx.fillText(company ? company.name.toUpperCase() : model.companyName.toUpperCase(), padding + 24, curY + 13)
 
     // Status Pill
     const badgeText = model.statusBadge
-    ctx.font = "bold 12px monospace"
+    ctx.font = `600 12px ${F_MONO}`
     const badgeMetrics = ctx.measureText(badgeText)
     const pillW = badgeMetrics.width + 20
     const pillX = width - padding - pillW
@@ -191,18 +234,20 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
     curY += ratio === "landscape" ? 44 : 54
 
-    // 5. Model Name
-    const titleSize = ratio === "story" ? 76 : ratio === "square" ? 54 : 46
-    ctx.font = `bold ${titleSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`
+    // 5. Model Name (auto-fit: long names shrink instead of overflowing)
+    const titleBase = ratio === "story" ? 76 : ratio === "square" ? 54 : 46
+    const titleSize = fitFont(700, F_DISPLAY, titleBase, model.name, contentWidth)
+    ctx.font = `700 ${titleSize}px ${F_DISPLAY}`
     ctx.fillStyle = textColor
     ctx.letterSpacing = "-0.03em"
     ctx.fillText(model.name, padding, curY + titleSize * 0.8)
+    ctx.letterSpacing = "0px"
 
     curY += titleSize + (ratio === "story" ? 40 : ratio === "square" ? 28 : 18)
 
     // 6. Highlight / Description
     const descSize = ratio === "story" ? 26 : ratio === "square" ? 21 : 17
-    ctx.font = `300 ${descSize}px -apple-system, BlinkMacSystemFont, sans-serif`
+    ctx.font = `300 ${descSize}px ${F_SANS}`
     ctx.fillStyle = textMuted
     curY = wrapText(
       model.highlight,
@@ -234,13 +279,13 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       const sx = padding + idx * (specCardW + specGap)
       roundRect(sx, curY, specCardW, specCardH, 8, cardSurface, borderColor)
 
-      ctx.font = `600 ${ratio === "story" ? 13 : 11}px monospace`
+      ctx.font = `600 ${ratio === "story" ? 13 : 11}px ${F_MONO}`
       ctx.fillStyle = textDim
       ctx.fillText(s.label, sx + 20, curY + (ratio === "story" ? 36 : 28))
 
-      ctx.font = `bold ${ratio === "story" ? 22 : 16}px -apple-system, BlinkMacSystemFont, sans-serif`
+      ctx.font = `700 ${ratio === "story" ? 22 : 16}px ${F_SANS}`
       ctx.fillStyle = textColor
-      ctx.fillText(s.value, sx + 20, curY + (ratio === "story" ? 82 : ratio === "square" ? 64 : 54))
+      ctx.fillText(ellipsis(s.value, specCardW - 40), sx + 20, curY + (ratio === "story" ? 82 : ratio === "square" ? 64 : 54))
     })
 
     curY += specCardH + (ratio === "story" ? 54 : ratio === "square" ? 36 : 20)
@@ -248,7 +293,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     // 8. Verified Benchmarks (if available)
     const benchmarkKeys = Object.entries(model.benchmarks)
     if (benchmarkKeys.length > 0 && ratio !== "landscape") {
-      ctx.font = `600 ${ratio === "story" ? 15 : 12}px monospace`
+      ctx.font = `600 ${ratio === "story" ? 15 : 12}px ${F_MONO}`
       ctx.fillStyle = textDim
       ctx.fillText("VERIFIED RESEARCH BENCHMARKS", padding, curY + 10)
       curY += ratio === "story" ? 34 : 24
@@ -262,11 +307,11 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
         roundRect(bx, curY, bCardW, bCardH, 6, cardSurface, borderColor)
 
         const label = bKey === "sweBench" ? "SWE-bench" : bKey === "aime2024" ? "AIME 2024" : bKey === "mmluPro" ? "MMLU-Pro" : "GPQA"
-        ctx.font = `500 ${ratio === "story" ? 13 : 11}px monospace`
+        ctx.font = `500 ${ratio === "story" ? 13 : 11}px ${F_MONO}`
         ctx.fillStyle = textDim
         ctx.fillText(label, bx + 16, curY + (ratio === "story" ? 34 : 24))
 
-        ctx.font = `bold ${ratio === "story" ? 26 : 18}px monospace`
+        ctx.font = `600 ${ratio === "story" ? 26 : 18}px ${F_MONO}`
         ctx.fillStyle = textColor
         ctx.fillText(String(bVal), bx + 16, curY + (ratio === "story" ? 78 : 54))
       })
@@ -278,17 +323,18 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     if (ratio === "story") {
       roundRect(padding, curY, contentWidth, 140, 8, cardSurface, borderColor)
 
-      ctx.font = "600 13px monospace"
+      ctx.font = `600 13px ${F_MONO}`
       ctx.fillStyle = textDim
       ctx.fillText("DEPLOYMENT STANDARD", padding + 24, curY + 38)
       ctx.fillText("LICENSING & WEIGHTS", padding + contentWidth / 2 + 12, curY + 38)
 
-      ctx.font = "bold 18px -apple-system, BlinkMacSystemFont, sans-serif"
+      const halfW = contentWidth / 2 - 48
+      ctx.font = `700 18px ${F_SANS}`
       ctx.fillStyle = textColor
-      ctx.fillText(model.modalities.join(" • "), padding + 24, curY + 80)
-      ctx.fillText(model.license, padding + contentWidth / 2 + 12, curY + 80)
+      ctx.fillText(ellipsis(model.modalities.join(" • "), halfW), padding + 24, curY + 80)
+      ctx.fillText(ellipsis(model.license, halfW), padding + contentWidth / 2 + 12, curY + 80)
 
-      ctx.font = "500 12px monospace"
+      ctx.font = `500 12px ${F_MONO}`
       ctx.fillStyle = accentColor
       ctx.fillText(`Category: ${model.categoryLabel.toUpperCase()}`, padding + 24, curY + 112)
     }
@@ -303,7 +349,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     ctx.stroke()
 
     // Verified Stamp
-    ctx.font = "600 13px monospace"
+    ctx.font = `600 13px ${F_MONO}`
     ctx.fillStyle = "#00e599"
     ctx.beginPath()
     ctx.arc(padding + 5, footerY - 14, 5, 0, Math.PI * 2)
@@ -312,7 +358,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
     // Official Registry URL
     const urlText = `modelregistry.tirup.in/?model=${model.id}`
-    ctx.font = "500 13px monospace"
+    ctx.font = `500 13px ${F_MONO}`
     ctx.fillStyle = textDim
     const urlW = ctx.measureText(urlText).width
     ctx.fillText(urlText, width - padding - urlW, footerY - 10)
@@ -321,9 +367,29 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   }, [model, ratio, cardTheme, company, accentColor])
 
   useEffect(() => {
-    if (isOpen) {
-      const timer = setTimeout(drawCard, 50)
-      return () => clearTimeout(timer)
+    if (!isOpen) return
+    let cancelled = false
+
+    // Wait for site webfonts before first paint, then redraw once more when
+    // late fonts arrive (prevents fallback-font flash baked into the export)
+    const render = async () => {
+      try {
+        await ensureCardFonts()
+      } catch {
+        // Offline / blocked fonts — fall through to system fallbacks
+      }
+      if (!cancelled) drawCard()
+    }
+
+    const timer = setTimeout(render, 50)
+    const redrawOnFontReady = () => {
+      if (!cancelled) drawCard()
+    }
+    document.fonts?.ready.then(redrawOnFontReady).catch(() => {})
+
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
     }
   }, [isOpen, drawCard])
 
