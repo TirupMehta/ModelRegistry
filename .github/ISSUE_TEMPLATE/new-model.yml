@@ -1,0 +1,54 @@
+name: New Model Request
+description: Request a new frontier model or checkpoint to be indexed
+title: "[MODEL]: "
+labels: ["new-model"]
+body:
+  - type: input
+    id: model-name
+    attributes:
+      label: Model name
+      description: Full public name, e.g. Meta Muse Spark 1.3
+      placeholder: Meta Muse Spark 1.3
+    validations:
+      required: true
+  - type: input
+    id: lab
+    attributes:
+      label: Laboratory
+      description: e.g. Meta AI, OpenAI, Anthropic, Google, DeepSeek, Qwen
+      placeholder: Meta AI
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official announcement URL (required)
+      description: Announcement, technical report, arXiv paper, or verified Hugging Face repo. No rumors.
+      placeholder: https://...
+    validations:
+      required: true
+  - type: dropdown
+    id: access
+    attributes:
+      label: Access
+      options:
+        - Proprietary (API only)
+        - Open weights (downloadable)
+        - Unknown
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Extra details
+      description: Context window, pricing per 1M tokens, modalities, flagship vs. specialized checkpoint?
+      placeholder: 262k context, $0.05 in / $0.15 out, Text+Vision+Audio...
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Popularity bar (check at least one)
+      description: This registry is curated, not exhaustive.
+      options:
+        - label: Top-15 OpenRouter weekly volume
+        - label: Primary flagship of a major lab
+        - label: Frontier capability (SOTA benchmark, new modality)

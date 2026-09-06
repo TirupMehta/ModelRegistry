@@ -1,0 +1,29 @@
+name: Bug Report
+description: Site, API, RSS, or badge is broken
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: input
+    id: route
+    attributes:
+      label: Affected route / file
+      description: e.g. /api/v1/models?company=meta, /models/[id], /rss.xml, /api/badge/meta
+      placeholder: /api/v1/models
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: What did you run / click? What did you expect vs. what happened?
+      placeholder: "1. curl -s ... 2. ..."
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: Browser / curl version, commit SHA if local (pnpm dev vs production URL)
+      placeholder: Chrome 126, modelregistry.tirup.in
+    validations:
+      required: false

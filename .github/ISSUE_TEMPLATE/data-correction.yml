@@ -1,0 +1,34 @@
+name: Data Correction
+description: Fix pricing, context window, links, or badges for an existing model
+title: "[CORRECTION]: "
+labels: ["data-fix"]
+body:
+  - type: input
+    id: model-id
+    attributes:
+      label: Model ID
+      description: The kebab-case id from data/models.ts
+      placeholder: meta-muse-spark-1-3
+    validations:
+      required: true
+  - type: input
+    id: field
+    attributes:
+      label: Wrong field + correct value
+      description: e.g. pricing.output should be 0.15, not 1.50
+      placeholder: pricing.input should be...
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official source proving the correction
+      description: Announcement, docs, or pricing page URL
+      placeholder: https://...
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Anything else reviewers should know

@@ -1,0 +1,33 @@
+name: Feature Request
+description: Suggest a registry, API, or site improvement
+title: "[FEATURE]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What workflow is painful today?
+      placeholder: I can't filter by...
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What should change in the site, API, validation (scripts/validate-registry.js), or docs?
+      placeholder: Add ?openWeights filter...
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Website UI (app/)
+        - REST API (app/api/)
+        - Data schema (data/, scripts/)
+        - Docs (CONTRIBUTING.md, README.md)
+        - Other
+    validations:
+      required: false

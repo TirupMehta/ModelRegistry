@@ -29,5 +29,4 @@ next-env.d.ts
 # system
 .DS_Store
 Thumbs.db
-/.github
 
