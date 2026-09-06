@@ -90,7 +90,7 @@ export default function ModelCardRow({ model, index, onSelect }: ModelCardRowPro
         {/* Right Metadata: Context, Date & Arrow */}
         <div className="flex items-center gap-3 sm:gap-5 shrink-0 text-right">
           <div className="hidden sm:flex flex-col items-end">
-            <span className="font-sans text-xs text-black/60 dark:text-white/60">
+            <span className="font-sans text-xs text-black/60 dark:text-white/60 tabular-nums">
               {model.contextWindow.replace(" tokens", "")}
             </span>
             <span className="text-[11px] font-sans text-black/35 dark:text-white/35">

@@ -16,7 +16,7 @@ type ThemeMode = "dark" | "light"
 
 export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const [ratio, setRatio] = useState<AspectRatio>("story")
+  const [ratio, setRatio] = useState<AspectRatio>("square")
   const [cardTheme, setCardTheme] = useState<ThemeMode>("dark")
   const [isCopied, setIsCopied] = useState(false)
   const [isBadgeCopied, setIsBadgeCopied] = useState(false)

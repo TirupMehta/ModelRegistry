@@ -171,7 +171,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               <Layers size={13} />
               <span>CONTEXT WINDOW</span>
             </div>
-            <p className="text-xs sm:text-sm font-medium text-black dark:text-white leading-tight">
+            <p className="tabular-nums text-xs sm:text-sm font-medium text-black dark:text-white leading-tight">
               {model.contextWindow}
             </p>
           </div>
@@ -181,7 +181,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               <Cpu size={13} />
               <span>ARCHITECTURE</span>
             </div>
-            <p className="text-xs sm:text-sm font-medium text-black dark:text-white leading-tight break-words">
+            <p className="tabular-nums tabular-nums text-xs sm:text-sm font-medium text-black dark:text-white leading-tight break-words">
               {model.parameters}
             </p>
           </div>
@@ -191,7 +191,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               <DollarSign size={13} />
               <span>OFFICIAL API / 1M</span>
             </div>
-            <div className="text-xs sm:text-sm font-medium text-black dark:text-white leading-tight">
+            <div className="tabular-nums text-xs sm:text-sm font-medium text-black dark:text-white leading-tight">
               <span>
                 ${model.pricing.input} in / ${model.pricing.output} out
               </span>
@@ -214,7 +214,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               {model.benchmarks.sweBench && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
                   <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">SWE-bench</span>
-                  <span className="text-base font-sans font-medium text-black dark:text-white">
+                  <span className="text-base font-sans font-medium tabular-nums text-black dark:text-white">
                     {model.benchmarks.sweBench}
                   </span>
                 </div>
@@ -222,7 +222,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               {model.benchmarks.aime2024 && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
                   <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">AIME 2024</span>
-                  <span className="text-base font-sans font-medium text-black dark:text-white">
+                  <span className="text-base font-sans font-medium tabular-nums text-black dark:text-white">
                     {model.benchmarks.aime2024}
                   </span>
                 </div>
@@ -230,7 +230,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               {model.benchmarks.mmluPro && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
                   <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">MMLU-Pro</span>
-                  <span className="text-base font-sans font-medium text-black dark:text-white">
+                  <span className="text-base font-sans font-medium tabular-nums text-black dark:text-white">
                     {model.benchmarks.mmluPro}
                   </span>
                 </div>
@@ -238,7 +238,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               {model.benchmarks.gpqa && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
                   <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">GPQA Diamond</span>
-                  <span className="text-base font-sans font-medium text-black dark:text-white">
+                  <span className="text-base font-sans font-medium tabular-nums text-black dark:text-white">
                     {model.benchmarks.gpqa}
                   </span>
                 </div>

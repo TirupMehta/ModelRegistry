@@ -95,7 +95,7 @@ export default function CompaniesPage() {
                           <span className="text-[#ff5d2e] dark:text-[#ff7347] font-medium uppercase text-[11px] tracking-wider">
                             Primary Flagship
                           </span>
-                          <span className="text-[11px] text-black/40 dark:text-zinc-400">
+                          <span className="text-[11px] text-black/40 dark:text-zinc-400 tabular-nums">
                             {flagshipModel.contextWindow.replace(" tokens", "")}
                           </span>
                         </div>

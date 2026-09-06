@@ -146,3 +146,18 @@ input {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
 }
+
+/*
+ * Light-theme legibility lift — muted black text renders washed out in the
+ * light theme (especially in proportional sans), so step it slightly darker.
+ * Unlayered rules win over Tailwind's layered utilities at equal specificity;
+ * `dark:` / hover variants (higher specificity) are unaffected.
+ */
+.text-black\/25 { color: rgb(0 0 0 / 0.35); }
+.text-black\/35 { color: rgb(0 0 0 / 0.45); }
+.text-black\/40 { color: rgb(0 0 0 / 0.5); }
+.text-black\/45 { color: rgb(0 0 0 / 0.55); }
+.text-black\/50 { color: rgb(0 0 0 / 0.6); }
+.text-black\/55 { color: rgb(0 0 0 / 0.63); }
+.text-black\/60 { color: rgb(0 0 0 / 0.68); }
+.text-black\/65 { color: rgb(0 0 0 / 0.72); }

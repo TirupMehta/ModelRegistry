@@ -346,12 +346,12 @@ export default function Home() {
 
                       {/* Specs Readout */}
                       <div className="flex items-center gap-3 shrink-0 text-right">
-                        <span className="hidden md:inline font-sans text-[11px] text-black/45 dark:text-zinc-400">
+                        <span className="hidden md:inline font-sans text-[11px] text-black/45 dark:text-zinc-400 tabular-nums">
                           ${model.pricing.input}/${model.pricing.output}
                         </span>
                         <time
                           dateTime={model.releaseDate}
-                          className="font-sans text-xs text-black/45 dark:text-zinc-400"
+                          className="font-sans text-xs text-black/45 dark:text-zinc-400 tabular-nums"
                         >
                           {model.contextWindow.replace(" tokens", "")}
                         </time>

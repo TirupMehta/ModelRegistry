@@ -140,10 +140,10 @@ export default function LeaderboardPage() {
                         </div>
 
                         <div className="flex items-center gap-2 sm:gap-3 shrink-0 font-sans">
-                          <span className="text-[11px] text-black/55 dark:text-zinc-400 hidden sm:inline">
+                          <span className="text-[11px] text-black/55 dark:text-zinc-400 hidden sm:inline tabular-nums">
                             {model.contextWindow.replace(" tokens", "")}
                           </span>
-                          <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e]">
+                          <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] tabular-nums">
                             {model.pricing.input === 0 ? "Free" : `$${model.pricing.input}/M`}
                           </span>
                           <ArrowUpRight size={12} className="opacity-30 group-hover:opacity-100 text-black dark:text-white group-hover:text-[#ff5d2e] transition-colors duration-150" />
