@@ -10,4 +10,5 @@
 export const leaderboardSpotlights: Record<string, string[]> = {
   reasoning: ["claude-fable-5-1", "gpt-6-astra", "grok-4-6", "gpt-5-6"],
   coding: ["claude-fable-5-1", "gemini-3-8-flash", "grok-4-6", "gpt-5-6"],
+  value: ["deepseek-v4-flash-0731", "mimo-v2-5", "glm-5-3-flash", "minimax-m3"],
 }

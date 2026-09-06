@@ -60,7 +60,9 @@ function generateMarkdownTable() {
     const company = companies[companyId]
     const flagship = modelsData.find((m) => m.companyId === companyId && m.isCompanyFlagship)
     const nonFlagships = modelsData.filter((m) => m.companyId === companyId && m.id !== flagship?.id)
-    const latestDrop = nonFlagships.find((m) => m.isLatestCheckpoint) || nonFlagships[0]
+    // Only a genuine latest checkpoint earns this cell. No fallback: showing a
+    // non-latest model here would mislabel it (same honesty rule as /companies).
+    const latestDrop = nonFlagships.find((m) => m.isLatestCheckpoint)
 
     const flagshipCell = flagship
       ? `[${flagship.name}](https://modelregistry.tirup.in/models/${flagship.id})`

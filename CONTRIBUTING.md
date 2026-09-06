@@ -53,6 +53,8 @@ Open `data/models.ts` and add your model to the `modelsData` array:
 
 > **💡 The Flagship Rule**: Each company has exactly **1 active flagship** (`isCompanyFlagship: true`). If your new model is the lab's primary flagship, set `isCompanyFlagship: true` on it and set `isCompanyFlagship: false` on the lab's previous flagship.
 
+> **🚧 The Popularity Bar**: This registry is curated, not exhaustive. A model belongs here only if it meets at least one: top-15 OpenRouter weekly volume, primary flagship of a major lab, or a genuinely frontier capability (SOTA benchmark, new modality). Obscure checkpoints and minor variants will be rejected — they turn the index into slop. When in doubt, merge variants into one family entry instead of adding new ones.
+
 ### 3. Validate & Submit
 ```bash
 pnpm test

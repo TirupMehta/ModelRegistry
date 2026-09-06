@@ -6,7 +6,7 @@ import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, ModelItem } from "@/data/models"
 import { leaderboardSpotlights } from "@/data/leaderboard"
-import { Code, Brain, Maximize, Coins, ShieldAlert, ArrowUpRight } from "lucide-react"
+import { Code, Brain, Maximize, Coins, ShieldAlert, Layers, ArrowUpRight } from "lucide-react"
 
 interface ComparisonCategory {
   title: string
@@ -37,6 +37,15 @@ export default function LeaderboardPage() {
       leader: "Claude Fable 5.1 (Terminal-Bench 52.6% SOTA) / Gemini 3.8 Flash",
       models: modelsData.filter((m) =>
         leaderboardSpotlights.coding.includes(m.id)
+      ),
+    },
+    {
+      title: "High-Volume Value",
+      icon: Layers,
+      description: "Models developers actually route at massive scale on OpenRouter — proven price-performance in production, not benchmark scores.",
+      leader: "DeepSeek V4 Flash 0731 (49.9T/30d) / MiMo-V2.5 (coding share #1)",
+      models: modelsData.filter((m) =>
+        leaderboardSpotlights.value.includes(m.id)
       ),
     },
     {
