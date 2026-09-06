@@ -221,22 +221,25 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
     let curY = padding
 
-    // 3. Top Header / Brand
-    ctx.font = `700 24px ${F_DISPLAY}`
+    // 3. Top Header / Brand (seated close to the divider, slightly larger)
+    const brandSize = ratio === "landscape" ? 26 : 28
+    const brandBaseline = curY + (ratio === "landscape" ? 32 : 42)
+    ctx.font = `700 ${brandSize}px ${F_DISPLAY}`
     ctx.fillStyle = textColor
-    ctx.fillText("Model", padding, curY + 24)
+    ctx.fillText("Model", padding, brandBaseline)
     const brandWidth = ctx.measureText("Model").width
     ctx.fillStyle = "#ff5d2e"
-    ctx.fillText("Registry", padding + brandWidth, curY + 24)
+    ctx.fillText("Registry", padding + brandWidth, brandBaseline)
 
     // Top Sub-tag
-    ctx.font = `500 13px ${F_MONO}`
+    const tagSize = ratio === "landscape" ? 14 : 15
+    ctx.font = `500 ${tagSize}px ${F_MONO}`
     ctx.fillStyle = textMuted
     const tagText = "OPEN FRONTIER AI SPECIFICATION"
     const tagWidth = ctx.measureText(tagText).width
-    ctx.fillText(tagText, width - padding - tagWidth, curY + 22)
+    ctx.fillText(tagText, width - padding - tagWidth, brandBaseline - 2)
 
-    curY += ratio === "landscape" ? 64 : 90
+    curY += ratio === "landscape" ? 54 : 74
 
     // Hairline Divider
     ctx.strokeStyle = borderColor
@@ -376,29 +379,29 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       ctx.fillText(`Category: ${model.categoryLabel.toUpperCase()}`, padding + 24, curY + 112)
     }
 
-    // 9. Bottom Footer / Watermark Verification
+    // 9. Bottom Footer / Watermark Verification (lifted, slightly larger)
     const footerY = height - padding
     ctx.strokeStyle = borderColor
     ctx.lineWidth = 1
     ctx.beginPath()
-    ctx.moveTo(padding, footerY - 40)
-    ctx.lineTo(width - padding, footerY - 40)
+    ctx.moveTo(padding, footerY - 44)
+    ctx.lineTo(width - padding, footerY - 44)
     ctx.stroke()
 
     // Verified Stamp (darker green on light cards for contrast)
-    ctx.font = `600 13px ${F_MONO}`
+    ctx.font = `600 15px ${F_MONO}`
     ctx.fillStyle = isDark ? "#00e599" : "#00885c"
     ctx.beginPath()
-    ctx.arc(padding + 5, footerY - 14, 5, 0, Math.PI * 2)
+    ctx.arc(padding + 6, footerY - 14, 6, 0, Math.PI * 2)
     ctx.fill()
-    ctx.fillText("VERIFIED SOTA RECORD", padding + 18, footerY - 10)
+    ctx.fillText("VERIFIED SOTA RECORD", padding + 20, footerY - 9)
 
     // Official Registry URL
     const urlText = `modelregistry.tirup.in/?model=${model.id}`
-    ctx.font = `500 13px ${F_MONO}`
+    ctx.font = `500 15px ${F_MONO}`
     ctx.fillStyle = textDim
     const urlW = ctx.measureText(urlText).width
-    ctx.fillText(urlText, width - padding - urlW, footerY - 10)
+    ctx.fillText(urlText, width - padding - urlW, footerY - 9)
 
     setIsRendering(false)
   }, [model, ratio, cardTheme, company, accentColor])
