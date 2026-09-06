@@ -20,7 +20,7 @@ export default function CompaniesPage() {
       <Header />
 
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <div className="space-y-4 text-base md:text-[17px] font-light text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
+        <div className="space-y-4 text-base md:text-[17px] font-normal text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
             <p>
               Frontier research laboratories driving machine intelligence forward. 
@@ -65,7 +65,7 @@ export default function CompaniesPage() {
                             ({company.headquarters})
                           </span>
                         </div>
-                        <p className="text-xs sm:text-sm font-light text-black/60 dark:text-zinc-400 mt-0.5 max-w-xl">
+                        <p className="text-xs sm:text-sm font-normal text-black/60 dark:text-zinc-400 mt-0.5 max-w-xl">
                           {company.description}
                         </p>
                       </div>
@@ -106,7 +106,7 @@ export default function CompaniesPage() {
                           </span>
                         </div>
 
-                        <p className="text-xs font-light text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-2">
+                        <p className="text-xs font-normal text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-2">
                           {flagshipModel.highlight}
                         </p>
                       </div>
@@ -144,7 +144,7 @@ export default function CompaniesPage() {
                           </span>
                         </div>
 
-                        <p className="text-xs font-light text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-2">
+                        <p className="text-xs font-normal text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-2">
                           {second.highlight}
                         </p>
                       </div>

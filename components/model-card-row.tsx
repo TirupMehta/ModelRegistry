@@ -81,7 +81,7 @@ export default function ModelCardRow({ model, index, onSelect }: ModelCardRowPro
             </div>
 
             {/* Micro Summary Highlight */}
-            <p className="mt-1 text-xs sm:text-sm font-light text-black/55 dark:text-white/55 leading-relaxed line-clamp-1 group-hover:text-black/75 dark:group-hover:text-white/75 [transition:color_80ms_ease-out]">
+            <p className="mt-1 text-xs sm:text-sm font-normal text-black/55 dark:text-white/55 leading-relaxed line-clamp-1 group-hover:text-black/75 dark:group-hover:text-white/75 [transition:color_80ms_ease-out]">
               {model.highlight}
             </p>
           </div>

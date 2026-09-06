@@ -178,7 +178,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           </div>
 
           {/* Description Highlight */}
-          <p className="text-[15px] sm:text-[17px] font-light text-black/80 dark:text-zinc-200 leading-7 sm:leading-8 tracking-normal [word-spacing:0.04em] mb-7 sm:mb-9 max-w-3xl">
+          <p className="text-[15px] sm:text-[17px] font-normal text-black/80 dark:text-zinc-200 leading-7 sm:leading-8 tracking-normal mb-7 sm:mb-9 max-w-3xl">
             {model.highlight}
           </p>
 

@@ -129,7 +129,7 @@ export default function Home() {
 
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         {/* Thesis Description */}
-        <div className="space-y-4 text-base md:text-[17px] font-light text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
+        <div className="space-y-4 text-base md:text-[17px] font-normal text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
             <p>
               ModelRegistry is an open technical ledger indexing primary foundation model architectures alongside specialized research checkpoints across leading AI laboratories.
@@ -282,7 +282,7 @@ export default function Home() {
                         <span>{model.pricing.input === 0 ? "Open" : `$${model.pricing.input}/M`}</span>
                       </div>
 
-                      <p className="text-xs font-light text-black/65 dark:text-zinc-300 leading-relaxed line-clamp-2 pl-5">
+                      <p className="text-xs font-normal text-black/65 dark:text-zinc-300 leading-relaxed line-clamp-2 pl-5">
                         {model.highlight}
                       </p>
 

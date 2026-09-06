@@ -60,7 +60,7 @@ export default function LiveSearchHeader({
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
               className={[
-                "px-2.5 py-1 rounded-md transition-all select-none shrink-0 font-light cursor-pointer active:scale-95",
+                "px-2.5 py-1 rounded-md transition-all select-none shrink-0 font-normal cursor-pointer active:scale-95",
                 isActive
                   ? "bg-black text-white dark:bg-white dark:text-black font-normal"
                   : "bg-black/[0.03] dark:bg-white/[0.03] text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 border border-black/5 dark:border-white/5",
