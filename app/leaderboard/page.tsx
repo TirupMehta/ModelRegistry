@@ -91,7 +91,7 @@ export default function LeaderboardPage() {
 
             return (
               <TextWithBlur key={category.title} delay={index * 35}>
-                <div className="p-4 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:all_120ms_ease-out]">
+                <div className="p-4 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:border-color,background-color_120ms_ease-out]">
                   {/* Category Header */}
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3">
@@ -125,6 +125,15 @@ export default function LeaderboardPage() {
                       <div
                         key={model.id}
                         onClick={() => setActiveModalModel(model)}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`View details for ${model.name}`}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault()
+                            setActiveModalModel(model)
+                          }
+                        }}
                         className="group cursor-pointer p-2.5 sm:p-3 rounded-md border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 flex items-center justify-between gap-2.5 sm:gap-3 text-xs"
                       >
                         <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">

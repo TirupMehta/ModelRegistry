@@ -38,6 +38,12 @@ html.dark {
   transition: none !important;
 }
 
+/* Visible keyboard focus site-wide (mouse users unaffected) */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 html {
   scroll-behavior: smooth;
   height: 100%;

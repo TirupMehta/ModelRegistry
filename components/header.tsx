@@ -28,7 +28,7 @@ function NavLinks({ pathname }: { pathname: string }) {
             key={href}
             href={href}
             className={[
-              "group relative inline-flex items-center gap-1.5 sm:gap-2 py-1.5 px-2.5 sm:px-3 rounded-md text-xs sm:text-[13px] font-sans tracking-tight select-none cursor-pointer whitespace-nowrap transition-all duration-150 ease-out",
+              "group relative inline-flex items-center gap-1.5 sm:gap-2 py-1.5 px-2.5 sm:px-3 rounded-md text-xs sm:text-[13px] font-sans tracking-tight select-none cursor-pointer whitespace-nowrap transition-colors duration-150 ease-out",
               active
                 ? "bg-white dark:bg-[#1e222a] text-black dark:text-white font-medium shadow-xs border border-black/10 dark:border-white/10"
                 : "text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]",

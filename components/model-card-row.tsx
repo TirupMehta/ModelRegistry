@@ -64,17 +64,17 @@ export default function ModelCardRow({ model, index, onSelect }: ModelCardRowPro
               </span>
 
               {/* Badge */}
-              <span className="text-[10px] font-sans uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]">
+              <span className="text-[11px] font-sans uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]">
                 {model.statusBadge}
               </span>
 
               {model.isCompanyFlagship && (
-                <span className="text-[10px] font-sans tracking-tight text-accent font-medium">
+                <span className="text-[11px] font-sans tracking-tight text-accent font-medium">
                   • Flagship
                 </span>
               )}
               {model.isLatestCheckpoint && !model.isCompanyFlagship && (
-                <span className="text-[10px] font-sans tracking-tight text-emerald-600 dark:text-emerald-400 font-medium">
+                <span className="text-[11px] font-sans tracking-tight text-emerald-600 dark:text-emerald-400 font-medium">
                   • Latest Drop
                 </span>
               )}

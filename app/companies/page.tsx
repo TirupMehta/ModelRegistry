@@ -48,7 +48,7 @@ export default function CompaniesPage() {
 
             return (
               <TextWithBlur key={company.id} delay={index * 35}>
-                <div className="p-5 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:all_120ms_ease-out]">
+                <div className="p-5 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:border-color,background-color_120ms_ease-out]">
                   {/* Lab Header */}
                   <div className="flex items-start justify-between gap-3 sm:gap-4 mb-4">
                     <div className="flex items-center gap-3 min-w-0">
@@ -89,6 +89,15 @@ export default function CompaniesPage() {
                     {flagshipModel && (
                       <div
                         onClick={() => setActiveModalModel(flagshipModel)}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`View details for ${flagshipModel.name}`}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault()
+                            setActiveModalModel(flagshipModel)
+                          }
+                        }}
                         className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
                         <div className="flex items-center justify-between text-xs font-sans mb-1.5">
@@ -116,6 +125,15 @@ export default function CompaniesPage() {
                     {second ? (
                       <div
                         onClick={() => setActiveModalModel(second)}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`View details for ${second.name}`}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault()
+                            setActiveModalModel(second)
+                          }
+                        }}
                         className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
                         <div className="flex items-center justify-between text-xs font-sans mb-1.5">

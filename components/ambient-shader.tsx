@@ -130,7 +130,12 @@ export default function AmbientShader() {
         ctx.fillRect(0, 0, width, height)
       }
 
+    // Honor prefers-reduced-motion: one static frame, no animation loop
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      render(performance.now())
+    } else {
       animationFrameId = requestAnimationFrame(render)
+    }
     }
 
     animationFrameId = requestAnimationFrame(render)

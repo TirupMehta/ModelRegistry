@@ -176,7 +176,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
           y += lineHeight
           lineCount++
           if (lineCount >= maxLines - 1 && n < words.length - 1) {
-            ctx!.fillText(line.trim() + "...", x, y)
+            ctx!.fillText(line.trim() + "…", x, y)
             return y + lineHeight
           }
         } else {
@@ -553,7 +553,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
           >
             <canvas
               ref={canvasRef}
-              className="max-h-full max-w-full object-contain rounded shadow-lg border border-black/10 dark:border-white/[0.08] transition-all duration-200"
+              className="max-h-full max-w-full object-contain rounded shadow-lg border border-black/10 dark:border-white/[0.08] transition-opacity duration-200"
               style={{
                 aspectRatio: ratio === "story" ? "9/16" : ratio === "square" ? "1/1" : "16/9",
               }}
@@ -568,7 +568,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
         </div>
 
         {/* Right Side: Studio Controls & Export */}
-        <div className="w-full md:w-80 p-4 sm:p-6 flex flex-col justify-between bg-white dark:bg-[#0d0f13] overflow-y-auto max-h-[58vh] md:max-h-none touch-scroll">
+        <div className="w-full md:w-80 p-4 sm:p-6 flex flex-col justify-between bg-white dark:bg-[#0d0f13] overflow-y-auto overscroll-contain max-h-[58vh] md:max-h-none touch-scroll">
           <div>
             {/* Header */}
             <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/[0.08] mb-4 sm:mb-5">
@@ -580,6 +580,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
               </div>
               <button
                 onClick={onClose}
+                aria-label="Close share studio"
                 className="p-1 rounded text-black/40 dark:text-zinc-500 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
               >
                 <X size={16} />
@@ -601,7 +602,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
                   }`}
                 >
                   <span>9:16</span>
-                  <span className="text-[10px] opacity-70">Story</span>
+                  <span className="text-[11px] opacity-70">Story</span>
                 </button>
                 <button
                   onClick={() => setRatio("square")}
@@ -612,7 +613,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
                   }`}
                 >
                   <span>1:1</span>
-                  <span className="text-[10px] opacity-70">Square</span>
+                  <span className="text-[11px] opacity-70">Square</span>
                 </button>
                 <button
                   onClick={() => setRatio("landscape")}
@@ -623,7 +624,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
                   }`}
                 >
                   <span>16:9</span>
-                  <span className="text-[10px] opacity-70">Post</span>
+                  <span className="text-[11px] opacity-70">Post</span>
                 </button>
               </div>
             </div>
@@ -724,7 +725,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       {/* Fullscreen zoom overlay (stops propagation so parent popup stays open) */}
       {isZoomed && zoomSrc && (
         <div
-          className="fixed inset-0 z-[70] bg-black/90 backdrop-blur-sm overflow-auto flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in duration-150"
+          className="fixed inset-0 z-[70] bg-black/90 backdrop-blur-sm overflow-auto overscroll-contain flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in duration-150"
           onClick={(e) => {
             e.stopPropagation()
             closeZoom()

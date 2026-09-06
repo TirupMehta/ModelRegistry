@@ -105,18 +105,18 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
       <main className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 py-6 sm:py-10">
         {/* Breadcrumb Navigation */}
-        <div className="flex items-center gap-2.5 mb-7 text-xs font-sans tracking-wider leading-relaxed text-black/50 dark:text-zinc-400">
+        <div className="flex items-center gap-2.5 mb-7 text-xs font-sans tracking-wider leading-relaxed text-black/50 dark:text-zinc-400 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <Link
             href="/"
-            className="inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150"
+            className="inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150 shrink-0"
           >
             <ArrowLeft size={13} />
             <span>LEDGER</span>
           </Link>
-          <span>/</span>
-          <span className="uppercase text-black/70 dark:text-zinc-300">{model.companyName}</span>
-          <span>/</span>
-          <span className="text-[#ff5d2e] font-medium">{model.id}</span>
+          <span className="shrink-0">/</span>
+          <span className="uppercase text-black/70 dark:text-zinc-300 truncate">{model.companyName}</span>
+          <span className="shrink-0">/</span>
+          <span className="text-[#ff5d2e] font-medium truncate">{model.id}</span>
         </div>
 
         {/* Datasheet Container */}

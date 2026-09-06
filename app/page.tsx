@@ -144,7 +144,7 @@ export default function Home() {
                 setCurlCopied(true)
                 setTimeout(() => setCurlCopied(false), 2000)
               }}
-              className="group inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:bg-black/[0.04] dark:hover:bg-white/[0.05] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-all duration-150 cursor-pointer select-none text-[11px] sm:text-xs max-w-full shrink-0"
+              className="group inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:bg-black/[0.04] dark:hover:bg-white/[0.05] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-[color,background-color,border-color,transform] duration-150 cursor-pointer select-none text-[11px] sm:text-xs max-w-full shrink-0"
               title="Copy terminal CLI query"
             >
               <Terminal size={12} className="text-[#ff5d2e] shrink-0" />
@@ -226,6 +226,10 @@ export default function Home() {
               <input
                 id="models-search-input"
                 type="text"
+                aria-label="Filter model index"
+                name="model-filter"
+                autoComplete="off"
+                spellCheck={false}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="filter index..."
@@ -252,6 +256,15 @@ export default function Home() {
                 <TextWithBlur key={model.id} delay={Math.min(index * 20, 200)}>
                   <div
                     onClick={() => setActiveModalModel(model)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`View details for ${model.name}`}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault()
+                        setActiveModalModel(model)
+                      }
+                    }}
                     className={[
                       "group block py-3 sm:py-3.5 -mx-2 sm:-mx-3 px-2 sm:px-3 rounded-md cursor-pointer transition-colors duration-150",
                       index > 0 ? "border-t border-black/10 dark:border-white/[0.06]" : "",
@@ -393,14 +406,14 @@ export default function Home() {
                 href="/api/v1/models"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-black/[0.045] dark:hover:bg-[#13161c] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
+                className="group p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-black/[0.045] dark:hover:bg-[#13161c] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-[color,background-color,border-color,transform] duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
               >
                 <span className="text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
                   GET /api/v1/models
                 </span>
                 <ArrowUpRight
                   size={12}
-                  className="text-black/35 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-150 ease-out shrink-0"
+                  className="text-black/35 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,transform] duration-150 ease-out shrink-0"
                 />
               </a>
 
@@ -408,14 +421,14 @@ export default function Home() {
                 href="/rss.xml"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-black/[0.045] dark:hover:bg-[#13161c] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
+                className="group p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-black/[0.045] dark:hover:bg-[#13161c] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-[color,background-color,border-color,transform] duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
               >
                 <span className="text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
                   GET /rss.xml
                 </span>
                 <ArrowUpRight
                   size={12}
-                  className="text-black/35 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-150 ease-out shrink-0"
+                  className="text-black/35 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,transform] duration-150 ease-out shrink-0"
                 />
               </a>
 
@@ -423,14 +436,14 @@ export default function Home() {
                 href="/llms.txt"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-black/[0.045] dark:hover:bg-[#13161c] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
+                className="group p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-black/[0.045] dark:hover:bg-[#13161c] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-[color,background-color,border-color,transform] duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
               >
                 <span className="text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
                   GET /llms.txt
                 </span>
                 <ArrowUpRight
                   size={12}
-                  className="text-black/35 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-150 ease-out shrink-0"
+                  className="text-black/35 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,transform] duration-150 ease-out shrink-0"
                 />
               </a>
 

@@ -66,6 +66,15 @@ export default function TimelinePage() {
                       <div
                         key={model.id}
                         onClick={() => setActiveModalModel(model)}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`View details for ${model.name}`}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault()
+                            setActiveModalModel(model)
+                          }
+                        }}
                         className="cursor-pointer p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
                         <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 mb-1.5 font-sans text-xs">

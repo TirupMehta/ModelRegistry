@@ -36,13 +36,17 @@ export default function LiveSearchHeader({
         />
         <input
           type="text"
+          aria-label="Search models"
+          name="model-search"
+          autoComplete="off"
+          spellCheck={false}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search models, labs, reasoning, context windows... (e.g. Claude 3.7, o3, DeepSeek)"
           className="w-full pl-10 pr-16 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/10 text-xs sm:text-sm text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-white/35 focus:outline-none focus:border-accent/60 transition-colors"
         />
         <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-none">
-          <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-sans text-black/40 dark:text-white/40 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded">
+          <kbd className="hidden sm:inline-block px-1.5 py-0.5 text-[11px] font-sans text-black/40 dark:text-white/40 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded">
             /
           </kbd>
           <span className="text-[11px] font-sans text-black/40 dark:text-white/40 tabular-nums">
@@ -60,7 +64,7 @@ export default function LiveSearchHeader({
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
               className={[
-                "px-2.5 py-1 rounded-md transition-all select-none shrink-0 font-normal cursor-pointer active:scale-95",
+                "px-2.5 py-1 rounded-md transition-colors select-none shrink-0 font-normal cursor-pointer active:scale-95",
                 isActive
                   ? "bg-black text-white dark:bg-white dark:text-black font-normal"
                   : "bg-black/[0.03] dark:bg-white/[0.03] text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 border border-black/5 dark:border-white/5",
