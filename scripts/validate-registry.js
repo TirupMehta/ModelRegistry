@@ -106,6 +106,28 @@ for (const [section, ids] of Object.entries(leaderboardSpotlights)) {
   })
 }
 
+// Company website URLs must be valid: /companies calls new URL() at render,
+// so one malformed URL would crash the whole page.
+for (const [companyId, company] of Object.entries(companies)) {
+  try {
+    new URL(company.website)
+  } catch {
+    errors.push(`Company '${companyId}': invalid website URL '${company.website}'.`)
+  }
+}
+
+// Every leaderboard section must be rendered by the leaderboard page,
+// so config keys can never go stale unnoticed in the other direction.
+const leaderboardPageSource = fs.readFileSync(
+  path.resolve(__dirname, "../app/leaderboard/page.tsx"),
+  "utf8"
+)
+for (const section of Object.keys(leaderboardSpotlights)) {
+  if (!leaderboardPageSource.includes(`leaderboardSpotlights.${section}`)) {
+    errors.push(`Leaderboard section '${section}' is configured but not rendered by app/leaderboard/page.tsx.`)
+  }
+}
+
 // Verify that each company has at least one flagship model
 for (const companyId of validCompanyIds) {
   const count = companyFlagshipCounts[companyId] || 0

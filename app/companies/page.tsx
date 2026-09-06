@@ -44,6 +44,7 @@ export default function CompaniesPage() {
               : [...modelsData]
                   .filter((m) => m.companyId === company.id && m.id !== flagshipModel?.id)
                   .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
+            const second = latestDrop ?? secondaryModel
 
             return (
               <TextWithBlur key={company.id} delay={index * 35}>
@@ -112,9 +113,9 @@ export default function CompaniesPage() {
                     )}
 
                     {/* Second slot: true latest checkpoint, else newest non-flagship (honestly labeled) */}
-                    {latestDrop || secondaryModel ? (
+                    {second ? (
                       <div
-                        onClick={() => setActiveModalModel((latestDrop ?? secondaryModel)!)}
+                        onClick={() => setActiveModalModel(second)}
                         className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
                         <div className="flex items-center justify-between text-xs font-mono mb-1.5">
@@ -130,21 +131,21 @@ export default function CompaniesPage() {
                             )}
                           </span>
                           <span className="text-[11px] text-black/40 dark:text-zinc-400">
-                            {formatDate((latestDrop ?? secondaryModel)!.releaseDate)}
+                            {formatDate(second.releaseDate)}
                           </span>
                         </div>
 
                         <div className="flex items-baseline gap-2 mb-1">
                           <span className="text-base font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
-                            {(latestDrop ?? secondaryModel)!.name}
+                            {second.name}
                           </span>
                           <span className="text-[11px] font-mono text-black/40 dark:text-zinc-500">
-                            ({(latestDrop ?? secondaryModel)!.categoryLabel})
+                            ({second.categoryLabel})
                           </span>
                         </div>
 
                         <p className="text-xs font-light text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-2">
-                          {(latestDrop ?? secondaryModel)!.highlight}
+                          {second.highlight}
                         </p>
                       </div>
                     ) : (

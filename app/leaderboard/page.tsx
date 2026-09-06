@@ -6,7 +6,7 @@ import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, ModelItem } from "@/data/models"
 import { leaderboardSpotlights } from "@/data/leaderboard"
-import { Code, Brain, Maximize, Coins, ShieldAlert, Layers, ArrowUpRight } from "lucide-react"
+import { Code, Brain, Maximize, Coins, Layers, ArrowUpRight } from "lucide-react"
 
 interface ComparisonCategory {
   title: string
