@@ -47,10 +47,15 @@ html.dark {
 html {
   scroll-behavior: smooth;
   height: 100%;
-  /* 110% root scale: all rem-based type, spacing, and containers render
-     ~10% larger for high-resolution displays. px-based values, borders,
-     and media-query breakpoints are unaffected. */
-  font-size: 110%;
+}
+
+/* 110% root scale on tablet/desktop only — phones keep 100%.
+   All rem-based type, spacing, and containers render ~10% larger on
+   high-resolution displays. px values, borders, and breakpoints unaffected. */
+@media (min-width: 768px) {
+  html {
+    font-size: 110%;
+  }
 }
 
 body {
@@ -72,13 +77,16 @@ h1, h2, h3, h4, h5, h6 {
 
 p {
   text-wrap: pretty;
-  letter-spacing: 0.01em;
+  letter-spacing: normal;
   line-height: 1.75;
   word-spacing: 0.08em;
 }
 
 body {
-  letter-spacing: 0.005em;
+  /* Body tracking stays normal: Jakarta is spaced by its designer, and
+     tracking on mixed-case copy breaks word cohesion (the "weird" feeling).
+     Airiness belongs in word-spacing + line-height, not letter-spacing. */
+  letter-spacing: normal;
   word-spacing: 0.02em;
 }
 
