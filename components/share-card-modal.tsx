@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
-import { Download, Copy, Share2, Check, X, Sparkles, Code2, Layers } from "lucide-react"
+import { Download, Copy, Share2, Check, X, Sparkles, Code2, Layers, ZoomIn } from "lucide-react"
 
 interface ShareCardModalProps {
   model: ModelItem
@@ -21,6 +21,8 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   const [isCopied, setIsCopied] = useState(false)
   const [isBadgeCopied, setIsBadgeCopied] = useState(false)
   const [isRendering, setIsRendering] = useState(false)
+  const [isZoomed, setIsZoomed] = useState(false)
+  const [zoomSrc, setZoomSrc] = useState<string | null>(null)
 
   // Default card palette follows the viewer's site theme (light → Vellum
   // Archival, dark → Obsidian Noir) and tracks live theme toggles while open.
@@ -502,6 +504,32 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     }
   }
 
+  // Fullscreen zoom preview — snapshots the 1x export so small text reads
+  // clearly. Capture-phase listener so Esc closes only the zoom, not the
+  // parent model popup behind it.
+  const openZoom = () => {
+    const out = getExportCanvas()
+    if (!out) return
+    setZoomSrc(out.toDataURL("image/png"))
+    setIsZoomed(true)
+  }
+  const closeZoom = () => {
+    setIsZoomed(false)
+    setZoomSrc(null)
+  }
+
+  useEffect(() => {
+    if (!isZoomed) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation()
+        closeZoom()
+      }
+    }
+    window.addEventListener("keydown", onKey, true)
+    return () => window.removeEventListener("keydown", onKey, true)
+  }, [isZoomed])
+
   // 4. Copy Markdown Badge
   const handleCopyBadge = () => {
     const badgeMarkdown = `[![ModelRegistry: ${model.name}](https://modelregistry.tirup.in/api/badge?model=${model.id})](https://modelregistry.tirup.in/?model=${model.id})`
@@ -518,7 +546,11 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       >
         {/* Left Side: Canvas Preview */}
         <div className="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 bg-black/[0.02] dark:bg-[#07080a] border-b md:border-b-0 md:border-r border-black/10 dark:border-white/[0.08] min-h-[200px] md:min-h-[300px] overflow-hidden">
-          <div className="relative w-full h-full flex items-center justify-center max-h-[32vh] sm:max-h-[48vh] md:max-h-[75vh]">
+          <div
+            onClick={openZoom}
+            title="Click to view full size"
+            className="relative w-full h-full flex items-center justify-center max-h-[32vh] sm:max-h-[48vh] md:max-h-[75vh] cursor-zoom-in group/preview"
+          >
             <canvas
               ref={canvasRef}
               className="max-h-full max-w-full object-contain rounded shadow-lg border border-black/10 dark:border-white/[0.08] transition-all duration-200"
@@ -526,9 +558,12 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
                 aspectRatio: ratio === "story" ? "9/16" : ratio === "square" ? "1/1" : "16/9",
               }}
             />
+            <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 px-2 py-1 rounded-md bg-black/60 text-white text-[10px] font-sans opacity-0 group-hover/preview:opacity-100 transition-opacity pointer-events-none">
+              <ZoomIn size={11} /> EXPAND
+            </span>
           </div>
           <span className="text-[10px] sm:text-[11px] font-sans text-black/40 dark:text-zinc-500 mt-2 sm:mt-3">
-            Previewing {ratio === "story" ? "1080×1920 (Story)" : ratio === "square" ? "1080×1080 (Square)" : "1200×675 (Landscape)"} • High-DPI 2x
+            Previewing {ratio === "story" ? "1080×1920 (Story)" : ratio === "square" ? "1080×1080 (Square)" : "1200×675 (Landscape)"} • High-DPI 2x • Click image to expand
           </span>
         </div>
 
@@ -685,6 +720,26 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
           </div>
         </div>
       </div>
+
+      {/* Fullscreen zoom overlay (stops propagation so parent popup stays open) */}
+      {isZoomed && zoomSrc && (
+        <div
+          className="fixed inset-0 z-[70] bg-black/90 backdrop-blur-sm overflow-auto flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in duration-150"
+          onClick={(e) => {
+            e.stopPropagation()
+            closeZoom()
+          }}
+        >
+          <img
+            src={zoomSrc}
+            alt={`${model.name} share card full-size preview`}
+            className="max-h-[92vh] max-w-[94vw] object-contain rounded-lg shadow-2xl"
+          />
+          <span className="fixed top-4 right-4 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white/10 text-white text-[11px] font-sans pointer-events-none">
+            <X size={12} /> ESC / CLICK TO CLOSE
+          </span>
+        </div>
+      )}
     </div>
   )
 }
