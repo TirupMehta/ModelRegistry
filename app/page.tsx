@@ -114,7 +114,7 @@ export default function Home() {
         <article style={{ maxWidth: "48rem", margin: "0 auto", padding: "2rem 1.5rem", fontFamily: "monospace", lineHeight: 1.6, color: "#111" }}>
           <h1>ModelRegistry — Frontier AI Model Telemetry Index</h1>
           <p>
-            Official open machine-readable registry of premier frontier artificial intelligence models across OpenAI, Anthropic, Google DeepMind, DeepSeek, Meta AI, xAI, Mistral, and Alibaba Cloud.
+            Official open machine-readable registry of premier frontier artificial intelligence models across OpenAI, Anthropic, Google DeepMind, DeepSeek, Meta AI, xAI, Mistral, Alibaba Cloud, Tencent Hunyuan, Z.ai, MiniMax, NVIDIA, Xiaomi, and Moonshot AI.
           </p>
           <h2>Active Heavyweight Flagships (September 2026)</h2>
           <ul>

@@ -32,20 +32,25 @@ export default function CompaniesPage() {
         {/* Labs List with Sibling Dimming */}
         <div className="flex flex-col list-hover-group space-y-6">
           {companyList.map((company, index) => {
-            // Find flagship and latest checkpoint
+            // Find flagship, true latest checkpoint, and newest non-flagship fallback
             const flagshipModel = modelsData.find(
               (m) => m.companyId === company.id && m.isCompanyFlagship
             )
             const latestDrop = modelsData.find(
               (m) => m.companyId === company.id && m.isLatestCheckpoint && m.id !== flagshipModel?.id
             )
+            const secondaryModel = latestDrop
+              ? null
+              : [...modelsData]
+                  .filter((m) => m.companyId === company.id && m.id !== flagshipModel?.id)
+                  .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
 
             return (
               <TextWithBlur key={company.id} delay={index * 35}>
                 <div className="p-5 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:all_120ms_ease-out]">
                   {/* Lab Header */}
-                  <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-start justify-between gap-3 sm:gap-4 mb-4">
+                    <div className="flex items-center gap-3 min-w-0">
                       <div
                         className="w-3.5 h-3.5 rounded-sm shrink-0 shadow-sm"
                         style={{ backgroundColor: company.accentColor }}
@@ -69,7 +74,7 @@ export default function CompaniesPage() {
                       href={company.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-1 text-xs font-mono text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
+                      className="group inline-flex items-center gap-1 text-xs font-mono text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150 shrink-0 whitespace-nowrap pt-1"
                     >
                       <Globe size={12} />
                       <span>{new URL(company.website).hostname}</span>
@@ -106,32 +111,40 @@ export default function CompaniesPage() {
                       </div>
                     )}
 
-                    {/* Latest Checkpoint (if distinct from flagship) */}
-                    {latestDrop ? (
+                    {/* Second slot: true latest checkpoint, else newest non-flagship (honestly labeled) */}
+                    {latestDrop || secondaryModel ? (
                       <div
-                        onClick={() => setActiveModalModel(latestDrop)}
+                        onClick={() => setActiveModalModel((latestDrop ?? secondaryModel)!)}
                         className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
                         <div className="flex items-center justify-between text-xs font-mono mb-1.5">
-                          <span className="text-[#00e599] font-medium uppercase text-[11px] tracking-wider flex items-center gap-1">
-                            <Sparkles size={11} /> Latest Checkpoint
+                          <span className="font-medium uppercase text-[11px] tracking-wider flex items-center gap-1">
+                            {latestDrop ? (
+                              <span className="text-[#00e599] flex items-center gap-1">
+                                <Sparkles size={11} /> Latest Checkpoint
+                              </span>
+                            ) : (
+                              <span className="text-black/55 dark:text-zinc-400">
+                                More from {company.shortName}
+                              </span>
+                            )}
                           </span>
                           <span className="text-[11px] text-black/40 dark:text-zinc-400">
-                            {formatDate(latestDrop.releaseDate)}
+                            {formatDate((latestDrop ?? secondaryModel)!.releaseDate)}
                           </span>
                         </div>
 
                         <div className="flex items-baseline gap-2 mb-1">
                           <span className="text-base font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
-                            {latestDrop.name}
+                            {(latestDrop ?? secondaryModel)!.name}
                           </span>
                           <span className="text-[11px] font-mono text-black/40 dark:text-zinc-500">
-                            ({latestDrop.categoryLabel})
+                            ({(latestDrop ?? secondaryModel)!.categoryLabel})
                           </span>
                         </div>
 
                         <p className="text-xs font-light text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-2">
-                          {latestDrop.highlight}
+                          {(latestDrop ?? secondaryModel)!.highlight}
                         </p>
                       </div>
                     ) : (

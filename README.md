@@ -23,13 +23,19 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | Laboratory | Primary Flagship | Latest Checkpoint | Context | Access | Pricing (1M) |
 |:---|:---|:---|:---|:---|:---|
 | [**Anthropic**](https://www.anthropic.com) | [Claude Fable 5.1](https://modelregistry.tirup.in/models/claude-fable-5-1) | [Claude Opus 5](https://modelregistry.tirup.in/models/claude-opus-5) | 1M | Proprietary | $10 in / $50 out |
-| [**OpenAI**](https://openai.com) | [GPT-6 Astra](https://modelregistry.tirup.in/models/gpt-6-astra) | [OpenAI Astra](https://modelregistry.tirup.in/models/openai-astra) | 1M | Proprietary | $10 in / $50 out |
-| [**Google DeepMind**](https://deepmind.google) | [Gemini 3.8 Flash](https://modelregistry.tirup.in/models/gemini-3-8-flash) | — | 1M | Proprietary | $0.75 in / $3.75 out |
+| [**OpenAI**](https://openai.com) | [GPT-6 Astra](https://modelregistry.tirup.in/models/gpt-6-astra) | [ChatGPT 5.6](https://modelregistry.tirup.in/models/gpt-5-6) | 1M | Proprietary | $10 in / $50 out |
+| [**Google DeepMind**](https://deepmind.google) | [Gemini 3.8 Flash](https://modelregistry.tirup.in/models/gemini-3-8-flash) | [Gemini 3.7 Flash](https://modelregistry.tirup.in/models/gemini-3-7-flash) | 1M | Proprietary | $0.75 in / $3.75 out |
 | [**xAI**](https://x.ai) | [Grok 4.6](https://modelregistry.tirup.in/models/grok-4-6) | — | 500k | Proprietary | $2 in / $6 out |
 | [**DeepSeek**](https://www.deepseek.com) | [DeepSeek V4-Pro (0813)](https://modelregistry.tirup.in/models/deepseek-v4-pro-0813) | [DeepSeek V4 Flash Vision Exp](https://modelregistry.tirup.in/models/deepseek-v4-flash-vision-exp) | 1M | Proprietary | $1.12 in / $3.35 out |
 | [**Meta AI**](https://ai.meta.com) | [Muse Spark 1.3](https://modelregistry.tirup.in/models/meta-muse-spark-1-3) | [Muse Voice Transcribe](https://modelregistry.tirup.in/models/meta-muse-voice-transcribe) | 262k | Open (Meta Community) | $0.05 in / $0.15 out *(Open)* |
 | [**Alibaba Cloud (Qwen)**](https://qwenlm.github.io) | [Qwen3.8 2.4T A95B](https://modelregistry.tirup.in/models/qwen-3-8-2-4t-a95b) | [Qwen3.8 Flash](https://modelregistry.tirup.in/models/qwen-3-8-flash) | 1M | Open (Qwen Community) | $0.8 in / $2.4 out *(Open)* |
 | [**Mistral AI**](https://mistral.ai) | [Mistral Medium 3.5](https://modelregistry.tirup.in/models/mistral-medium-3-5) | — | 262k | Open (Mistral Commercial API) | $0.9 in / $2.7 out *(Open)* |
+| [**Tencent Hunyuan**](https://hunyuan.tencent.com) | [Hy3](https://modelregistry.tirup.in/models/tencent-hy3) | [Hy4 Preview](https://modelregistry.tirup.in/models/tencent-hy4-preview) | 262k | Open (Tencent Hunyuan Community) | $0.13 in / $0.53 out *(Open)* |
+| [**Z.ai**](https://z.ai) | [GLM 5.3](https://modelregistry.tirup.in/models/glm-5-3) | [GLM 5.3 Flash](https://modelregistry.tirup.in/models/glm-5-3-flash) | 1M | Proprietary | $0.9 in / $2.7 out |
+| [**MiniMax**](https://www.minimaxi.com) | [MiniMax M3](https://modelregistry.tirup.in/models/minimax-m3) | — | 1M | Proprietary | $0.3 in / $1.2 out |
+| [**NVIDIA**](https://www.nvidia.com) | [Nemotron 3 Ultra 550B](https://modelregistry.tirup.in/models/nemotron-3-ultra) | — | 262k | Open (NVIDIA Open Model) | $0.6 in / $2.4 out *(Open)* |
+| [**Xiaomi MiMo**](https://www.mi.com) | [MiMo-V2.5](https://modelregistry.tirup.in/models/mimo-v2-5) | [MiMo-V2.5 Pro](https://modelregistry.tirup.in/models/mimo-v2-5-pro) | 1M | Open (MiMo Community) | $0.14 in / $0.28 out *(Open)* |
+| [**Moonshot AI**](https://www.moonshot.ai) | [Kimi K3](https://modelregistry.tirup.in/models/kimi-k3) | — | 262k | Proprietary | $3 in / $15 out |
 <!-- REGISTRY_TABLE_END -->
 
 ---

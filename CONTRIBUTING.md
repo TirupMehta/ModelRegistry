@@ -21,7 +21,7 @@ Open `data/models.ts` and add your model to the `modelsData` array:
 ```typescript
 {
   id: "meta-muse-spark-1-3",           // Unique lowercase kebab-case ID
-  companyId: "meta",                   // openai | anthropic | google | xai | deepseek | meta | qwen | mistral
+  companyId: "meta",                   // openai | anthropic | google | xai | deepseek | meta | qwen | mistral | tencent | z-ai | minimax | nvidia | xiaomi | moonshotai
   companyName: "Meta AI",
   name: "Muse Spark 1.3",
   version: "1.3",
