@@ -25,6 +25,7 @@ function loadTsModule(relPath) {
 
 const { modelsData } = loadTsModule("../data/models.ts")
 const { companies } = loadTsModule("../data/companies.ts")
+const { leaderboardSpotlights } = loadTsModule("../data/leaderboard.ts")
 
 const errors = []
 const seenIds = new Set()
@@ -94,6 +95,16 @@ modelsData.forEach((model, index) => {
     })
   }
 })
+
+// Verify that every leaderboard spotlight ID points at a real model,
+// so renames/merges can never silently empty a leaderboard section.
+for (const [section, ids] of Object.entries(leaderboardSpotlights)) {
+  ids.forEach((id) => {
+    if (!seenIds.has(id)) {
+      errors.push(`Leaderboard section '${section}': unknown model id '${id}'. Update data/leaderboard.ts.`)
+    }
+  })
+}
 
 // Verify that each company has at least one flagship model
 for (const companyId of validCompanyIds) {

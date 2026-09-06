@@ -5,6 +5,7 @@ import Header from "@/components/header"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, ModelItem } from "@/data/models"
+import { leaderboardSpotlights } from "@/data/leaderboard"
 import { Code, Brain, Maximize, Coins, ShieldAlert, ArrowUpRight } from "lucide-react"
 
 interface ComparisonCategory {
@@ -24,9 +25,9 @@ export default function LeaderboardPage() {
       title: "Reasoning & STEM Intelligence",
       icon: Brain,
       description: "Models with adaptive test-time compute, deep chain-of-thought, and autonomous multi-turn reasoning.",
-      leader: "Claude Fable 5.1 / OpenAI Astra / Grok 4.6",
+      leader: "Claude Fable 5.1 / GPT-6 Astra / Grok 4.6",
       models: modelsData.filter((m) =>
-        ["claude-fable-5-1", "openai-astra", "grok-4-6", "gpt-5-6-sol"].includes(m.id)
+        leaderboardSpotlights.reasoning.includes(m.id)
       ),
     },
     {
@@ -35,7 +36,7 @@ export default function LeaderboardPage() {
       description: "Frontier performance on long-horizon code refactoring, Terminal-Bench execution, and tool orchestration.",
       leader: "Claude Fable 5.1 (Terminal-Bench 52.6% SOTA) / Gemini 3.8 Flash",
       models: modelsData.filter((m) =>
-        ["claude-fable-5-1", "gemini-3-8-flash", "grok-4-6", "gpt-5-6-sol"].includes(m.id)
+        leaderboardSpotlights.coding.includes(m.id)
       ),
     },
     {
