@@ -35,6 +35,10 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
   // next/font serves: Sans 300-700, Display 400-700, Mono 400-600.
   // Mono tops out at 600 — never request 700/bold for it (would faux-bolden).
+  // Tracking: card text felt congested — open letter/word spacing a touch.
+  const TRACK_LETTER = "0.02em"
+  const TRACK_WORD = "0.06em"
+  const TRACK_TITLE_LETTER = "-0.01em"
   async function ensureCardFonts() {
     const specs = [
       '700 80px "Space Grotesk"',
@@ -182,6 +186,18 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       return t + "…"
     }
 
+    // Letter/word tracking (wordSpacing needs a guarded write for older canvas)
+    function setTracking(letter: string, word: string) {
+      try {
+        ctx!.letterSpacing = letter
+        ;(ctx as CanvasRenderingContext2D & { wordSpacing?: string }).wordSpacing = word
+      } catch {
+        // Older canvas: tracking unsupported, fall through to default spacing
+      }
+    }
+
+    setTracking(TRACK_LETTER, TRACK_WORD)
+
     let curY = padding
 
     // 3. Top Header / Brand
@@ -239,9 +255,9 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     const titleSize = fitFont(700, F_DISPLAY, titleBase, model.name, contentWidth)
     ctx.font = `700 ${titleSize}px ${F_DISPLAY}`
     ctx.fillStyle = textColor
-    ctx.letterSpacing = "-0.03em"
+    setTracking(TRACK_TITLE_LETTER, TRACK_WORD)
     ctx.fillText(model.name, padding, curY + titleSize * 0.8)
-    ctx.letterSpacing = "0px"
+    setTracking(TRACK_LETTER, TRACK_WORD)
 
     curY += titleSize + (ratio === "story" ? 40 : ratio === "square" ? 28 : 18)
 
