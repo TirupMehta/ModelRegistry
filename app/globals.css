@@ -45,7 +45,7 @@ html {
 
 body {
   overflow-x: hidden;
-  height: 100%;
+  overflow-x: clip;
   background-color: var(--bg);
   color: var(--fg);
   -webkit-font-smoothing: antialiased;
@@ -127,6 +127,7 @@ body {
 html,
 body {
   overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;

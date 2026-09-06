@@ -27,7 +27,9 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
   const [copied, setCopied] = useState(false)
   const [isShareStudioOpen, setIsShareStudioOpen] = useState(false)
 
-  // Prevent background scroll and support ESC key
+  // Prevent background scroll and support ESC key.
+  // Saves the page scroll position on open and restores it exactly on close,
+  // so dismissing the popup never sends the user back to the top.
   useEffect(() => {
     if (!model) return
 
@@ -35,12 +37,21 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
       if (e.key === "Escape") onClose()
     }
 
+    const scrollY = window.scrollY
+    const prevBodyOverflow = document.body.style.overflow
+    const html = document.documentElement
+    const prevHtmlScrollBehavior = html.style.scrollBehavior
+
     document.body.style.overflow = "hidden"
     window.addEventListener("keydown", handleKeyDown)
 
     return () => {
-      document.body.style.overflow = "unset"
+      document.body.style.overflow = prevBodyOverflow
       window.removeEventListener("keydown", handleKeyDown)
+      // Bypass `scroll-behavior: smooth` so the restore is instant, not animated
+      html.style.scrollBehavior = "auto"
+      window.scrollTo(0, scrollY)
+      html.style.scrollBehavior = prevHtmlScrollBehavior
     }
   }, [model, onClose])
 
