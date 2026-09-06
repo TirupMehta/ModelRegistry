@@ -102,8 +102,8 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     const bgColor = isDark ? "#07080a" : "#f7f7f4"
     const cardSurface = isDark ? "#0d0f13" : "#ffffff"
     const textColor = isDark ? "#f4f5f7" : "#111215"
-    const textMuted = isDark ? "rgba(244, 245, 247, 0.55)" : "rgba(17, 18, 21, 0.55)"
-    const textDim = isDark ? "rgba(244, 245, 247, 0.35)" : "rgba(17, 18, 21, 0.35)"
+    const textMuted = isDark ? "rgba(244, 245, 247, 0.72)" : "rgba(17, 18, 21, 0.74)"
+    const textDim = isDark ? "rgba(244, 245, 247, 0.5)" : "rgba(17, 18, 21, 0.6)"
     const borderColor = isDark ? "rgba(255, 255, 255, 0.09)" : "rgba(0, 0, 0, 0.08)"
 
     // 1. Clear & Background Fill
@@ -284,7 +284,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
     // 6. Highlight / Description
     const descSize = ratio === "story" ? 26 : ratio === "square" ? 21 : 17
-    ctx.font = `300 ${descSize}px ${F_SANS}`
+    ctx.font = `400 ${descSize}px ${F_SANS}`
     ctx.fillStyle = textMuted
     curY = wrapText(
       model.highlight,
@@ -385,9 +385,9 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     ctx.lineTo(width - padding, footerY - 40)
     ctx.stroke()
 
-    // Verified Stamp
+    // Verified Stamp (darker green on light cards for contrast)
     ctx.font = `600 13px ${F_MONO}`
-    ctx.fillStyle = "#00e599"
+    ctx.fillStyle = isDark ? "#00e599" : "#00885c"
     ctx.beginPath()
     ctx.arc(padding + 5, footerY - 14, 5, 0, Math.PI * 2)
     ctx.fill()
