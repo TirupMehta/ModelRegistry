@@ -87,8 +87,14 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       height = 675
     }
 
-    canvas.width = width
-    canvas.height = height
+    // Supersampled rendering: rasterize at 2x, export at 1x. Same output
+    // dimensions with modest file growth, but visibly crisper text and edges.
+    const SS = 2
+    canvas.width = width * SS
+    canvas.height = height * SS
+    ctx.setTransform(SS, 0, 0, SS, 0, 0)
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = "high"
 
     const isDark = cardTheme === "dark"
     const bgColor = isDark ? "#07080a" : "#f7f7f4"
@@ -424,9 +430,25 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
   if (!isOpen) return null
 
+  // Downscale the 2x working canvas to exact export dimensions
+  // (1080 / 1200 wide) with high-quality filtering
+  function getExportCanvas(): HTMLCanvasElement | null {
+    const src = canvasRef.current
+    if (!src) return null
+    const out = document.createElement("canvas")
+    out.width = Math.round(src.width / 2)
+    out.height = Math.round(src.height / 2)
+    const octx = out.getContext("2d")
+    if (!octx) return null
+    octx.imageSmoothingEnabled = true
+    octx.imageSmoothingQuality = "high"
+    octx.drawImage(src, 0, 0, out.width, out.height)
+    return out
+  }
+
   // 1. Download as PNG
   const handleDownload = () => {
-    const canvas = canvasRef.current
+    const canvas = getExportCanvas()
     if (!canvas) return
     const link = document.createElement("a")
     link.download = `modelregistry-${model.id}-${ratio}.png`
@@ -436,7 +458,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
   // 2. Copy Image to Clipboard
   const handleCopyImage = async () => {
-    const canvas = canvasRef.current
+    const canvas = getExportCanvas()
     if (!canvas) return
 
     try {
@@ -458,13 +480,13 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
   // 3. Web Share API (Native mobile share to Instagram Stories/WhatsApp)
   const handleNativeShare = async () => {
-    const canvas = canvasRef.current
+    const canvas = getExportCanvas()
     if (!canvas) return
 
     if (navigator.share) {
       canvas.toBlob(async (blob) => {
         if (!blob) return
-        const file = new File([blob], `${model.id}-story.png`, { type: "image/png" })
+        const file = new File([blob], `${model.id}-${ratio}.png`, { type: "image/png" })
         try {
           await navigator.share({
             title: `${model.name} — ModelRegistry Specification`,
