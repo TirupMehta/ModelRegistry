@@ -104,7 +104,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     const textColor = isDark ? "#f4f5f7" : "#111215"
     const textMuted = isDark ? "rgba(244, 245, 247, 0.72)" : "rgba(17, 18, 21, 0.74)"
     const textDim = isDark ? "rgba(244, 245, 247, 0.5)" : "rgba(17, 18, 21, 0.6)"
-    const borderColor = isDark ? "rgba(255, 255, 255, 0.09)" : "rgba(0, 0, 0, 0.08)"
+    const borderColor = isDark ? "rgba(255, 255, 255, 0.16)" : "rgba(0, 0, 0, 0.15)"
 
     // 1. Clear & Background Fill
     ctx.fillStyle = bgColor
@@ -243,7 +243,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
     // Hairline Divider
     ctx.strokeStyle = borderColor
-    ctx.lineWidth = 1
+    ctx.lineWidth = 2
     ctx.beginPath()
     ctx.moveTo(padding, curY)
     ctx.lineTo(width - padding, curY)
@@ -382,7 +382,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     // 9. Bottom Footer / Watermark Verification (lifted, slightly larger)
     const footerY = height - padding
     ctx.strokeStyle = borderColor
-    ctx.lineWidth = 1
+    ctx.lineWidth = 2
     ctx.beginPath()
     ctx.moveTo(padding, footerY - 44)
     ctx.lineTo(width - padding, footerY - 44)

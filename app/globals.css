@@ -47,6 +47,10 @@ html.dark {
 html {
   scroll-behavior: smooth;
   height: 100%;
+  /* 110% root scale: all rem-based type, spacing, and containers render
+     ~10% larger for high-resolution displays. px-based values, borders,
+     and media-query breakpoints are unaffected. */
+  font-size: 110%;
 }
 
 body {
