@@ -140,9 +140,36 @@ export default function Header() {
             <NavLinks pathname={pathname} />
           </TextWithBlur>
 
-          <div className="text-[11px] font-mono text-black/40 dark:text-zinc-400 select-none hidden sm:block tracking-wider shrink-0">
-            [ EPOCH: SEPT 2026 ]
-          </div>
+          {isHome ? (
+            <a
+              href="https://www.producthunt.com/products/modelregistry?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-modelregistry"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="ModelRegistry on Product Hunt"
+              className="hidden sm:block shrink-0 opacity-90 hover:opacity-100 transition-opacity"
+            >
+              <img
+                alt="ModelRegistry - Universal index for AI models, flagships & checkpoints. | Product Hunt"
+                width={180}
+                height={39}
+                loading="lazy"
+                className="dark:hidden"
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1242637&theme=light"
+              />
+              <img
+                alt="ModelRegistry - Universal index for AI models, flagships & checkpoints. | Product Hunt"
+                width={180}
+                height={39}
+                loading="lazy"
+                className="hidden dark:block"
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1242637&theme=dark"
+              />
+            </a>
+          ) : (
+            <div className="text-[11px] font-mono text-black/40 dark:text-zinc-400 select-none hidden sm:block tracking-wider shrink-0">
+              [ EPOCH: SEPT 2026 ]
+            </div>
+          )}
         </div>
       </header>
     </>
