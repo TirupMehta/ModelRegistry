@@ -22,6 +22,20 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   const [isBadgeCopied, setIsBadgeCopied] = useState(false)
   const [isRendering, setIsRendering] = useState(false)
 
+  // Default card palette follows the viewer's site theme (light → Vellum
+  // Archival, dark → Obsidian Noir) and tracks live theme toggles while open.
+  // Initial "dark" keeps server/client first render identical (no hydration
+  // mismatch); the effect below corrects it on mount before first paint.
+  useEffect(() => {
+    const syncTheme = () => {
+      setCardTheme(document.documentElement.classList.contains("dark") ? "dark" : "light")
+    }
+    syncTheme()
+    const observer = new MutationObserver(syncTheme)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
+    return () => observer.disconnect()
+  }, [])
+
   const company = companies[model.companyId]
   const accentColor = company?.accentColor || "#ff5d2e"
 
