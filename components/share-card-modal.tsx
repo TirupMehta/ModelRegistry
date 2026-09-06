@@ -18,10 +18,10 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [ratio, setRatio] = useState<AspectRatio>("square")
 
-  // Mobile opens on 9:16 Story (reads best on phones); desktop keeps Square.
+  // Mobile opens on 16:9 Post (reads best on phones); desktop keeps Square.
   // Mount-only so an explicit user pick is never overridden.
   useEffect(() => {
-    if (window.innerWidth < 768) setRatio("story")
+    if (window.innerWidth < 768) setRatio("landscape")
   }, [])
   const [cardTheme, setCardTheme] = useState<ThemeMode>("dark")
   const [isCopied, setIsCopied] = useState(false)
