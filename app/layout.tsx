@@ -5,6 +5,7 @@ import AmbientShader from "@/components/ambient-shader"
 import { modelsData } from "@/data/models"
 import { companies, type Company } from "@/data/companies"
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -201,6 +202,7 @@ export default function RootLayout({
 
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
