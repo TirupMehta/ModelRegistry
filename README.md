@@ -36,6 +36,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**NVIDIA**](https://www.nvidia.com) | [Nemotron 3 Ultra 550B](https://modelregistry.tirup.in/models/nemotron-3-ultra) | — | 262k | Open (NVIDIA Open Model) | $0.6 in / $2.4 out *(Open)* |
 | [**Xiaomi MiMo**](https://www.mi.com) | [MiMo-V2.5](https://modelregistry.tirup.in/models/mimo-v2-5) | [MiMo-V2.5 Pro](https://modelregistry.tirup.in/models/mimo-v2-5-pro) | 1M | Open (MiMo Community) | $0.14 in / $0.28 out *(Open)* |
 | [**Moonshot AI**](https://www.moonshot.ai) | [Kimi K3](https://modelregistry.tirup.in/models/kimi-k3) | — | 262k | Proprietary | $3 in / $15 out |
+| [**Sarvam AI**](https://www.sarvam.ai) | [Sarvam 105B](https://modelregistry.tirup.in/models/sarvam-105b) | — | 128k | Open (Apache 2.0) | $0.33 in / $0.83 out *(Open)* |
 <!-- REGISTRY_TABLE_END -->
 
 ---
