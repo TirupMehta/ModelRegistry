@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
+import { formatPrice } from "@/lib/utils"
 import { Download, Copy, Share2, Check, X, Sparkles, Code2, Layers, ZoomIn } from "lucide-react"
 
 interface ShareCardModalProps {
@@ -316,8 +317,8 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       { label: "CONTEXT WINDOW", value: model.contextWindow.replace(" tokens", "") },
       { label: "ARCHITECTURE", value: model.parameters },
       {
-        label: "OFFICIAL API / 1M",
-        value: `$${model.pricing.input} in / $${model.pricing.output} out${model.openWeights ? " (Open)" : ""}`,
+        label: model.pricingUnit ? "OFFICIAL API" : "OFFICIAL API / 1M",
+        value: formatPrice(model),
       },
     ]
 

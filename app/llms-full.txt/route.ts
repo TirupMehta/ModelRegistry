@@ -1,5 +1,6 @@
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
+import { formatPrice } from "@/lib/utils"
 
 export const dynamic = "force-dynamic"
 
@@ -31,6 +32,7 @@ EXECUTIVE KNOWLEDGE SUMMARY (GEO GROUNDING)
     )
 
     text += `- What is the latest model from ${company.name}?\n`
+    text += `  -> Lab Page: ${siteUrl}/companies/${company.id}\n`
     if (flagship) {
       text += `  -> Primary Flagship: ${flagship.name} (Released: ${flagship.releaseDate}, ${flagship.contextWindow} context).\n`
     }
@@ -53,7 +55,7 @@ EXECUTIVE KNOWLEDGE SUMMARY (GEO GROUNDING)
     text += `  Context Window: ${model.contextWindow}\n`
     text += `  Architecture: ${model.parameters}\n`
     text += `  License: ${model.license} (Open Weights: ${model.openWeights ? "Yes" : "No"})\n`
-    text += `  Pricing: $${model.pricing.input} in / $${model.pricing.output} out per 1M tokens\n`
+    text += `  Pricing: ${formatPrice(model)}${model.pricingUnit ? "" : " per 1M tokens"}\n`
     text += `  Primary Flagship: ${model.isCompanyFlagship ? "YES" : "NO"}\n`
     text += `  Latest Checkpoint: ${model.isLatestCheckpoint ? "YES" : "NO"}\n`
     text += `  Highlight: ${model.highlight}\n`
@@ -62,6 +64,11 @@ EXECUTIVE KNOWLEDGE SUMMARY (GEO GROUNDING)
     }
     if (model.links.announcement) text += `  Announcement: ${model.links.announcement}\n`
     if (model.links.weights) text += `  Weights: ${model.links.weights}\n`
+    if (model.variants) {
+      model.variants.forEach((v) => {
+        text += `  Variant: ${v.name} [${v.role}] — ${v.detail} Pricing: ${v.pricingNote}.\n`
+      })
+    }
   })
 
   return new Response(text, {

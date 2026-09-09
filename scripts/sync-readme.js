@@ -33,6 +33,7 @@ const { modelsData } = loadTsModule("../data/models.ts")
 const { companies } = loadTsModule("../data/companies.ts")
 
 function formatContext(tokens) {
+  if (!tokens) return "—"
   if (tokens >= 1000000) {
     const val = tokens / 1000000
     if (Math.abs(val - 1.048576) < 0.06 || Math.abs(val - 1) < 0.01) return "1M"
@@ -46,6 +47,13 @@ function formatContext(tokens) {
 }
 
 function formatPricing(model) {
+  if (model.pricingUnit) {
+    const unitBase =
+      model.pricing.input === model.pricing.output
+        ? `$${model.pricing.input}`
+        : `$${model.pricing.input} in / $${model.pricing.output}`
+    return `${unitBase} ${model.pricingUnit}`
+  }
   const base = `$${model.pricing.input} in / $${model.pricing.output} out`
   if (model.openWeights) {
     return `${base} *(Open)*`
@@ -82,7 +90,7 @@ function generateMarkdownTable() {
   })
 
   const header = [
-    "| Laboratory | Primary Flagship | Latest Checkpoint | Context | Access | Pricing (1M) |",
+    "| Laboratory | Primary Flagship | Latest Checkpoint | Context | Access | Pricing |",
     "|:---|:---|:---|:---|:---|:---|",
   ]
 

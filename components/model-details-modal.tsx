@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
+import { formatPrice } from "@/lib/utils"
 import {
   X,
   ExternalLink,
@@ -190,11 +191,11 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] col-span-2 sm:col-span-1 hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
             <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px] sm:text-xs">
               <DollarSign size={13} />
-              <span>OFFICIAL API / 1M</span>
+              <span>{model.pricingUnit ? "OFFICIAL API" : "OFFICIAL API / 1M"}</span>
             </div>
             <div className="tabular-nums text-xs sm:text-sm font-medium text-black dark:text-white leading-tight">
               <span>
-                ${model.pricing.input} in / ${model.pricing.output} out
+                {formatPrice(model)}
               </span>
               {model.openWeights && (
                 <span className="block text-[11px] font-sans text-[#00e599] font-normal mt-0.5">
@@ -244,6 +245,38 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
                   </span>
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Shipped Variants (e.g. API twins) */}
+        {model.variants && model.variants.length > 0 && (
+          <div className="mb-6">
+            <h3 className="text-xs font-sans uppercase tracking-wider text-black/50 dark:text-zinc-400 font-medium mb-2.5">
+              SHIPPED VARIANTS
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {model.variants.map((variant) => (
+                <div
+                  key={variant.name}
+                  className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default"
+                >
+                  <div className="flex flex-wrap items-center gap-1.5 mb-1">
+                    <span className="text-xs font-sans font-medium text-black dark:text-white">
+                      {variant.name}
+                    </span>
+                    <span className="text-[10px] font-sans uppercase tracking-wider px-1 py-px rounded border border-black/10 dark:border-white/10 text-black/55 dark:text-white/55">
+                      {variant.role}
+                    </span>
+                  </div>
+                  <p className="text-[11px] font-sans text-black/55 dark:text-zinc-400 leading-relaxed">
+                    {variant.detail}
+                  </p>
+                  <p className="text-[11px] font-sans tabular-nums text-black dark:text-white font-medium mt-1">
+                    {variant.pricingNote}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         )}

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import Header from "@/components/header"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
@@ -58,9 +59,12 @@ export default function CompaniesPage() {
                       />
                       <div>
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                          <h2 className="text-xl font-medium text-black dark:text-white">
+                          <Link
+                            href={`/companies/${company.id}`}
+                            className="text-xl font-medium text-black dark:text-white hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
+                          >
                             {company.name}
-                          </h2>
+                          </Link>
                           <span className="text-xs font-sans text-black/40 dark:text-zinc-400">
                             ({company.headquarters})
                           </span>
@@ -139,11 +143,11 @@ export default function CompaniesPage() {
                         <div className="flex items-center justify-between text-xs font-sans mb-1.5">
                           <span className="font-medium uppercase text-[11px] tracking-wider flex items-center gap-1">
                             {latestDrop ? (
-                              <span className="text-[#00e599] flex items-center gap-1">
+                              <span className="text-[#1a73e8] dark:text-[#8ab4f8] flex items-center gap-1">
                                 <Sparkles size={11} /> Latest Checkpoint
                               </span>
                             ) : (
-                              <span className="text-black/55 dark:text-zinc-400">
+                              <span className="text-[#1a73e8] dark:text-[#8ab4f8]">
                                 More from {company.shortName}
                               </span>
                             )}

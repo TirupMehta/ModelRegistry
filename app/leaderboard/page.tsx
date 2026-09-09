@@ -67,7 +67,7 @@ export default function LeaderboardPage() {
       icon: Coins,
       description: "Lowest input/output pricing per 1M tokens combined with near-frontier intelligence for production applications.",
       leader: "Muse Voice ($0.04/M) / Muse Spark ($0.05/M) / DeepSeek Flash ($0.12/M)",
-      models: [...modelsData].sort((a, b) => a.pricing.input - b.pricing.input).slice(0, 5),
+      models: [...modelsData].filter((m) => !m.pricingUnit).sort((a, b) => a.pricing.input - b.pricing.input).slice(0, 5),
     },
   ]
 

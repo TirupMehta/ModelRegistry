@@ -59,6 +59,7 @@ export async function GET(request: Request) {
         return {
           id: c.id,
           name: c.name,
+          page: `/companies/${c.id}`,
           latestFlagship: flagship?.name || "",
           latestCheckpoint: checkpoint?.name || "",
         }

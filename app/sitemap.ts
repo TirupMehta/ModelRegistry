@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next"
 import { modelsData } from "@/data/models"
+import { companies } from "@/data/companies"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://modelregistry.tirup.in"
@@ -33,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  // 2. Canonical Dedicated Model Specification Pages (All 17 frontier models)
+  // 2. Canonical Dedicated Model Specification Pages (every tracked model)
   const modelRoutes: MetadataRoute.Sitemap = modelsData.map((model) => {
     const isSotaOrFlagship =
       model.statusBadge.includes("FLAGSHIP") ||
@@ -48,7 +49,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   })
 
-  // 3. Machine-Readable & Agent Discovery Feeds
+  // 3. Laboratory Profile Pages (one per tracked lab)
+  const labRoutes: MetadataRoute.Sitemap = Object.keys(companies).map((companyId) => {
+    const newest = modelsData
+      .filter((m) => m.companyId === companyId)
+      .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
+    return {
+      url: `${baseUrl}/companies/${companyId}`,
+      lastModified: newest ? new Date(newest.releaseDate) : now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    }
+  })
+
+  // 4. Machine-Readable & Agent Discovery Feeds
   const feedRoutes: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/llms.txt`,
@@ -82,5 +96,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  return [...coreRoutes, ...modelRoutes, ...feedRoutes]
+  return [...coreRoutes, ...labRoutes, ...modelRoutes, ...feedRoutes]
 }

@@ -3,10 +3,12 @@ import type { ModelItem } from "@/data/models"
 /**
  * Generic fallback for unknown model slugs (e.g. ids retired by a merge).
  * Scores every model by token overlap between the slug and the model's
- * id / name / version / company, then returns the winning company's newest
- * model — e.g. `gpt-5-6-sol` resolves to GPT-6 Astra. Requires a unique
- * winning company, so unrelated slugs return null (caller 404s) instead of
- * redirecting somewhere arbitrary. Zero per-link maintenance for future merges.
+ * id / name / version / company, then returns the winning company's flagship
+ * (falling back to its newest model when a lab has none marked) — e.g.
+ * `gpt-5-6-sol` resolves to GPT-6 Astra, not to a newer sibling from another
+ * modality. Requires a unique winning company, so unrelated slugs return
+ * null (caller 404s) instead of redirecting somewhere arbitrary. Zero
+ * per-link maintenance for future merges.
  */
 export function resolveCompanyFallback(slug: string, models: ModelItem[]): ModelItem | null {
   const slugTokens = slug
@@ -37,8 +39,7 @@ export function resolveCompanyFallback(slug: string, models: ModelItem[]): Model
   if (ranked.length > 1 && ranked[0][1] === ranked[1][1]) return null
 
   const winner = ranked[0][0]
-  const newest = models
-    .filter((m) => m.companyId === winner)
-    .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
-  return newest ?? null
+  const companyModels = models.filter((m) => m.companyId === winner)
+  const newest = [...companyModels].sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
+  return companyModels.find((m) => m.isCompanyFlagship) ?? newest ?? null
 }

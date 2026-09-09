@@ -79,6 +79,8 @@ If the model is from a laboratory not yet tracked, add it to [`data/companies.ts
 }
 ```
 
+A public profile page (`/companies/laboratory-id`) with the lab's full release history, SEO metadata, and sitemap entry is generated automatically — no extra files needed.
+
 ---
 
 ## 📋 Quality Standards
