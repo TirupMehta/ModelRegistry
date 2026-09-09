@@ -135,41 +135,10 @@ export default function Header() {
         </TextWithBlur>
 
         {/* ── Segmented Navigation Line ──────────────────────────────────── */}
-        <div className="flex justify-between items-center gap-4 mb-6 md:mb-8 border-b border-black/5 dark:border-white/[0.07] pb-3 flex-nowrap overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-scroll">
+        <div className="flex justify-start items-center gap-4 mb-6 md:mb-8 border-b border-black/5 dark:border-white/[0.07] pb-3 flex-nowrap overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-scroll">
           <TextWithBlur delay={100} className="min-w-0 max-w-full">
             <NavLinks pathname={pathname} />
           </TextWithBlur>
-
-          {isHome ? (
-            <a
-              href="https://www.producthunt.com/products/modelregistry?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-modelregistry"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="ModelRegistry on Product Hunt"
-              className="hidden sm:block shrink-0 opacity-90 hover:opacity-100 transition-opacity"
-            >
-              <img
-                alt="ModelRegistry - Universal index for AI models, flagships & checkpoints. | Product Hunt"
-                width={180}
-                height={39}
-                loading="lazy"
-                className="dark:hidden"
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1242637&theme=light"
-              />
-              <img
-                alt="ModelRegistry - Universal index for AI models, flagships & checkpoints. | Product Hunt"
-                width={180}
-                height={39}
-                loading="lazy"
-                className="hidden dark:block"
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1242637&theme=dark"
-              />
-            </a>
-          ) : (
-            <div className="text-[11px] font-sans text-black/40 dark:text-zinc-400 select-none hidden sm:block tracking-wider shrink-0">
-              [ EPOCH: SEPT 2026 ]
-            </div>
-          )}
         </div>
       </header>
     </>
