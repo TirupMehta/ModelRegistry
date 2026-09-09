@@ -48,6 +48,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 - **SOTA Domain Leaderboard**: Head-to-head verified evaluations across Reasoning, Agentic Coding, Context Capacity, and Inference Value.
 - **Open Telemetry & Syndication**:
   - `GET /api/v1/models` — Public JSON REST API with filtering parameters.
+  - Full human reference with examples: [modelregistry.tirup.in/docs](https://modelregistry.tirup.in/docs).
   - `GET /rss.xml` — Live RSS 2.0 syndication feed for newly registered models.
   - `GET /llms.txt` — Machine-readable ground truth formatted for AI answer engines and web crawlers.
 
@@ -94,6 +95,8 @@ curl -s "https://modelregistry.tirup.in/api/v1/models?openWeights=true"
 # Filter by laboratory
 curl -s "https://modelregistry.tirup.in/api/v1/models?company=anthropic"
 ```
+
+Full parameter reference, live counts, and Python/JS examples: [modelregistry.tirup.in/docs](https://modelregistry.tirup.in/docs).
 
 ---
 

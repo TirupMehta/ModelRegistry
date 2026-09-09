@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import TextWithBlur from "@/components/text-with-blur"
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
-import { Rss, Code2, GitPullRequest, ArrowUpRight } from "lucide-react"
+import { Rss, Code2, File, GitPullRequest, ArrowUpRight } from "lucide-react"
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/" },
@@ -82,6 +82,14 @@ export default function Header() {
             >
               <Code2 size={11} className="text-[#ff5d2e]" />
               <span>API</span>
+            </Link>
+            <span className="opacity-20 select-none">/</span>
+            <Link
+              href="/docs"
+              className="group inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
+            >
+              <File size={11} className="text-[#ff5d2e]" />
+              <span>DOCS</span>
             </Link>
           </div>
         </div>

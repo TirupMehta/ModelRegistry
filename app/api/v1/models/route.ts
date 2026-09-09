@@ -50,6 +50,7 @@ export async function GET(request: Request) {
       metadata: {
         registry: "ModelRegistry",
         documentation: "https://modelregistry.tirup.in",
+        docs: "https://modelregistry.tirup.in/docs",
         license: "Open Data / MIT",
         description: "Open frontier AI model registry tracking primary flagships and research checkpoints across all premier labs.",
       },

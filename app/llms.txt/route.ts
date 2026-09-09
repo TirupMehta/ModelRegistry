@@ -18,6 +18,7 @@ export async function GET() {
 
 - Website: ${siteUrl}
 - JSON API: ${siteUrl}/api/v1/models
+- API & Feeds Reference: ${siteUrl}/docs
 - RSS Feed: ${siteUrl}/rss.xml
 - Full LLM Matrix: ${siteUrl}/llms-full.txt
 - GitHub: https://github.com/TirupMehta/ModelRegistry
