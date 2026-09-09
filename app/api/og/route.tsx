@@ -2,24 +2,39 @@ import { ImageResponse } from "next/og"
 import { NextRequest } from "next/server"
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
+import { formatPrice } from "@/lib/utils"
 
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
     const modelId = searchParams.get("model")
+    const labId = searchParams.get("lab")?.toLowerCase()
 
     const model = modelId ? modelsData.find((m) => m.id === modelId) : null
-    const company = model ? companies[model.companyId] : null
+    const modelCompany = model ? companies[model.companyId] : null
+    const lab = !model && labId ? companies[labId] : null
 
-    const title = model ? model.name : "ModelRegistry"
-    const labName = company ? company.name : "Open Frontier AI Index"
+    // Laboratory profile card mode (?lab=) shares the datasheet layout
+    // with lab-level facts; model/default modes are unchanged.
+    const labModels = lab ? modelsData.filter((m) => m.companyId === lab.id) : []
+    const labFlagship = lab ? labModels.find((m) => m.isCompanyFlagship) : null
+    const labNewest = lab
+      ? [...labModels].sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
+      : null
+
+    const company = modelCompany ?? lab
+
+    const title = model ? model.name : lab ? lab.name : "ModelRegistry"
+    const labName = model && modelCompany ? modelCompany.name : lab ? "LABORATORY PROFILE" : "Open Frontier AI Index"
     const highlight = model
       ? model.highlight
-      : "The open community index tracking primary foundation flagships and research checkpoints across OpenAI, Anthropic, Google DeepMind, DeepSeek, Meta AI, and more."
-    const context = model ? model.contextWindow : "1M+ Tokens"
-    const architecture = model ? model.parameters : "All Top Labs"
-    const badge = model ? model.statusBadge : "SOTA INDEX"
+      : lab
+        ? lab.description
+        : "The open community index tracking primary foundation flagships and research checkpoints across OpenAI, Anthropic, Google DeepMind, DeepSeek, Meta AI, and more."
+    const context = model ? model.contextWindow : labFlagship ? labFlagship.name : "1M+ Tokens"
+    const architecture = model ? model.parameters : labNewest ? labNewest.name : "All Top Labs"
+    const badge = model ? model.statusBadge : lab ? `${labModels.length} MODELS TRACKED` : "SOTA INDEX"
     const accentColor = company?.accentColor || "#ff5d2e"
 
     return new ImageResponse(
@@ -86,7 +101,7 @@ export async function GET(req: NextRequest) {
                   color: "rgba(255, 255, 255, 0.6)",
                 }}
               >
-                FRONTIER AI SPEC
+                {lab ? "LABORATORY PROFILE" : "FRONTIER AI SPEC"}
               </div>
             </div>
 
@@ -189,25 +204,34 @@ export async function GET(req: NextRequest) {
             <div style={{ display: "flex", gap: "32px" }}>
               <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                 <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
-                  CONTEXT WINDOW
+                  {lab ? "FLAGSHIP" : "CONTEXT WINDOW"}
                 </span>
                 <span style={{ fontSize: "18px", fontWeight: 600 }}>{context}</span>
               </div>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                 <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
-                  ARCHITECTURE
+                  {lab ? "LATEST RELEASE" : "ARCHITECTURE"}
                 </span>
                 <span style={{ fontSize: "18px", fontWeight: 600 }}>{architecture}</span>
               </div>
 
-              {model && (
+              {model ? (
                 <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                   <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
-                    PRICING / 1M
+                    {model.pricingUnit ? "OFFICIAL API" : "PRICING / 1M"}
                   </span>
                   <span style={{ fontSize: "18px", fontWeight: 600 }}>
-                    {model.openWeights ? "Open Weights (Free)" : `$${model.pricing.input} in / $${model.pricing.output} out`}
+                    {model.openWeights ? "Open Weights (Free)" : formatPrice(model)}
+                  </span>
+                </div>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
+                    {lab ? "HEADQUARTERS" : "COVERAGE"}
+                  </span>
+                  <span style={{ fontSize: "18px", fontWeight: 600 }}>
+                    {lab ? lab.headquarters : `${Object.keys(companies).length} Laboratories`}
                   </span>
                 </div>
               )}

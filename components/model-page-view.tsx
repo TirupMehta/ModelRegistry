@@ -318,7 +318,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
           {/* Quickstart Developer Code Snippet */}
           <div className="mb-7 sm:mb-9 border border-black/10 dark:border-white/[0.08] rounded-lg overflow-hidden">
-            <div className="flex items-center justify-between bg-black/[0.03] dark:bg-[#13161c] px-4 py-2.5 border-b border-black/10 dark:border-white/[0.08]">
+            <div className="flex items-center justify-between gap-x-3 gap-y-2 flex-wrap bg-black/[0.03] dark:bg-[#13161c] px-4 py-2.5 border-b border-black/10 dark:border-white/[0.08]">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-sans uppercase text-black/60 dark:text-zinc-400 font-medium">
                   Quickstart Snippet

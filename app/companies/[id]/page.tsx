@@ -5,8 +5,8 @@ import Header from "@/components/header"
 import TextWithBlur from "@/components/text-with-blur"
 import { companies } from "@/data/companies"
 import { modelsData } from "@/data/models"
-import { formatDate, getRelativeTimeString } from "@/lib/utils"
-import { ArrowLeft, ArrowUpRight, Globe, Layers, Boxes, Sparkles } from "lucide-react"
+import { formatDate, getRelativeTimeString, safeJsonLd } from "@/lib/utils"
+import { ArrowLeft, ArrowUpRight, Globe, Layers, Boxes, Sparkles, Calendar } from "lucide-react"
 
 interface Props {
   params: Promise<{ id: string }>
@@ -49,11 +49,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: `${SITE_URL}/companies/${lab.id}`,
       siteName: "ModelRegistry",
       type: "article",
+      images: [
+        {
+          url: `${SITE_URL}/api/og?lab=${lab.id}`,
+          width: 1200,
+          height: 630,
+          alt: `${lab.name} Laboratory Profile`,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: `${lab.name} — Models & Checkpoints`,
       description,
+      images: [`${SITE_URL}/api/og?lab=${lab.id}`],
     },
   }
 }
@@ -72,6 +81,17 @@ export default async function CompanyPage({ params }: Props) {
   const flagship = labModels.find((m) => m.isCompanyFlagship)
   const newest = labModels[0]
   const openCount = labModels.filter((m) => m.openWeights).length
+
+  // Month-grouped release rail (same grouping as /timeline)
+  const groupedTimeline: { [key: string]: typeof labModels } = {}
+  labModels.forEach((model) => {
+    const d = new Date(model.releaseDate)
+    const monthYear = d.toLocaleDateString("en-US", { month: "long", year: "numeric" })
+    if (!groupedTimeline[monthYear]) {
+      groupedTimeline[monthYear] = []
+    }
+    groupedTimeline[monthYear].push(model)
+  })
 
   const faqAnswer = flagship
     ? `${lab.name}'s primary flagship model is ${flagship.name} (${flagship.parameters}, ${flagship.contextWindow} context). ${flagship.highlight}${
@@ -119,15 +139,15 @@ export default async function CompanyPage({ params }: Props) {
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdOrganization) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdFAQ) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdCollection) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdCollection) }}
       />
 
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
@@ -210,11 +230,11 @@ export default async function CompanyPage({ params }: Props) {
           </div>
         </TextWithBlur>
 
-        {/* Complete History */}
+        {/* Release Timeline (month-grouped rail, mirrors /timeline) */}
         <TextWithBlur delay={140}>
-          <div className="flex items-baseline justify-between gap-3 mb-2">
+          <div className="flex items-baseline justify-between gap-3 mb-5">
             <h2 className="text-sm font-sans font-medium tracking-wider text-black/60 dark:text-zinc-300 uppercase">
-              Complete Release History
+              Release Timeline
             </h2>
             <span className="text-[11px] font-sans text-black/35 dark:text-zinc-500 tabular-nums">
               NEWEST FIRST
@@ -222,53 +242,66 @@ export default async function CompanyPage({ params }: Props) {
           </div>
         </TextWithBlur>
 
-        <div className="flex flex-col">
-          {labModels.map((model, index) => (
-            <TextWithBlur key={model.id} delay={Math.min(index * 30, 180)}>
-              <Link
-                href={`/models/${model.id}`}
-                className="group cursor-pointer block py-4 md:py-5 -mx-3 px-3 rounded-lg border-t border-black/10 dark:border-white/10 [transition:background-color_120ms_ease-out,transform_100ms_cubic-bezier(0.16,1,0.3,1)] hover:bg-black/[0.025] dark:hover:bg-white/[0.025] active:scale-[0.99]"
-              >
-                <div className="flex items-baseline justify-between gap-4">
-                  <div className="flex items-baseline gap-3 sm:gap-5 min-w-0">
-                    <span className="font-sans tabular-nums text-xs md:text-sm text-black/35 dark:text-white/35 select-none w-5 sm:w-6 shrink-0 group-hover:text-black/60 dark:group-hover:text-white/60 [transition:color_80ms_ease-out]">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                        <span className="font-medium text-sm md:text-base text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] [transition:color_80ms_ease-out]">
-                          {model.name}
-                        </span>
-                        <span className="text-[11px] font-sans uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]">
-                          {model.statusBadge}
-                        </span>
-                        {model.isCompanyFlagship && (
-                          <span className="text-[11px] font-sans tracking-tight text-[#ff5d2e] dark:text-[#ff7347] font-medium">
-                            • Flagship
+        <div className="flex flex-col space-y-7">
+          {Object.entries(groupedTimeline).map(([monthYear, group], gIndex) => (
+            <TextWithBlur key={monthYear} delay={Math.min(gIndex * 40, 160)}>
+              <div className="border-l-2 border-black/10 dark:border-white/[0.08] pl-3.5 sm:pl-6 ml-1.5 sm:ml-2 relative">
+                <div
+                  className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-sm"
+                  style={{ backgroundColor: lab.accentColor }}
+                />
+
+                <h3 className="text-base font-medium text-black dark:text-white mb-3.5 flex items-center gap-2 font-sans">
+                  <Calendar size={14} style={{ color: lab.accentColor }} />
+                  <span>{monthYear}</span>
+                  <span className="text-xs text-black/40 dark:text-zinc-400 font-normal">
+                    [{group.length} {group.length === 1 ? "release" : "releases"}]
+                  </span>
+                </h3>
+
+                <div className="space-y-3">
+                  {group.map((model) => (
+                    <Link
+                      key={model.id}
+                      href={`/models/${model.id}`}
+                      className="group cursor-pointer block p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 mb-1.5 font-sans text-xs">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="font-sans text-sm font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
+                            {model.name}
                           </span>
-                        )}
+                          <span className="text-[11px] font-sans uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]">
+                            {model.statusBadge}
+                          </span>
+                          {model.isCompanyFlagship && (
+                            <span className="text-[11px] font-sans tracking-tight text-[#ff5d2e] dark:text-[#ff7347] font-medium">
+                              • Flagship
+                            </span>
+                          )}
+                        </div>
+
+                        <span className="text-black/40 dark:text-zinc-400 tabular-nums">
+                          {formatDate(model.releaseDate)}
+                        </span>
                       </div>
-                      <p className="mt-1 text-xs sm:text-sm font-normal text-black/55 dark:text-white/55 leading-relaxed line-clamp-1 group-hover:text-black/75 dark:group-hover:text-white/75 [transition:color_80ms_ease-out]">
+
+                      <p className="text-xs sm:text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-2 line-clamp-2">
                         {model.highlight}
                       </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 sm:gap-5 shrink-0 text-right">
-                    <div className="hidden sm:flex flex-col items-end">
-                      <span className="font-sans text-xs text-black/60 dark:text-white/60 tabular-nums">
-                        {model.categoryLabel}
-                      </span>
-                      <span className="text-[11px] font-sans text-black/35 dark:text-white/35">
-                        {formatDate(model.releaseDate)}
-                      </span>
-                    </div>
-                    <ArrowUpRight
-                      size={14}
-                      className="opacity-40 group-hover:opacity-100 group-hover:text-[#ff5d2e] shrink-0"
-                    />
-                  </div>
+
+                      <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-3 text-xs pt-2 border-t border-black/5 dark:border-white/[0.06] font-sans">
+                        <span className="text-[11px] text-black/45 dark:text-zinc-400">
+                          {model.categoryLabel}
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-zinc-400 group-hover:text-[#ff5d2e] transition-colors shrink-0">
+                          OPEN DATASHEET <ArrowUpRight size={10} className="opacity-60" />
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-              </Link>
+              </div>
             </TextWithBlur>
           ))}
         </div>
