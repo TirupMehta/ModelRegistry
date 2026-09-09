@@ -140,7 +140,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         </div>
 
         {/* Lab info & Release Stamp */}
-        <div className="flex items-center gap-2 mb-2.5 text-xs font-sans">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2.5 text-xs font-sans">
           <span
             className="w-2.5 h-2.5 rounded-sm shrink-0"
             style={{ backgroundColor: company?.accentColor || "#ff5d2e" }}

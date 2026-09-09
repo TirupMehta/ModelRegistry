@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server"
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
+import { formatPrice } from "@/lib/utils"
 
 export const dynamic = "force-dynamic"
 
@@ -63,7 +64,7 @@ export async function GET(req: NextRequest) {
     makeBoxRow(`  • ${SLATE}Context Window:${RESET} ${WHITE}${model.contextWindow.slice(0, 48)}${RESET}`),
     makeBoxRow(`  • ${SLATE}Architecture:${RESET}   ${WHITE}${model.parameters.slice(0, 48)}${RESET}`),
     makeBoxRow(`  • ${SLATE}License:${RESET}        ${WHITE}${model.license.slice(0, 48)}${RESET}`),
-    makeBoxRow(`  • ${SLATE}Pricing (1M):${RESET}   ${WHITE}${(model.openWeights ? "Free / Open Weights" : `$${model.pricing.input} in / $${model.pricing.output} out`).slice(0, 48)}${RESET}`),
+    makeBoxRow(`  • ${SLATE}Pricing${model.pricingUnit ? "" : " (1M)"}:${RESET}   ${WHITE}${(model.openWeights ? "Free / Open Weights" : formatPrice(model)).slice(0, 48)}${RESET}`),
   ]
 
   if (Object.keys(model.benchmarks).length > 0) {

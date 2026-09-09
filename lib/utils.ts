@@ -7,6 +7,15 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
+ * JSON serializer for <script type="application/ld+json"> blocks.
+ * Escapes `<` so a `</script>` sequence inside data can never break out of
+ * the script tag. Output is byte-identical to JSON.stringify otherwise.
+ */
+export function safeJsonLd(obj: unknown): string {
+  return JSON.stringify(obj).replace(/</g, "\\u003c")
+}
+
+/**
  * Unit-aware pricing label. Token-priced models render the classic
  * "$X in / $Y out" (per 1M tokens); visual models with a pricingUnit
  * (e.g. "per second") collapse equal rates to "$X per second".
