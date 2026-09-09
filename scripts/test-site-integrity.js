@@ -5,7 +5,7 @@ const vm = require("vm")
 
 console.log("🔗 Verifying site-wide link & data integrity...")
 
-function loadTsModule(relPath) {
+function loadTsModule(relPath, registry = {}) {
   const fullPath = path.resolve(__dirname, relPath)
   const source = fs.readFileSync(fullPath, "utf8")
   const transpiled = ts.transpileModule(source, {
@@ -16,7 +16,12 @@ function loadTsModule(relPath) {
   const ctx = vm.createContext({
     module: mod,
     exports: mod.exports,
-    require,
+    require: (spec) => {
+      // Lib modules import the dataset with relative or @/-aliased paths that
+      // plain node cannot resolve — serve the already-loaded modules instead.
+      if (spec in registry) return registry[spec]
+      return require(spec)
+    },
     console,
   })
   vm.runInContext(transpiled, ctx)
@@ -25,6 +30,12 @@ function loadTsModule(relPath) {
 
 const { modelsData } = loadTsModule("../data/models.ts")
 const { companies } = loadTsModule("../data/companies.ts")
+const datasetRegistry = {
+  "../data/models": { modelsData },
+  "@/data/models": { modelsData },
+  "../data/companies": { companies },
+  "@/data/companies": { companies },
+}
 const { leaderboardSpotlights } = loadTsModule("../data/leaderboard.ts")
 const { resolveCompanyFallback } = loadTsModule("../lib/model-fallback.ts")
 const { formatPrice, safeJsonLd } = loadTsModule("../lib/utils.ts")
@@ -117,6 +128,29 @@ check("docs-covers-all-categories", missing, [])
 // 9. OG card params must resolve: every model id and lab id is a valid ?model= / ?lab=.
 check("og-model-ids-valid", modelsData.every((m) => knownIds.has(m.id)), true)
 check("og-lab-ids-valid", Object.keys(companies).every((id) => Boolean(companies[id])), true)
+
+// 10. Agent prompts: single-sourced, synced, fence-safe.
+const { buildContributePrompt, API_USE_PROMPT, CONTRIBUTE_PROMPT_VERSION } =
+  loadTsModule("../lib/agent-prompts.ts", datasetRegistry)
+const contributePrompt = buildContributePrompt()
+check("prompt-has-version", typeof CONTRIBUTE_PROMPT_VERSION === "string" && CONTRIBUTE_PROMPT_VERSION.length > 0, true)
+check("prompt-no-fence-breakout", contributePrompt.includes("```"), false)
+check("prompt-lists-all-labs", Object.keys(companies).every((id) => contributePrompt.includes(id)), true)
+check("prompt-links-repo", contributePrompt.includes("https://github.com/TirupMehta/ModelRegistry"), true)
+check("api-prompt-links-docs", API_USE_PROMPT.includes("https://modelregistry.tirup.in/docs"), true)
+check(
+  "readme-prompt-synced",
+  readme.includes(`(${CONTRIBUTE_PROMPT_VERSION})`) &&
+    readme.includes("https://github.com/TirupMehta/ModelRegistry") &&
+    readme.includes("CONTRIBUTE_PROMPT_START"),
+  true
+)
+const docsSrc = fs.readFileSync(path.resolve(__dirname, "../app/docs/page.tsx"), "utf8")
+check("docs-uses-prompt-source", docsSrc.includes("lib/agent-prompts"), true)
+const headerSrc = fs.readFileSync(path.resolve(__dirname, "../components/header.tsx"), "utf8")
+check("header-fetches-prompt", headerSrc.includes("/api/agent-prompt"), true)
+const promptRouteSrc = fs.readFileSync(path.resolve(__dirname, "../app/api/agent-prompt/route.ts"), "utf8")
+check("prompt-route-single-sourced", promptRouteSrc.includes("lib/agent-prompts"), true)
 
 if (failures.length > 0) {
   console.error(`\n❌ Site integrity failed with ${failures.length} mismatch(es).`)

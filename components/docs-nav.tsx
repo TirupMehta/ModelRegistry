@@ -10,6 +10,7 @@ const INDEX = [
   { id: "get-models", label: "GET /v1/models" },
   { id: "model-object", label: "The model object" },
   { id: "examples", label: "Examples" },
+  { id: "agent-prompts", label: "Agent prompts" },
   { id: "cli", label: "CLI & plain text" },
   { id: "feeds", label: "Feeds" },
   { id: "badges", label: "Badges & health" },

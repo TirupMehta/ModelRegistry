@@ -44,6 +44,20 @@ html.dark {
   outline-offset: 2px;
 }
 
+/* Crisp draw-in for copy-success checks (header + docs copy buttons).
+   Animates strictly inside the icon box, so scroll containers can never clip it. */
+@keyframes draw-check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.draw-check polyline {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: draw-check 0.35s ease-out forwards;
+}
+
 html {
   scroll-behavior: smooth;
   height: 100%;

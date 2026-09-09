@@ -170,6 +170,7 @@ async function main() {
   }
   await expectStatus("/api/badge/openai", 200)
   await expectStatus("/api/badge?model=chatgpt-images-2-5&type=pricing", 200)
+  await expectContains("/api/agent-prompt", "ModelRegistry", "text/plain")
 
   // OG cards render real PNGs (model, lab, default)
   await expectPng("/api/og?model=gpt-6-astra")

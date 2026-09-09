@@ -1,5 +1,7 @@
 # Contributing to ModelRegistry
 
+> **Shortcut:** copy the agent prompt from the homepage **Contribute with AI** card, the **Agent prompts** section in the [API docs](https://modelregistry.tirup.in/docs), or the [README](./README.md#contributing-with-ai) — paste it into Claude, Cursor, Codex, or Copilot and it will walk you through every step below.
+
 Contributing takes less than 60 seconds. You only need to touch **one file**: [`data/models.ts`](./data/models.ts). 
 
 Our automated pipeline handles everything else — the website, REST API, RSS feed, and README table sync automatically.
