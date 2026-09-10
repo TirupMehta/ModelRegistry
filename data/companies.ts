@@ -67,9 +67,9 @@ export const companies: Record<string, Company> = {
     website: "https://www.deepseek.com",
     headquarters: "Hangzhou, China",
     accentColor: "#4f46e5",
-    description: "Open-source frontier champion famous for DeepSeek-V4 massive MoE architecture (1.6T parameters) and DSpark speculative decoding.",
-    latestFlagship: "DeepSeek V4-Pro (0813)",
-    latestReasoning: "DeepSeek V4-Pro (Thinking Mode)",
+    description: "Open-source frontier champion behind the DeepSeek-V4.1 family (552B Causal Encoder-Decoder MoE, native multimodal, MIT-licensed) with DSpark speculative decoding and 1M context.",
+    latestFlagship: "DeepSeek V4.1 Flash",
+    latestReasoning: "DeepSeek V4.1 Flash (Thinking Mode)",
     openWeightsAdvocate: true,
   },
   meta: {
