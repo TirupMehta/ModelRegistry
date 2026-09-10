@@ -220,7 +220,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   {formatPrice(model)}
                 </span>
                 {model.openWeights && (
-                  <span className="block text-[11px] font-sans text-emerald-500 font-normal mt-1 leading-relaxed">
+                  <span className="block text-[11px] font-sans text-black/60 dark:text-zinc-400 font-normal mt-1 leading-relaxed">
                     + Weights Free to Self-Host
                   </span>
                 )}

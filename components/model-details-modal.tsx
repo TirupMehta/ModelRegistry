@@ -201,7 +201,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
                 {formatPrice(model)}
               </span>
               {model.openWeights && (
-                <span className="block text-[11px] font-sans text-[#00e599] font-normal mt-0.5">
+                <span className="block text-[11px] font-sans text-black/60 dark:text-zinc-400 font-normal mt-0.5">
                   + Weights Free to Self-Host
                 </span>
               )}
