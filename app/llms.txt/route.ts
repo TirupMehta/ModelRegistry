@@ -18,6 +18,7 @@ export async function GET() {
 
 - Website: ${siteUrl}
 - JSON API: ${siteUrl}/api/v1/models
+- API & Feeds Reference: ${siteUrl}/docs
 - RSS Feed: ${siteUrl}/rss.xml
 - Full LLM Matrix: ${siteUrl}/llms-full.txt
 - GitHub: https://github.com/TirupMehta/ModelRegistry
@@ -40,6 +41,7 @@ export async function GET() {
     )
 
     text += `\n### ${idx + 1}. ${company.name}\n`
+    text += `- Lab Page: ${siteUrl}/companies/${company.id}\n`
     if (flagship) {
       text += `- **Primary Flagship**: **${flagship.name}** (Released: ${formatDate(flagship.releaseDate)})\n`
       text += `  - ${flagship.contextWindow} context, ${flagship.parameters}. ${flagship.highlight}\n`

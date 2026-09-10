@@ -7,7 +7,7 @@ import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, type ModelItem } from "@/data/models"
 import { Search, ArrowUpRight, Terminal, Sparkles, Layers, Copy, Check } from "lucide-react"
 
-type ViewTab = "flagships" | "latest-drops" | "open-weights" | "all"
+type ViewTab = "flagships" | "latest-drops" | "open-weights" | "visual" | "all"
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<ViewTab>("flagships")
@@ -72,6 +72,7 @@ export default function Home() {
       if (activeTab === "flagships" && !model.isCompanyFlagship) return false
       if (activeTab === "latest-drops" && !model.isLatestCheckpoint) return false
       if (activeTab === "open-weights" && !model.openWeights) return false
+      if (activeTab === "visual" && model.category !== "image" && model.category !== "video") return false
 
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase()
@@ -92,6 +93,7 @@ export default function Home() {
       flagships: modelsData.filter((m) => m.isCompanyFlagship).length,
       latestDrops: modelsData.filter((m) => m.isLatestCheckpoint).length,
       openWeights: modelsData.filter((m) => m.openWeights).length,
+      visual: modelsData.filter((m) => m.category === "image" || m.category === "video").length,
       all: modelsData.length,
     }
   }, [])
@@ -204,6 +206,17 @@ export default function Home() {
                 }`}
               >
                 Open Weights <span className="opacity-60 text-[11px]">[{counts.openWeights}]</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab("visual")}
+                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
+                  activeTab === "visual"
+                    ? "bg-black text-white dark:bg-white dark:text-black font-medium"
+                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+                }`}
+              >
+                Visual <span className="opacity-60 text-[11px]">[{counts.visual}]</span>
               </button>
 
               <button

@@ -74,7 +74,7 @@ export default function ModelCardRow({ model, index, onSelect }: ModelCardRowPro
                 </span>
               )}
               {model.isLatestCheckpoint && !model.isCompanyFlagship && (
-                <span className="text-[11px] font-sans tracking-tight text-emerald-600 dark:text-emerald-400 font-medium">
+                <span className="text-[11px] font-sans tracking-tight text-[#1a73e8] dark:text-[#8ab4f8] font-medium">
                   • Latest Drop
                 </span>
               )}

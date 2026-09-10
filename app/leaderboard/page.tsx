@@ -6,6 +6,7 @@ import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, ModelItem } from "@/data/models"
 import { leaderboardSpotlights } from "@/data/leaderboard"
+import { formatPrice } from "@/lib/utils"
 import { Code, Brain, Maximize, Coins, Layers, ArrowUpRight } from "lucide-react"
 
 interface ComparisonCategory {
@@ -67,7 +68,7 @@ export default function LeaderboardPage() {
       icon: Coins,
       description: "Lowest input/output pricing per 1M tokens combined with near-frontier intelligence for production applications.",
       leader: "Muse Voice ($0.04/M) / Muse Spark ($0.05/M) / DeepSeek Flash ($0.12/M)",
-      models: [...modelsData].sort((a, b) => a.pricing.input - b.pricing.input).slice(0, 5),
+      models: [...modelsData].filter((m) => !m.pricingUnit).sort((a, b) => a.pricing.input - b.pricing.input).slice(0, 5),
     },
   ]
 
@@ -152,8 +153,12 @@ export default function LeaderboardPage() {
                           <span className="text-[11px] text-black/55 dark:text-zinc-400 hidden sm:inline tabular-nums">
                             {model.contextWindow.replace(" tokens", "")}
                           </span>
-                          <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] tabular-nums">
-                            {model.pricing.input === 0 ? "Free" : `$${model.pricing.input}/M`}
+                          <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] tabular-nums whitespace-nowrap">
+                            {model.pricingUnit
+                              ? formatPrice(model)
+                              : model.pricing.input === 0
+                                ? "Free"
+                                : `$${model.pricing.input}/M`}
                           </span>
                           <ArrowUpRight size={12} className="opacity-30 group-hover:opacity-100 text-black dark:text-white group-hover:text-[#ff5d2e] transition-colors duration-150" />
                         </div>

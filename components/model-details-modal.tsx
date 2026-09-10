@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
+import { formatPrice } from "@/lib/utils"
 import {
   X,
   ExternalLink,
@@ -81,11 +82,12 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-xs transition-opacity duration-150 animate-in fade-in"
+      className="fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-black/70 backdrop-blur-xs transition-opacity duration-150 animate-in fade-in"
       onClick={onClose}
     >
+      <div className="min-h-full flex justify-center p-3 sm:p-6">
       <div
-        className="relative w-full max-w-2xl bg-white dark:bg-[#0e1014] border border-black/10 dark:border-white/[0.08] rounded-xl shadow-2xl p-4 sm:p-7 overflow-y-auto overscroll-contain max-h-[92vh] transition-colors duration-150 ease-out animate-in fade-in"
+        className="relative m-auto w-full max-w-2xl bg-white dark:bg-[#0e1014] border border-black/10 dark:border-white/[0.08] rounded-xl shadow-2xl p-4 sm:p-7 sm:max-h-[92dvh] sm:overflow-y-auto sm:overscroll-contain transition-colors duration-150 ease-out animate-in fade-in"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar */}
@@ -100,7 +102,8 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <Link
               href={`/models/${model.id}`}
               title="Open full dedicated page"
-              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.985] text-[10px] sm:text-[11px] font-sans text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
+              aria-label="Open full dedicated page"
+              className="inline-flex items-center justify-center min-w-8 min-h-8 gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.985] text-[10px] sm:text-[11px] font-sans text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
             >
               <ExternalLink size={11} className="sm:w-3 sm:h-3" />
               <span className="hidden sm:inline">PERMALINK</span>
@@ -109,7 +112,8 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <button
               onClick={() => setIsShareStudioOpen(true)}
               title="Export Instagram Story / Social Card"
-              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.985] text-[10px] sm:text-[11px] font-sans text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
+              aria-label="Export share card"
+              className="inline-flex items-center justify-center min-w-8 min-h-8 gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.985] text-[10px] sm:text-[11px] font-sans text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
             >
               <Share2 size={11} className="sm:w-3 sm:h-3" />
               <span className="hidden sm:inline">EXPORT CARD</span>
@@ -120,7 +124,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               onClick={handleCopyLink}
               title="Copy shareable link"
               aria-label="Copy shareable link"
-              className="p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-[0.985] transition-colors duration-150 cursor-pointer"
+              className="inline-flex items-center justify-center min-w-8 min-h-8 p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-[0.985] transition-colors duration-150 cursor-pointer"
             >
               {copied ? <Check size={15} className="text-emerald-500" /> : <Link2 size={15} />}
             </button>
@@ -128,7 +132,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <button
               onClick={onClose}
               aria-label="Close dialog"
-              className="p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-[0.985] transition-colors duration-150 cursor-pointer"
+              className="inline-flex items-center justify-center min-w-8 min-h-8 p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-[0.985] transition-colors duration-150 cursor-pointer"
             >
               <X size={16} />
             </button>
@@ -136,7 +140,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         </div>
 
         {/* Lab info & Release Stamp */}
-        <div className="flex items-center gap-2 mb-2.5 text-xs font-sans">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2.5 text-xs font-sans">
           <span
             className="w-2.5 h-2.5 rounded-sm shrink-0"
             style={{ backgroundColor: company?.accentColor || "#ff5d2e" }}
@@ -190,14 +194,14 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] col-span-2 sm:col-span-1 hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
             <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px] sm:text-xs">
               <DollarSign size={13} />
-              <span>OFFICIAL API / 1M</span>
+              <span>{model.pricingUnit ? "OFFICIAL API" : "OFFICIAL API / 1M"}</span>
             </div>
             <div className="tabular-nums text-xs sm:text-sm font-medium text-black dark:text-white leading-tight">
               <span>
-                ${model.pricing.input} in / ${model.pricing.output} out
+                {formatPrice(model)}
               </span>
               {model.openWeights && (
-                <span className="block text-[11px] font-sans text-[#00e599] font-normal mt-0.5">
+                <span className="block text-[11px] font-sans text-black/60 dark:text-zinc-400 font-normal mt-0.5">
                   + Weights Free to Self-Host
                 </span>
               )}
@@ -244,6 +248,38 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
                   </span>
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* Shipped Variants (e.g. API twins) */}
+        {model.variants && model.variants.length > 0 && (
+          <div className="mb-6">
+            <h3 className="text-xs font-sans uppercase tracking-wider text-black/50 dark:text-zinc-400 font-medium mb-2.5">
+              SHIPPED VARIANTS
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {model.variants.map((variant) => (
+                <div
+                  key={variant.name}
+                  className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default"
+                >
+                  <div className="flex flex-wrap items-center gap-1.5 mb-1">
+                    <span className="text-xs font-sans font-medium text-black dark:text-white">
+                      {variant.name}
+                    </span>
+                    <span className="text-[10px] font-sans uppercase tracking-wider px-1 py-px rounded border border-black/10 dark:border-white/10 text-black/55 dark:text-white/55">
+                      {variant.role}
+                    </span>
+                  </div>
+                  <p className="text-[11px] font-sans text-black/55 dark:text-zinc-400 leading-relaxed">
+                    {variant.detail}
+                  </p>
+                  <p className="text-[11px] font-sans tabular-nums text-black dark:text-white font-medium mt-1">
+                    {variant.pricingNote}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -323,6 +359,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           onClose={() => setIsShareStudioOpen(false)}
         />
       )}
+      </div>
     </div>
   )
 }

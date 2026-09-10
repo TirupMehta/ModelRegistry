@@ -11,7 +11,7 @@ const path = require("path")
 const ts = require("typescript")
 const vm = require("vm")
 
-function loadTsModule(relPath) {
+function loadTsModule(relPath, registry = {}) {
   const fullPath = path.resolve(__dirname, relPath)
   const source = fs.readFileSync(fullPath, "utf8")
   const transpiled = ts.transpileModule(source, {
@@ -22,7 +22,10 @@ function loadTsModule(relPath) {
   const ctx = vm.createContext({
     module: mod,
     exports: mod.exports,
-    require,
+    require: (spec) => {
+      if (spec in registry) return registry[spec]
+      return require(spec)
+    },
     console,
   })
   vm.runInContext(transpiled, ctx)
@@ -33,6 +36,7 @@ const { modelsData } = loadTsModule("../data/models.ts")
 const { companies } = loadTsModule("../data/companies.ts")
 
 function formatContext(tokens) {
+  if (!tokens) return "—"
   if (tokens >= 1000000) {
     const val = tokens / 1000000
     if (Math.abs(val - 1.048576) < 0.06 || Math.abs(val - 1) < 0.01) return "1M"
@@ -46,6 +50,13 @@ function formatContext(tokens) {
 }
 
 function formatPricing(model) {
+  if (model.pricingUnit) {
+    const unitBase =
+      model.pricing.input === model.pricing.output
+        ? `$${model.pricing.input}`
+        : `$${model.pricing.input} in / $${model.pricing.output}`
+    return `${unitBase} ${model.pricingUnit}`
+  }
   const base = `$${model.pricing.input} in / $${model.pricing.output} out`
   if (model.openWeights) {
     return `${base} *(Open)*`
@@ -82,7 +93,7 @@ function generateMarkdownTable() {
   })
 
   const header = [
-    "| Laboratory | Primary Flagship | Latest Checkpoint | Context | Access | Pricing (1M) |",
+    "| Laboratory | Primary Flagship | Latest Checkpoint | Context | Access | Pricing |",
     "|:---|:---|:---|:---|:---|:---|",
   ]
 
@@ -124,6 +135,52 @@ function syncReadme(checkOnly = false) {
     console.log("✔ Successfully synchronized README.md frontier models table.")
   } else {
     console.log("✔ README.md is already up to date with data/models.ts.")
+  }
+
+  syncContributePrompt()
+}
+
+/**
+ * Injects the agent contribution prompt (single-sourced from
+ * lib/agent-prompts.ts) between CONTRIBUTE_PROMPT markers. Same
+ * write-if-changed semantics as the table sync above.
+ */
+function syncContributePrompt() {
+  const datasetRegistry = {
+    "../data/models": { modelsData },
+    "@/data/models": { modelsData },
+    "../data/companies": { companies },
+    "@/data/companies": { companies },
+  }
+  const { buildContributePrompt, CONTRIBUTE_PROMPT_VERSION } = loadTsModule("../lib/agent-prompts.ts", datasetRegistry)
+
+  const readmePath = path.resolve(__dirname, "../README.md")
+  let readmeContent = fs.readFileSync(readmePath, "utf8")
+
+  const startMarker = "<!-- CONTRIBUTE_PROMPT_START -->"
+  const endMarker = "<!-- CONTRIBUTE_PROMPT_END -->"
+
+  const startIndex = readmeContent.indexOf(startMarker)
+  const endIndex = readmeContent.indexOf(endMarker)
+
+  if (startIndex === -1 || endIndex === -1) {
+    console.error("❌ Could not find <!-- CONTRIBUTE_PROMPT_START --> and <!-- CONTRIBUTE_PROMPT_END --> markers in README.md")
+    process.exit(1)
+  }
+
+  const prompt = buildContributePrompt()
+  const newSection =
+    `${startMarker}\n<!-- Auto-generated from lib/agent-prompts.ts (${CONTRIBUTE_PROMPT_VERSION}) - Do not edit manually -->\n` +
+    `Paste this into any AI agent (Claude, Cursor, Codex, Copilot) and it will walk you through contributing:\n\n` +
+    "```text\n" + prompt + "\n```\n"
+
+  const updatedReadme = readmeContent.slice(0, startIndex) + newSection + readmeContent.slice(endIndex)
+
+  if (readmeContent !== updatedReadme) {
+    fs.writeFileSync(readmePath, updatedReadme, "utf8")
+    console.log("✔ Successfully synchronized README.md agent prompt.")
+  } else {
+    console.log("✔ README.md agent prompt is already up to date.")
   }
 }
 

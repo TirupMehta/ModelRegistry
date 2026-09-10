@@ -3,6 +3,14 @@ export interface ModelPricing {
   output: number // USD per 1M tokens
 }
 
+export interface ModelVariant {
+  name: string // e.g. "GPT-Image-2.5 Flare"
+  role: string // short pill, e.g. "API DEFAULT"
+  detail: string // one-line capability summary
+  pricingNote: string // e.g. "$5 in / $30 out per 1M tokens"
+  link?: string // official docs URL
+}
+
 export interface ModelItem {
   id: string
   companyId: string
@@ -13,7 +21,7 @@ export interface ModelItem {
   isCompanyFlagship: boolean // The primary general-purpose LLM for the lab
   isLatestCheckpoint: boolean // The absolute latest checkpoint shipped by the lab
   statusBadge: string
-  category: "flagship" | "reasoning" | "open-weights" | "code" | "multimodal" | "audio"
+  category: "flagship" | "reasoning" | "open-weights" | "code" | "multimodal" | "audio" | "image" | "video"
   categoryLabel: string
   contextWindow: string
   contextWindowTokens: number
@@ -22,8 +30,14 @@ export interface ModelItem {
   openWeights: boolean
   license: string
   pricing: ModelPricing
+  // Non-token billing unit for visual models (e.g. "per second").
+  // Undefined = classic per-1M-tokens pricing; excluded from token cost leaderboards.
+  pricingUnit?: string
   highlight: string
-  modalities: ("Text" | "Vision" | "Audio" | "Video" | "Code")[]
+  modalities: ("Text" | "Vision" | "Audio" | "Video" | "Code" | "Image")[]
+  // Named sub-variants shipped under this entry (e.g. API twins).
+  // Rendered inside the parent model page — not separate index entries.
+  variants?: ModelVariant[]
   benchmarks: {
     mmluPro?: string
     sweBench?: string
@@ -240,14 +254,50 @@ export const modelsData: ModelItem[] = [
 
   // ─── DEEPSEEK ────────────────────────────────────────────────────────────
   {
+    id: "deepseek-v4-1-flash",
+    companyId: "deepseek",
+    companyName: "DeepSeek",
+    name: "DeepSeek V4.1 Flash",
+    version: "V4.1-Flash",
+    releaseDate: "2026-09-10",
+    isCompanyFlagship: true,
+    isLatestCheckpoint: true,
+    statusBadge: "NEW ARCHITECTURE FLAGSHIP",
+    category: "flagship",
+    categoryLabel: "Frontier Multimodal MoE",
+    contextWindow: "1,000,000 tokens",
+    contextWindowTokens: 1000000,
+    maxOutputTokens: "384,000 tokens",
+    parameters: "552B MoE (8B / 16B Activated)",
+    openWeights: true,
+    license: "MIT License",
+    pricing: { input: 0.3, output: 1.2 },
+    highlight:
+      "Released Sept 10, 2026; smallest model in DeepSeek's new Causal Encoder-Decoder architecture family with native image+text input, 1M context and 384K max output. Outperforms V4-Pro across performance, cost and speed; V4-Flash models retired and V4-Pro routes to V4.1-Flash from Sept 14. Peak $0.3/M in / $1.2/M out, 50% off off-peak.",
+    modalities: ["Text", "Vision", "Code"],
+    benchmarks: {
+      mmluPro: "74.1%",
+      terminalBench: "90.6%",
+      sweBench: "74.2% (DeepSWE v1.1)",
+      gpqa: "90.9%",
+    },
+    links: {
+      announcement: "https://www.deepseek.com/en/news/deepseek-v4-1-flash/",
+      playground: "https://chat.deepseek.com",
+      paper: "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf",
+      apiDocs: "https://api-docs.deepseek.com/news/news260910",
+      weights: "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+    },
+  },
+  {
     id: "deepseek-v4-pro-0813",
     companyId: "deepseek",
     companyName: "DeepSeek",
     name: "DeepSeek V4-Pro (0813)",
     version: "V4-Pro",
     releaseDate: "2026-08-13",
-    isCompanyFlagship: true,
-    isLatestCheckpoint: false,
+    isCompanyFlagship: false,
+    isLatestCheckpoint: true,
     statusBadge: "1.6T HOSTED SOTA",
     category: "flagship",
     categoryLabel: "Frontier MoE",
@@ -277,7 +327,7 @@ export const modelsData: ModelItem[] = [
     version: "V4-Vision-Exp",
     releaseDate: "2026-08-30",
     isCompanyFlagship: false,
-    isLatestCheckpoint: true,
+    isLatestCheckpoint: false,
     statusBadge: "OPEN WEIGHTS (MIT)",
     category: "open-weights",
     categoryLabel: "Open Vision MoE",
@@ -892,6 +942,161 @@ export const modelsData: ModelItem[] = [
     links: {
       playground: "https://claude.ai",
       apiDocs: "https://docs.anthropic.com",
+    },
+  },
+  {
+    id: "chatgpt-images-2-5",
+    companyId: "openai",
+    companyName: "OpenAI",
+    name: "ChatGPT Images 2.5",
+    version: "Images 2.5",
+    releaseDate: "2026-09-08",
+    isCompanyFlagship: false,
+    isLatestCheckpoint: true,
+    statusBadge: "NEW · SEPT 8",
+    category: "image",
+    categoryLabel: "SOTA Image Generation",
+    contextWindow: "Undisclosed (image-native)",
+    contextWindowTokens: 0,
+    maxOutputTokens: "Up to 4K image output",
+    parameters: "Undisclosed (OpenAI image stack)",
+    openWeights: false,
+    license: "ChatGPT / OpenAI API",
+    pricing: { input: 5.0, output: 30.0 },
+    highlight: "Launched Sept 8, 2026; OpenAI's state-of-the-art image model with sharper detail, multi-turn precision editing, 50% lower latency, Sketch, Templates and comment-based edits. API twins GPT-Image-2.5 Flare (default) and Sunburst (precision); roughly $0.21 per 1024px high-quality image.",
+    modalities: ["Text", "Image"],
+    benchmarks: {},
+    variants: [
+      {
+        name: "GPT-Image-2.5 Flare",
+        role: "API DEFAULT",
+        detail: "Same quality and editing gains at 50% lower latency than GPT-Image-2, with low-to-max quality tiers. Built for creator content, product visuals, visual search and rapid prototyping.",
+        pricingNote: "$5 in / $30 out per 1M tokens (≈$0.21 per 1024px high image)",
+        link: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+      },
+      {
+        name: "GPT-Image-2.5 Sunburst",
+        role: "API PRECISION",
+        detail: "Tighter control across edits with longer generation times. Built for production-ready campaign creative and polished product imagery.",
+        pricingNote: "$5 in / $30 out per 1M tokens",
+        link: "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+      },
+    ],
+    links: {
+      announcement: "https://openai.com/index/introducing-chatgpt-images-2-5/",
+      playground: "https://chatgpt.com",
+      apiDocs: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+    },
+  },
+  {
+    id: "nano-banana-pro",
+    companyId: "google",
+    companyName: "Google DeepMind",
+    name: "Nano Banana Pro",
+    version: "Gemini 3 Pro Image",
+    releaseDate: "2025-11-20",
+    isCompanyFlagship: false,
+    isLatestCheckpoint: false,
+    statusBadge: "4K NATIVE",
+    category: "image",
+    categoryLabel: "Reasoning Image Edit",
+    contextWindow: "65,536 tokens",
+    contextWindowTokens: 65536,
+    maxOutputTokens: "32,768 tokens",
+    parameters: "Undisclosed (Gemini 3 Pro family)",
+    openWeights: false,
+    license: "Google AI Studio / Vertex AI",
+    pricing: { input: 2.0, output: 120.0 },
+    highlight: "Google's reasoning-first image model (gemini-3-pro-image): native 4K output, 14 reference images, 10 aspect ratios, SynthID watermarking; about $0.134 per 1K/2K image and $0.24 at 4K. Near-tie with GPT Image 2 on the image-edit arena.",
+    modalities: ["Text", "Image"],
+    benchmarks: {},
+    links: {
+      announcement: "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+      playground: "https://aistudio.google.com",
+    },
+  },
+  {
+    id: "veo-3-1",
+    companyId: "google",
+    companyName: "Google DeepMind",
+    name: "Veo 3.1",
+    version: "3.1",
+    releaseDate: "2025-10-15",
+    isCompanyFlagship: false,
+    isLatestCheckpoint: false,
+    statusBadge: "NATIVE AUDIO",
+    category: "video",
+    categoryLabel: "Audio-Native Video",
+    contextWindow: "8s clips · up to 4K",
+    contextWindowTokens: 0,
+    maxOutputTokens: "8-second clips (+ extension)",
+    parameters: "Undisclosed (Veo stack)",
+    openWeights: false,
+    license: "Gemini API / Vertex AI / Flow",
+    pricing: { input: 0.4, output: 0.4 },
+    pricingUnit: "per second",
+    highlight: "Google DeepMind's flagship video model with best-in-class native dialogue and sound effects, 4K detail reconstruction, reference images and scene extension; $0.40/s Standard 1080p with audio. Top preference on MovieGenBench.",
+    modalities: ["Text", "Video", "Audio"],
+    benchmarks: {},
+    links: {
+      announcement: "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
+      playground: "https://aistudio.google.com",
+    },
+  },
+  {
+    id: "kling-3-0",
+    companyId: "kuaishou",
+    companyName: "Kuaishou Kling",
+    name: "Kling 3.0",
+    version: "3.0",
+    releaseDate: "2026-02-05",
+    isCompanyFlagship: true,
+    isLatestCheckpoint: true,
+    statusBadge: "VALUE KING",
+    category: "video",
+    categoryLabel: "Value Video Generation",
+    contextWindow: "10–15s clips · 4K/60fps",
+    contextWindowTokens: 0,
+    maxOutputTokens: "15-second multi-shot",
+    parameters: "Undisclosed (Kuaishou)",
+    openWeights: false,
+    license: "Kling API / App",
+    pricing: { input: 0.084, output: 0.084 },
+    pricingUnit: "per second",
+    highlight: "Kuaishou's Feb 2026 flagship: native multilingual audio, motion brush, best-in-class image-to-video; highest Elo among purchasable video models (about 1,104) at roughly $0.84 per 10s 1080p clip with audio.",
+    modalities: ["Text", "Video", "Audio"],
+    benchmarks: {},
+    links: {
+      announcement: "https://klingai.com",
+      playground: "https://klingai.com",
+    },
+  },
+  {
+    id: "runway-gen-4-5",
+    companyId: "runway",
+    companyName: "Runway",
+    name: "Runway Gen-4.5",
+    version: "Gen-4.5",
+    releaseDate: "2025-12-01",
+    isCompanyFlagship: true,
+    isLatestCheckpoint: true,
+    statusBadge: "VIDEO ARENA #1",
+    category: "video",
+    categoryLabel: "Director Video Model",
+    contextWindow: "2–10s clips · 4K export",
+    contextWindowTokens: 0,
+    maxOutputTokens: "10-second clips",
+    parameters: "Undisclosed (Runway)",
+    openWeights: false,
+    license: "Runway API / App",
+    pricing: { input: 0.15, output: 0.15 },
+    pricingUnit: "per second",
+    highlight: "Launched Dec 1, 2025 with 1,247 Elo — No. 1 on the Artificial Analysis text-to-video board: motion brush, director-mode camera moves, reference-driven characters; about $1.49 per 10s clip via API credits (12 credits/s).",
+    modalities: ["Text", "Image", "Video"],
+    benchmarks: {},
+    links: {
+      announcement: "https://runwayml.com/research/introducing-runway-gen-4.5",
+      playground: "https://runwayml.com",
     },
   },
 

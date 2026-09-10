@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server"
+import { companies } from "@/data/companies"
+import { modelsData } from "@/data/models"
 
 export const dynamic = "force-dynamic"
 
@@ -35,7 +37,8 @@ export async function GET() {
     feedsHealthy: true,
     externalLiveFeedSync: liveCheckPassed ? "connected" : "cached-fallback",
     externalLiveCount: totalLiveModelsDetected,
-    trackedLabsCount: 10,
+    trackedLabsCount: Object.keys(companies).length,
+    trackedModelsCount: modelsData.length,
     message: "ModelPulse data index is up to date with frontier lab releases.",
   })
 }

@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
+import { formatPrice } from "@/lib/utils"
 import { Download, Copy, Share2, Check, X, Sparkles, Code2, Layers, ZoomIn } from "lucide-react"
 
 interface ShareCardModalProps {
@@ -316,8 +317,8 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       { label: "CONTEXT WINDOW", value: model.contextWindow.replace(" tokens", "") },
       { label: "ARCHITECTURE", value: model.parameters },
       {
-        label: "OFFICIAL API / 1M",
-        value: `$${model.pricing.input} in / $${model.pricing.output} out${model.openWeights ? " (Open)" : ""}`,
+        label: model.pricingUnit ? "OFFICIAL API" : "OFFICIAL API / 1M",
+        value: formatPrice(model),
       },
     ]
 
@@ -548,9 +549,10 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   }
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-5 bg-black/60 backdrop-blur-md animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-[60] overflow-y-auto overscroll-contain bg-black/60 backdrop-blur-md animate-in fade-in duration-150">
+      <div className="min-h-full flex justify-center p-2 sm:p-5">
       <div
-        className="relative w-full max-w-4xl max-h-[95dvh] flex flex-col md:flex-row bg-[#f7f7f4] dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.09] rounded-xl shadow-2xl overflow-y-auto overscroll-contain md:overflow-hidden"
+        className="relative m-auto w-full max-w-4xl max-h-[95dvh] flex flex-col md:flex-row bg-[#f7f7f4] dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.09] rounded-xl shadow-2xl overflow-y-auto overscroll-contain md:overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Left Side: Canvas Preview */}
@@ -729,6 +731,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
             </button>
           </div>
         </div>
+      </div>
       </div>
 
       {/* Fullscreen zoom overlay (stops propagation so parent popup stays open) */}

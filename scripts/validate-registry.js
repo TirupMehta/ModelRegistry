@@ -83,6 +83,41 @@ modelsData.forEach((model, index) => {
     errors.push(`${prefix}: 'highlight' must be a descriptive summary (min 10 chars).`)
   }
 
+  // 5b. Category / pricing-unit / modality enums (must match the ModelItem union)
+  const validCategories = new Set(["flagship", "reasoning", "open-weights", "code", "multimodal", "audio", "image", "video"])
+  if (!validCategories.has(model.category)) {
+    errors.push(`${prefix}: Unknown category '${model.category}'. Valid: ${Array.from(validCategories).join(", ")}`)
+  }
+  const validModalities = new Set(["Text", "Vision", "Audio", "Video", "Code", "Image"])
+  ;(model.modalities || []).forEach((mod) => {
+    if (!validModalities.has(mod)) {
+      errors.push(`${prefix}: Unknown modality '${mod}'. Valid: ${Array.from(validModalities).join(", ")}`)
+    }
+  })
+  if (model.pricingUnit !== undefined && model.pricingUnit !== "per second") {
+    errors.push(`${prefix}: Unknown pricingUnit '${model.pricingUnit}'. Only 'per second' is allowed (token pricing is the default).`)
+  }
+
+  // 5c. Sub-variants (rendered inside the parent page, not separate entries)
+  if (model.variants !== undefined) {
+    if (!Array.isArray(model.variants)) {
+      errors.push(`${prefix}: 'variants' must be an array.`)
+    } else {
+      model.variants.forEach((v, vIdx) => {
+        if (!v.name || !v.role || !v.detail || !v.pricingNote) {
+          errors.push(`${prefix}: variants[${vIdx}] needs name, role, detail, and pricingNote.`)
+        }
+        if (v.link) {
+          try {
+            new URL(v.link)
+          } catch {
+            errors.push(`${prefix}: Invalid URL '${v.link}' in variants[${vIdx}].link.`)
+          }
+        }
+      })
+    }
+  }
+
   // 6. Links validation
   if (model.links) {
     const urls = [model.links.announcement, model.links.playground, model.links.weights].filter(Boolean)

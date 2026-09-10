@@ -1,8 +1,33 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import type { ModelItem } from '@/data/models'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+/**
+ * JSON serializer for <script type="application/ld+json"> blocks.
+ * Escapes `<` so a `</script>` sequence inside data can never break out of
+ * the script tag. Output is byte-identical to JSON.stringify otherwise.
+ */
+export function safeJsonLd(obj: unknown): string {
+  return JSON.stringify(obj).replace(/</g, "\\u003c")
+}
+
+/**
+ * Unit-aware pricing label. Token-priced models render the classic
+ * "$X in / $Y out" (per 1M tokens); visual models with a pricingUnit
+ * (e.g. "per second") collapse equal rates to "$X per second".
+ */
+export function formatPrice(model: Pick<ModelItem, 'pricing' | 'pricingUnit' | 'openWeights'>): string {
+  const { input, output } = model.pricing
+  if (model.pricingUnit) {
+    const base = input === output ? `$${input}` : `$${input} in / $${output}`
+    return `${base} ${model.pricingUnit}`
+  }
+  const base = `$${input} in / $${output} out`
+  return model.openWeights ? `${base} (Open)` : base
 }
 
 export function formatDate(dateString: string): string {

@@ -4,6 +4,7 @@ import "./globals.css"
 import AmbientShader from "@/components/ambient-shader"
 import { modelsData } from "@/data/models"
 import { companies, type Company } from "@/data/companies"
+import { safeJsonLd } from "@/lib/utils"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
@@ -175,15 +176,15 @@ export default function RootLayout({
         {/* Rich SEO & GEO Structured Data Matrix */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebSite) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdWebSite) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdDataset) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdDataset) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdFAQ) }}
         />
 
         {/* Inline script to set default light theme unless explicitly dark */}

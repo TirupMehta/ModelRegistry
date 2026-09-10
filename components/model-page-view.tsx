@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
+import { formatPrice } from "@/lib/utils"
 import Header from "@/components/header"
 import { ShareCardModal } from "@/components/share-card-modal"
 import {
@@ -114,7 +115,12 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
             <span>LEDGER</span>
           </Link>
           <span className="shrink-0">/</span>
-          <span className="uppercase text-black/70 dark:text-zinc-300 truncate">{model.companyName}</span>
+          <Link
+            href={`/companies/${model.companyId}`}
+            className="uppercase text-black/70 dark:text-zinc-300 truncate hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150"
+          >
+            {model.companyName}
+          </Link>
           <span className="shrink-0">/</span>
           <span className="text-[#ff5d2e] font-medium truncate">{model.id}</span>
         </div>
@@ -207,14 +213,14 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
             <div className="p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
               <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1.5 text-[11px] tracking-widest">
                 <DollarSign size={13} />
-                <span className="uppercase">Official API (1M)</span>
+                <span className="uppercase">Official API{model.pricingUnit ? "" : " (1M)"}</span>
               </div>
               <div className="font-semibold text-black dark:text-white text-xs sm:text-sm leading-6 tracking-wide">
                 <span>
-                  ${model.pricing.input} in / ${model.pricing.output} out
+                  {formatPrice(model)}
                 </span>
                 {model.openWeights && (
-                  <span className="block text-[11px] font-sans text-emerald-500 font-normal mt-1 leading-relaxed">
+                  <span className="block text-[11px] font-sans text-black/60 dark:text-zinc-400 font-normal mt-1 leading-relaxed">
                     + Weights Free to Self-Host
                   </span>
                 )}
@@ -267,9 +273,52 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
             </div>
           )}
 
+          {/* Shipped Variants (e.g. API twins) */}
+          {model.variants && model.variants.length > 0 && (
+            <div className="mb-7 sm:mb-9 border border-black/10 dark:border-white/[0.08] rounded-lg p-5 bg-black/[0.01] dark:bg-black/20">
+              <div className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 uppercase tracking-widest leading-relaxed mb-4">
+                Shipped Variants
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 font-sans text-xs">
+                {model.variants.map((variant) => (
+                  <div
+                    key={variant.name}
+                    className="border border-black/10 dark:border-white/[0.08] rounded p-4 bg-white dark:bg-[#0e1014] leading-relaxed"
+                  >
+                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                      <span className="text-sm font-semibold text-black dark:text-white tracking-wide">
+                        {variant.name}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]">
+                        {variant.role}
+                      </span>
+                    </div>
+                    <p className="text-black/60 dark:text-zinc-400 leading-relaxed">
+                      {variant.detail}
+                    </p>
+                    <p className="tabular-nums text-black dark:text-white font-medium mt-2">
+                      {variant.pricingNote}
+                    </p>
+                    {variant.link && (
+                      <a
+                        href={variant.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 mt-2 text-black/60 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150"
+                      >
+                        <ExternalLink size={12} />
+                        <span>OFFICIAL DOCS</span>
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Quickstart Developer Code Snippet */}
           <div className="mb-7 sm:mb-9 border border-black/10 dark:border-white/[0.08] rounded-lg overflow-hidden">
-            <div className="flex items-center justify-between bg-black/[0.03] dark:bg-[#13161c] px-4 py-2.5 border-b border-black/10 dark:border-white/[0.08]">
+            <div className="flex items-center justify-between gap-x-3 gap-y-2 flex-wrap bg-black/[0.03] dark:bg-[#13161c] px-4 py-2.5 border-b border-black/10 dark:border-white/[0.08]">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-sans uppercase text-black/60 dark:text-zinc-400 font-medium">
                   Quickstart Snippet

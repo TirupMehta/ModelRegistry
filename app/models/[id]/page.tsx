@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation"
 import { Metadata } from "next"
 import { modelsData } from "@/data/models"
 import { resolveCompanyFallback } from "@/lib/model-fallback"
+import { safeJsonLd } from "@/lib/utils"
 import ModelPageView from "@/components/model-page-view"
 
 interface Props {
@@ -92,7 +93,7 @@ export default async function ModelPage({ params }: Props) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
       <ModelPageView model={model} />
     </>
