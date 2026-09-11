@@ -1,0 +1,119 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ModelRegistry API",
+    "version": "v1",
+    "description": "Free unauthenticated read-only REST API for the open frontier AI model registry at https://modelregistry.tirup.in. No API keys, no signup. CORS-open (Access-Control-Allow-Origin: *). Human-readable reference: https://modelregistry.tirup.in/docs.",
+    "license": {
+      "name": "MIT (Open Data)",
+      "url": "https://github.com/TirupMehta/ModelRegistry/blob/main/LICENSE"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://modelregistry.tirup.in",
+      "description": "Production"
+    }
+  ],
+  "paths": {
+    "/api/v1/models": {
+      "get": {
+        "summary": "List tracked frontier AI models",
+        "description": "Primary endpoint. Returns every tracked model plus a per-laboratory rollup. All query parameters are optional and combinable.",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "Laboratory id (e.g. openai, anthropic, google, deepseek)."
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "Model bucket: flagship, reasoning, open-weights, code, multimodal, audio, image, video."
+          },
+          {
+            "name": "openWeights",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["true", "false"] },
+            "description": "\"true\" for downloadable weights, \"false\" for proprietary API models."
+          },
+          {
+            "name": "flagshipOnly",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["true", "false"] },
+            "description": "\"true\" returns exactly one primary flagship per laboratory."
+          },
+          {
+            "name": "latestOnly",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["true", "false"] },
+            "description": "\"true\" returns each lab's newest shipped checkpoint(s)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Registry snapshot. Unknown filter values return 200 with an empty models list (total 0).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["status", "total", "models"],
+                  "properties": {
+                    "status": { "type": "string", "example": "success" },
+                    "total": { "type": "integer" },
+                    "updatedAt": { "type": "string", "format": "date-time" },
+                    "companies": { "type": "array", "items": { "type": "object" } },
+                    "models": { "type": "array", "items": { "type": "object" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cli": {
+      "get": {
+        "summary": "Plain-text registry table for terminals",
+        "description": "Terminal-native view: primary flagships table plus recent specialized checkpoints. No parameters.",
+        "responses": {
+          "200": {
+            "description": "Plain-text table.",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/check-updates": {
+      "get": {
+        "summary": "Service health and dataset heartbeat",
+        "description": "Heartbeat endpoint with edge-cache status and live dataset counts. Poll no more than once every 5 minutes; a change in trackedModelsCount signals a re-fetch of /api/v1/models.",
+        "responses": {
+          "200": {
+            "description": "Health payload.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["status", "trackedModelsCount"],
+                  "properties": {
+                    "status": { "type": "string", "example": "ok" },
+                    "verifiedAt": { "type": "string", "format": "date-time" },
+                    "trackedLabsCount": { "type": "integer" },
+                    "trackedModelsCount": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
