@@ -21,7 +21,7 @@ function buildIndex() {
         name: "query-modelregistry",
         type: "skill-md",
         description:
-          "Query the ModelRegistry open frontier AI model registry: list flagships and checkpoints, filter by lab or category, poll for updates. Free, unauthenticated, read-only.",
+          "Query ModelRegistry by Tirup Mehta: list flagships and checkpoints, filter by lab or category, poll for updates. Free, unauthenticated, read-only.",
         url: SKILL_URL,
         digest,
       },

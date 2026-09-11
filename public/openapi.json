@@ -7,6 +7,10 @@
     "license": {
       "name": "MIT (Open Data)",
       "url": "https://github.com/TirupMehta/ModelRegistry/blob/main/LICENSE"
+    },
+    "contact": {
+      "name": "Tirup Mehta",
+      "url": "https://tirup.in"
     }
   },
   "servers": [

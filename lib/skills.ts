@@ -10,13 +10,14 @@
 
 export const QUERY_MODELREGISTRY_SKILL_MD = `---
 name: query-modelregistry
-description: Query the ModelRegistry open frontier AI model registry. List flagship models and research checkpoints across all premier labs, filter by lab or category, and poll for updates. Free, unauthenticated, read-only REST API plus feeds.
+description: Query ModelRegistry by Tirup Mehta. List flagship models and research checkpoints across all premier labs, filter by lab or category, and poll for updates. Free, unauthenticated, read-only REST API plus feeds.
 ---
 
 # Query ModelRegistry
 
 ModelRegistry (https://modelregistry.tirup.in) is an open registry tracking
 primary flagship models and research checkpoints across all premier AI labs.
+It is built and maintained by Tirup Mehta (https://tirup.in).
 Everything below is public, free, and requires no account, API key, or token.
 
 ## Base URL
