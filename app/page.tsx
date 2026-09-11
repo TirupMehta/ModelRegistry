@@ -5,9 +5,21 @@ import Header from "@/components/header"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, type ModelItem } from "@/data/models"
+import { formatDate } from "@/lib/utils"
 import { Search, ArrowUpRight, Terminal, Sparkles, Layers, Copy, Check } from "lucide-react"
 
 type ViewTab = "flagships" | "latest-drops" | "open-weights" | "visual" | "all"
+
+// New Drops is purely date-driven: models released within this window,
+// sorted newest-first. No per-lab flags involved.
+const NEW_DROPS_WINDOW_DAYS = 30
+
+function isNewDrop(releaseDate: string, now: number = Date.now()): boolean {
+  const t = new Date(releaseDate).getTime()
+  if (Number.isNaN(t)) return false
+  const diffDays = (now - t) / (1000 * 60 * 60 * 24)
+  return diffDays >= 0 && diffDays <= NEW_DROPS_WINDOW_DAYS
+}
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<ViewTab>("flagships")
@@ -66,11 +78,13 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [searchQuery])
 
-  // Filter models based on tab & query
+  // Filter models based on tab & query.
+  // New Drops is a purely datewise feed: released in the last
+  // NEW_DROPS_WINDOW_DAYS, newest releaseDate first.
   const filteredModels = useMemo(() => {
-    return modelsData.filter((model) => {
+    const filtered = modelsData.filter((model) => {
       if (activeTab === "flagships" && !model.isCompanyFlagship) return false
-      if (activeTab === "latest-drops" && !model.isLatestCheckpoint) return false
+      if (activeTab === "latest-drops" && !isNewDrop(model.releaseDate)) return false
       if (activeTab === "open-weights" && !model.openWeights) return false
       if (activeTab === "visual" && model.category !== "image" && model.category !== "video") return false
 
@@ -85,24 +99,32 @@ export default function Home() {
 
       return true
     })
+
+    if (activeTab === "latest-drops") {
+      filtered.sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
+    }
+
+    return filtered
   }, [activeTab, searchQuery])
 
   // Filter counters
   const counts = useMemo(() => {
     return {
       flagships: modelsData.filter((m) => m.isCompanyFlagship).length,
-      latestDrops: modelsData.filter((m) => m.isLatestCheckpoint).length,
+      latestDrops: modelsData.filter((m) => isNewDrop(m.releaseDate)).length,
       openWeights: modelsData.filter((m) => m.openWeights).length,
       visual: modelsData.filter((m) => m.category === "image" || m.category === "video").length,
       all: modelsData.length,
     }
   }, [])
 
-  // Check if a flagship has a specialized newest drop
+  // Check if a flagship has a specialized newest drop (newest by releaseDate)
   const getSpecializedDrop = (companyId: string, currentId: string) => {
-    return modelsData.find(
-      (m) => m.companyId === companyId && m.isLatestCheckpoint && m.id !== currentId
-    )
+    return modelsData
+      .filter(
+        (m) => m.companyId === companyId && m.isLatestCheckpoint && m.id !== currentId
+      )
+      .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
   }
 
   return (
@@ -188,6 +210,7 @@ export default function Home() {
 
               <button
                 onClick={() => setActiveTab("latest-drops")}
+                title={`Released in the last ${NEW_DROPS_WINDOW_DAYS} days, newest first`}
                 className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
                   activeTab === "latest-drops"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium"
@@ -259,7 +282,11 @@ export default function Home() {
         <div className="flex flex-col list-hover-group">
           {filteredModels.length === 0 ? (
             <div className="py-12 text-center text-xs font-sans text-black/40 dark:text-zinc-500">
-              [ NO MODELS MATCHING QUERY &quot;{searchQuery}&quot; ]
+              {activeTab === "latest-drops" && !searchQuery.trim() ? (
+                <span>[ NO NEW DROPS IN THE LAST {NEW_DROPS_WINDOW_DAYS} DAYS ]</span>
+              ) : (
+                <span>[ NO MODELS MATCHING QUERY &quot;{searchQuery}&quot; ]</span>
+              )}
             </div>
           ) : (
             filteredModels.map((model, index) => {
@@ -302,6 +329,10 @@ export default function Home() {
 
                       <div className="flex items-center gap-1.5 text-[11px] font-sans text-black/50 dark:text-zinc-400 mb-1 pl-5">
                         <span className="uppercase text-black/70 dark:text-zinc-300 font-medium">{model.companyName}</span>
+                        <span>•</span>
+                        <time dateTime={model.releaseDate} className="tabular-nums whitespace-nowrap">
+                          {formatDate(model.releaseDate)}
+                        </time>
                         <span>•</span>
                         <span>{model.contextWindow.replace(" tokens", "")}</span>
                         <span>•</span>
@@ -377,10 +408,14 @@ export default function Home() {
                         </span>
                         <time
                           dateTime={model.releaseDate}
-                          className="font-sans text-xs text-black/45 dark:text-zinc-400 tabular-nums"
+                          title={formatDate(model.releaseDate)}
+                          className="font-sans text-xs text-black/45 dark:text-zinc-400 tabular-nums whitespace-nowrap"
                         >
-                          {model.contextWindow.replace(" tokens", "")}
+                          {formatDate(model.releaseDate)}
                         </time>
+                        <span className="hidden lg:inline font-sans text-[11px] text-black/45 dark:text-zinc-400 tabular-nums whitespace-nowrap">
+                          {model.contextWindow.replace(" tokens", "")}
+                        </span>
 
                         <span className="text-[11px] font-sans px-2 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 transition-colors duration-150 group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347]">
                           {model.statusBadge}
