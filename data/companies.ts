@@ -199,4 +199,16 @@ export const companies: Record<string, Company> = {
     latestFlagship: "Runway Gen-4.5",
     openWeightsAdvocate: false,
   },
+  sarvam: {
+    id: "sarvam",
+    name: "Sarvam AI",
+    shortName: "Sarvam",
+    website: "https://www.sarvam.ai",
+    headquarters: "Bengaluru, India",
+    accentColor: "#FF6B35",
+    description: "Builders of Sarvam 105B sovereign MoE, SOTA across 22 Indian languages, trained from scratch in India under IndiaAI mission.",
+    latestFlagship: "Sarvam 105B",
+    latestReasoning: "Sarvam 105B",
+    openWeightsAdvocate: true,
+  },
 }

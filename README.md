@@ -38,6 +38,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**Moonshot AI**](https://www.moonshot.ai) | [Kimi K3](https://modelregistry.tirup.in/models/kimi-k3) | — | 262k | Proprietary | $3 in / $15 out |
 | [**Kuaishou Kling**](https://klingai.com) | [Kling 3.0](https://modelregistry.tirup.in/models/kling-3-0) | — | — | Proprietary | $0.084 per second |
 | [**Runway**](https://runwayml.com) | [Runway Gen-4.5](https://modelregistry.tirup.in/models/runway-gen-4-5) | — | — | Proprietary | $0.15 per second |
+| [**Sarvam AI**](https://www.sarvam.ai) | [Sarvam 105B](https://modelregistry.tirup.in/models/sarvam-105b) | — | 128k | Open (Apache 2.0) | $0.33 in / $0.83 out *(Open)* |
 <!-- REGISTRY_TABLE_END -->
 
 ---
@@ -130,7 +131,7 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
 
 {
   id: "lab-model-name-0102",        // unique lowercase kebab-case id
-  companyId: "openai",              // one of: anthropic, openai, google, xai, deepseek, meta, qwen, mistral, tencent, z-ai, minimax, nvidia, xiaomi, moonshotai, kuaishou, runway
+  companyId: "openai",              // one of: anthropic, openai, google, xai, deepseek, meta, qwen, mistral, tencent, z-ai, minimax, nvidia, xiaomi, moonshotai, kuaishou, runway, sarvam
   companyName: "OpenAI",            // lab display name
   name: "Model Display Name",
   version: "1.0",                   // lab version string
