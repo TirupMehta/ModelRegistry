@@ -31,7 +31,7 @@ export default function CompaniesPage() {
         </div>
 
         {/* Labs List with Sibling Dimming */}
-        <div className="flex flex-col list-hover-group space-y-6">
+        <div className="flex flex-col list-hover-group space-y-4 sm:space-y-6">
           {companyList.map((company, index) => {
             // Find flagship, true latest checkpoint, and newest non-flagship fallback
             const flagshipModel = modelsData.find(
@@ -49,29 +49,26 @@ export default function CompaniesPage() {
 
             return (
               <TextWithBlur key={company.id} delay={index * 35}>
-                <div className="p-5 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:border-color,background-color_120ms_ease-out]">
+                <div className="p-4 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:border-color,background-color_120ms_ease-out]">
                   {/* Lab Header */}
-                  <div className="flex items-start justify-between gap-3 sm:gap-4 mb-4">
-                    <div className="flex items-center gap-3 min-w-0">
+                  <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 mb-2.5 sm:mb-4">
+                    <div className="flex items-start gap-2.5 min-w-0 flex-1">
                       <div
-                        className="w-3.5 h-3.5 rounded-sm shrink-0 shadow-sm"
+                        className="w-3.5 h-3.5 rounded-sm shrink-0 shadow-sm mt-[3px]"
                         style={{ backgroundColor: company.accentColor }}
                       />
-                      <div>
+                      <div className="min-w-0">
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                           <Link
                             href={`/companies/${company.id}`}
-                            className="text-xl font-medium text-black dark:text-white hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
+                            className="text-lg sm:text-xl font-medium tracking-tight text-black dark:text-white hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
                           >
                             {company.name}
                           </Link>
-                          <span className="text-xs font-sans text-black/40 dark:text-zinc-400">
-                            ({company.headquarters})
+                          <span className="text-[11px] sm:text-xs font-sans text-black/40 dark:text-zinc-400 whitespace-nowrap">
+                            · {company.headquarters}
                           </span>
                         </div>
-                        <p className="text-xs sm:text-sm font-normal text-black/60 dark:text-zinc-400 mt-0.5 max-w-xl">
-                          {company.description}
-                        </p>
                       </div>
                     </div>
 
@@ -79,7 +76,7 @@ export default function CompaniesPage() {
                       href={company.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-1 text-xs font-sans text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150 shrink-0 whitespace-nowrap pt-1"
+                      className="group inline-flex items-center gap-1 text-[11px] sm:text-xs font-sans text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150 shrink-0 whitespace-nowrap pt-[3px]"
                     >
                       <Globe size={12} />
                       <span>{new URL(company.website).hostname}</span>
@@ -87,8 +84,12 @@ export default function CompaniesPage() {
                     </a>
                   </div>
 
+                  <p className="text-[13px] sm:text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed max-w-xl mb-4">
+                    {company.description}
+                  </p>
+
                   {/* Models Grid: Primary Flagship + Latest Checkpoint */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                     {/* Primary Flagship */}
                     {flagshipModel && (
                       <div
@@ -102,19 +103,19 @@ export default function CompaniesPage() {
                             setActiveModalModel(flagshipModel)
                           }
                         }}
-                        className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
+                        className="cursor-pointer p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
-                        <div className="flex items-center justify-between text-xs font-sans mb-1.5">
+                        <div className="flex items-center justify-between gap-2 text-xs font-sans mb-1.5">
                           <span className="text-[#ff5d2e] dark:text-[#ff7347] font-medium uppercase text-[11px] tracking-wider">
                             Primary Flagship
                           </span>
-                          <span className="text-[11px] text-black/40 dark:text-zinc-400 tabular-nums">
+                          <span className="text-[11px] text-black/40 dark:text-zinc-400 tabular-nums shrink-0">
                             {flagshipModel.contextWindow.replace(" tokens", "")}
                           </span>
                         </div>
 
                         <div className="flex items-baseline gap-2 mb-1">
-                          <span className="text-base font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
+                          <span className="text-[15px] sm:text-base font-medium tracking-tight text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {flagshipModel.name}
                           </span>
                         </div>
@@ -138,9 +139,9 @@ export default function CompaniesPage() {
                             setActiveModalModel(second)
                           }
                         }}
-                        className="cursor-pointer p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
+                        className="cursor-pointer p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
-                        <div className="flex items-center justify-between text-xs font-sans mb-1.5">
+                        <div className="flex items-center justify-between gap-2 text-xs font-sans mb-1.5">
                           <span className="font-medium uppercase text-[11px] tracking-wider flex items-center gap-1">
                             {latestDrop ? (
                               <span className="text-[#1a73e8] dark:text-[#8ab4f8] flex items-center gap-1">
@@ -152,17 +153,17 @@ export default function CompaniesPage() {
                               </span>
                             )}
                           </span>
-                          <span className="text-[11px] text-black/40 dark:text-zinc-400">
+                          <span className="text-[11px] text-black/40 dark:text-zinc-400 shrink-0">
                             {formatDate(second.releaseDate)}
                           </span>
                         </div>
 
-                        <div className="flex items-baseline gap-2 mb-1">
-                          <span className="text-base font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
+                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 mb-1">
+                          <span className="text-[15px] sm:text-base font-medium tracking-tight text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {second.name}
                           </span>
                           <span className="text-[11px] font-sans text-black/40 dark:text-zinc-500">
-                            ({second.categoryLabel})
+                            {second.categoryLabel}
                           </span>
                         </div>
 

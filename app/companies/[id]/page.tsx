@@ -175,11 +175,11 @@ export default async function CompanyPage({ params }: Props) {
 
         {/* Lab Hero */}
         <TextWithBlur delay={80}>
-          <div className="p-5 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] mb-6">
+          <div className="p-4 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] mb-6">
             <div className="flex items-start justify-between gap-3 sm:gap-4">
-              <div className="flex items-center gap-3 min-w-0">
+              <div className="flex items-start gap-3 min-w-0">
                 <div
-                  className="w-4 h-4 rounded-sm shrink-0 shadow-sm"
+                  className="w-4 h-4 rounded-sm shrink-0 shadow-sm mt-1"
                   style={{ backgroundColor: lab.accentColor }}
                 />
                 <div>
