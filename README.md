@@ -9,8 +9,8 @@
 
 **ModelRegistry** is a community-driven, machine-readable index tracking the state of foundational artificial intelligence. Rather than letting outdated models clutter developer workflows or burying flagship LLMs under niche audio drops, ModelRegistry maintains a clear dual-tier structure:
 
-1. **Primary Foundation Flagships**: The reigning general-purpose models developers actually use in production (e.g. Meta Muse Spark 1.3, OpenAI GPT-5.6 Sol, Anthropic Claude Fable 5.1, Google Gemini 3.8 Flash, DeepSeek V4-Pro).
-2. **Latest Specialized Checkpoints**: Newly dropped breakthroughs (e.g. Meta Muse Voice Transcribe, OpenAI Astra, Claude Opus 5, DeepSeek V4 Flash Vision Exp).
+1. **Primary Foundation Flagships**: The reigning general-purpose models developers actually use in production (e.g. Meta Muse Spark 1.3, ChatGPT 5.6, Anthropic Claude Fable 5.1, Google Gemini 3.8 Flash, DeepSeek V4.1 Flash).
+2. **Latest Specialized Checkpoints**: Newly dropped breakthroughs (e.g. Gemini 3.8 Live Extended Thinking, ChatGPT Images 2.5, Meta Muse Voice Transcribe, Hy4 Preview).
 
 Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 
@@ -113,7 +113,7 @@ See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the copy-paste snippet.
 ### 🤖 Contributing With AI
 
 <!-- CONTRIBUTE_PROMPT_START -->
-<!-- Auto-generated from lib/agent-prompts.ts (v1) - Do not edit manually -->
+<!-- Auto-generated from lib/agent-prompts.ts (v2) - Do not edit manually -->
 Paste this into any AI agent (Claude, Cursor, Codex, Copilot) and it will walk you through contributing:
 
 ```text
@@ -160,14 +160,23 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
 
 3. If the model is from a laboratory not yet tracked, also add it to data/companies.ts with: id, name, shortName, description, website, headquarters, accentColor, latestFlagship.
 
-4. Run: pnpm test
+4. Freshness sweep (STRICT — never skip): the registry must never contradict itself.
+   a. Exactly ONE isCompanyFlagship:true per lab — demote the previous flagship to false.
+   b. Scrub stale superlatives on the entries this release dethrones (same lab first, plus any cross-lab record it takes): #1, NEWEST, SOTA, best, latest, reigning, most advanced, newly. Rewrite those badges/highlights in past-neutral terms.
+   c. A record belongs ONLY to its verified current holder — never copy a crown onto the newcomer without an official source.
+   d. Update data/companies.ts latestFlagship / latestReasoning / description when they changed.
+   e. Update data/leaderboard.ts spotlights if the newcomer takes a spotlight slot.
+   f. Keep every highlight to 1-2 tight lines; trim any older highlight that grew into a paragraph.
+
+5. Run: pnpm test
    This validates the schema and auto-syncs the README table. Fix every error it reports.
 
-5. Commit on a new branch and walk me through opening the Pull Request (use gh if authenticated).
+6. Commit on a new branch and walk me through opening the Pull Request (use gh if authenticated).
 
 RULES:
 - Official source required for every fact. No rumors, leaks, or benchmark guesses.
 - Popularity bar: top-15 OpenRouter weekly volume, a primary flagship, or a genuinely frontier capability. No obscure checkpoints or minor variants.
+- Freshness is mandatory: a submission that adds a model without demoting/scrubbing what it replaced will be rejected.
 - Touch ONLY data/models.ts (plus data/companies.ts for a new lab). Website, API, RSS, and README update automatically.
 ```
 <!-- CONTRIBUTE_PROMPT_END -->
