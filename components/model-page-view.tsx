@@ -202,7 +202,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           </div>
 
           {/* Description Highlight */}
-          <p className="text-sm sm:text-[15px] font-normal text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 tracking-normal mb-6 sm:mb-8 max-w-3xl">
+          <p className="text-[13px] sm:text-sm font-normal text-black/70 dark:text-zinc-300 leading-6 tracking-normal mb-5 sm:mb-7 max-w-3xl">
             {model.highlight}
           </p>
 
@@ -307,14 +307,14 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                       <span className="text-[13px] sm:text-sm font-semibold text-black dark:text-white tracking-wide">
                         {variant.name}
                       </span>
-                      <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]">
+                      <span className="text-[11px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]">
                         {variant.role}
                       </span>
                     </div>
-                    <p className="text-xs sm:text-[12.5px] text-black/60 dark:text-zinc-400 leading-[1.7]">
+                    <p className="text-[12.5px] sm:text-[13px] text-black/60 dark:text-zinc-400 leading-[1.7]">
                       {variant.detail}
                     </p>
-                    <p className="tabular-nums text-[11.5px] sm:text-xs text-black/80 dark:text-zinc-200 font-medium mt-2.5 pt-2.5 border-t border-dashed border-black/10 dark:border-white/10 leading-5 break-words">
+                    <p className="tabular-nums text-xs sm:text-[13px] text-black/80 dark:text-zinc-200 font-medium mt-2.5 pt-2.5 border-t border-dashed border-black/10 dark:border-white/10 leading-5 sm:leading-6 break-words">
                       {variant.pricingNote}
                     </p>
                     {variant.link && (
@@ -322,7 +322,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                         href={variant.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 mt-2.5 text-[11px] tracking-wider text-black/60 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150"
+                        className="inline-flex items-center gap-1 mt-2.5 text-xs tracking-wider text-black/60 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150"
                       >
                         <ExternalLink size={12} />
                         <span>OFFICIAL DOCS</span>
