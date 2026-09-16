@@ -179,7 +179,7 @@ export default async function CompanyPage({ params }: Props) {
             <div className="flex items-start justify-between gap-3 sm:gap-4">
               <div className="flex items-start gap-3 min-w-0">
                 <div
-                  className="w-4 h-4 rounded-sm shrink-0 shadow-sm mt-1"
+                  className="w-4 h-4 rounded-sm shrink-0 shadow-sm mt-1 sm:mt-2"
                   style={{ backgroundColor: lab.accentColor }}
                 />
                 <div>
