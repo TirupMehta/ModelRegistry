@@ -24,7 +24,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 |:---|:---|:---|:---|:---|:---|
 | [**Anthropic**](https://www.anthropic.com) | [Claude Fable 5.1](https://modelregistry.tirup.in/models/claude-fable-5-1) | — | 1M | Proprietary | $10 in / $50 out |
 | [**OpenAI**](https://openai.com) | [GPT-6 Astra](https://modelregistry.tirup.in/models/gpt-6-astra) | [ChatGPT Images 2.5](https://modelregistry.tirup.in/models/chatgpt-images-2-5) | 1M | Proprietary | $10 in / $50 out |
-| [**Google DeepMind**](https://deepmind.google) | [Gemini 3.8 Flash](https://modelregistry.tirup.in/models/gemini-3-8-flash) | — | 1M | Proprietary | $0.75 in / $3.75 out |
+| [**Google DeepMind**](https://deepmind.google) | [Gemini 3.8 Flash](https://modelregistry.tirup.in/models/gemini-3-8-flash) | [Gemini 3.8 Live Extended Thinking](https://modelregistry.tirup.in/models/gemini-3-8-live-extended-thinking) | 1M | Proprietary | $0.75 in / $3.75 out |
 | [**xAI**](https://x.ai) | [Grok 4.6](https://modelregistry.tirup.in/models/grok-4-6) | — | 500k | Proprietary | $2 in / $6 out |
 | [**DeepSeek**](https://www.deepseek.com) | [DeepSeek V4.1 Flash](https://modelregistry.tirup.in/models/deepseek-v4-1-flash) | [DeepSeek V4-Pro (0813)](https://modelregistry.tirup.in/models/deepseek-v4-pro-0813) | 1M | Open (MIT) | $0.3 in / $1.2 out *(Open)* |
 | [**Meta AI**](https://ai.meta.com) | [Muse Spark 1.3](https://modelregistry.tirup.in/models/meta-muse-spark-1-3) | [Muse Voice Transcribe](https://modelregistry.tirup.in/models/meta-muse-voice-transcribe) | 262k | Open (Meta Community) | $0.05 in / $0.15 out *(Open)* |
@@ -138,7 +138,7 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
   isCompanyFlagship: false,         // true ONLY if this is the lab's primary flagship (exactly 1 per lab — demote the previous flagship to false)
   isLatestCheckpoint: true,         // true if this is the lab's newest release
   statusBadge: "NEW DROP",          // short uppercase pill, e.g. "NEW DROP", "OPEN WEIGHTS", "EXPIRES SEPT 10"
-  category: "flagship",             // one of: reasoning | flagship | open-weights | audio | multimodal | code | image | video
+  category: "flagship",             // one of: reasoning | flagship | audio | open-weights | multimodal | code | image | video
   categoryLabel: "Human Readable Label",
   contextWindow: "1,048,576 tokens", // human string; visual models use descriptive windows like "8s clips"
   contextWindowTokens: 1048576,     // sortable number; use 0 for non-token windows

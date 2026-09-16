@@ -219,6 +219,52 @@ export const modelsData: ModelItem[] = [
       playground: "https://aistudio.google.com",
     },
   },
+  {
+    id: "gemini-3-8-live-extended-thinking",
+    companyId: "google",
+    companyName: "Google DeepMind",
+    name: "Gemini 3.8 Live Extended Thinking",
+    version: "3.8-Live",
+    releaseDate: "2026-09-15",
+    isCompanyFlagship: false,
+    isLatestCheckpoint: true,
+    statusBadge: "#1 SPEECH-TO-SPEECH",
+    category: "audio",
+    categoryLabel: "Live Speech-to-Speech",
+    contextWindow: "131,072 tokens",
+    contextWindowTokens: 131072,
+    maxOutputTokens: "65,536 tokens",
+    parameters: "Undisclosed (Gemini 3 native audio stack)",
+    openWeights: false,
+    license: "Google AI Studio / Vertex AI",
+    pricing: { input: 0.75, output: 4.5 },
+    highlight:
+      "Released Sept 15, 2026; Google's most advanced native speech-to-speech dialogue model that reasons and talks simultaneously, runs async background tools with live progress narration, switches across 97 languages mid-conversation, and ranks #1 at 82.6 on Artificial Analysis Speech-to-Speech Quality Index (68.6% tau-Voice, 35.1% tau-Voice-banking, 97.7% Big Bench Audio). Live API $0.005/min audio in / $0.018/min out ($3.00/$12.00 per 1M audio tokens); available in Gemini API, AI Studio, Search Live and Docs/Gmail/Keep.",
+    modalities: ["Text", "Vision", "Audio", "Video"],
+    variants: [
+      {
+        name: "Gemini 3.8 Live Extended Thinking",
+        role: "REASONING LIVE",
+        detail: "High-complexity live reasoning with configurable thinking (low/medium/high), simultaneous speech and background multi-step tool use for production voice agents.",
+        pricingNote: "$0.75 in / $4.50 out per 1M text tokens ($0.005/min in / $0.018/min out audio; thinking billed as output)",
+        link: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live-extended-thinking",
+      },
+      {
+        name: "Gemini 3.8 Live",
+        role: "LOW-LATENCY LIVE",
+        detail: "Cost-efficient native speech-to-speech for fluid dialogue and near real-time visual grounding with background async tools; #2 Speech Agent Arena.",
+        pricingNote: "$0.75 in / $4.50 out per 1M text tokens ($0.005/min in / $0.018/min out audio)",
+        link: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live",
+      },
+    ],
+    benchmarks: {},
+    links: {
+      announcement:
+        "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/",
+      playground: "https://aistudio.google.com",
+      apiDocs: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live-extended-thinking",
+    },
+  },
 
   // ─── XAI ─────────────────────────────────────────────────────────────────
   {
