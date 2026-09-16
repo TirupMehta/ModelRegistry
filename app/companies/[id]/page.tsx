@@ -266,24 +266,23 @@ export default async function CompanyPage({ params }: Props) {
                       href={`/models/${model.id}`}
                       className="group cursor-pointer block p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none"
                     >
-                      <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 mb-1.5 font-sans text-xs">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span className="font-sans text-sm font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
-                            {model.name}
-                          </span>
-                          <span className="text-[11px] font-sans uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]">
+                      <div className="mb-1.5">
+                        <div className="font-sans text-[15px] sm:text-base font-medium tracking-tight leading-snug text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
+                          {model.name}
+                        </div>
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mt-1.5 font-sans">
+                          <span className="text-[11px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03] whitespace-nowrap">
                             {model.statusBadge}
                           </span>
                           {model.isCompanyFlagship && (
-                            <span className="text-[11px] font-sans tracking-tight text-[#ff5d2e] dark:text-[#ff7347] font-medium">
+                            <span className="text-[11px] tracking-tight text-[#ff5d2e] dark:text-[#ff7347] font-medium whitespace-nowrap">
                               • Flagship
                             </span>
                           )}
+                          <span className="ml-auto text-[11px] text-black/40 dark:text-zinc-400 tabular-nums whitespace-nowrap">
+                            {formatDate(model.releaseDate)}
+                          </span>
                         </div>
-
-                        <span className="text-black/40 dark:text-zinc-400 tabular-nums">
-                          {formatDate(model.releaseDate)}
-                        </span>
                       </div>
 
                       <p className="text-xs sm:text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-2 line-clamp-2">

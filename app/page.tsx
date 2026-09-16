@@ -196,61 +196,62 @@ export default function Home() {
         <TextWithBlur delay={180}>
           <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-black/10 dark:border-white/[0.08] pb-4">
             {/* Unified Segmented Filter Track (Single Row) */}
-            <div className="inline-flex items-center p-0.5 rounded bg-black/[0.035] dark:bg-[#131518] border border-black/10 dark:border-white/[0.08] overflow-x-auto max-w-full shrink-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex items-center p-0.5 rounded bg-black/[0.035] dark:bg-[#131518] border border-black/10 dark:border-white/[0.08] w-full md:w-auto md:max-w-full gap-0.5">
               <button
                 onClick={() => setActiveTab("flagships")}
-                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
+                className={`flex-1 md:flex-none py-1.5 px-1.5 sm:px-3 rounded-md text-[11px] sm:text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap truncate ${
                   activeTab === "flagships"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
-                Flagships <span className="opacity-60 text-[11px]">[{counts.flagships}]</span>
+                Flagships <span className="hidden sm:inline opacity-60 text-[11px]">[{counts.flagships}]</span>
               </button>
 
               <button
                 onClick={() => setActiveTab("latest-drops")}
                 title={`Released in the last ${NEW_DROPS_WINDOW_DAYS} days, newest first`}
-                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
+                className={`flex-1 md:flex-none py-1.5 px-1.5 sm:px-3 rounded-md text-[11px] sm:text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap truncate ${
                   activeTab === "latest-drops"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
-                New Drops <span className="opacity-60 text-[11px]">[{counts.latestDrops}]</span>
+                New Drops <span className="hidden sm:inline opacity-60 text-[11px]">[{counts.latestDrops}]</span>
               </button>
 
               <button
                 onClick={() => setActiveTab("open-weights")}
-                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
+                className={`flex-1 md:flex-none py-1.5 px-1.5 sm:px-3 rounded-md text-[11px] sm:text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap truncate ${
                   activeTab === "open-weights"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
-                Open Weights <span className="opacity-60 text-[11px]">[{counts.openWeights}]</span>
+                <span className="sm:hidden">Open</span>
+                <span className="hidden sm:inline">Open Weights</span> <span className="hidden sm:inline opacity-60 text-[11px]">[{counts.openWeights}]</span>
               </button>
 
               <button
                 onClick={() => setActiveTab("visual")}
-                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
+                className={`flex-1 md:flex-none py-1.5 px-1.5 sm:px-3 rounded-md text-[11px] sm:text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap truncate ${
                   activeTab === "visual"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
-                Visual <span className="opacity-60 text-[11px]">[{counts.visual}]</span>
+                Visual <span className="hidden sm:inline opacity-60 text-[11px]">[{counts.visual}]</span>
               </button>
 
               <button
                 onClick={() => setActiveTab("all")}
-                className={`py-1.5 px-2.5 sm:px-3 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap ${
+                className={`flex-1 md:flex-none py-1.5 px-1.5 sm:px-3 rounded-md text-[11px] sm:text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap truncate ${
                   activeTab === "all"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                 }`}
               >
-                All <span className="opacity-60 text-[11px]">[{counts.all}]</span>
+                All <span className="hidden sm:inline opacity-60 text-[11px]">[{counts.all}]</span>
               </button>
             </div>
 
@@ -327,7 +328,7 @@ export default function Home() {
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-1.5 text-[11px] font-sans text-black/50 dark:text-zinc-400 mb-1 pl-5">
+                      <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[11px] font-sans text-black/50 dark:text-zinc-400 mb-1 pl-5">
                         <span className="uppercase text-black/70 dark:text-zinc-300 font-medium">{model.companyName}</span>
                         <span>•</span>
                         <time dateTime={model.releaseDate} className="tabular-nums whitespace-nowrap">

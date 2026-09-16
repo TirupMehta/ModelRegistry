@@ -77,24 +77,22 @@ export default function TimelinePage() {
                         }}
                         className="cursor-pointer p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
                       >
-                        <div className="flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 mb-1.5 font-sans text-xs">
-                          <div className="flex items-center gap-2 min-w-0">
+                        <div className="mb-1.5">
+                          <div className="flex items-center gap-2 font-sans min-w-0">
                             <span
                               className="w-2 h-2 rounded-sm shrink-0"
                               style={{ backgroundColor: company?.accentColor || "#ff5d2e" }}
                             />
-                            <span className="text-black/55 dark:text-zinc-400 uppercase text-[11px] sm:text-xs">
+                            <span className="text-black/55 dark:text-zinc-400 uppercase text-[11px] truncate">
                               {model.companyName}
                             </span>
-                            <span className="text-black/20 dark:text-white/20 select-none">/</span>
-                            <span className="font-sans text-sm font-medium text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
-                              {model.name}
+                            <span className="ml-auto text-[11px] text-black/40 dark:text-zinc-400 tabular-nums whitespace-nowrap shrink-0">
+                              {formatDate(model.releaseDate)}
                             </span>
                           </div>
-
-                          <span className="text-black/40 dark:text-zinc-400">
-                            {formatDate(model.releaseDate)}
-                          </span>
+                          <div className="mt-1 font-sans text-[15px] sm:text-base font-medium tracking-tight leading-snug text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
+                            {model.name}
+                          </div>
                         </div>
 
                         <p className="text-xs sm:text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-2 line-clamp-2">
