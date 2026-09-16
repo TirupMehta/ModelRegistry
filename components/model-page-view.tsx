@@ -202,7 +202,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           </div>
 
           {/* Description Highlight */}
-          <p className="text-[13px] sm:text-sm font-normal text-black/70 dark:text-zinc-300 leading-6 tracking-normal mb-5 sm:mb-7 max-w-3xl">
+          <p className="text-sm sm:text-[15px] font-normal text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 tracking-normal mb-5 sm:mb-7 max-w-3xl">
             {model.highlight}
           </p>
 
@@ -311,10 +311,10 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                         {variant.role}
                       </span>
                     </div>
-                    <p className="text-[12.5px] sm:text-[13px] text-black/60 dark:text-zinc-400 leading-[1.7]">
+                    <p className="text-[13px] sm:text-sm text-black/60 dark:text-zinc-400 leading-[1.7]">
                       {variant.detail}
                     </p>
-                    <p className="tabular-nums text-xs sm:text-[13px] text-black/80 dark:text-zinc-200 font-medium mt-2.5 pt-2.5 border-t border-dashed border-black/10 dark:border-white/10 leading-5 sm:leading-6 break-words">
+                    <p className="tabular-nums text-[13px] sm:text-sm text-black/80 dark:text-zinc-200 font-medium mt-2.5 pt-2.5 border-t border-dashed border-black/10 dark:border-white/10 leading-6 break-words">
                       {variant.pricingNote}
                     </p>
                     {variant.link && (

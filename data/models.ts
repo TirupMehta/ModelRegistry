@@ -79,7 +79,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "Proprietary API / Cloud Foundry",
     pricing: { input: 10.0, output: 50.0 },
-    highlight: "Released Sept 1, 2026; Anthropic's reigning flagship for agentic coding and knowledge work. Features a 75% reduction in cache read costs ($0.25/M tokens) and 52.6% on Terminal-Bench-Science.",
+    highlight: "Released Sept 1, 2026; Anthropic's flagship for agentic coding and knowledge work, with 75% cheaper cache reads and 52.6% on Terminal-Bench-Science.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {
       terminalBench: "52.6%",
@@ -143,7 +143,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "Proprietary API / ChatGPT Plus & Pro",
     pricing: { input: 10.0, output: 50.0 },
-    highlight: "Rolled out Sept 4, 2026; OpenAI's defining generational flagship model for autonomous agentic workflows, software engineering, and computer use. Achieved 97.6% on FrontierMath Tier 4 and 99.9% on ARC-AGI-3. Also the first model family to meet OpenAI's 'Critical' cybersecurity threshold for zero-day exploit identification.",
+    highlight: "Rolled out Sept 4, 2026; OpenAI's flagship for autonomous agentic workflows and software engineering. Hit 97.6% on FrontierMath Tier 4 and met the 'Critical' cybersecurity threshold.",
     modalities: ["Text", "Vision", "Audio", "Code"],
     benchmarks: {
       sweBench: "82.4%",
@@ -175,7 +175,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "Proprietary API / ChatGPT Plus & Pro",
     pricing: { input: 3.0, output: 12.0 },
-    highlight: "OpenAI's unified ChatGPT 5.6 family in three personalities — Sol (deep-reasoning flagship), Terra (balanced everyday), and Luna (high-throughput speed) — each also available as Pro. One 1.05M-context foundation with multi-agent orchestration; Luna tier serves streaming completions from $0.20/M.",
+    highlight: "OpenAI's unified ChatGPT 5.6 family — Sol (reasoning), Terra (balanced), Luna (speed) — on one 1.05M-context foundation with multi-agent orchestration.",
     modalities: ["Text", "Vision", "Audio", "Code"],
     benchmarks: {
       mmluPro: "86.4%",
@@ -239,7 +239,7 @@ export const modelsData: ModelItem[] = [
     license: "Google AI Studio / Vertex AI",
     pricing: { input: 0.75, output: 4.5 },
     highlight:
-      "Released Sept 15, 2026; Google's most advanced native speech-to-speech dialogue model that reasons and talks simultaneously, runs async background tools with live progress narration, switches across 97 languages mid-conversation, and ranks #1 at 82.6 on Artificial Analysis Speech-to-Speech Quality Index (68.6% tau-Voice, 35.1% tau-Voice-banking, 97.7% Big Bench Audio). Live API $0.005/min audio in / $0.018/min out ($3.00/$12.00 per 1M audio tokens); available in Gemini API, AI Studio, Search Live and Docs/Gmail/Keep.",
+      "Released Sept 15, 2026; Google's native speech-to-speech model that reasons and talks at once, with background tools, 97-language switching, and #1 82.6 on the Speech-to-Speech Quality Index.",
     modalities: ["Text", "Vision", "Audio", "Video"],
     variants: [
       {
@@ -319,7 +319,7 @@ export const modelsData: ModelItem[] = [
     license: "MIT License",
     pricing: { input: 0.3, output: 1.2 },
     highlight:
-      "Released Sept 10, 2026; smallest model in DeepSeek's new Causal Encoder-Decoder architecture family with native image+text input, 1M context and 384K max output. Outperforms V4-Pro across performance, cost and speed; V4-Flash models retired and V4-Pro routes to V4.1-Flash from Sept 14. Peak $0.3/M in / $1.2/M out, 50% off off-peak.",
+      "Released Sept 10, 2026; first of DeepSeek's Causal Encoder-Decoder family with native image+text, 1M context and 384K output. Replaces V4-Flash and V4-Pro from Sept 14.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {
       mmluPro: "74.1%",
@@ -1009,7 +1009,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "ChatGPT / OpenAI API",
     pricing: { input: 5.0, output: 30.0 },
-    highlight: "Launched Sept 8, 2026; OpenAI's state-of-the-art image model with sharper detail, multi-turn precision editing, 50% lower latency, Sketch, Templates and comment-based edits. API twins GPT-Image-2.5 Flare (default) and Sunburst (precision); roughly $0.21 per 1024px high-quality image.",
+    highlight: "Launched Sept 8, 2026; OpenAI's image model with sharper detail, precision editing and 50% lower latency. API twins Flare (default) and Sunburst (precision).",
     modalities: ["Text", "Image"],
     benchmarks: {},
     variants: [
@@ -1053,7 +1053,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "Google AI Studio / Vertex AI",
     pricing: { input: 2.0, output: 120.0 },
-    highlight: "Google's reasoning-first image model (gemini-3-pro-image): native 4K output, 14 reference images, 10 aspect ratios, SynthID watermarking; about $0.134 per 1K/2K image and $0.24 at 4K. Near-tie with GPT Image 2 on the image-edit arena.",
+    highlight: "Google's reasoning-first image model: native 4K output, 14 reference images, 10 aspect ratios and SynthID watermarking; about $0.134 per 1K/2K image.",
     modalities: ["Text", "Image"],
     benchmarks: {},
     links: {
@@ -1081,7 +1081,7 @@ export const modelsData: ModelItem[] = [
     license: "Gemini API / Vertex AI / Flow",
     pricing: { input: 0.4, output: 0.4 },
     pricingUnit: "per second",
-    highlight: "Google DeepMind's flagship video model with best-in-class native dialogue and sound effects, 4K detail reconstruction, reference images and scene extension; $0.40/s Standard 1080p with audio. Top preference on MovieGenBench.",
+    highlight: "Google's video model with native dialogue and sound effects, 4K detail and scene extension; $0.40/s at 1080p with audio.",
     modalities: ["Text", "Video", "Audio"],
     benchmarks: {},
     links: {
@@ -1109,7 +1109,7 @@ export const modelsData: ModelItem[] = [
     license: "Kling API / App",
     pricing: { input: 0.084, output: 0.084 },
     pricingUnit: "per second",
-    highlight: "Kuaishou's Feb 2026 flagship: native multilingual audio, motion brush, best-in-class image-to-video; highest Elo among purchasable video models (about 1,104) at roughly $0.84 per 10s 1080p clip with audio.",
+    highlight: "Kuaishou's Feb 2026 video flagship: native multilingual audio, motion brush and best-in-class image-to-video at ~$0.84 per 10s clip.",
     modalities: ["Text", "Video", "Audio"],
     benchmarks: {},
     links: {
@@ -1137,7 +1137,7 @@ export const modelsData: ModelItem[] = [
     license: "Runway API / App",
     pricing: { input: 0.15, output: 0.15 },
     pricingUnit: "per second",
-    highlight: "Launched Dec 1, 2025 with 1,247 Elo — No. 1 on the Artificial Analysis text-to-video board: motion brush, director-mode camera moves, reference-driven characters; about $1.49 per 10s clip via API credits (12 credits/s).",
+    highlight: "Launched Dec 2025 with 1,247 Elo — No. 1 in text-to-video: director camera moves and reference characters at ~$1.49 per 10s clip.",
     modalities: ["Text", "Image", "Video"],
     benchmarks: {},
     links: {
