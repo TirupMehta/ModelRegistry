@@ -15,7 +15,22 @@ interface ShareCardModalProps {
 type AspectRatio = "story" | "square" | "landscape"
 type ThemeMode = "dark" | "light"
 
-export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) {
+/**
+ * Alpha-tinted accent without 8-digit hex.
+ * `addColorStop()` THROWS a SyntaxError on colors it cannot parse (older
+ * canvas backends), so never concatenate alpha onto the hex string.
+ */
+function withAlpha(hex: string, alpha: number): string {
+  const m = /^#([0-9a-fA-F]{6})$/.exec(hex.trim())
+  if (!m) return hex
+  const n = parseInt(m[1], 16)
+  const r = (n >> 16) & 255
+  const g = (n >> 8) & 255
+  const b = n & 255
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
+
+function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [ratio, setRatio] = useState<AspectRatio>("square")
 
@@ -131,7 +146,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       height * 0.18,
       width * 0.55
     )
-    gradient.addColorStop(0, accentColor + (isDark ? "22" : "15"))
+    gradient.addColorStop(0, withAlpha(accentColor, isDark ? 0.13 : 0.08))
     gradient.addColorStop(1, "transparent")
     ctx.fillStyle = gradient
     ctx.fillRect(0, 0, width, height)
@@ -281,7 +296,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     const badgeMetrics = ctx.measureText(badgeText)
     const pillW = badgeMetrics.width + 20
     const pillX = width - padding - pillW
-    roundRect(pillX, curY - 5, pillW, 26, 4, accentColor + "18", accentColor + "60")
+    roundRect(pillX, curY - 5, pillW, 26, 4, withAlpha(accentColor, 0.09), withAlpha(accentColor, 0.38))
     ctx.fillStyle = accentColor
     ctx.fillText(badgeText, pillX + 10, curY + 12)
 
@@ -478,15 +493,24 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
   // 1. Download as PNG
   const handleDownload = () => {
+    let link: HTMLAnchorElement | null = null
     try {
       const canvas = getExportCanvas()
       if (!canvas) return
-      const link = document.createElement("a")
+      link = document.createElement("a")
       link.download = `modelregistry-${model.id}-${ratio}.png`
       link.href = canvas.toDataURL("image/png")
+      // Firefox ignores programmatic clicks on detached anchors.
+      document.body.appendChild(link)
       link.click()
     } catch {
       // Canvas export unavailable on this device — no-op instead of a crash.
+    } finally {
+      try {
+        link?.remove()
+      } catch {
+        // Detach best-effort only.
+      }
     }
   }
 
@@ -529,24 +553,43 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
   // 3. Web Share API (Native mobile share to Instagram Stories/WhatsApp)
   const handleNativeShare = async () => {
-    const canvas = getExportCanvas()
-    if (!canvas) return
-
-    if (navigator.share) {
-      canvas.toBlob(async (blob) => {
-        if (!blob) return
-        const file = new File([blob], `${model.id}-${ratio}.png`, { type: "image/png" })
+    try {
+      const canvas = getExportCanvas()
+      if (!canvas) return
+      const blob: Blob | null = await new Promise((resolve) => {
         try {
+          canvas.toBlob(resolve)
+        } catch {
+          resolve(null)
+        }
+      })
+      if (!blob) {
+        handleDownload()
+        return
+      }
+      let file: File
+      try {
+        file = new File([blob], `${model.id}-${ratio}.png`, { type: "image/png" })
+      } catch {
+        handleDownload()
+        return
+      }
+      try {
+        if (typeof navigator.share === "function" && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
           await navigator.share({
             title: `${model.name} — ModelRegistry Specification`,
             text: `Verified specifications & benchmarks for ${model.name} (${company?.name || model.companyName}).`,
             files: [file],
           })
-        } catch {
-          // User cancelled
+          return
         }
-      })
-    } else {
+      } catch (e) {
+        // User cancelled the share sheet — stay silent. Anything else falls
+        // through to a plain download so the tap never appears dead.
+        if (e instanceof DOMException && e.name === "AbortError") return
+      }
+      handleDownload()
+    } catch {
       handleDownload()
     }
   }
@@ -555,10 +598,14 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   // clearly. Capture-phase listener so Esc closes only the zoom, not the
   // parent model popup behind it.
   const openZoom = () => {
-    const out = getExportCanvas()
-    if (!out) return
-    setZoomSrc(out.toDataURL("image/png"))
-    setIsZoomed(true)
+    try {
+      const out = getExportCanvas()
+      if (!out) return
+      setZoomSrc(out.toDataURL("image/png"))
+      setIsZoomed(true)
+    } catch {
+      // Snapshot unavailable — leave the inline preview as-is.
+    }
   }
   const closeZoom = () => {
     setIsZoomed(false)
@@ -800,5 +847,94 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
         </div>
       )}
     </div>
+  )
+}
+
+/**
+ * Render-time safety net for the share studio. A throw anywhere inside the
+ * canvas modal used to unmount the whole page into Next.js's generic
+ * "Application error" screen; now it degrades to this inline card carrying
+ * the actual message, with retry and close actions.
+ */
+class ShareCardErrorBoundary extends React.Component<
+  { onClose: () => void; onRetry: () => void; children: React.ReactNode },
+  { error: Error | null }
+> {
+  constructor(props: { onClose: () => void; onRetry: () => void; children: React.ReactNode }) {
+    super(props)
+    this.state = { error: null }
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { error }
+  }
+
+  componentDidCatch(error: Error) {
+    console.error("[share-card] render failed:", error)
+  }
+
+  render() {
+    const { error } = this.state
+    if (!error) return this.props.children
+    return (
+      <div
+        className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md"
+        onClick={this.props.onClose}
+      >
+        <div
+          className="w-full max-w-sm rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#0d0f13] p-5 shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h3 className="text-sm font-sans font-medium text-black dark:text-white">
+            Share preview could not be rendered
+          </h3>
+          <p className="mt-2 text-xs font-sans leading-relaxed text-black/60 dark:text-zinc-400 break-words">
+            {error.message || "Unknown rendering error."}
+          </p>
+          <div className="mt-4 flex gap-2">
+            <button
+              onClick={this.props.onRetry}
+              className="flex-1 py-2 px-3 rounded-md bg-black text-white dark:bg-white dark:text-black font-sans text-xs font-medium hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white transition-colors cursor-pointer"
+            >
+              TRY AGAIN
+            </button>
+            <button
+              onClick={this.props.onClose}
+              className="flex-1 py-2 px-3 rounded-md border border-black/10 dark:border-white/10 font-sans text-xs font-medium text-black/70 dark:text-zinc-300 hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors cursor-pointer"
+            >
+              CLOSE
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+export function ShareCardModal(props: ShareCardModalProps) {
+  const [attempt, setAttempt] = useState(0)
+  const wasOpen = useRef(false)
+
+  useEffect(() => {
+    if (props.isOpen && !wasOpen.current) {
+      // Fresh mount of the canvas modal on every open: clean preview state
+      // and a reset error boundary.
+      wasOpen.current = true
+      setAttempt((a) => a + 1)
+    } else if (!props.isOpen) {
+      wasOpen.current = false
+    }
+  }, [props.isOpen])
+
+  if (!props.isOpen) return null
+
+  return (
+    <ShareCardErrorBoundary
+      key={attempt}
+      onClose={props.onClose}
+      onRetry={() => setAttempt((a) => a + 1)}
+    >
+      <ShareCardModalInner {...props} />
+    </ShareCardErrorBoundary>
   )
 }
