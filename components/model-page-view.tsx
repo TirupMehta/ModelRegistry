@@ -46,8 +46,12 @@ export default function ModelPageView({ model }: ModelPageViewProps) {
   }
 
   const handleCopyLink = () => {
-    const url = `https://modelregistry.tirup.in/models/${model.id}`
-    navigator.clipboard.writeText(url)
+    try {
+      const url = `https://modelregistry.tirup.in/models/${model.id}`
+      navigator.clipboard.writeText(url)
+    } catch {
+      // Clipboard unavailable (e.g. non-secure context) — still confirm.
+    }
     setCopiedLink(true)
     setTimeout(() => setCopiedLink(false), 2000)
   }
@@ -95,9 +99,23 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
   }
 
   const handleCopyCode = (code: string) => {
-    navigator.clipboard.writeText(code)
+    try {
+      navigator.clipboard.writeText(code)
+    } catch {
+      // Clipboard unavailable — still confirm to avoid a dead button.
+    }
     setCopiedCode(true)
     setTimeout(() => setCopiedCode(false), 2000)
+  }
+
+  const copyActiveSnippet = () => {
+    const code =
+      activeSnippetTab === "curl"
+        ? curlCommand
+        : activeSnippetTab === "python"
+        ? getPythonSnippet()
+        : getLocalRunSnippet()
+    handleCopyCode(code)
   }
 
   return (
@@ -126,7 +144,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
         </div>
 
         {/* Datasheet Container */}
-        <div className="bg-white dark:bg-[#0e1014] border border-black/10 dark:border-white/[0.08] rounded-xl shadow-sm p-5 sm:p-9 mb-8 leading-relaxed">
+        <div className="bg-white dark:bg-[#0e1014] border border-black/10 dark:border-white/[0.08] rounded-xl shadow-sm p-4 sm:p-9 mb-6 sm:mb-8 leading-relaxed">
           {/* Top Control Bar */}
           <div className="flex items-center justify-between gap-3 border-b border-black/10 dark:border-white/[0.08] pb-4 mb-6">
             <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] font-sans text-[#ff5d2e] min-w-0">
@@ -174,8 +192,8 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           </div>
 
           {/* Model Title & SOTA Badge */}
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 mb-5">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-normal leading-tight text-black dark:text-white">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-4 sm:mb-5">
+            <h1 className="text-[22px] sm:text-3xl md:text-4xl font-display font-semibold tracking-tight leading-snug sm:leading-tight text-black dark:text-white">
               {model.name}
             </h1>
             <span className="text-[11px] font-sans uppercase px-2.5 py-1 rounded border border-[#ff5d2e]/40 text-[#ff5d2e] bg-[#ff5d2e]/5 font-medium tracking-widest leading-relaxed">
@@ -184,13 +202,13 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           </div>
 
           {/* Description Highlight */}
-          <p className="text-[15px] sm:text-[17px] font-normal text-black/80 dark:text-zinc-200 leading-7 sm:leading-8 tracking-normal mb-7 sm:mb-9 max-w-3xl">
+          <p className="text-sm sm:text-[15px] font-normal text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 tracking-normal mb-6 sm:mb-8 max-w-3xl">
             {model.highlight}
           </p>
 
           {/* Key Hardware Specs Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-3.5 mb-7 sm:mb-9 text-xs font-sans">
-            <div className="p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 mb-6 sm:mb-8 text-xs font-sans">
+            <div className="p-3.5 sm:p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
               <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1.5 text-[11px] tracking-widest">
                 <Layers size={13} />
                 <span className="uppercase">Context</span>
@@ -200,7 +218,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
               </div>
             </div>
 
-            <div className="p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
+            <div className="p-3.5 sm:p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
               <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1.5 text-[11px] tracking-widest">
                 <Cpu size={13} />
                 <span className="uppercase">Architecture</span>
@@ -210,7 +228,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
               </div>
             </div>
 
-            <div className="p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
+            <div className="p-3.5 sm:p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
               <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1.5 text-[11px] tracking-widest">
                 <DollarSign size={13} />
                 <span className="uppercase">Official API{model.pricingUnit ? "" : " (1M)"}</span>
@@ -227,7 +245,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
               </div>
             </div>
 
-            <div className="p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
+            <div className="p-3.5 sm:p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
               <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1.5 text-[11px] tracking-widest">
                 <ShieldCheck size={13} />
                 <span className="uppercase">License</span>
@@ -240,7 +258,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
           {/* Verified Benchmarks Section */}
           {Object.keys(model.benchmarks).length > 0 && (
-            <div className="mb-7 sm:mb-9 border border-black/10 dark:border-white/[0.08] rounded-lg p-5 bg-black/[0.01] dark:bg-black/20">
+            <div className="mb-6 sm:mb-8 border border-black/10 dark:border-white/[0.08] rounded-lg p-4 sm:p-5 bg-black/[0.01] dark:bg-black/20">
               <div className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 uppercase tracking-widest leading-relaxed mb-4">
                 Verified Benchmark Suite
               </div>
@@ -275,28 +293,28 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
           {/* Shipped Variants (e.g. API twins) */}
           {model.variants && model.variants.length > 0 && (
-            <div className="mb-7 sm:mb-9 border border-black/10 dark:border-white/[0.08] rounded-lg p-5 bg-black/[0.01] dark:bg-black/20">
-              <div className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 uppercase tracking-widest leading-relaxed mb-4">
+            <div className="mb-6 sm:mb-8 border border-black/10 dark:border-white/[0.08] rounded-lg p-4 sm:p-5 bg-black/[0.01] dark:bg-black/20">
+              <div className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 uppercase tracking-widest leading-relaxed mb-3.5">
                 Shipped Variants
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 font-sans text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5 font-sans text-xs">
                 {model.variants.map((variant) => (
                   <div
                     key={variant.name}
-                    className="border border-black/10 dark:border-white/[0.08] rounded p-4 bg-white dark:bg-[#0e1014] leading-relaxed"
+                    className="border border-black/10 dark:border-white/[0.08] rounded-lg p-4 sm:p-[18px] bg-white dark:bg-[#0e1014] leading-relaxed flex flex-col"
                   >
-                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                      <span className="text-sm font-semibold text-black dark:text-white tracking-wide">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-2">
+                      <span className="text-[13px] sm:text-sm font-semibold text-black dark:text-white tracking-wide">
                         {variant.name}
                       </span>
                       <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]">
                         {variant.role}
                       </span>
                     </div>
-                    <p className="text-black/60 dark:text-zinc-400 leading-relaxed">
+                    <p className="text-xs sm:text-[12.5px] text-black/60 dark:text-zinc-400 leading-[1.7]">
                       {variant.detail}
                     </p>
-                    <p className="tabular-nums text-black dark:text-white font-medium mt-2">
+                    <p className="tabular-nums text-[11.5px] sm:text-xs text-black/80 dark:text-zinc-200 font-medium mt-2.5 pt-2.5 border-t border-dashed border-black/10 dark:border-white/10 leading-5 break-words">
                       {variant.pricingNote}
                     </p>
                     {variant.link && (
@@ -304,7 +322,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                         href={variant.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 mt-2 text-black/60 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150"
+                        className="inline-flex items-center gap-1 mt-2.5 text-[11px] tracking-wider text-black/60 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150"
                       >
                         <ExternalLink size={12} />
                         <span>OFFICIAL DOCS</span>
@@ -317,65 +335,64 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           )}
 
           {/* Quickstart Developer Code Snippet */}
-          <div className="mb-7 sm:mb-9 border border-black/10 dark:border-white/[0.08] rounded-lg overflow-hidden">
-            <div className="flex items-center justify-between gap-x-3 gap-y-2 flex-wrap bg-black/[0.03] dark:bg-[#13161c] px-4 py-2.5 border-b border-black/10 dark:border-white/[0.08]">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-sans uppercase text-black/60 dark:text-zinc-400 font-medium">
+          <div className="mb-6 sm:mb-8 border border-black/10 dark:border-white/[0.08] rounded-lg overflow-hidden">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 bg-black/[0.03] dark:bg-[#13161c] px-3.5 sm:px-4 py-2.5 border-b border-black/10 dark:border-white/[0.08]">
+              <div className="flex items-center justify-between gap-2 min-w-0">
+                <span className="text-xs font-sans uppercase text-black/60 dark:text-zinc-400 font-medium shrink-0">
                   Quickstart Snippet
                 </span>
-                <div className="flex items-center gap-1 text-[11px] font-sans">
-                  <button
-                    onClick={() => setActiveSnippetTab("curl")}
-                    className={`px-2 py-0.5 rounded cursor-pointer transition-colors duration-150 ${
-                      activeSnippetTab === "curl"
-                        ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
-                        : "text-black/40 dark:text-zinc-400 hover:text-black dark:hover:text-white"
-                    }`}
-                  >
-                    cURL
-                  </button>
-                  <button
-                    onClick={() => setActiveSnippetTab("python")}
-                    className={`px-2 py-0.5 rounded cursor-pointer transition-colors duration-150 ${
-                      activeSnippetTab === "python"
-                        ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
-                        : "text-black/40 dark:text-zinc-400 hover:text-black dark:hover:text-white"
-                    }`}
-                  >
-                    Python
-                  </button>
-                  <button
-                    onClick={() => setActiveSnippetTab("local")}
-                    className={`px-2 py-0.5 rounded cursor-pointer transition-colors duration-150 ${
-                      activeSnippetTab === "local"
-                        ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
-                        : "text-black/40 dark:text-zinc-400 hover:text-black dark:hover:text-white"
-                    }`}
-                  >
-                    {model.openWeights ? "Ollama / vLLM" : "Terminal CLI"}
-                  </button>
-                </div>
+                <button
+                  onClick={copyActiveSnippet}
+                  className="sm:hidden inline-flex items-center gap-1 text-[11px] font-sans text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white cursor-pointer shrink-0"
+                >
+                  {copiedCode ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
+                  <span>{copiedCode ? "COPIED" : "COPY"}</span>
+                </button>
               </div>
 
-              <button
-                onClick={() => {
-                  const code =
+              <div className="flex items-center gap-1 text-[11px] font-sans overflow-x-auto max-w-full [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                <button
+                  onClick={() => setActiveSnippetTab("curl")}
+                  className={`px-2 py-0.5 rounded cursor-pointer whitespace-nowrap shrink-0 transition-colors duration-150 ${
                     activeSnippetTab === "curl"
-                      ? curlCommand
-                      : activeSnippetTab === "python"
-                      ? getPythonSnippet()
-                      : getLocalRunSnippet()
-                  handleCopyCode(code)
-                }}
-                className="inline-flex items-center gap-1 text-[11px] font-sans text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white cursor-pointer"
-              >
-                {copiedCode ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
-                <span>{copiedCode ? "COPIED" : "COPY"}</span>
-              </button>
+                      ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
+                      : "text-black/40 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+                  }`}
+                >
+                  cURL
+                </button>
+                <button
+                  onClick={() => setActiveSnippetTab("python")}
+                  className={`px-2 py-0.5 rounded cursor-pointer whitespace-nowrap shrink-0 transition-colors duration-150 ${
+                    activeSnippetTab === "python"
+                      ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
+                      : "text-black/40 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+                  }`}
+                >
+                  Python
+                </button>
+                <button
+                  onClick={() => setActiveSnippetTab("local")}
+                  className={`px-2 py-0.5 rounded cursor-pointer whitespace-nowrap shrink-0 transition-colors duration-150 ${
+                    activeSnippetTab === "local"
+                      ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
+                      : "text-black/40 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+                  }`}
+                >
+                  {model.openWeights ? "Ollama / vLLM" : "Terminal CLI"}
+                </button>
+                <button
+                  onClick={copyActiveSnippet}
+                  className="hidden sm:inline-flex items-center gap-1 ml-auto pl-2 text-[11px] font-sans text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white cursor-pointer shrink-0"
+                >
+                  {copiedCode ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
+                  <span>{copiedCode ? "COPIED" : "COPY"}</span>
+                </button>
+              </div>
             </div>
 
-            <pre className="p-4 sm:p-5 bg-black/[0.02] dark:bg-[#090b0e] text-[13px] font-sans overflow-x-auto text-black/80 dark:text-zinc-200 leading-7 tracking-wide">
-              <code>
+            <pre className="p-3.5 sm:p-5 bg-black/[0.02] dark:bg-[#090b0e] text-xs sm:text-[13px] font-sans overflow-x-auto text-black/80 dark:text-zinc-200 leading-6 sm:leading-7 tracking-wide">
+              <code className={activeSnippetTab === "curl" ? "whitespace-pre-wrap break-all" : "whitespace-pre"}>
                 {activeSnippetTab === "curl"
                   ? curlCommand
                   : activeSnippetTab === "python"

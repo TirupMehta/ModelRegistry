@@ -8,10 +8,10 @@ import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
 import { Rss, Code2, File, GitPullRequest, ArrowUpRight, Sparkles, Check } from "lucide-react"
 
 const NAV_ITEMS = [
-  { label: "Overview", href: "/" },
-  { label: "Laboratories", href: "/companies" },
-  { label: "Comparison", href: "/leaderboard" },
-  { label: "Changelog", href: "/timeline" },
+  { label: "Overview", short: "Overview", href: "/" },
+  { label: "Laboratories", short: "Labs", href: "/companies" },
+  { label: "Comparison", short: "Compare", href: "/leaderboard" },
+  { label: "Changelog", short: "Changes", href: "/timeline" },
 ] as const
 
 function NavLinks({ pathname }: { pathname: string }) {
@@ -21,26 +21,27 @@ function NavLinks({ pathname }: { pathname: string }) {
   }
 
   return (
-    <nav className="inline-flex items-center gap-1 p-1 rounded-lg bg-black/[0.03] dark:bg-[#13161b] border border-black/10 dark:border-white/[0.08] overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden max-w-full touch-scroll">
-      {NAV_ITEMS.map(({ label, href }) => {
+    <nav className="grid w-full grid-cols-4 items-center gap-1 p-1 rounded-lg bg-black/[0.03] dark:bg-[#13161b] border border-black/10 dark:border-white/[0.08] overflow-visible sm:inline-flex sm:w-auto sm:max-w-full sm:overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {NAV_ITEMS.map(({ label, short, href }) => {
         const active = isLinkActive(href)
         return (
           <Link
             key={href}
             href={href}
             className={[
-              "group relative inline-flex items-center gap-1.5 sm:gap-2 py-1.5 px-2.5 sm:px-3 rounded-md text-xs sm:text-[13px] font-sans tracking-tight select-none cursor-pointer whitespace-nowrap transition-colors duration-150 ease-out",
+              "group relative inline-flex min-w-0 flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 py-1.5 px-1.5 sm:px-3 rounded-md text-[11px] sm:text-[13px] font-sans tracking-tight select-none cursor-pointer whitespace-nowrap transition-colors duration-150 ease-out",
               active
                 ? "bg-white dark:bg-[#1e222a] text-black dark:text-white font-medium shadow-xs border border-black/10 dark:border-white/10"
                 : "text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]",
             ].join(" ")}
           >
             {active ? (
-              <span className="w-1.5 h-1.5 rounded-full bg-[#ff5d2e] shadow-[0_0_6px_rgba(255,93,46,0.8)] shrink-0" />
+              <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-[#ff5d2e] shadow-[0_0_6px_rgba(255,93,46,0.8)] shrink-0" />
             ) : (
-              <span className="w-1.5 h-1.5 rounded-full bg-transparent group-hover:bg-black/20 dark:group-hover:bg-white/20 transition-colors shrink-0" />
+              <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-transparent group-hover:bg-black/20 dark:group-hover:bg-white/20 transition-colors shrink-0" />
             )}
-            <span>{label}</span>
+            <span className="truncate sm:hidden">{short}</span>
+            <span className="hidden sm:inline">{label}</span>
           </Link>
         )
       })}
@@ -194,8 +195,8 @@ export default function Header() {
         </TextWithBlur>
 
         {/* ── Segmented Navigation Line ──────────────────────────────────── */}
-        <div className="flex justify-between items-center gap-4 mb-6 md:mb-8 border-b border-black/5 dark:border-white/[0.07] pb-3 flex-nowrap overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-scroll">
-          <TextWithBlur delay={100} className="min-w-0 max-w-full">
+        <div className="flex items-center gap-3 sm:gap-4 mb-6 md:mb-8 border-b border-black/5 dark:border-white/[0.07] pb-3 sm:justify-between overflow-visible">
+          <TextWithBlur delay={100} className="min-w-0 flex-1 sm:flex-none w-full sm:w-auto max-w-full">
             <NavLinks pathname={pathname} />
           </TextWithBlur>
 
