@@ -469,7 +469,7 @@ ${SITE_URL}/api/check-updates`}
               </p>
               <Note>
                 Model <code className="font-mono text-xs">id</code> values are append-only.
-                Entries are never deleted or recycled — retired slugs resolve to the lab's
+                Entries are never deleted or recycled — retired slugs resolve to the lab&apos;s
                 flagship through the fallback documented in the Errors section.
               </Note>
             </TextWithBlur>
