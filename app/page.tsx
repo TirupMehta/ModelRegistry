@@ -2,11 +2,14 @@
 
 import { useState, useMemo, useEffect } from "react"
 import Header from "@/components/header"
+import Footer from "@/components/footer"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, type ModelItem } from "@/data/models"
+import { companies } from "@/data/companies"
 import { formatDate } from "@/lib/utils"
-import { ArrowUpRight, Terminal, Copy, Check } from "lucide-react"
+import { selectFeedback, tapFeedback, successFeedback } from "@/lib/feedback"
+import { ArrowUpRight, Terminal, Copy, Check, X, SearchX } from "lucide-react"
 
 type ViewTab = "flagships" | "latest-drops" | "open-weights" | "visual" | "all"
 
@@ -27,7 +30,15 @@ export default function Home() {
   const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
   const [curlCopied, setCurlCopied] = useState(false)
 
-  const currentYear = new Date().getFullYear()
+  const handleTab = (tab: ViewTab) => {
+    if (tab !== activeTab) selectFeedback()
+    setActiveTab(tab)
+  }
+
+  const openModel = (model: ModelItem) => {
+    tapFeedback()
+    setActiveModalModel(model)
+  }
 
   // URL Deep-Linking via ?model= query parameter (clean, no # hash)
   useEffect(() => {
@@ -165,14 +176,15 @@ export default function Home() {
             <button
               onClick={() => {
                 navigator.clipboard.writeText("curl -s https://modelregistry.tirup.in/latest")
+                successFeedback()
                 setCurlCopied(true)
                 setTimeout(() => setCurlCopied(false), 2000)
               }}
-              className="group inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:bg-black/[0.04] dark:hover:bg-white/[0.05] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-[color,background-color,border-color,transform] duration-150 cursor-pointer select-none text-[11px] sm:text-xs max-w-full shrink-0"
+              className="group inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:bg-black/[0.04] dark:hover:bg-white/[0.05] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-[color,background-color,border-color,transform] duration-150 cursor-pointer select-none text-[11px] sm:text-xs min-w-0 max-w-full flex-1 sm:flex-none"
               title="Copy terminal CLI query"
             >
               <Terminal size={12} className="text-[#ff5d2e] shrink-0" />
-              <span className="text-black/80 dark:text-zinc-200 truncate">curl -s modelregistry.tirup.in/latest</span>
+              <span className="text-black/80 dark:text-zinc-200 truncate min-w-0">curl -s modelregistry.tirup.in/latest</span>
               {curlCopied ? (
                 <Check size={12} className="text-[#00e599] shrink-0" />
               ) : (
@@ -194,70 +206,72 @@ export default function Home() {
 
         {/* View Switcher & Search */}
         <TextWithBlur delay={180}>
-          <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-black/10 dark:border-white/[0.08] pb-4">
-            {/* Unified Segmented Filter Track (Single Row) */}
-            <div className="flex items-center p-0.5 rounded bg-black/[0.035] dark:bg-[#131518] border border-black/10 dark:border-white/[0.08] w-full md:w-auto md:max-w-full gap-0.5">
+          <div className="mb-2 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            {/* Unified Segmented Filter Track — grid-cols-5 so the five tabs
+                always fill the track exactly on every screen width (no
+                trailing blank space, no squeeze, no scroll). */}
+            <div className="grid grid-cols-5 md:flex md:items-center p-1 rounded-xl bg-black/[0.035] dark:bg-[#101318] border border-black/10 dark:border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] w-full md:w-auto gap-0.5">
               <button
-                onClick={() => setActiveTab("flagships")}
-                className={`flex-1 md:flex-none py-1.5 px-1.5 sm:px-3 rounded-md text-[11px] sm:text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap truncate ${
+                onClick={() => handleTab("flagships")}
+                className={`min-w-0 md:flex-none py-2 md:py-1.5 px-1 md:px-3 rounded-lg text-[10px] md:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "flagships"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium"
-                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
+                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]"
                 }`}
               >
-                Flagships <span className="hidden sm:inline opacity-60 text-[11px]">[{counts.flagships}]</span>
+                Flagships <span className="hidden sm:inline opacity-60 tabular-nums text-[11px]">{counts.flagships}</span>
               </button>
 
               <button
-                onClick={() => setActiveTab("latest-drops")}
+                onClick={() => handleTab("latest-drops")}
                 title={`Released in the last ${NEW_DROPS_WINDOW_DAYS} days, newest first`}
-                className={`flex-1 md:flex-none py-1.5 px-1.5 sm:px-3 rounded-md text-[11px] sm:text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap truncate ${
+                className={`min-w-0 md:flex-none py-2 md:py-1.5 px-1 md:px-3 rounded-lg text-[10px] md:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "latest-drops"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium"
-                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
+                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]"
                 }`}
               >
-                New Drops <span className="hidden sm:inline opacity-60 text-[11px]">[{counts.latestDrops}]</span>
+                New Drops <span className="hidden sm:inline opacity-60 tabular-nums text-[11px]">{counts.latestDrops}</span>
               </button>
 
               <button
-                onClick={() => setActiveTab("open-weights")}
-                className={`flex-1 md:flex-none py-1.5 px-1.5 sm:px-3 rounded-md text-[11px] sm:text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap truncate ${
+                onClick={() => handleTab("open-weights")}
+                className={`min-w-0 md:flex-none py-2 md:py-1.5 px-1 md:px-3 rounded-lg text-[10px] md:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "open-weights"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium"
-                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
+                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]"
                 }`}
               >
                 <span className="sm:hidden">Open</span>
-                <span className="hidden sm:inline">Open Weights</span> <span className="hidden sm:inline opacity-60 text-[11px]">[{counts.openWeights}]</span>
+                <span className="hidden sm:inline">Open Weights</span> <span className="hidden sm:inline opacity-60 tabular-nums text-[11px]">{counts.openWeights}</span>
               </button>
 
               <button
-                onClick={() => setActiveTab("visual")}
-                className={`flex-1 md:flex-none py-1.5 px-1.5 sm:px-3 rounded-md text-[11px] sm:text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap truncate ${
+                onClick={() => handleTab("visual")}
+                className={`min-w-0 md:flex-none py-2 md:py-1.5 px-1 md:px-3 rounded-lg text-[10px] md:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "visual"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium"
-                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
+                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]"
                 }`}
               >
-                Visual <span className="hidden sm:inline opacity-60 text-[11px]">[{counts.visual}]</span>
+                Visual <span className="hidden sm:inline opacity-60 tabular-nums text-[11px]">{counts.visual}</span>
               </button>
 
               <button
-                onClick={() => setActiveTab("all")}
-                className={`flex-1 md:flex-none py-1.5 px-1.5 sm:px-3 rounded-md text-[11px] sm:text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer whitespace-nowrap truncate ${
+                onClick={() => handleTab("all")}
+                className={`min-w-0 md:flex-none py-2 md:py-1.5 px-1 md:px-3 rounded-lg text-[10px] md:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "all"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium"
-                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
+                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]"
                 }`}
               >
-                All <span className="hidden sm:inline opacity-60 text-[11px]">[{counts.all}]</span>
+                All <span className="hidden sm:inline opacity-60 tabular-nums text-[11px]">{counts.all}</span>
               </button>
             </div>
 
             {/* Terminal Style Search Input */}
-            <div className="relative w-full md:w-56 shrink-0">
-              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-sans text-[#ff5d2e] pointer-events-none">
+            <div className="relative w-full md:w-60 shrink-0">
+              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-mono text-[#ff5d2e] pointer-events-none select-none">
                 &gt;
               </span>
               <input
@@ -270,23 +284,68 @@ export default function Home() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="filter index..."
-                className="w-full pl-6 pr-7 py-1.5 text-xs font-sans bg-black/[0.025] dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.08] rounded-md focus:outline-none focus:border-[#ff5d2e] text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-zinc-500 transition-colors duration-150"
+                className="w-full pl-6 pr-12 py-2 text-xs font-sans bg-white dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.08] rounded-lg shadow-sm focus:outline-none focus:border-[#ff5d2e]/60 focus:ring-2 focus:ring-[#ff5d2e]/15 text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-zinc-500 transition-all duration-150"
               />
-              <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 text-[11px] font-sans text-black/35 dark:text-zinc-400 bg-black/5 dark:bg-white/[0.06] border border-black/10 dark:border-white/[0.08] rounded pointer-events-none select-none">
-                /
-              </kbd>
+              {searchQuery ? (
+                <button
+                  onClick={() => {
+                    tapFeedback()
+                    setSearchQuery("")
+                  }}
+                  aria-label="Clear search"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-5 h-5 rounded-md text-black/40 hover:text-black dark:text-zinc-500 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
+                >
+                  <X size={12} />
+                </button>
+              ) : (
+                <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center min-w-5 px-1.5 py-0.5 text-[11px] font-sans text-black/35 dark:text-zinc-400 bg-black/5 dark:bg-white/[0.06] border border-black/10 dark:border-white/[0.08] rounded-md pointer-events-none select-none">
+                  /
+                </kbd>
+              )}
             </div>
+          </div>
+          <div className="mb-5 flex items-center justify-between border-b border-black/10 dark:border-white/[0.08] pb-3 pt-1">
+            <p className="text-[11px] font-sans tabular-nums tracking-wide text-black/40 dark:text-zinc-500">
+              {filteredModels.length} {filteredModels.length === 1 ? "model" : "models"} shown
+              {searchQuery.trim() && (
+                <span> for &ldquo;{searchQuery.trim()}&rdquo;</span>
+              )}
+            </p>
+            <p className="hidden sm:block text-[11px] font-mono text-black/30 dark:text-zinc-600 select-none">
+              sorted by relevance
+            </p>
           </div>
         </TextWithBlur>
 
         {/* Technical Ledger Manifest */}
-        <div className="flex flex-col list-hover-group">
+        <div className="flex flex-col gap-2.5 sm:gap-0 list-hover-group sm:divide-y sm:divide-black/10 sm:dark:divide-white/[0.06]">
           {filteredModels.length === 0 ? (
-            <div className="py-12 text-center text-xs font-sans text-black/40 dark:text-zinc-500">
-              {activeTab === "latest-drops" && !searchQuery.trim() ? (
-                <span>[ NO NEW DROPS IN THE LAST {NEW_DROPS_WINDOW_DAYS} DAYS ]</span>
-              ) : (
-                <span>[ NO MODELS MATCHING QUERY &quot;{searchQuery}&quot; ]</span>
+            <div className="py-14 px-6 text-center rounded-xl border border-dashed border-black/15 dark:border-white/15 bg-black/[0.015] dark:bg-white/[0.02]">
+              <div className="mx-auto mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/[0.04] dark:bg-white/[0.06] text-black/40 dark:text-zinc-400">
+                <SearchX size={16} />
+              </div>
+              <p className="text-sm font-medium text-black dark:text-white">
+                {activeTab === "latest-drops" && !searchQuery.trim()
+                  ? "No new drops in the last 30 days"
+                  : "No models match your filter"}
+              </p>
+              <p className="mt-1 text-xs font-sans text-black/50 dark:text-zinc-400">
+                {searchQuery.trim()
+                  ? `Nothing found for "${searchQuery.trim()}". Try a lab, model, or capability.`
+                  : "Try a different tab — the full index is one click away."}
+              </p>
+              {(searchQuery.trim() || activeTab !== "all") && (
+                <button
+                  onClick={() => {
+                    tapFeedback()
+                    setSearchQuery("")
+                    setActiveTab("all")
+                  }}
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-black dark:text-white hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.98] transition-all cursor-pointer"
+                >
+                  <X size={12} />
+                  Clear filter
+                </button>
               )}
             </div>
           ) : (
@@ -296,56 +355,94 @@ export default function Home() {
               return (
                 <TextWithBlur key={model.id} delay={Math.min(index * 20, 200)}>
                   <div
-                    onClick={() => setActiveModalModel(model)}
+                    onClick={() => openModel(model)}
                     role="button"
                     tabIndex={0}
                     aria-label={`View details for ${model.name}`}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault()
-                        setActiveModalModel(model)
+                        openModel(model)
                       }
                     }}
                     className={[
-                      "group block py-3 sm:py-3.5 -mx-2 sm:-mx-3 px-2 sm:px-3 rounded-md cursor-pointer transition-colors duration-150",
-                      index > 0 ? "border-t border-black/10 dark:border-white/[0.06]" : "",
-                      "hover:bg-black/[0.025] dark:hover:bg-white/[0.035]",
+                      "group block cursor-pointer transition-all duration-150 active:scale-[0.985] sm:active:scale-100",
+                      // Mobile: true card
+                      "rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-white dark:bg-[#0e1014] p-4 shadow-[0_1px_2px_rgba(0,0,0,0.05)] active:border-[#ff5d2e]/50",
+                      // Desktop: ledger row reset
+                      "sm:rounded-xl sm:border-0 sm:shadow-none sm:bg-transparent sm:dark:bg-transparent sm:p-0 sm:mx-0 sm:px-3 sm:py-4 sm:active:border-transparent",
+                      "sm:hover:bg-black/[0.025] sm:dark:hover:bg-white/[0.035] sm:hover:shadow-sm",
                     ].join(" ")}
                   >
-                    {/* Mobile Card Row (< sm) */}
+                    {/* Mobile Card (< sm) */}
                     <div className="sm:hidden">
+                      {/* Lab + date */}
+                      <div className="flex items-center gap-1.5 text-[11px] font-sans mb-1.5 min-w-0">
+                        <span
+                          className="w-2 h-2 rounded-[3px] ring-1 ring-black/10 dark:ring-white/10 shrink-0"
+                          style={{
+                            backgroundColor:
+                              companies[model.companyId]?.accentColor || "#ff5d2e",
+                          }}
+                        />
+                        <span className="uppercase tracking-[0.08em] font-semibold text-black/60 dark:text-zinc-300 truncate">
+                          {model.companyName}
+                        </span>
+                        <time
+                          dateTime={model.releaseDate}
+                          className="ml-auto tabular-nums text-black/40 dark:text-zinc-500 shrink-0"
+                        >
+                          {formatDate(model.releaseDate)}
+                        </time>
+                      </div>
+
+                      {/* Title + badge */}
                       <div className="flex items-start justify-between gap-2 mb-1">
-                        <div className="flex items-baseline gap-2 min-w-0">
-                          <span className="font-sans tabular-nums text-xs text-[#ff5d2e]/80 dark:text-[#ff7347] select-none shrink-0 font-medium">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <span className="font-display font-semibold text-base tracking-tight text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150 truncate">
-                            {model.name}
-                          </span>
-                        </div>
-                        <span className="text-[11px] font-sans tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/75 dark:text-zinc-300 shrink-0 whitespace-nowrap font-medium">
+                        <span className="font-display font-semibold text-[17px] leading-snug tracking-tight text-black dark:text-white min-w-0">
+                          {model.name}
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-[11px] font-sans px-1.5 py-0.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 shrink-0 whitespace-nowrap font-medium mt-0.5">
+                          {model.openWeights && (
+                            <span className="w-1 h-1 rounded-full bg-emerald-500 shrink-0" />
+                          )}
                           {model.statusBadge}
                         </span>
                       </div>
 
-                      <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[11px] font-sans text-black/50 dark:text-zinc-400 mb-1 pl-5">
-                        <span className="uppercase text-black/70 dark:text-zinc-300 font-medium">{model.companyName}</span>
-                        <span>•</span>
-                        <time dateTime={model.releaseDate} className="tabular-nums whitespace-nowrap">
-                          {formatDate(model.releaseDate)}
-                        </time>
-                        <span>•</span>
-                        <span>{model.contextWindow.replace(" tokens", "")}</span>
-                        <span>•</span>
-                        <span>{model.pricing.input === 0 ? "Open" : `$${model.pricing.input}/M`}</span>
-                      </div>
-
-                      <p className="text-xs font-normal text-black/65 dark:text-zinc-300 leading-relaxed line-clamp-2 pl-5">
+                      <p className="text-[13px] font-normal text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-2">
                         {model.highlight}
                       </p>
 
+                      {/* Spec strip */}
+                      <div className="mt-3 grid grid-cols-3 divide-x divide-black/[0.06] dark:divide-white/[0.06] rounded-xl bg-black/[0.025] dark:bg-white/[0.03] py-2">
+                        <div className="px-2.5 min-w-0">
+                          <p className="text-[9px] font-sans font-semibold uppercase tracking-[0.12em] text-black/40 dark:text-zinc-500">
+                            Input / 1M
+                          </p>
+                          <p className="text-xs font-sans font-semibold tabular-nums text-black dark:text-white mt-0.5 truncate">
+                            {model.pricing.input === 0 ? "Free" : `$${model.pricing.input}`}
+                          </p>
+                        </div>
+                        <div className="px-2.5 min-w-0">
+                          <p className="text-[9px] font-sans font-semibold uppercase tracking-[0.12em] text-black/40 dark:text-zinc-500">
+                            Context
+                          </p>
+                          <p className="text-xs font-sans font-semibold tabular-nums text-black dark:text-white mt-0.5 truncate">
+                            {model.contextWindow.replace(" tokens", "")}
+                          </p>
+                        </div>
+                        <div className="px-2.5 min-w-0">
+                          <p className="text-[9px] font-sans font-semibold uppercase tracking-[0.12em] text-black/40 dark:text-zinc-500">
+                            Access
+                          </p>
+                          <p className="text-xs font-sans font-semibold text-black dark:text-white mt-0.5 truncate">
+                            {model.openWeights ? "Open" : "API"}
+                          </p>
+                        </div>
+                      </div>
+
                       {specializedDrop && activeTab === "flagships" && (
-                        <div className="mt-1.5 flex items-center gap-1.5 text-[11px] font-sans text-black/45 dark:text-zinc-400 pl-5">
+                        <div className="mt-2.5 flex items-center gap-1.5 text-[11px] font-sans text-black/45 dark:text-zinc-400">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#ff5d2e] shrink-0" />
                           <span className="truncate">
                             Checkpoint:{" "}
@@ -361,7 +458,7 @@ export default function Home() {
                     {/* Desktop Ledger Row (sm and up) */}
                     <div className="hidden sm:flex items-baseline gap-5">
                       {/* Monospace Ledger Index */}
-                      <span className="font-sans tabular-nums text-xs text-[#ff5d2e]/80 dark:text-[#ff7347] select-none w-6 shrink-0 transition-colors duration-150 group-hover:text-[#ff5d2e] font-medium">
+                      <span className="font-mono tabular-nums text-[11px] text-black/30 dark:text-zinc-600 select-none w-6 shrink-0 transition-colors duration-150 group-hover:text-[#ff5d2e] font-normal">
                         {String(index + 1).padStart(2, "0")}
                       </span>
 
@@ -383,7 +480,7 @@ export default function Home() {
                         </div>
 
                         {/* Highlight Description */}
-                        <p className="text-[13.5px] font-normal text-black/70 dark:text-zinc-300 leading-relaxed line-clamp-1 group-hover:text-black/95 dark:group-hover:text-white transition-colors duration-150">
+                        <p className="text-[13.5px] font-normal text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-1 group-hover:text-black/90 dark:group-hover:text-zinc-100 transition-colors duration-150">
                           {model.highlight}
                         </p>
 
@@ -403,8 +500,8 @@ export default function Home() {
                       </div>
 
                       {/* Specs Readout */}
-                      <div className="flex items-center gap-3 shrink-0 text-right">
-                        <span className="hidden md:inline font-sans text-[11px] text-black/45 dark:text-zinc-400 tabular-nums">
+                      <div className="flex items-center gap-2.5 shrink-0 text-right">
+                        <span className="hidden md:inline font-sans text-[11px] text-black/40 dark:text-zinc-500 tabular-nums">
                           ${model.pricing.input}/${model.pricing.output}
                         </span>
                         <time
@@ -414,17 +511,20 @@ export default function Home() {
                         >
                           {formatDate(model.releaseDate)}
                         </time>
-                        <span className="hidden lg:inline font-sans text-[11px] text-black/45 dark:text-zinc-400 tabular-nums whitespace-nowrap">
+                        <span className="hidden lg:inline font-sans text-[11px] text-black/40 dark:text-zinc-500 tabular-nums whitespace-nowrap">
                           {model.contextWindow.replace(" tokens", "")}
                         </span>
 
-                        <span className="text-[11px] font-sans px-2 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 transition-colors duration-150 group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347]">
+                        <span className="inline-flex items-center gap-1.5 text-[11px] font-sans px-2 py-1 rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 shadow-sm transition-all duration-150 group-hover:border-[#ff5d2e]/50 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:shadow-md group-hover:shadow-[#ff5d2e]/10">
+                          {model.openWeights && (
+                            <span className="w-1 h-1 rounded-full bg-emerald-500 shrink-0" />
+                          )}
                           {model.statusBadge}
                         </span>
 
                         <ArrowUpRight
-                          size={12}
-                          className="opacity-25 group-hover:opacity-100 transition-colors duration-150 text-black dark:text-white group-hover:text-[#ff5d2e]"
+                          size={13}
+                          className="opacity-30 group-hover:opacity-100 group-hover:translate-x-px group-hover:-translate-y-px transition-all duration-150 text-black dark:text-white group-hover:text-[#ff5d2e]"
                         />
                       </div>
                     </div>
@@ -433,20 +533,20 @@ export default function Home() {
               )
             })
           )}
-          {/* Bottom ledger rule */}
-          <div className="border-t border-black/10 dark:border-white/[0.08]" />
+          {/* Bottom ledger rule (desktop only — mobile uses cards) */}
+          <div className="hidden sm:block border-t border-black/10 dark:border-white/[0.08]" />
         </div>
 
         {/* Direct Technical Endpoints */}
         <TextWithBlur delay={300}>
-          <div className="mt-12 border-t border-black/10 dark:border-white/[0.08] pt-6">
+          <div className="mt-12 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.6] dark:bg-white/[0.02] p-4 sm:p-5 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xs font-sans uppercase tracking-widest text-[#ff5d2e] font-medium flex items-center gap-1.5">
-                <Terminal size={12} />
-                <span>OPEN TELEMETRY &amp; SYNDICATION</span>
+              <h2 className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold flex items-center gap-1.5">
+                <Terminal size={12} className="text-[#ff5d2e]" />
+                <span>Open telemetry &amp; syndication</span>
               </h2>
-              <span className="text-[11px] font-sans text-black/35 dark:text-zinc-400">
-                curl -s https://modelregistry.tirup.in
+              <span className="hidden sm:block text-[11px] font-mono tabular-nums text-black/30 dark:text-zinc-600 select-none">
+                curl -s modelregistry.tirup.in
               </span>
             </div>
 
@@ -455,14 +555,14 @@ export default function Home() {
                 href="/api/v1/models"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-black/[0.045] dark:hover:bg-[#13161c] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-[color,background-color,border-color,transform] duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
+                className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-white dark:hover:bg-[#13161c] hover:border-[#ff5d2e]/40 active:scale-[0.98] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
               >
-                <span className="text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
-                  GET /api/v1/models
+                <span className="font-mono text-[11px] text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
+                  /api/v1/models
                 </span>
                 <ArrowUpRight
                   size={12}
-                  className="text-black/35 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,transform] duration-150 ease-out shrink-0"
+                  className="text-black/30 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-150 ease-out shrink-0"
                 />
               </a>
 
@@ -470,14 +570,14 @@ export default function Home() {
                 href="/rss.xml"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-black/[0.045] dark:hover:bg-[#13161c] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-[color,background-color,border-color,transform] duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
+                className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-white dark:hover:bg-[#13161c] hover:border-[#ff5d2e]/40 active:scale-[0.98] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
               >
-                <span className="text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
-                  GET /rss.xml
+                <span className="font-mono text-[11px] text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
+                  /rss.xml
                 </span>
                 <ArrowUpRight
                   size={12}
-                  className="text-black/35 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,transform] duration-150 ease-out shrink-0"
+                  className="text-black/30 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-150 ease-out shrink-0"
                 />
               </a>
 
@@ -485,14 +585,14 @@ export default function Home() {
                 href="/llms.txt"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-black/[0.045] dark:hover:bg-[#13161c] hover:border-black/25 dark:hover:border-white/20 active:scale-[0.985] transition-[color,background-color,border-color,transform] duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
+                className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-white dark:hover:bg-[#13161c] hover:border-[#ff5d2e]/40 active:scale-[0.98] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
               >
-                <span className="text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
-                  GET /llms.txt
+                <span className="font-mono text-[11px] text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
+                  /llms.txt
                 </span>
                 <ArrowUpRight
                   size={12}
-                  className="text-black/35 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,transform] duration-150 ease-out shrink-0"
+                  className="text-black/30 dark:text-zinc-500 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-150 ease-out shrink-0"
                 />
               </a>
 
@@ -500,19 +600,19 @@ export default function Home() {
                 href="https://github.com/TirupMehta/ModelRegistry/blob/main/CONTRIBUTING.md"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group p-2.5 sm:p-3 rounded-lg border border-[#ff5d2e]/30 dark:border-[#ff5d2e]/35 bg-[#ff5d2e]/[0.03] dark:bg-[#ff5d2e]/[0.05] hover:bg-[#ff5d2e]/[0.07] dark:hover:bg-[#ff5d2e]/[0.09] hover:border-[#ff5d2e]/55 dark:hover:border-[#ff5d2e]/55 active:scale-[0.985] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
+                className="card-lift group p-3 rounded-xl border border-black dark:border-white bg-black dark:bg-white hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] hover:border-[#ff5d2e] active:scale-[0.98] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none shadow-sm"
               >
                 <div className="flex flex-col min-w-0 pr-1">
-                  <span className="font-semibold text-xs text-[#ff5d2e] dark:text-[#ff7347]">
-                    CONTRIBUTE (60s)
+                  <span className="font-semibold text-xs text-white dark:text-black group-hover:text-white transition-colors">
+                    Contribute · 60s
                   </span>
-                  <span className="text-[11px] text-black/50 dark:text-zinc-400 truncate">
-                    Edit 1 file • Auto-sync
+                  <span className="font-mono text-[10px] text-white/60 dark:text-black/60 group-hover:text-white/80 truncate">
+                    1 file · auto-sync
                   </span>
                 </div>
                 <ArrowUpRight
                   size={13}
-                  className="text-[#ff5d2e] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-150 ease-out shrink-0"
+                  className="text-white dark:text-black group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-150 ease-out shrink-0"
                 />
               </a>
             </div>
@@ -526,12 +626,7 @@ export default function Home() {
         onClose={() => setActiveModalModel(null)}
       />
 
-      {/* Industrial Footer */}
-      <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/[0.08] max-w-4xl mx-auto w-full">
-        <p className="text-xs font-sans text-black/50 dark:text-zinc-400">
-          © {currentYear} ModelRegistry. The open technical index for frontier AI systems.
-        </p>
-      </footer>
+      <Footer />
     </main>
   )
 }

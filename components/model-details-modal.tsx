@@ -18,6 +18,7 @@ import {
   Share2,
 } from "lucide-react"
 import { ShareCardModal } from "./share-card-modal"
+import { tapFeedback, successFeedback } from "@/lib/feedback"
 
 interface ModelDetailsModalProps {
   model: ModelItem | null
@@ -67,8 +68,14 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
     } catch {
       // Clipboard unavailable — still confirm.
     }
+    successFeedback()
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleClose = () => {
+    tapFeedback()
+    onClose()
   }
 
   return (
@@ -76,12 +83,12 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      className="fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-black/70 backdrop-blur-xs transition-opacity duration-150 animate-in fade-in"
-      onClick={onClose}
+      className="fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-black/60 backdrop-blur-md transition-opacity duration-150 animate-in fade-in"
+      onClick={handleClose}
     >
       <div className="min-h-full flex justify-center p-3 sm:p-6">
       <div
-        className="relative m-auto w-full max-w-2xl bg-white dark:bg-[#0e1014] border border-black/10 dark:border-white/[0.08] rounded-xl shadow-2xl p-4 sm:p-7 sm:max-h-[92dvh] sm:overflow-y-auto sm:overscroll-contain transition-colors duration-150 ease-out animate-in fade-in"
+        className="relative m-auto w-full max-w-2xl bg-white dark:bg-[#0e1014] border border-black/10 dark:border-white/[0.08] rounded-2xl shadow-2xl ring-1 ring-black/5 dark:ring-white/5 p-4 sm:p-7 sm:max-h-[92dvh] sm:overflow-y-auto sm:overscroll-contain transition-colors duration-150 ease-out animate-in fade-in zoom-in-95"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar */}
@@ -104,7 +111,10 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             </Link>
 
             <button
-              onClick={() => setIsShareStudioOpen(true)}
+              onClick={() => {
+                tapFeedback()
+                setIsShareStudioOpen(true)
+              }}
               title="Export Instagram Story / Social Card"
               aria-label="Export share card"
               className="inline-flex items-center justify-center min-w-8 min-h-8 gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.985] text-[10px] sm:text-[11px] font-sans text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
@@ -124,7 +134,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             </button>
 
             <button
-              onClick={onClose}
+              onClick={handleClose}
               aria-label="Close dialog"
               className="inline-flex items-center justify-center min-w-8 min-h-8 p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-[0.985] transition-colors duration-150 cursor-pointer"
             >
@@ -136,7 +146,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         {/* Lab info & Release Stamp */}
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2.5 text-xs font-sans">
           <span
-            className="w-2.5 h-2.5 rounded-sm shrink-0"
+            className="w-2.5 h-2.5 rounded-[4px] ring-1 ring-black/10 dark:ring-white/10 shrink-0"
             style={{ backgroundColor: company?.accentColor || "#ff5d2e" }}
           />
           <span className="font-medium uppercase tracking-wider text-black/70 dark:text-zinc-300">
@@ -165,32 +175,32 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
 
         {/* Key Hardware Specs Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 mb-5 sm:mb-6 text-xs font-sans">
-          <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
-            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px] sm:text-xs">
-              <Layers size={13} />
-              <span>CONTEXT WINDOW</span>
+          <div className="p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] shadow-sm hover:border-[#ff5d2e]/40 transition-all duration-150 cursor-default">
+            <div className="flex items-center gap-1.5 text-black/40 dark:text-zinc-500 mb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em]">
+              <Layers size={12} className="text-[#ff5d2e]" />
+              <span>Context</span>
             </div>
-            <p className="tabular-nums text-xs sm:text-sm font-medium text-black dark:text-white leading-tight">
+            <p className="tabular-nums text-xs sm:text-sm font-semibold text-black dark:text-white leading-tight">
               {model.contextWindow}
             </p>
           </div>
 
-          <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
-            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px] sm:text-xs">
-              <Cpu size={13} />
-              <span>ARCHITECTURE</span>
+          <div className="p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] shadow-sm hover:border-[#ff5d2e]/40 transition-all duration-150 cursor-default">
+            <div className="flex items-center gap-1.5 text-black/40 dark:text-zinc-500 mb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em]">
+              <Cpu size={12} className="text-[#ff5d2e]" />
+              <span>Architecture</span>
             </div>
-            <p className="tabular-nums tabular-nums text-xs sm:text-sm font-medium text-black dark:text-white leading-tight break-words">
+            <p className="tabular-nums text-xs sm:text-sm font-semibold text-black dark:text-white leading-tight break-words">
               {model.parameters}
             </p>
           </div>
 
-          <div className="p-2.5 sm:p-3 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] col-span-2 sm:col-span-1 hover:border-[#ff5d2e]/40 transition-colors duration-150 cursor-default">
-            <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1 text-[11px] sm:text-xs">
-              <DollarSign size={13} />
-              <span>{model.pricingUnit ? "OFFICIAL API" : "OFFICIAL API / 1M"}</span>
+          <div className="p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] col-span-2 sm:col-span-1 shadow-sm hover:border-[#ff5d2e]/40 transition-all duration-150 cursor-default">
+            <div className="flex items-center gap-1.5 text-black/40 dark:text-zinc-500 mb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em]">
+              <DollarSign size={12} className="text-[#ff5d2e]" />
+              <span>{model.pricingUnit ? "Official API" : "Official API / 1M"}</span>
             </div>
-            <div className="tabular-nums text-xs sm:text-sm font-medium text-black dark:text-white leading-tight">
+            <div className="tabular-nums text-xs sm:text-sm font-semibold text-black dark:text-white leading-tight">
               <span>
                 {formatPrice(model)}
               </span>
@@ -205,51 +215,47 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
 
         {/* Verified Benchmarks Section */}
         {Object.keys(model.benchmarks).length > 0 && (
-          <div className="mb-6">
-            <h3 className="text-xs font-sans uppercase tracking-wider text-black/50 dark:text-zinc-400 font-medium mb-2.5">
-              VERIFIED BENCHMARKS
+          <div className="mb-6 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-black/20 p-3 sm:p-4">
+            <h3 className="text-[10px] font-sans uppercase tracking-[0.14em] text-black/45 dark:text-zinc-500 font-semibold mb-3">
+              Verified benchmarks
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {model.benchmarks.sweBench && (
-                <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">SWE-bench</span>
-                  <span className="text-base font-sans font-medium tabular-nums text-black dark:text-white">
-                    {model.benchmarks.sweBench}
-                  </span>
-                </div>
-              )}
-              {model.benchmarks.terminalBench && (
-                <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">Terminal-Bench</span>
-                  <span className="text-base font-sans font-medium tabular-nums text-black dark:text-white">
-                    {model.benchmarks.terminalBench}
-                  </span>
-                </div>
-              )}
-              {model.benchmarks.aime2024 && (
-                <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">AIME 2024</span>
-                  <span className="text-base font-sans font-medium tabular-nums text-black dark:text-white">
-                    {model.benchmarks.aime2024}
-                  </span>
-                </div>
-              )}
-              {model.benchmarks.mmluPro && (
-                <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">MMLU-Pro</span>
-                  <span className="text-base font-sans font-medium tabular-nums text-black dark:text-white">
-                    {model.benchmarks.mmluPro}
-                  </span>
-                </div>
-              )}
-              {model.benchmarks.gpqa && (
-                <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
-                  <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">GPQA Diamond</span>
-                  <span className="text-base font-sans font-medium tabular-nums text-black dark:text-white">
-                    {model.benchmarks.gpqa}
-                  </span>
-                </div>
-              )}
+              {(
+                [
+                  ["SWE-bench", model.benchmarks.sweBench],
+                  ["Terminal-Bench", model.benchmarks.terminalBench],
+                  ["AIME 2024", model.benchmarks.aime2024],
+                  ["MMLU-Pro", model.benchmarks.mmluPro],
+                  ["GPQA Diamond", model.benchmarks.gpqa],
+                ] as const
+              )
+                .filter(([, v]) => Boolean(v))
+                .map(([label, value], i) => {
+                  const pct = Math.min(100, Math.max(0, parseFloat(String(value)) || 0))
+                  return (
+                    <div
+                      key={label}
+                      className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-white dark:bg-[#13161c] shadow-sm hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default"
+                    >
+                      <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.1em] text-black/40 dark:text-zinc-500 block mb-1">
+                        {label}
+                      </span>
+                      <span
+                        className={`text-base font-sans font-semibold tabular-nums ${
+                          i === 0 ? "text-[#ff5d2e]" : "text-black dark:text-white"
+                        }`}
+                      >
+                        {value}
+                      </span>
+                      <span className="mt-1.5 block h-1 overflow-hidden rounded-full bg-black/[0.06] dark:bg-white/[0.08]">
+                        <span
+                          className={`block h-full rounded-full ${i === 0 ? "bg-[#ff5d2e]" : "bg-black/30 dark:bg-white/30"}`}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </span>
+                    </div>
+                  )
+                })}
             </div>
           </div>
         )}
@@ -345,7 +351,10 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           )}
 
           <button
-            onClick={() => setIsShareStudioOpen(true)}
+            onClick={() => {
+              tapFeedback()
+              setIsShareStudioOpen(true)
+            }}
             className="group inline-flex items-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-[#ff5d2e]/40 bg-[#ff5d2e]/10 text-[#ff5d2e] hover:bg-[#ff5d2e] hover:text-white dark:hover:text-black transition-colors duration-150 cursor-pointer"
           >
             <Share2 size={12} />

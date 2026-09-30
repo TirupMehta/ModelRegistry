@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import TextWithBlur from "@/components/text-with-blur"
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
+import { selectFeedback, successFeedback } from "@/lib/feedback"
+import { modelsData } from "@/data/models"
 import { Rss, Code2, File, GitPullRequest, ArrowUpRight, Sparkles, Check } from "lucide-react"
 
 const NAV_ITEMS = [
@@ -21,24 +23,28 @@ function NavLinks({ pathname }: { pathname: string }) {
   }
 
   return (
-    <nav className="grid w-full grid-cols-4 items-center gap-1 p-1 rounded-lg bg-black/[0.03] dark:bg-[#13161b] border border-black/10 dark:border-white/[0.08] overflow-visible sm:inline-flex sm:w-auto sm:max-w-full sm:overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+    <nav className="grid w-full grid-cols-4 items-center gap-0.5 p-1 rounded-xl bg-black/[0.03] dark:bg-[#101318] border border-black/10 dark:border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] overflow-visible sm:inline-flex sm:w-auto sm:max-w-full sm:overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
       {NAV_ITEMS.map(({ label, short, href }) => {
         const active = isLinkActive(href)
         return (
           <Link
             key={href}
             href={href}
+            onClick={() => {
+              if (!active) selectFeedback()
+            }}
+            aria-current={active ? "page" : undefined}
             className={[
-              "group relative inline-flex min-w-0 flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 py-1.5 px-1.5 sm:px-3 rounded-md text-[11px] sm:text-[13px] font-sans tracking-tight select-none cursor-pointer whitespace-nowrap transition-colors duration-150 ease-out",
+              "group relative inline-flex min-w-0 flex-1 sm:flex-none items-center justify-center gap-1.5 sm:gap-2 py-1.5 px-1 sm:px-3 rounded-lg text-[11px] sm:text-[13px] font-sans tracking-tight select-none cursor-pointer whitespace-nowrap transition-all duration-150 ease-out",
               active
-                ? "bg-white dark:bg-[#1e222a] text-black dark:text-white font-medium shadow-xs border border-black/10 dark:border-white/10"
+                ? "bg-white dark:bg-[#1e222a] text-black dark:text-white font-medium shadow-sm ring-1 ring-black/10 dark:ring-white/10"
                 : "text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]",
             ].join(" ")}
           >
             {active ? (
               <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-[#ff5d2e] shadow-[0_0_6px_rgba(255,93,46,0.8)] shrink-0" />
             ) : (
-              <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-transparent group-hover:bg-black/20 dark:group-hover:bg-white/20 transition-colors shrink-0" />
+              <span className="hidden sm:block w-1.5 h-1.5 rounded-full bg-black/10 dark:bg-white/10 group-hover:bg-black/25 dark:group-hover:bg-white/25 transition-colors shrink-0" />
             )}
             <span className="truncate sm:hidden">{short}</span>
             <span className="hidden sm:inline">{label}</span>
@@ -97,6 +103,7 @@ export default function Header() {
         document.body.removeChild(ta)
       }
       setPromptCopied(true)
+      successFeedback()
       setTimeout(() => setPromptCopied(false), 2000)
     } catch {
       window.location.href = "/docs"
@@ -108,14 +115,14 @@ export default function Header() {
       {/* ── Top Telemetry Readout Bar ────────────────────────────────────── */}
       <div className="w-full bg-black/[0.02] dark:bg-[#0a0c0f] border-b border-black/5 dark:border-white/[0.06] py-2 text-[11px] font-sans text-black/60 dark:text-zinc-400">
         <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-            <span className="inline-flex items-center gap-1.5 sm:gap-2 font-medium text-[#ff5d2e] tracking-wider uppercase text-[11px] sm:text-[12px]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00e599] shadow-[0_0_6px_#00e599] shrink-0" />
-              SYS://REGISTRY
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="relative flex w-1.5 h-1.5 shrink-0">
+              <span className="absolute inline-flex w-full h-full rounded-full bg-[#00e599] opacity-60 animate-ping" />
+              <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-[#00e599]" />
             </span>
-            <span className="text-black/20 dark:text-white/20 select-none hidden sm:inline">|</span>
-            <span className="truncate hidden sm:inline text-black/50 dark:text-zinc-400">
-              FRONTIER FOUNDATION MODELS &amp; CHECKPOINTS
+            <span className="truncate tracking-wide">
+              <span className="font-medium text-black/70 dark:text-zinc-200">Live index</span>
+              <span className="text-black/30 dark:text-zinc-500"> · {modelsData.length} models · Updated Sep 2026</span>
             </span>
           </div>
 
@@ -162,7 +169,7 @@ export default function Header() {
                     Model<span className="font-bold text-[#ff5d2e]">Registry</span>
                   </p>
                 )}
-                <span className="mb-0.5 sm:mb-1 inline-flex items-center text-[10px] sm:text-[11px] uppercase font-sans tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] text-black/45 dark:text-zinc-400 bg-black/[0.02] dark:bg-white/[0.03] group-hover:border-[#ff5d2e]/50 group-hover:text-[#ff5d2e] transition-colors duration-150 leading-none shrink-0 font-medium">
+                <span className="mb-0.5 sm:mb-1 inline-flex items-center text-[10px] sm:text-[11px] font-mono tabular-nums px-1.5 py-0.5 rounded-md border border-dashed border-black/15 dark:border-white/15 text-black/40 dark:text-zinc-500 bg-transparent group-hover:border-[#ff5d2e]/50 group-hover:text-[#ff5d2e] transition-colors duration-150 leading-none shrink-0">
                   v2026.9
                 </span>
               </Link>
@@ -175,20 +182,20 @@ export default function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Contribute a newly released model on GitHub"
-                className="group inline-flex items-center justify-center gap-1 sm:gap-1.5 h-[28px] px-2.5 sm:px-3 text-[11px] sm:text-[12px] font-sans tracking-wide bg-black/[0.04] dark:bg-white/[0.04] hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] rounded-md text-black/70 dark:text-zinc-300 hover:text-white dark:hover:text-white transition-colors duration-150 select-none cursor-pointer"
+                className="group inline-flex items-center justify-center gap-1 sm:gap-1.5 h-7 px-2.5 sm:px-3 text-[11px] sm:text-xs font-sans font-medium tracking-wide bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white border border-black dark:border-white hover:border-[#ff5d2e] rounded-lg shadow-sm hover:shadow-md hover:shadow-[#ff5d2e]/20 active:scale-[0.97] transition-all duration-150 select-none cursor-pointer"
               >
                 <GitPullRequest
                   size={12}
-                  className="text-black/50 dark:text-zinc-400 group-hover:text-white transition-colors duration-150"
+                  className="opacity-70 group-hover:opacity-100 transition-opacity duration-150"
                 />
-                <span className="hidden sm:inline">+ CONTRIBUTE</span>
-                <span className="sm:hidden">+ ADD</span>
-                <ArrowUpRight size={10} className="opacity-40 group-hover:opacity-100" />
+                <span className="hidden sm:inline">Contribute</span>
+                <span className="sm:hidden">Add</span>
+                <ArrowUpRight size={11} className="opacity-50 group-hover:opacity-100 group-hover:translate-x-px group-hover:-translate-y-px transition-all duration-150" />
               </a>
 
               <AnimatedThemeToggler
                 variant="circle"
-                className="flex items-center justify-center w-7 h-7 rounded-md border border-black/5 dark:border-white/[0.08] text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] transition-colors duration-150 cursor-pointer shrink-0"
+                className="flex items-center justify-center w-7 h-7 rounded-lg border border-black/10 dark:border-white/[0.08] bg-white/60 dark:bg-white/[0.03] text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:border-black/20 dark:hover:border-white/20 hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-95 transition-all duration-150 cursor-pointer shrink-0"
               />
             </div>
           </div>
@@ -230,10 +237,10 @@ export default function Header() {
           aria-hidden="true"
           onMouseEnter={showHint}
           onMouseLeave={hideHint}
-          className="hidden sm:block fixed z-[60] w-64 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-[#13161c] px-3.5 py-3 shadow-xl animate-in fade-in duration-150"
+          className="hidden sm:block fixed z-[60] w-64 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#13161c] px-3.5 py-3 shadow-2xl ring-1 ring-black/5 dark:ring-white/5 animate-in fade-in duration-150"
           style={{ top: hintPos.top, right: hintPos.right }}
         >
-          <p className="text-xs font-sans font-medium text-black dark:text-white">
+          <p className="text-xs font-sans font-semibold text-black dark:text-white">
             Contribute with AI
           </p>
           <p className="mt-1 text-[11px] font-sans leading-relaxed text-black/55 dark:text-zinc-400">

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { Moon, Sun } from "lucide-react"
 import { flushSync } from "react-dom"
 import { cn } from "@/lib/utils"
+import { toggleFeedback } from "@/lib/feedback"
 
 export type TransitionVariant = "circle" | "square" | "diamond"
 
@@ -37,6 +38,7 @@ export const AnimatedThemeToggler = ({
   }, [])
 
   const toggleTheme = useCallback(() => {
+    toggleFeedback()
     const button = buttonRef.current
     if (!button) return
 

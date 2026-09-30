@@ -2,11 +2,13 @@
 
 import { useState } from "react"
 import Header from "@/components/header"
+import Footer from "@/components/footer"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, ModelItem } from "@/data/models"
 import { leaderboardSpotlights } from "@/data/leaderboard"
 import { formatPrice } from "@/lib/utils"
+import { tapFeedback } from "@/lib/feedback"
 import { Code, Brain, Maximize, Coins, Layers, ArrowUpRight } from "lucide-react"
 
 interface ComparisonCategory {
@@ -18,8 +20,12 @@ interface ComparisonCategory {
 }
 
 export default function LeaderboardPage() {
-  const currentYear = new Date().getFullYear()
   const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
+
+  const openModel = (model: ModelItem) => {
+    tapFeedback()
+    setActiveModalModel(model)
+  }
 
   const categories: ComparisonCategory[] = [
     {
@@ -92,7 +98,7 @@ export default function LeaderboardPage() {
 
             return (
               <TextWithBlur key={category.title} delay={index * 35}>
-                <div className="p-4 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:border-color,background-color_120ms_ease-out]">
+                <div className="card-lift p-4 sm:p-6 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#111317] shadow-sm [transition:border-color,background-color_120ms_ease-out]">
                   {/* Category Header */}
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3">
@@ -111,11 +117,12 @@ export default function LeaderboardPage() {
                   </div>
 
                   {/* Leader Banner */}
-                  <div className="mb-4 py-2 px-3 rounded bg-[#ff5d2e]/5 dark:bg-[#ff5d2e]/10 border border-[#ff5d2e]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 text-xs font-sans">
-                    <span className="text-[#ff5d2e] font-medium uppercase tracking-wider text-[11px] shrink-0">
-                      DOMAIN SOTA
+                  <div className="mb-4 py-2 px-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/10 dark:border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 text-xs font-sans">
+                    <span className="inline-flex items-center gap-1.5 text-[#ff5d2e] font-semibold uppercase tracking-[0.12em] text-[10px] shrink-0">
+                      <span className="w-1 h-1 rounded-full bg-[#ff5d2e]" />
+                      Domain SOTA
                     </span>
-                    <span className="font-medium text-black dark:text-zinc-100 text-[11px] sm:text-xs break-words">
+                    <span className="font-medium tabular-nums text-black/70 dark:text-zinc-200 text-[11px] sm:text-xs break-words sm:text-right">
                       {category.leader}
                     </span>
                   </div>
@@ -125,20 +132,20 @@ export default function LeaderboardPage() {
                     {category.models.map((model, mIndex) => (
                       <div
                         key={model.id}
-                        onClick={() => setActiveModalModel(model)}
+                        onClick={() => openModel(model)}
                         role="button"
                         tabIndex={0}
                         aria-label={`View details for ${model.name}`}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault()
-                            setActiveModalModel(model)
+                            openModel(model)
                           }
                         }}
-                        className="group cursor-pointer p-2.5 sm:p-3 rounded-md border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 flex items-center justify-between gap-2.5 sm:gap-3 text-xs"
+                        className="group cursor-pointer p-2.5 sm:p-3 rounded-xl border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.995] transition-all duration-150 flex items-center justify-between gap-2.5 sm:gap-3 text-xs"
                       >
                         <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-                          <span className="font-sans text-black/35 dark:text-zinc-500 w-5 shrink-0 tabular-nums transition-colors group-hover:text-[#ff5d2e]">
+                          <span className="font-mono text-[11px] text-black/30 dark:text-zinc-600 w-5 shrink-0 tabular-nums transition-colors group-hover:text-[#ff5d2e]">
                             {String(mIndex + 1).padStart(2, "0")}
                           </span>
                           <span className="font-medium text-black dark:text-zinc-100 truncate group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
@@ -160,7 +167,7 @@ export default function LeaderboardPage() {
                                 ? "Free"
                                 : `$${model.pricing.input}/M`}
                           </span>
-                          <ArrowUpRight size={12} className="opacity-30 group-hover:opacity-100 text-black dark:text-white group-hover:text-[#ff5d2e] transition-colors duration-150" />
+                          <ArrowUpRight size={12} className="opacity-30 group-hover:opacity-100 group-hover:translate-x-px group-hover:-translate-y-px text-black dark:text-white group-hover:text-[#ff5d2e] transition-all duration-150" />
                         </div>
                       </div>
                     ))}
@@ -178,12 +185,7 @@ export default function LeaderboardPage() {
         onClose={() => setActiveModalModel(null)}
       />
 
-      {/* Footer */}
-      <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/[0.08] max-w-4xl mx-auto w-full">
-        <p className="text-[11px] font-sans text-black/50 dark:text-zinc-400">
-          © {currentYear} ModelRegistry. The open technical index for frontier AI systems.
-        </p>
-      </footer>
+      <Footer />
     </main>
   )
 }
