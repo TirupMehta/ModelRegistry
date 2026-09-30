@@ -31,7 +31,7 @@ function NavLinks({ pathname }: { pathname: string }) {
             key={href}
             href={href}
             onClick={() => {
-              if (!active) selectFeedback()
+              selectFeedback()
             }}
             aria-current={active ? "page" : undefined}
             className={[

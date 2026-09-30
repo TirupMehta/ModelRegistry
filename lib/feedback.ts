@@ -29,10 +29,12 @@ export type HapticPresetName =
 const PWM_CYCLE = 16 // ms — perceptual intensity slicing window
 
 const PRESETS: Record<HapticPresetName, Vibration[]> = {
-  // Single solid pulse at full intensity — unmistakable on any motor.
+  // Single solid pulses at full intensity — unmistakable on any motor.
+  // (12–15ms micro-pulses are below perception on many Android motors,
+  // which is why section tabs felt dead. Floor is now 20ms.)
   tap: [{ duration: 25, intensity: 1 }],
-  light: [{ duration: 15, intensity: 0.6 }],
-  selection: [{ duration: 12, intensity: 0.7 }],
+  light: [{ duration: 20, intensity: 1 }],
+  selection: [{ duration: 25, intensity: 1 }],
   success: [
     { duration: 30, intensity: 0.8 },
     { delay: 55, duration: 40, intensity: 0.9 },

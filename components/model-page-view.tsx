@@ -48,7 +48,7 @@ export default function ModelPageView({ model }: ModelPageViewProps) {
   }
 
   const switchSnippetTab = (tab: "curl" | "python" | "local") => {
-    if (tab !== activeSnippetTab) selectFeedback()
+    selectFeedback()
     setActiveSnippetTab(tab)
   }
 

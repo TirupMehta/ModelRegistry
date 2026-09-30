@@ -31,7 +31,9 @@ export default function Home() {
   const [curlCopied, setCurlCopied] = useState(false)
 
   const handleTab = (tab: ViewTab) => {
-    if (tab !== activeTab) selectFeedback()
+    // Fire on every tap, even re-tapping the active tab — a button that
+    // sometimes silently does nothing feels broken.
+    selectFeedback()
     setActiveTab(tab)
   }
 
