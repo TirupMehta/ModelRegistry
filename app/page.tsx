@@ -210,10 +210,10 @@ export default function Home() {
             {/* Unified Segmented Filter Track — grid-cols-5 so the five tabs
                 always fill the track exactly on every screen width (no
                 trailing blank space, no squeeze, no scroll). */}
-            <div className="grid grid-cols-5 items-center p-1 rounded-xl bg-black/[0.035] dark:bg-[#101318] border border-black/10 dark:border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] w-full md:w-auto gap-0.5">
+            <div className="grid grid-cols-5 md:flex md:items-center p-1 rounded-xl bg-black/[0.035] dark:bg-[#101318] border border-black/10 dark:border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] w-full md:w-auto gap-0.5">
               <button
                 onClick={() => handleTab("flagships")}
-                className={`min-w-0 py-2 sm:py-1.5 px-1 sm:px-3 rounded-lg text-[10px] sm:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate ${
+                className={`min-w-0 md:flex-none py-2 md:py-1.5 px-1 md:px-3 rounded-lg text-[10px] md:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "flagships"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]"
@@ -225,7 +225,7 @@ export default function Home() {
               <button
                 onClick={() => handleTab("latest-drops")}
                 title={`Released in the last ${NEW_DROPS_WINDOW_DAYS} days, newest first`}
-                className={`min-w-0 py-2 sm:py-1.5 px-1 sm:px-3 rounded-lg text-[10px] sm:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate ${
+                className={`min-w-0 md:flex-none py-2 md:py-1.5 px-1 md:px-3 rounded-lg text-[10px] md:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "latest-drops"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]"
@@ -236,7 +236,7 @@ export default function Home() {
 
               <button
                 onClick={() => handleTab("open-weights")}
-                className={`min-w-0 py-2 sm:py-1.5 px-1 sm:px-3 rounded-lg text-[10px] sm:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate ${
+                className={`min-w-0 md:flex-none py-2 md:py-1.5 px-1 md:px-3 rounded-lg text-[10px] md:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "open-weights"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]"
@@ -248,7 +248,7 @@ export default function Home() {
 
               <button
                 onClick={() => handleTab("visual")}
-                className={`min-w-0 py-2 sm:py-1.5 px-1 sm:px-3 rounded-lg text-[10px] sm:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate ${
+                className={`min-w-0 md:flex-none py-2 md:py-1.5 px-1 md:px-3 rounded-lg text-[10px] md:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "visual"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]"
@@ -259,7 +259,7 @@ export default function Home() {
 
               <button
                 onClick={() => handleTab("all")}
-                className={`min-w-0 py-2 sm:py-1.5 px-1 sm:px-3 rounded-lg text-[10px] sm:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate ${
+                className={`min-w-0 md:flex-none py-2 md:py-1.5 px-1 md:px-3 rounded-lg text-[10px] md:text-xs font-sans tracking-tight transition-all duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "all"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]"
