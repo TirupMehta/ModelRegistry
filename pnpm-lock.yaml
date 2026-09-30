@@ -58,7 +58,7 @@ importers:
         specifier: 15.5.26
         version: 15.5.26(eslint@9.39.5(jiti@1.21.7))(typescript@5.9.3)
       postcss:
-        specifier: ^8.5.1
+        specifier: ^8.5.28
         version: 8.5.28
       tailwindcss:
         specifier: ^3.4.17
