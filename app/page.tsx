@@ -369,9 +369,9 @@ export default function Home() {
                       "group block cursor-pointer transition-all duration-150 active:scale-[0.985] sm:active:scale-100",
                       // Mobile: true card
                       "rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-white dark:bg-[#0e1014] p-4 shadow-[0_1px_2px_rgba(0,0,0,0.05)] active:border-[#ff5d2e]/50",
-                      // Desktop: hover-card ledger row
-                      "sm:rounded-2xl sm:border-0 sm:shadow-none sm:bg-transparent sm:dark:bg-transparent sm:p-0 sm:mx-0 sm:px-4 sm:py-[18px] sm:active:border-transparent",
-                      "sm:hover:bg-white sm:dark:hover:bg-[#0e1014] sm:hover:shadow-[0_1px_2px_rgba(0,0,0,0.05),0_12px_32px_-16px_rgba(0,0,0,0.18)] sm:dark:hover:shadow-[0_12px_32px_-16px_rgba(0,0,0,0.8)]",
+                      // Desktop: ledger row reset
+                      "sm:rounded-xl sm:border-0 sm:shadow-none sm:bg-transparent sm:dark:bg-transparent sm:p-0 sm:mx-0 sm:px-3 sm:py-4 sm:active:border-transparent",
+                      "sm:hover:bg-black/[0.025] sm:dark:hover:bg-white/[0.035] sm:hover:shadow-sm",
                     ].join(" ")}
                   >
                     {/* Mobile Card (< sm) */}
@@ -456,53 +456,33 @@ export default function Home() {
                     </div>
 
                     {/* Desktop Ledger Row (sm and up) */}
-                    <div className="hidden sm:flex items-center gap-4">
-                      {/* Monospace Ledger Index */}
-                      <span className="font-mono tabular-nums text-[11px] text-black/30 dark:text-zinc-600 select-none w-6 shrink-0 transition-colors duration-150 group-hover:text-[#ff5d2e]">
+                    <div className="hidden sm:flex items-baseline gap-4">
+                      {/* Monospace Ledger Index — compact */}
+                      <span className="font-mono tabular-nums text-[10px] text-black/30 dark:text-zinc-600 select-none w-4 shrink-0 transition-colors duration-150 group-hover:text-[#ff5d2e]">
                         {String(index + 1).padStart(2, "0")}
                       </span>
 
-                      {/* Lab identity dot */}
-                      <span
-                        className="size-2.5 rounded-[4px] ring-1 ring-black/10 dark:ring-white/10 shrink-0"
-                        style={{
-                          backgroundColor:
-                            companies[model.companyId]?.accentColor || "#ff5d2e",
-                        }}
-                      />
-
                       {/* Content Column */}
                       <div className="flex-1 min-w-0">
-                        {/* Title + Status */}
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <span className="font-display font-semibold text-[18px] tracking-tight text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150 truncate">
+                        {/* Title / Lab / Domain Header */}
+                        <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 text-base leading-snug mb-1">
+                          <span className="font-display font-semibold text-[17px] tracking-tight text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {model.name}
                           </span>
-                          <span className="inline-flex items-center gap-1.5 text-[11px] font-sans px-2 py-0.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 shrink-0 whitespace-nowrap shadow-sm transition-all duration-150 group-hover:border-[#ff5d2e]/50 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347]">
-                            {model.openWeights && (
-                              <span className="w-1 h-1 rounded-full bg-emerald-500 shrink-0" />
-                            )}
-                            {model.statusBadge}
+                          <span className="text-black/25 dark:text-white/20 select-none font-sans text-xs">/</span>
+                          <span className="text-[12px] font-sans uppercase tracking-wider text-black/60 dark:text-zinc-400 font-medium">
+                            {model.companyName}
+                          </span>
+                          <span className="text-black/25 dark:text-white/20 select-none font-sans text-xs">/</span>
+                          <span className="text-[12px] font-sans text-black/45 dark:text-zinc-400 truncate max-w-xs">
+                            {model.categoryLabel}
                           </span>
                         </div>
 
                         {/* Highlight Description */}
-                        <p className="mt-0.5 text-[13px] font-normal text-black/55 dark:text-zinc-400 leading-relaxed line-clamp-1">
+                        <p className="text-[13.5px] font-normal text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-1 group-hover:text-black/90 dark:group-hover:text-zinc-100 transition-colors duration-150">
                           {model.highlight}
                         </p>
-
-                        {/* Lab / Domain */}
-                        <div className="mt-1 flex items-center gap-1.5 text-[11px] font-sans min-w-0">
-                          <span className="uppercase tracking-[0.08em] font-semibold text-black/55 dark:text-zinc-400 truncate">
-                            {model.companyName}
-                          </span>
-                          <span className="text-black/25 dark:text-white/20 select-none shrink-0">
-                            ·
-                          </span>
-                          <span className="text-black/45 dark:text-zinc-500 truncate">
-                            {model.categoryLabel}
-                          </span>
-                        </div>
 
                         {/* Checkpoint Callout */}
                         {specializedDrop && activeTab === "flagships" && (
@@ -519,44 +499,34 @@ export default function Home() {
                         )}
                       </div>
 
-                      {/* Spec Sheet */}
-                      <div className="hidden md:flex items-center gap-5 shrink-0 text-right">
-                        <div>
-                          <p className="text-[9px] font-sans font-semibold uppercase tracking-[0.12em] text-black/40 dark:text-zinc-500 whitespace-nowrap">
-                            Per 1M
-                          </p>
-                          <p className="mt-0.5 text-xs font-sans font-semibold tabular-nums text-black/80 dark:text-zinc-200 whitespace-nowrap">
-                            {model.pricing.input === 0
-                              ? "Free"
-                              : `$${model.pricing.input}/$${model.pricing.output}`}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-[9px] font-sans font-semibold uppercase tracking-[0.12em] text-black/40 dark:text-zinc-500 whitespace-nowrap">
-                            Released
-                          </p>
-                          <time
-                            dateTime={model.releaseDate}
-                            title={formatDate(model.releaseDate)}
-                            className="mt-0.5 block text-xs font-sans font-semibold tabular-nums text-black/80 dark:text-zinc-200 whitespace-nowrap"
-                          >
-                            {formatDate(model.releaseDate)}
-                          </time>
-                        </div>
-                        <div className="hidden lg:block">
-                          <p className="text-[9px] font-sans font-semibold uppercase tracking-[0.12em] text-black/40 dark:text-zinc-500 whitespace-nowrap">
-                            Context
-                          </p>
-                          <p className="mt-0.5 text-xs font-sans font-semibold tabular-nums text-black/80 dark:text-zinc-200 whitespace-nowrap">
-                            {model.contextWindow.replace(" tokens", "")}
-                          </p>
-                        </div>
-                      </div>
+                      {/* Specs Readout */}
+                      <div className="flex items-center gap-2.5 shrink-0 text-right">
+                        <span className="hidden md:inline font-sans text-[11px] text-black/40 dark:text-zinc-500 tabular-nums">
+                          ${model.pricing.input}/${model.pricing.output}
+                        </span>
+                        <time
+                          dateTime={model.releaseDate}
+                          title={formatDate(model.releaseDate)}
+                          className="font-sans text-xs text-black/45 dark:text-zinc-400 tabular-nums whitespace-nowrap"
+                        >
+                          {formatDate(model.releaseDate)}
+                        </time>
+                        <span className="hidden lg:inline font-sans text-[11px] text-black/40 dark:text-zinc-500 tabular-nums whitespace-nowrap">
+                          {model.contextWindow.replace(" tokens", "")}
+                        </span>
 
-                      {/* Open Action */}
-                      <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-black/10 dark:border-white/10 text-black/40 dark:text-zinc-500 transition-all duration-150 group-hover:border-[#ff5d2e] group-hover:bg-[#ff5d2e] group-hover:text-white">
-                        <ArrowUpRight size={13} />
-                      </span>
+                        <span className="inline-flex items-center gap-1.5 text-[11px] font-sans px-2 py-1 rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 shadow-sm transition-all duration-150 group-hover:border-[#ff5d2e]/50 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] group-hover:shadow-md group-hover:shadow-[#ff5d2e]/10">
+                          {model.openWeights && (
+                            <span className="w-1 h-1 rounded-full bg-emerald-500 shrink-0" />
+                          )}
+                          {model.statusBadge}
+                        </span>
+
+                        <ArrowUpRight
+                          size={13}
+                          className="opacity-30 group-hover:opacity-100 group-hover:translate-x-px group-hover:-translate-y-px transition-all duration-150 text-black dark:text-white group-hover:text-[#ff5d2e]"
+                        />
+                      </div>
                     </div>
                   </div>
                 </TextWithBlur>
