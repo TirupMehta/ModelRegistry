@@ -21,6 +21,7 @@ import {
   Copy,
   ChevronRight,
 } from "lucide-react"
+import { tapFeedback, selectFeedback, successFeedback } from "@/lib/feedback"
 
 interface ModelPageViewProps {
   model: ModelItem
@@ -41,8 +42,14 @@ export default function ModelPageView({ model }: ModelPageViewProps) {
     } catch {
       // Clipboard unavailable (e.g. non-secure context) — still confirm.
     }
+    successFeedback()
     setCopiedLink(true)
     setTimeout(() => setCopiedLink(false), 2000)
+  }
+
+  const switchSnippetTab = (tab: "curl" | "python" | "local") => {
+    if (tab !== activeSnippetTab) selectFeedback()
+    setActiveSnippetTab(tab)
   }
 
   const curlCommand = `curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
@@ -87,6 +94,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
     } catch {
       // Clipboard unavailable — still confirm to avoid a dead button.
     }
+    successFeedback()
     setCopiedCode(true)
     setTimeout(() => setCopiedCode(false), 2000)
   }
@@ -127,7 +135,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
         </div>
 
         {/* Datasheet Container */}
-        <div className="bg-white dark:bg-[#0e1014] border border-black/10 dark:border-white/[0.08] rounded-xl shadow-sm p-4 sm:p-9 mb-6 sm:mb-8 leading-relaxed">
+        <div className="bg-white dark:bg-[#0e1014] border border-black/10 dark:border-white/[0.08] rounded-2xl shadow-sm ring-1 ring-black/5 dark:ring-white/5 p-4 sm:p-9 mb-6 sm:mb-8 leading-relaxed">
           {/* Top Control Bar */}
           <div className="flex items-center justify-between gap-3 border-b border-black/10 dark:border-white/[0.08] pb-4 mb-6">
             <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] font-sans text-[#ff5d2e] min-w-0">
@@ -138,7 +146,10 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
             <div className="flex items-center gap-1.5 shrink-0">
               <button
-                onClick={() => setIsShareStudioOpen(true)}
+                onClick={() => {
+                  tapFeedback()
+                  setIsShareStudioOpen(true)
+                }}
                 title="Export Instagram Story / Social Card"
                 className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[10px] sm:text-[11px] font-sans text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
               >
@@ -324,11 +335,18 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           )}
 
           {/* Quickstart Developer Code Snippet */}
-          <div className="mb-6 sm:mb-8 border border-black/10 dark:border-white/[0.08] rounded-lg overflow-hidden">
+          <div className="mb-6 sm:mb-8 border border-black/10 dark:border-white/[0.08] rounded-xl overflow-hidden shadow-sm">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 bg-black/[0.03] dark:bg-[#13161c] px-3.5 sm:px-4 py-2.5 border-b border-black/10 dark:border-white/[0.08]">
               <div className="flex items-center justify-between gap-2 min-w-0">
-                <span className="text-xs font-sans uppercase text-black/60 dark:text-zinc-400 font-medium shrink-0">
-                  Quickstart Snippet
+                <span className="inline-flex items-center gap-2.5">
+                  <span className="hidden sm:inline-flex items-center gap-1.5" aria-hidden="true">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                  </span>
+                  <span className="text-xs font-sans uppercase tracking-wide text-black/60 dark:text-zinc-400 font-medium shrink-0">
+                    Quickstart
+                  </span>
                 </span>
                 <button
                   onClick={copyActiveSnippet}
@@ -341,7 +359,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
               <div className="flex items-center gap-1 text-[11px] font-sans overflow-x-auto max-w-full [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                 <button
-                  onClick={() => setActiveSnippetTab("curl")}
+                  onClick={() => switchSnippetTab("curl")}
                   className={`px-2 py-0.5 rounded cursor-pointer whitespace-nowrap shrink-0 transition-colors duration-150 ${
                     activeSnippetTab === "curl"
                       ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
@@ -351,7 +369,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   cURL
                 </button>
                 <button
-                  onClick={() => setActiveSnippetTab("python")}
+                  onClick={() => switchSnippetTab("python")}
                   className={`px-2 py-0.5 rounded cursor-pointer whitespace-nowrap shrink-0 transition-colors duration-150 ${
                     activeSnippetTab === "python"
                       ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
@@ -361,7 +379,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   Python
                 </button>
                 <button
-                  onClick={() => setActiveSnippetTab("local")}
+                  onClick={() => switchSnippetTab("local")}
                   className={`px-2 py-0.5 rounded cursor-pointer whitespace-nowrap shrink-0 transition-colors duration-150 ${
                     activeSnippetTab === "local"
                       ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"

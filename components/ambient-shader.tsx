@@ -53,7 +53,9 @@ export default function AmbientShader() {
 
     let t = 0
     let lastTime = performance.now()
+    let lastPaint = 0
     let isVisible = true
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
     const handleVisibilityChange = () => {
       isVisible = !document.hidden
@@ -70,6 +72,15 @@ export default function AmbientShader() {
       const dt = Math.min((time - lastTime) / 1000, 0.1)
       lastTime = time
       t += dt * 0.2
+
+      // The drift is glacial — painting at ~30fps is visually identical
+      // and stops the full-screen canvas from competing with tap
+      // animations on mobile GPUs.
+      if (time - lastPaint < 33) {
+        if (!reduceMotion) animationFrameId = requestAnimationFrame(render)
+        return
+      }
+      lastPaint = time
 
       ctx.clearRect(0, 0, width, height)
 
@@ -130,15 +141,11 @@ export default function AmbientShader() {
         ctx.fillRect(0, 0, width, height)
       }
 
-    // Honor prefers-reduced-motion: one static frame, no animation loop
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      render(performance.now())
-    } else {
-      animationFrameId = requestAnimationFrame(render)
-    }
+      // Honor prefers-reduced-motion: one static frame, no animation loop
+      if (!reduceMotion) animationFrameId = requestAnimationFrame(render)
     }
 
-    animationFrameId = requestAnimationFrame(render)
+    render(performance.now())
 
     return () => {
       cancelAnimationFrame(animationFrameId)

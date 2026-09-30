@@ -3,16 +3,22 @@
 import { useState } from "react"
 import Link from "next/link"
 import Header from "@/components/header"
+import Footer from "@/components/footer"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { companies } from "@/data/companies"
 import { modelsData, ModelItem } from "@/data/models"
 import { ArrowUpRight, Globe, Sparkles } from "lucide-react"
 import { formatDate } from "@/lib/utils"
+import { tapFeedback } from "@/lib/feedback"
 
 export default function CompaniesPage() {
-  const currentYear = new Date().getFullYear()
   const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
+
+  const openModel = (model: ModelItem) => {
+    tapFeedback()
+    setActiveModalModel(model)
+  }
 
   const companyList = Object.values(companies)
 
@@ -49,12 +55,12 @@ export default function CompaniesPage() {
 
             return (
               <TextWithBlur key={company.id} delay={index * 35}>
-                <div className="p-4 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] [transition:border-color,background-color_120ms_ease-out]">
+                <div className="card-lift p-4 sm:p-6 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#111317] shadow-sm [transition:border-color,background-color_120ms_ease-out]">
                   {/* Lab Header */}
                   <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 mb-2.5 sm:mb-4">
                     <div className="flex items-start gap-2.5 min-w-0 flex-1">
                       <div
-                        className="w-3.5 h-3.5 rounded-sm shrink-0 shadow-sm mt-[3px]"
+                        className="w-2.5 h-2.5 rounded-[4px] shrink-0 shadow-sm ring-1 ring-black/10 dark:ring-white/10 mt-1"
                         style={{ backgroundColor: company.accentColor }}
                       />
                       <div className="min-w-0">
@@ -93,20 +99,20 @@ export default function CompaniesPage() {
                     {/* Primary Flagship */}
                     {flagshipModel && (
                       <div
-                        onClick={() => setActiveModalModel(flagshipModel)}
+                        onClick={() => openModel(flagshipModel)}
                         role="button"
                         tabIndex={0}
                         aria-label={`View details for ${flagshipModel.name}`}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault()
-                            setActiveModalModel(flagshipModel)
+                            openModel(flagshipModel)
                           }
                         }}
-                        className="cursor-pointer p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
+                        className="cursor-pointer p-3.5 sm:p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.99] transition-all duration-150 select-none group"
                       >
                         <div className="flex items-center justify-between gap-2 text-xs font-sans mb-1.5">
-                          <span className="text-[#ff5d2e] dark:text-[#ff7347] font-medium uppercase text-[11px] tracking-wider">
+                          <span className="text-[#ff5d2e] dark:text-[#ff7347] font-semibold uppercase text-[10px] tracking-[0.12em]">
                             Primary Flagship
                           </span>
                           <span className="text-[11px] text-black/40 dark:text-zinc-400 tabular-nums shrink-0">
@@ -129,20 +135,20 @@ export default function CompaniesPage() {
                     {/* Second slot: true latest checkpoint, else newest non-flagship (honestly labeled) */}
                     {second ? (
                       <div
-                        onClick={() => setActiveModalModel(second)}
+                        onClick={() => openModel(second)}
                         role="button"
                         tabIndex={0}
                         aria-label={`View details for ${second.name}`}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault()
-                            setActiveModalModel(second)
+                            openModel(second)
                           }
                         }}
-                        className="cursor-pointer p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none group"
+                        className="cursor-pointer p-3.5 sm:p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.99] transition-all duration-150 select-none group"
                       >
                         <div className="flex items-center justify-between gap-2 text-xs font-sans mb-1.5">
-                          <span className="font-medium uppercase text-[11px] tracking-wider flex items-center gap-1">
+                          <span className="font-semibold uppercase text-[10px] tracking-[0.12em] flex items-center gap-1">
                             {latestDrop ? (
                               <span className="text-[#1a73e8] dark:text-[#8ab4f8] flex items-center gap-1">
                                 <Sparkles size={11} /> Latest Checkpoint
@@ -194,12 +200,7 @@ export default function CompaniesPage() {
         onClose={() => setActiveModalModel(null)}
       />
 
-      {/* Footer */}
-      <footer className="py-6 px-6 text-center border-t border-black/10 dark:border-white/[0.08] max-w-4xl mx-auto w-full">
-        <p className="text-[11px] font-sans text-black/50 dark:text-zinc-400">
-          © {currentYear} ModelRegistry. The open technical index for frontier AI systems.
-        </p>
-      </footer>
+      <Footer />
     </main>
   )
 }
