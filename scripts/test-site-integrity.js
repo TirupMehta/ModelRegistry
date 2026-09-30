@@ -130,18 +130,41 @@ check("og-model-ids-valid", modelsData.every((m) => knownIds.has(m.id)), true)
 check("og-lab-ids-valid", Object.keys(companies).every((id) => Boolean(companies[id])), true)
 
 // 10. Agent prompts: single-sourced, synced, fence-safe.
+//
+// Link presence is verified by parsing every URL-like token and comparing
+// origins exactly. A bare substring check would also accept an attacker
+// shape like `https://evil.example/?https://github.com/...`, so it must
+// never be used as a URL allowlist here.
+const REPO_URL = "https://github.com/TirupMehta/ModelRegistry"
+const SITE_DOCS_URL = "https://modelregistry.tirup.in/docs"
+function mentionsSiteUrl(text, expectedUrl) {
+  const expected = new URL(expectedUrl)
+  const candidates = text.match(/https?:\/\/[^\s"'`<>()]+/g) || []
+  return candidates.some((candidate) => {
+    try {
+      const parsed = new URL(candidate.replace(/[.,;:!?]+$/, ""))
+      return (
+        parsed.protocol === expected.protocol &&
+        parsed.host === expected.host &&
+        parsed.href.startsWith(expected.href)
+      )
+    } catch {
+      return false
+    }
+  })
+}
 const { buildContributePrompt, API_USE_PROMPT, CONTRIBUTE_PROMPT_VERSION } =
   loadTsModule("../lib/agent-prompts.ts", datasetRegistry)
 const contributePrompt = buildContributePrompt()
 check("prompt-has-version", typeof CONTRIBUTE_PROMPT_VERSION === "string" && CONTRIBUTE_PROMPT_VERSION.length > 0, true)
 check("prompt-no-fence-breakout", contributePrompt.includes("```"), false)
 check("prompt-lists-all-labs", Object.keys(companies).every((id) => contributePrompt.includes(id)), true)
-check("prompt-links-repo", contributePrompt.includes("https://github.com/TirupMehta/ModelRegistry"), true)
-check("api-prompt-links-docs", API_USE_PROMPT.includes("https://modelregistry.tirup.in/docs"), true)
+check("prompt-links-repo", mentionsSiteUrl(contributePrompt, REPO_URL), true)
+check("api-prompt-links-docs", mentionsSiteUrl(API_USE_PROMPT, SITE_DOCS_URL), true)
 check(
   "readme-prompt-synced",
   readme.includes(`(${CONTRIBUTE_PROMPT_VERSION})`) &&
-    readme.includes("https://github.com/TirupMehta/ModelRegistry") &&
+    mentionsSiteUrl(readme, REPO_URL) &&
     readme.includes("CONTRIBUTE_PROMPT_START"),
   true
 )
