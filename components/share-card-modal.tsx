@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
 import { formatPrice } from "@/lib/utils"
-import { Download, Copy, Share2, Check, X, Sparkles, Code2, Layers, ZoomIn } from "lucide-react"
+import { Download, Copy, Share2, Check, X, Sparkles, Code2, ZoomIn } from "lucide-react"
 
 interface ShareCardModalProps {
   model: ModelItem
@@ -374,7 +374,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
         const bx = padding + idx * (bCardW + specGap)
         roundRect(bx, curY, bCardW, bCardH, 6, cardSurface, borderColor)
 
-        const label = bKey === "sweBench" ? "SWE-bench" : bKey === "aime2024" ? "AIME 2024" : bKey === "mmluPro" ? "MMLU-Pro" : "GPQA"
+        const label = bKey === "sweBench" ? "SWE-bench" : bKey === "aime2024" ? "AIME 2024" : bKey === "mmluPro" ? "MMLU-Pro" : bKey === "terminalBench" ? "Terminal-Bench" : "GPQA"
         ctx.font = `500 ${ratio === "story" ? 13 : 11}px ${F_MONO}`
         ctx.fillStyle = textDim
         ctx.fillText(label, bx + 16, curY + (ratio === "story" ? 34 : 24))

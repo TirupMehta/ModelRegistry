@@ -218,6 +218,14 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
                   </span>
                 </div>
               )}
+              {model.benchmarks.terminalBench && (
+                <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
+                  <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">Terminal-Bench</span>
+                  <span className="text-base font-sans font-medium tabular-nums text-black dark:text-white">
+                    {model.benchmarks.terminalBench}
+                  </span>
+                </div>
+              )}
               {model.benchmarks.aime2024 && (
                 <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
                   <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">AIME 2024</span>

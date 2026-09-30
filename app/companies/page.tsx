@@ -7,7 +7,7 @@ import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { companies } from "@/data/companies"
 import { modelsData, ModelItem } from "@/data/models"
-import { ArrowUpRight, Globe, Layers, Sparkles } from "lucide-react"
+import { ArrowUpRight, Globe, Sparkles } from "lucide-react"
 import { formatDate } from "@/lib/utils"
 
 export default function CompaniesPage() {

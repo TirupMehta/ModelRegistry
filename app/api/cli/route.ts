@@ -73,6 +73,7 @@ export async function GET(req: NextRequest) {
     const b = model.benchmarks
     const benchEntries: string[] = []
     if (b.sweBench) benchEntries.push(`SWE-bench: ${b.sweBench}`)
+    if (b.terminalBench) benchEntries.push(`Terminal-Bench: ${b.terminalBench}`)
     if (b.aime2024) benchEntries.push(`AIME 2024: ${b.aime2024}`)
     if (b.mmluPro) benchEntries.push(`MMLU-Pro: ${b.mmluPro}`)
     if (b.gpqa) benchEntries.push(`GPQA: ${b.gpqa}`)

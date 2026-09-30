@@ -6,7 +6,7 @@ import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, type ModelItem } from "@/data/models"
 import { formatDate } from "@/lib/utils"
-import { Search, ArrowUpRight, Terminal, Sparkles, Layers, Copy, Check } from "lucide-react"
+import { ArrowUpRight, Terminal, Copy, Check } from "lucide-react"
 
 type ViewTab = "flagships" | "latest-drops" | "open-weights" | "visual" | "all"
 

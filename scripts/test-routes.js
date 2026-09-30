@@ -4,7 +4,30 @@
 //   BASE_URL=http://localhost:3100 node scripts/test-routes.js
 // Verifies status codes, redirects, API shapes, the badge XSS guard,
 // OG image bytes, payload size, and basic response timing.
+const fs = require("fs")
+const path = require("path")
+const ts = require("typescript")
+const vm = require("vm")
 const BASE = process.env.BASE_URL || "http://localhost:3000"
+
+// Expected heartbeat counts derive from the live dataset so this test
+// never goes stale when a model or lab is added.
+function countDataset() {
+  function loadTsModule(relPath) {
+    const source = fs.readFileSync(path.resolve(__dirname, relPath), "utf8")
+    const transpiled = ts.transpileModule(source, {
+      compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+    }).outputText
+    const mod = { exports: {} }
+    vm.runInContext(transpiled, vm.createContext({ module: mod, exports: mod.exports, require, console }))
+    return mod.exports
+  }
+  return {
+    models: loadTsModule("../data/models.ts").modelsData.length,
+    labs: Object.keys(loadTsModule("../data/companies.ts").companies).length,
+  }
+}
+const EXPECTED = countDataset()
 
 console.log(`🌐 Testing live routes against ${BASE}...`)
 
@@ -147,26 +170,38 @@ async function main() {
   try {
     const { res } = await get("/api/check-updates")
     const h = await res.json()
-    if (h.trackedLabsCount === 16 && h.trackedModelsCount === 35) {
+    if (h.trackedLabsCount === EXPECTED.labs && h.trackedModelsCount === EXPECTED.models) {
       pass("heartbeat counts live", `${h.trackedLabsCount} labs / ${h.trackedModelsCount} models`)
     } else {
-      fail("heartbeat counts", `${h.trackedLabsCount} labs / ${h.trackedModelsCount} models`)
+      fail("heartbeat counts", `${h.trackedLabsCount} labs / ${h.trackedModelsCount} models (expected ${EXPECTED.labs} / ${EXPECTED.models})`)
     }
   } catch (e) {
     fail("/api/check-updates", e.message)
   }
 
-  // Badge XSS guard: injected markup must come back escaped, never raw
+  // Badge XSS guard: injected markup must come back escaped, never raw.
+  // A payload containing a literal '/' (e.g. </script>) 404s at the routing
+  // layer — also safe (fail-closed) — so probe without one to reach handler.
+  // The handler uppercases the company text, so compare case-insensitively.
   try {
-    const { res } = await get("/api/badge/%3Cscript%3Ealert(1)%3C/script%3E")
+    const { res } = await get("/api/badge/%3Cscript%3Ealert(1)%3C")
     const body = await res.text()
-    if (res.status === 200 && !body.includes("<script>") && body.includes("&lt;script&gt;")) {
+    const escapedPresent = /&lt;script&gt;/i.test(body)
+    if (res.status === 200 && !body.includes("<script>") && escapedPresent) {
       pass("badge company param escaped")
     } else {
-      fail("badge company param escaped", `status ${res.status}`)
+      fail("badge company param escaped", `status ${res.status}, escaped=${escapedPresent}`)
     }
   } catch (e) {
     fail("badge xss probe", e.message)
+  }
+  try {
+    const slashProbe = await get("/api/badge/%3Cscript%3Ealert(1)%3C/script%3E", { redirect: "manual" })
+    if (slashProbe.res.status === 404) pass("badge slash payload fail-closed (404)")
+    else if (slashProbe.res.status === 200) fail("badge slash payload", "raw path slash served — check route guard")
+    else pass("badge slash payload fail-closed", `status ${slashProbe.res.status}`)
+  } catch (e) {
+    fail("badge slash probe", e.message)
   }
   await expectStatus("/api/badge/openai", 200)
   await expectStatus("/api/badge?model=chatgpt-images-2-5&type=pricing", 200)

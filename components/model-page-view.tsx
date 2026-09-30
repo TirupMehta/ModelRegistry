@@ -259,6 +259,12 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                     <div className="text-base font-semibold text-[#ff5d2e] tracking-wide">{model.benchmarks.sweBench}</div>
                   </div>
                 )}
+                {model.benchmarks.terminalBench && (
+                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[#0e1014] leading-relaxed">
+                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1 tracking-wider">TERMINAL-BENCH</div>
+                    <div className="text-base font-semibold text-black dark:text-white tracking-wide">{model.benchmarks.terminalBench}</div>
+                  </div>
+                )}
                 {model.benchmarks.aime2024 && (
                   <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[#0e1014] leading-relaxed">
                     <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1 tracking-wider">AIME 2024</div>
