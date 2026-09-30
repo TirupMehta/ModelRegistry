@@ -297,6 +297,33 @@ export const modelsData: ModelItem[] = [
       playground: "https://x.com/i/grok",
     },
   },
+  {
+    id: "grok-voice-transcribe-2",
+    companyId: "xai",
+    companyName: "xAI",
+    name: "Grok Voice Transcribe 2.0",
+    version: "2.0",
+    releaseDate: "2026-09-18",
+    isCompanyFlagship: false,
+    isLatestCheckpoint: true,
+    statusBadge: "NEW DROP",
+    category: "audio",
+    categoryLabel: "Speech-to-Text",
+    contextWindow: "Streaming + batch audio",
+    contextWindowTokens: 0,
+    maxOutputTokens: "Transcript with timestamps",
+    parameters: "Undisclosed (xAI)",
+    openWeights: false,
+    license: "Proprietary API / Grok Build",
+    pricing: { input: 0.000028, output: 0.000056 },
+    pricingUnit: "per second",
+    highlight: "Released Sept 18, 2026; xAI's speech-to-text 2.0 ranked first for accuracy among 32 streaming models on Artificial Analysis, at $0.10/hr batch and $0.20/hr streaming.",
+    modalities: ["Audio", "Text"],
+    benchmarks: {},
+    links: {
+      announcement: "https://x.ai/news/grok-voice-transcribe-2",
+    },
+  },
 
   // ─── DEEPSEEK ────────────────────────────────────────────────────────────
   {
