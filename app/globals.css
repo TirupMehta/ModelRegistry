@@ -30,11 +30,17 @@ html.dark {
   transition: none !important;
 }
 
-/* Visible keyboard focus site-wide (mouse users unaffected) */
+/* Keyboard focus site-wide. The :not() guard is the whole trick: Safari
+   draws its own dark ring on every mousedown/touch tap, which reads as a
+   cheap black border flashing around the control. Mouse/touch users get
+   clean :active press states instead; keyboard users keep the accent ring. */
+:focus:not(:focus-visible) {
+  outline: none;
+}
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 /* Finished-product text selection */

@@ -555,9 +555,9 @@ export default function Home() {
                 href="/api/v1/models"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-white dark:hover:bg-[#13161c] hover:border-[#ff5d2e]/40 active:scale-[0.98] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
+                className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-white dark:hover:bg-[#13161c] hover:border-[#ff5d2e]/40 active:scale-[0.98] transition-all duration-150 ease-out flex items-center justify-between gap-2 cursor-pointer select-none"
               >
-                <span className="font-mono text-[11px] text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
+                <span className="font-mono text-xs sm:text-[13px] text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150 truncate min-w-0">
                   /api/v1/models
                 </span>
                 <ArrowUpRight
@@ -570,9 +570,9 @@ export default function Home() {
                 href="/rss.xml"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-white dark:hover:bg-[#13161c] hover:border-[#ff5d2e]/40 active:scale-[0.98] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
+                className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-white dark:hover:bg-[#13161c] hover:border-[#ff5d2e]/40 active:scale-[0.98] transition-all duration-150 ease-out flex items-center justify-between gap-2 cursor-pointer select-none"
               >
-                <span className="font-mono text-[11px] text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
+                <span className="font-mono text-xs sm:text-[13px] text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150 truncate min-w-0">
                   /rss.xml
                 </span>
                 <ArrowUpRight
@@ -585,9 +585,9 @@ export default function Home() {
                 href="/llms.txt"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-white dark:hover:bg-[#13161c] hover:border-[#ff5d2e]/40 active:scale-[0.98] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none"
+                className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#0c0e12] hover:bg-white dark:hover:bg-[#13161c] hover:border-[#ff5d2e]/40 active:scale-[0.98] transition-all duration-150 ease-out flex items-center justify-between gap-2 cursor-pointer select-none"
               >
-                <span className="font-mono text-[11px] text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150">
+                <span className="font-mono text-xs sm:text-[13px] text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150 truncate min-w-0">
                   /llms.txt
                 </span>
                 <ArrowUpRight
@@ -600,7 +600,7 @@ export default function Home() {
                 href="https://github.com/TirupMehta/ModelRegistry/blob/main/CONTRIBUTING.md"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card-lift group p-3 rounded-xl border border-black dark:border-white bg-black dark:bg-white hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] hover:border-[#ff5d2e] active:scale-[0.98] transition-all duration-150 ease-out flex items-center justify-between cursor-pointer select-none shadow-sm"
+                className="card-lift group p-3 rounded-xl border border-black dark:border-white bg-black dark:bg-white hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] hover:border-[#ff5d2e] active:scale-[0.98] transition-all duration-150 ease-out flex items-center justify-between gap-2 cursor-pointer select-none shadow-sm"
               >
                 <div className="flex flex-col min-w-0 pr-1">
                   <span className="font-semibold text-xs text-white dark:text-black group-hover:text-white transition-colors">
