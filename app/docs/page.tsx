@@ -309,7 +309,7 @@ export default function DocsPage() {
 res = requests.get("${SITE_URL}/api/v1/models",
     params={"category": "video", "latestOnly": "true"}).json()
 for m in res["models"]:
-    print(m["name"], "—", m["releaseDate"])"`}
+    print(m["name"], "—", m["releaseDate"])`}
                   />
                 </div>
                 <div>

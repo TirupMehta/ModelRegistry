@@ -5,7 +5,7 @@ export const SITE_URL = "https://modelregistry.tirup.in"
 export const REPO_URL = "https://github.com/TirupMehta/ModelRegistry"
 
 /** Bump when the prompt text changes so sync checks can detect drift. */
-export const CONTRIBUTE_PROMPT_VERSION = "v1"
+export const CONTRIBUTE_PROMPT_VERSION = "v2"
 
 /** Lab ids derived live so the prompt never lists a stale set. */
 function labIds(): string {
@@ -73,14 +73,23 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
 
 3. If the model is from a laboratory not yet tracked, also add it to data/companies.ts with: id, name, shortName, description, website, headquarters, accentColor, latestFlagship.
 
-4. Run: pnpm test
+4. Freshness sweep (STRICT — never skip): the registry must never contradict itself.
+   a. Exactly ONE isCompanyFlagship:true per lab — demote the previous flagship to false.
+   b. Scrub stale superlatives on the entries this release dethrones (same lab first, plus any cross-lab record it takes): #1, NEWEST, SOTA, best, latest, reigning, most advanced, newly. Rewrite those badges/highlights in past-neutral terms.
+   c. A record belongs ONLY to its verified current holder — never copy a crown onto the newcomer without an official source.
+   d. Update data/companies.ts latestFlagship / latestReasoning / description when they changed.
+   e. Update data/leaderboard.ts spotlights if the newcomer takes a spotlight slot.
+   f. Keep every highlight to 1-2 tight lines; trim any older highlight that grew into a paragraph.
+
+5. Run: pnpm test
    This validates the schema and auto-syncs the README table. Fix every error it reports.
 
-5. Commit on a new branch and walk me through opening the Pull Request (use gh if authenticated).
+6. Commit on a new branch and walk me through opening the Pull Request (use gh if authenticated).
 
 RULES:
 - Official source required for every fact. No rumors, leaks, or benchmark guesses.
 - Popularity bar: top-15 OpenRouter weekly volume, a primary flagship, or a genuinely frontier capability. No obscure checkpoints or minor variants.
+- Freshness is mandatory: a submission that adds a model without demoting/scrubbing what it replaced will be rejected.
 - Touch ONLY data/models.ts (plus data/companies.ts for a new lab). Website, API, RSS, and README update automatically.`
 }
 

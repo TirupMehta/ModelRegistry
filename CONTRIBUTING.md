@@ -23,7 +23,7 @@ Open `data/models.ts` and add your model to the `modelsData` array:
 ```typescript
 {
   id: "meta-muse-spark-1-3",           // Unique lowercase kebab-case ID
-  companyId: "meta",                   // openai | anthropic | google | xai | deepseek | meta | qwen | mistral | tencent | z-ai | minimax | nvidia | xiaomi | moonshotai
+  companyId: "meta",                   // one of: anthropic, openai, google, xai, deepseek, meta, qwen, mistral, tencent, z-ai, minimax, nvidia, xiaomi, moonshotai, kuaishou, runway
   companyName: "Meta AI",
   name: "Muse Spark 1.3",
   version: "1.3",
@@ -31,7 +31,7 @@ Open `data/models.ts` and add your model to the `modelsData` array:
   isCompanyFlagship: true,             // true = lab's primary flagship, false = specialized checkpoint
   isLatestCheckpoint: false,           // true if it is the lab's newest secondary release
   statusBadge: "LATEST SOTA",          // Short pill badge: "FLAGSHIP", "NEW DROP", "OPEN WEIGHTS"
-  category: "flagship",                // "flagship" | "agentic" | "reasoning" | "voice" | "code" | "multimodal"
+  category: "flagship",                // "flagship" | "reasoning" | "open-weights" | "code" | "multimodal" | "audio" | "image" | "video"
   categoryLabel: "Frontier Multimodal",
   contextWindow: "262k tokens",
   contextWindowTokens: 262144,
@@ -56,6 +56,14 @@ Open `data/models.ts` and add your model to the `modelsData` array:
 > **💡 The Flagship Rule**: Each company has exactly **1 active flagship** (`isCompanyFlagship: true`). If your new model is the lab's primary flagship, set `isCompanyFlagship: true` on it and set `isCompanyFlagship: false` on the lab's previous flagship.
 
 > **🚧 The Popularity Bar**: This registry is curated, not exhaustive. A model belongs here only if it meets at least one: top-15 OpenRouter weekly volume, primary flagship of a major lab, or a genuinely frontier capability (SOTA benchmark, new modality). Obscure checkpoints and minor variants will be rejected — they turn the index into slop. When in doubt, merge variants into one family entry instead of adding new ones.
+
+> **🔄 The Freshness Sweep (STRICT — never skip)**: The registry must never contradict itself. Every new entry must:
+> 1. Keep exactly **one** `isCompanyFlagship: true` per lab — demote the previous flagship.
+> 2. Scrub stale superlatives (`#1`, `NEWEST`, `SOTA`, `best`, `latest`, `reigning`, `most advanced`, `newly`) off every entry the newcomer dethrones — same lab first, plus any cross-lab record it takes. A record belongs only to its verified current holder.
+> 3. Update `data/companies.ts` (`latestFlagship` / `latestReasoning` / `description`) and `data/leaderboard.ts` spotlights when they changed.
+> 4. Keep every `highlight` to 1–2 tight lines; trim any older highlight that grew into a paragraph.
+>
+> A submission that adds a model without updating what it replaced will be rejected.
 
 ### 3. Validate & Submit
 ```bash

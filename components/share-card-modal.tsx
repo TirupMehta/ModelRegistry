@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
 import { formatPrice } from "@/lib/utils"
-import { Download, Copy, Share2, Check, X, Sparkles, Code2, Layers, ZoomIn } from "lucide-react"
+import { Download, Copy, Share2, Check, X, Sparkles, Code2, ZoomIn } from "lucide-react"
 
 interface ShareCardModalProps {
   model: ModelItem
@@ -15,7 +15,22 @@ interface ShareCardModalProps {
 type AspectRatio = "story" | "square" | "landscape"
 type ThemeMode = "dark" | "light"
 
-export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) {
+/**
+ * Alpha-tinted accent without 8-digit hex.
+ * `addColorStop()` THROWS a SyntaxError on colors it cannot parse (older
+ * canvas backends), so never concatenate alpha onto the hex string.
+ */
+function withAlpha(hex: string, alpha: number): string {
+  const m = /^#([0-9a-fA-F]{6})$/.exec(hex.trim())
+  if (!m) return hex
+  const n = parseInt(m[1], 16)
+  const r = (n >> 16) & 255
+  const g = (n >> 8) & 255
+  const b = n & 255
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
+
+function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [ratio, setRatio] = useState<AspectRatio>("square")
 
@@ -28,6 +43,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   const [isCopied, setIsCopied] = useState(false)
   const [isBadgeCopied, setIsBadgeCopied] = useState(false)
   const [isRendering, setIsRendering] = useState(false)
+  const [renderError, setRenderError] = useState<string | null>(null)
   const [isZoomed, setIsZoomed] = useState(false)
   const [zoomSrc, setZoomSrc] = useState<string | null>(null)
 
@@ -62,6 +78,8 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   const TRACK_WORD = "0.06em"
   const TRACK_TITLE_LETTER = "-0.01em"
   async function ensureCardFonts() {
+    // Older browsers / privacy modes may not expose the FontFaceSet API.
+    if (typeof document === "undefined" || !("fonts" in document) || !document.fonts) return
     const specs = [
       '700 80px "Space Grotesk"',
       '400 24px "Plus Jakarta Sans"',
@@ -83,7 +101,9 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     if (!ctx) return
 
     setIsRendering(true)
+    setRenderError(null)
 
+    try {
     // Dimensions configuration
     let width = 1080
     let height = 1920
@@ -126,7 +146,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
       height * 0.18,
       width * 0.55
     )
-    gradient.addColorStop(0, accentColor + (isDark ? "22" : "15"))
+    gradient.addColorStop(0, withAlpha(accentColor, isDark ? 0.13 : 0.08))
     gradient.addColorStop(1, "transparent")
     ctx.fillStyle = gradient
     ctx.fillRect(0, 0, width, height)
@@ -217,8 +237,9 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     // Letter/word tracking (wordSpacing needs a guarded write for older canvas)
     function setTracking(letter: string, word: string) {
       try {
-        ctx!.letterSpacing = letter
-        ;(ctx as CanvasRenderingContext2D & { wordSpacing?: string }).wordSpacing = word
+        if (ctx && "letterSpacing" in ctx) ctx!.letterSpacing = letter
+        if (ctx && "wordSpacing" in ctx)
+          (ctx as CanvasRenderingContext2D & { wordSpacing?: string }).wordSpacing = word
       } catch {
         // Older canvas: tracking unsupported, fall through to default spacing
       }
@@ -275,7 +296,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     const badgeMetrics = ctx.measureText(badgeText)
     const pillW = badgeMetrics.width + 20
     const pillX = width - padding - pillW
-    roundRect(pillX, curY - 5, pillW, 26, 4, accentColor + "18", accentColor + "60")
+    roundRect(pillX, curY - 5, pillW, 26, 4, withAlpha(accentColor, 0.09), withAlpha(accentColor, 0.38))
     ctx.fillStyle = accentColor
     ctx.fillText(badgeText, pillX + 10, curY + 12)
 
@@ -353,7 +374,7 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
         const bx = padding + idx * (bCardW + specGap)
         roundRect(bx, curY, bCardW, bCardH, 6, cardSurface, borderColor)
 
-        const label = bKey === "sweBench" ? "SWE-bench" : bKey === "aime2024" ? "AIME 2024" : bKey === "mmluPro" ? "MMLU-Pro" : "GPQA"
+        const label = bKey === "sweBench" ? "SWE-bench" : bKey === "aime2024" ? "AIME 2024" : bKey === "mmluPro" ? "MMLU-Pro" : bKey === "terminalBench" ? "Terminal-Bench" : "GPQA"
         ctx.font = `500 ${ratio === "story" ? 13 : 11}px ${F_MONO}`
         ctx.fillStyle = textDim
         ctx.fillText(label, bx + 16, curY + (ratio === "story" ? 34 : 24))
@@ -409,8 +430,12 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     ctx.fillStyle = textDim
     const urlW = ctx.measureText(urlText).width
     ctx.fillText(urlText, width - padding - urlW, footerY - 9)
-
-    setIsRendering(false)
+    } catch {
+      // Never let a canvas failure crash the page — surface a fallback instead.
+      setRenderError("Preview failed to render on this device — export actions below remain available.")
+    } finally {
+      setIsRendering(false)
+    }
   }, [model, ratio, cardTheme, company, accentColor])
 
   useEffect(() => {
@@ -432,7 +457,11 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
     const redrawOnFontReady = () => {
       if (!cancelled) drawCard()
     }
-    document.fonts?.ready.then(redrawOnFontReady).catch(() => {})
+    try {
+      document.fonts?.ready?.then?.(redrawOnFontReady)?.catch?.(() => {})
+    } catch {
+      // Older browsers without the FontFaceSet API — initial render stands.
+    }
 
     return () => {
       cancelled = true
@@ -445,71 +474,122 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   // Downscale the 2x working canvas to exact export dimensions
   // (1080 / 1200 wide) with high-quality filtering
   function getExportCanvas(): HTMLCanvasElement | null {
-    const src = canvasRef.current
-    if (!src) return null
-    const out = document.createElement("canvas")
-    out.width = Math.round(src.width / 2)
-    out.height = Math.round(src.height / 2)
-    const octx = out.getContext("2d")
-    if (!octx) return null
-    octx.imageSmoothingEnabled = true
-    octx.imageSmoothingQuality = "high"
-    octx.drawImage(src, 0, 0, out.width, out.height)
-    return out
+    try {
+      const src = canvasRef.current
+      if (!src || src.width === 0 || src.height === 0) return null
+      const out = document.createElement("canvas")
+      out.width = Math.round(src.width / 2)
+      out.height = Math.round(src.height / 2)
+      const octx = out.getContext("2d")
+      if (!octx) return null
+      octx.imageSmoothingEnabled = true
+      octx.imageSmoothingQuality = "high"
+      octx.drawImage(src, 0, 0, out.width, out.height)
+      return out
+    } catch {
+      return null
+    }
   }
 
   // 1. Download as PNG
   const handleDownload = () => {
-    const canvas = getExportCanvas()
-    if (!canvas) return
-    const link = document.createElement("a")
-    link.download = `modelregistry-${model.id}-${ratio}.png`
-    link.href = canvas.toDataURL("image/png")
-    link.click()
+    let link: HTMLAnchorElement | null = null
+    try {
+      const canvas = getExportCanvas()
+      if (!canvas) return
+      link = document.createElement("a")
+      link.download = `modelregistry-${model.id}-${ratio}.png`
+      link.href = canvas.toDataURL("image/png")
+      // Firefox ignores programmatic clicks on detached anchors.
+      document.body.appendChild(link)
+      link.click()
+    } catch {
+      // Canvas export unavailable on this device — no-op instead of a crash.
+    } finally {
+      try {
+        link?.remove()
+      } catch {
+        // Detach best-effort only.
+      }
+    }
   }
 
   // 2. Copy Image to Clipboard
   const handleCopyImage = async () => {
-    const canvas = getExportCanvas()
-    if (!canvas) return
-
-    try {
-      canvas.toBlob(async (blob) => {
-        if (!blob) return
-        await navigator.clipboard.write([
-          new ClipboardItem({ "image/png": blob }),
-        ])
-        setIsCopied(true)
-        setTimeout(() => setIsCopied(false), 2000)
-      })
-    } catch {
-      // Fallback: Copy link
-      navigator.clipboard.writeText(`https://modelregistry.tirup.in/?model=${model.id}`)
+    const fallbackCopyLink = () => {
+      try {
+        navigator.clipboard.writeText(`https://modelregistry.tirup.in/?model=${model.id}`)
+      } catch {
+        // Clipboard unavailable — still flip the confirmation state.
+      }
       setIsCopied(true)
       setTimeout(() => setIsCopied(false), 2000)
+    }
+    try {
+      const canvas = getExportCanvas()
+      if (!canvas) {
+        fallbackCopyLink()
+        return
+      }
+      const blob: Blob | null = await new Promise((resolve) => {
+        try {
+          canvas.toBlob(resolve)
+        } catch {
+          resolve(null)
+        }
+      })
+      if (!blob || typeof ClipboardItem === "undefined" || !navigator.clipboard?.write) {
+        fallbackCopyLink()
+        return
+      }
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })])
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch {
+      // Fallback: Copy link
+      fallbackCopyLink()
     }
   }
 
   // 3. Web Share API (Native mobile share to Instagram Stories/WhatsApp)
   const handleNativeShare = async () => {
-    const canvas = getExportCanvas()
-    if (!canvas) return
-
-    if (navigator.share) {
-      canvas.toBlob(async (blob) => {
-        if (!blob) return
-        const file = new File([blob], `${model.id}-${ratio}.png`, { type: "image/png" })
+    try {
+      const canvas = getExportCanvas()
+      if (!canvas) return
+      const blob: Blob | null = await new Promise((resolve) => {
         try {
+          canvas.toBlob(resolve)
+        } catch {
+          resolve(null)
+        }
+      })
+      if (!blob) {
+        handleDownload()
+        return
+      }
+      let file: File
+      try {
+        file = new File([blob], `${model.id}-${ratio}.png`, { type: "image/png" })
+      } catch {
+        handleDownload()
+        return
+      }
+      try {
+        if (typeof navigator.share === "function" && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
           await navigator.share({
             title: `${model.name} — ModelRegistry Specification`,
             text: `Verified specifications & benchmarks for ${model.name} (${company?.name || model.companyName}).`,
             files: [file],
           })
-        } catch {
-          // User cancelled
+          return
         }
-      })
-    } else {
+      } catch (e) {
+        // User cancelled the share sheet — stay silent. Anything else falls
+        // through to a plain download so the tap never appears dead.
+        if (e instanceof DOMException && e.name === "AbortError") return
+      }
+      handleDownload()
+    } catch {
       handleDownload()
     }
   }
@@ -518,10 +598,14 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
   // clearly. Capture-phase listener so Esc closes only the zoom, not the
   // parent model popup behind it.
   const openZoom = () => {
-    const out = getExportCanvas()
-    if (!out) return
-    setZoomSrc(out.toDataURL("image/png"))
-    setIsZoomed(true)
+    try {
+      const out = getExportCanvas()
+      if (!out) return
+      setZoomSrc(out.toDataURL("image/png"))
+      setIsZoomed(true)
+    } catch {
+      // Snapshot unavailable — leave the inline preview as-is.
+    }
   }
   const closeZoom = () => {
     setIsZoomed(false)
@@ -542,10 +626,14 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
 
   // 4. Copy Markdown Badge
   const handleCopyBadge = () => {
-    const badgeMarkdown = `[![ModelRegistry: ${model.name}](https://modelregistry.tirup.in/api/badge?model=${model.id})](https://modelregistry.tirup.in/?model=${model.id})`
-    navigator.clipboard.writeText(badgeMarkdown)
-    setIsBadgeCopied(true)
-    setTimeout(() => setIsBadgeCopied(false), 2000)
+    try {
+      const badgeMarkdown = `[![ModelRegistry: ${model.name}](https://modelregistry.tirup.in/api/badge?model=${model.id})](https://modelregistry.tirup.in/?model=${model.id})`
+      navigator.clipboard.writeText(badgeMarkdown)
+      setIsBadgeCopied(true)
+      setTimeout(() => setIsBadgeCopied(false), 2000)
+    } catch {
+      // Clipboard unavailable — no-op instead of a crash.
+    }
   }
 
   return (
@@ -573,9 +661,14 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
               <ZoomIn size={11} /> EXPAND
             </span>
           </div>
-          <span className="text-[10px] sm:text-[11px] font-sans text-black/40 dark:text-zinc-500 mt-2 sm:mt-3">
+          <span className="text-[10px] sm:text-[11px] font-sans text-black/40 dark:text-zinc-500 mt-2 sm:mt-3 text-center px-2">
             Previewing {ratio === "story" ? "1080×1920 (Story)" : ratio === "square" ? "1080×1080 (Square)" : "1200×675 (Landscape)"} • High-DPI 2x • Click image to expand
           </span>
+          {renderError && (
+            <span className="text-[11px] font-sans text-amber-600 dark:text-amber-400 mt-1.5 text-center px-4 leading-relaxed">
+              {renderError}
+            </span>
+          )}
         </div>
 
         {/* Right Side: Studio Controls & Export (panel scrolls on mobile) */}
@@ -754,5 +847,94 @@ export function ShareCardModal({ model, isOpen, onClose }: ShareCardModalProps) 
         </div>
       )}
     </div>
+  )
+}
+
+/**
+ * Render-time safety net for the share studio. A throw anywhere inside the
+ * canvas modal used to unmount the whole page into Next.js's generic
+ * "Application error" screen; now it degrades to this inline card carrying
+ * the actual message, with retry and close actions.
+ */
+class ShareCardErrorBoundary extends React.Component<
+  { onClose: () => void; onRetry: () => void; children: React.ReactNode },
+  { error: Error | null }
+> {
+  constructor(props: { onClose: () => void; onRetry: () => void; children: React.ReactNode }) {
+    super(props)
+    this.state = { error: null }
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { error }
+  }
+
+  componentDidCatch(error: Error) {
+    console.error("[share-card] render failed:", error)
+  }
+
+  render() {
+    const { error } = this.state
+    if (!error) return this.props.children
+    return (
+      <div
+        className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md"
+        onClick={this.props.onClose}
+      >
+        <div
+          className="w-full max-w-sm rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#0d0f13] p-5 shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h3 className="text-sm font-sans font-medium text-black dark:text-white">
+            Share preview could not be rendered
+          </h3>
+          <p className="mt-2 text-xs font-sans leading-relaxed text-black/60 dark:text-zinc-400 break-words">
+            {error.message || "Unknown rendering error."}
+          </p>
+          <div className="mt-4 flex gap-2">
+            <button
+              onClick={this.props.onRetry}
+              className="flex-1 py-2 px-3 rounded-md bg-black text-white dark:bg-white dark:text-black font-sans text-xs font-medium hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white transition-colors cursor-pointer"
+            >
+              TRY AGAIN
+            </button>
+            <button
+              onClick={this.props.onClose}
+              className="flex-1 py-2 px-3 rounded-md border border-black/10 dark:border-white/10 font-sans text-xs font-medium text-black/70 dark:text-zinc-300 hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors cursor-pointer"
+            >
+              CLOSE
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+export function ShareCardModal(props: ShareCardModalProps) {
+  const [attempt, setAttempt] = useState(0)
+  const wasOpen = useRef(false)
+
+  useEffect(() => {
+    if (props.isOpen && !wasOpen.current) {
+      // Fresh mount of the canvas modal on every open: clean preview state
+      // and a reset error boundary.
+      wasOpen.current = true
+      setAttempt((a) => a + 1)
+    } else if (!props.isOpen) {
+      wasOpen.current = false
+    }
+  }, [props.isOpen])
+
+  if (!props.isOpen) return null
+
+  return (
+    <ShareCardErrorBoundary
+      key={attempt}
+      onClose={props.onClose}
+      onRetry={() => setAttempt((a) => a + 1)}
+    >
+      <ShareCardModalInner {...props} />
+    </ShareCardErrorBoundary>
   )
 }
