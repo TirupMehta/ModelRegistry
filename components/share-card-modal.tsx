@@ -686,7 +686,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
               <button
                 onClick={onClose}
                 aria-label="Close share studio"
-                className="p-1 rounded text-black/40 dark:text-zinc-500 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
+                className="relative p-1 rounded text-black/40 dark:text-zinc-500 hover:text-black dark:hover:text-white transition-colors cursor-pointer before:absolute before:-inset-2 before:content-['']"
               >
                 <X size={16} />
               </button>

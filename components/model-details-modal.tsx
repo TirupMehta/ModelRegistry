@@ -128,7 +128,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               onClick={handleCopyLink}
               title="Copy shareable link"
               aria-label="Copy shareable link"
-              className="inline-flex items-center justify-center min-w-8 min-h-8 p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-[0.985] transition-colors duration-150 cursor-pointer"
+              className="relative inline-flex items-center justify-center min-w-8 min-h-8 p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-[0.985] transition-colors duration-150 cursor-pointer before:absolute before:-inset-2 before:content-['']"
             >
               {copied ? <Check size={15} className="text-emerald-500" /> : <Link2 size={15} />}
             </button>
@@ -136,7 +136,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <button
               onClick={handleClose}
               aria-label="Close dialog"
-              className="inline-flex items-center justify-center min-w-8 min-h-8 p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-[0.985] transition-colors duration-150 cursor-pointer"
+              className="relative inline-flex items-center justify-center min-w-8 min-h-8 p-1.5 rounded-md text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-[0.985] transition-colors duration-150 cursor-pointer before:absolute before:-inset-2 before:content-['']"
             >
               <X size={16} />
             </button>

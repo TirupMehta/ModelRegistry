@@ -24,6 +24,12 @@ function isNewDrop(releaseDate: string, now: number = Date.now()): boolean {
   return diffDays >= 0 && diffDays <= NEW_DROPS_WINDOW_DAYS
 }
 
+// Postel's Law: accept messy human input, normalize to clean comparison.
+// "GPT-6.1", "gpt 6 1", "  gpt_6/1 " all match the same model.
+function normalizeSearch(value: string): string {
+  return value.toLowerCase().trim().replace(/[-_./]+/g, " ").replace(/\s+/g, " ")
+}
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState<ViewTab>("flagships")
   const [searchQuery, setSearchQuery] = useState("")
@@ -102,11 +108,12 @@ export default function Home() {
       if (activeTab === "visual" && model.category !== "image" && model.category !== "video") return false
 
       if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase()
-        const matchName = model.name.toLowerCase().includes(q)
-        const matchCompany = model.companyName.toLowerCase().includes(q)
-        const matchHighlight = model.highlight.toLowerCase().includes(q)
-        const matchCategory = model.categoryLabel.toLowerCase().includes(q)
+        const q = normalizeSearch(searchQuery)
+        if (!q) return true
+        const matchName = normalizeSearch(model.name).includes(q)
+        const matchCompany = normalizeSearch(model.companyName).includes(q)
+        const matchHighlight = normalizeSearch(model.highlight).includes(q)
+        const matchCategory = normalizeSearch(model.categoryLabel).includes(q)
         return matchName || matchCompany || matchHighlight || matchCategory
       }
 
