@@ -469,6 +469,49 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
     }
   }, [isOpen, drawCard])
 
+  // 4. Copy Markdown Badge
+  const handleCopyBadge = () => {
+    try {
+      const badgeMarkdown = `[![ModelRegistry: ${model.name}](https://modelregistry.tirup.in/api/badge?model=${model.id})](https://modelregistry.tirup.in/?model=${model.id})`
+      navigator.clipboard.writeText(badgeMarkdown)
+      setIsBadgeCopied(true)
+      setTimeout(() => setIsBadgeCopied(false), 2000)
+    } catch {
+      // Clipboard unavailable — no-op instead of a crash.
+    }
+  }
+
+  // Fullscreen zoom preview — snapshots the 1x export so small text reads
+  // clearly. Capture-phase listener so Esc closes only the zoom, not the
+  // parent model popup behind it.
+  const openZoom = () => {
+    try {
+      const out = getExportCanvas()
+      if (!out) return
+      setZoomSrc(out.toDataURL("image/png"))
+      setIsZoomed(true)
+    } catch {
+      // Snapshot unavailable — leave the inline preview as-is.
+    }
+  }
+  const closeZoom = () => {
+    setIsZoomed(false)
+    setZoomSrc(null)
+  }
+
+  useEffect(() => {
+    if (!isZoomed) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation()
+        closeZoom()
+      }
+    }
+    window.addEventListener("keydown", onKey, true)
+    return () => window.removeEventListener("keydown", onKey, true)
+  }, [isZoomed])
+
+  // Hooks must run unconditionally — render gating happens after them.
   if (!isOpen) return null
 
   // Downscale the 2x working canvas to exact export dimensions
@@ -591,48 +634,6 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
       handleDownload()
     } catch {
       handleDownload()
-    }
-  }
-
-  // Fullscreen zoom preview — snapshots the 1x export so small text reads
-  // clearly. Capture-phase listener so Esc closes only the zoom, not the
-  // parent model popup behind it.
-  const openZoom = () => {
-    try {
-      const out = getExportCanvas()
-      if (!out) return
-      setZoomSrc(out.toDataURL("image/png"))
-      setIsZoomed(true)
-    } catch {
-      // Snapshot unavailable — leave the inline preview as-is.
-    }
-  }
-  const closeZoom = () => {
-    setIsZoomed(false)
-    setZoomSrc(null)
-  }
-
-  useEffect(() => {
-    if (!isZoomed) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.stopPropagation()
-        closeZoom()
-      }
-    }
-    window.addEventListener("keydown", onKey, true)
-    return () => window.removeEventListener("keydown", onKey, true)
-  }, [isZoomed])
-
-  // 4. Copy Markdown Badge
-  const handleCopyBadge = () => {
-    try {
-      const badgeMarkdown = `[![ModelRegistry: ${model.name}](https://modelregistry.tirup.in/api/badge?model=${model.id})](https://modelregistry.tirup.in/?model=${model.id})`
-      navigator.clipboard.writeText(badgeMarkdown)
-      setIsBadgeCopied(true)
-      setTimeout(() => setIsBadgeCopied(false), 2000)
-    } catch {
-      // Clipboard unavailable — no-op instead of a crash.
     }
   }
 
@@ -836,6 +837,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
             closeZoom()
           }}
         >
+          {/* eslint-disable-next-line @next/next/no-img-element -- renders a canvas data: URL; next/image can't optimize those */}
           <img
             src={zoomSrc}
             alt={`${model.name} share card full-size preview`}

@@ -28,7 +28,6 @@ interface ModelPageViewProps {
 
 export default function ModelPageView({ model }: ModelPageViewProps) {
   const [copiedLink, setCopiedLink] = useState(false)
-  const [copiedCurl, setCopiedCurl] = useState(false)
   const [copiedCode, setCopiedCode] = useState(false)
   const [isShareStudioOpen, setIsShareStudioOpen] = useState(false)
   const [activeSnippetTab, setActiveSnippetTab] = useState<"curl" | "python" | "local">("curl")
@@ -47,12 +46,6 @@ export default function ModelPageView({ model }: ModelPageViewProps) {
   }
 
   const curlCommand = `curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
-
-  const handleCopyCurl = () => {
-    navigator.clipboard.writeText(curlCommand)
-    setCopiedCurl(true)
-    setTimeout(() => setCopiedCurl(false), 2000)
-  }
 
   // Generate clean developer code snippets
   const getPythonSnippet = () => {
