@@ -38,7 +38,7 @@ function NavLinks({ pathname }: { pathname: string }) {
               "group relative inline-flex min-w-0 flex-1 sm:flex-none items-center justify-center gap-1.5 sm:gap-2 py-1.5 px-1 sm:px-3 rounded-lg text-[11px] sm:text-[13px] font-sans tracking-tight select-none cursor-pointer whitespace-nowrap transition-all duration-150 ease-out",
               active
                 ? "bg-white dark:bg-[#1e222a] text-black dark:text-white font-medium shadow-sm ring-1 ring-black/10 dark:ring-white/10"
-                : "text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05] active:scale-[0.98]",
+                : "text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]",
             ].join(" ")}
           >
             {active ? (

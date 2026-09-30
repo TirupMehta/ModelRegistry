@@ -194,6 +194,16 @@ export default function RootLayout({
           }}
         />
 
+        {/* Pointer-modality tracking: Safari draws its own contrasting tap
+            outline (black in light mode, white in dark) on every tap. The
+            `ptr` class lets CSS suppress focus rings for pointer users while
+            keeping them for keyboard (Tab removes the class). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var d=document.documentElement;function p(){d.classList.add('ptr')}function k(e){if(e.key==='Tab')d.classList.remove('ptr')}d.addEventListener('pointerdown',p,{capture:true,passive:true});d.addEventListener('touchstart',p,{capture:true,passive:true});d.addEventListener('keydown',k,true)})()`,
+          }}
+        />
+
         {children}
         <Analytics />
         <SpeedInsights />

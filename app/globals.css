@@ -43,6 +43,18 @@ html.dark {
   border-radius: 6px;
 }
 
+/* Pointer users never see a focus ring or focus shadow — taps show :active
+   press states instead, keyboard users keep every ring. This is what kills
+   Safari's black/white tap outline and any focus-shadow flash on controls
+   like the filter search box. */
+.ptr :focus {
+  outline: none !important;
+}
+.ptr input:focus,
+.ptr textarea:focus {
+  box-shadow: none !important;
+}
+
 /* Finished-product text selection */
 ::selection {
   background: var(--accent);

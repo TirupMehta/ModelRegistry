@@ -29,23 +29,22 @@ export type HapticPresetName =
 const PWM_CYCLE = 16 // ms — perceptual intensity slicing window
 
 const PRESETS: Record<HapticPresetName, Vibration[]> = {
-  // Android eccentric motors need ~15ms+ to be felt; iOS-style 8-10ms ticks
-  // are imperceptible there, so tap sits at 20ms as a clearly-felt floor.
-  tap: [{ duration: 20, intensity: 0.8 }],
-  light: [{ duration: 12, intensity: 0.5 }],
-  selection: [{ duration: 10, intensity: 0.6 }],
+  // Single solid pulse at full intensity — unmistakable on any motor.
+  tap: [{ duration: 25, intensity: 1 }],
+  light: [{ duration: 15, intensity: 0.6 }],
+  selection: [{ duration: 12, intensity: 0.7 }],
   success: [
-    { duration: 25, intensity: 0.75 },
-    { delay: 50, duration: 35, intensity: 0.9 },
+    { duration: 30, intensity: 0.8 },
+    { delay: 55, duration: 40, intensity: 0.9 },
   ],
   error: [
-    { duration: 30, intensity: 0.85 },
-    { delay: 50, duration: 30, intensity: 0.85 },
-    { delay: 50, duration: 30, intensity: 0.85 },
+    { duration: 35, intensity: 0.85 },
+    { delay: 55, duration: 35, intensity: 0.85 },
+    { delay: 55, duration: 35, intensity: 0.85 },
   ],
   nudge: [
-    { duration: 60, intensity: 0.9 },
-    { delay: 80, duration: 35, intensity: 0.35 },
+    { duration: 70, intensity: 0.9 },
+    { delay: 85, duration: 40, intensity: 0.4 },
   ],
 }
 
@@ -120,7 +119,7 @@ function modulate(duration: number, intensity: number): number[] {
   const d = Math.max(1, Math.round(duration))
   // Short taps: PWM slicing would shave energy into a trimmed trailing
   // pause, making them unfelt on eccentric motors — fire them whole.
-  if (d <= 24) return [d]
+  if (d <= 32) return [d]
   const k = Math.min(1, Math.max(0, intensity))
   if (k >= 1) return [d]
   if (k <= 0) return []
@@ -298,16 +297,45 @@ function ensureCtx(): AudioContext | null {
 function unlockOnce() {
   if (unlocked || typeof window === "undefined") return
   unlocked = true
-  ensureCtx()
+  primeAudio()
   window.removeEventListener("pointerdown", unlockOnce)
   window.removeEventListener("keydown", unlockOnce)
   window.removeEventListener("touchstart", unlockOnce)
+}
+
+/** Prime the audio pipeline so the first real tick plays instantly, not
+ *  ~500ms late while the context resumes and the audio thread spins up.
+ *  Silent 10ms buffer + resume; inaudible, ~1ms of work when warm. */
+function primeAudio() {
+  const ac = ensureCtx()
+  if (!ac || !master) return
+  try {
+    if (ac.state === "suspended") void ac.resume()
+    const len = Math.max(1, Math.floor(ac.sampleRate * 0.01))
+    const buf = ac.createBuffer(1, len, ac.sampleRate)
+    const src = ac.createBufferSource()
+    src.buffer = buf
+    const g = ac.createGain()
+    g.gain.value = 0.0001
+    src.connect(g)
+    g.connect(master)
+    src.start()
+  } catch {
+    // ignore
+  }
 }
 
 if (typeof window !== "undefined") {
   window.addEventListener("pointerdown", unlockOnce, { passive: true })
   window.addEventListener("keydown", unlockOnce)
   window.addEventListener("touchstart", unlockOnce, { passive: true })
+  // Every press re-primes: keeps the context running so ticks stay instant
+  // even after the OS suspends audio between visits to the page.
+  window.addEventListener("pointerdown", primeAudio, { passive: true })
+  window.addEventListener("touchstart", primeAudio, { passive: true })
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) primeAudio()
+  })
 }
 
 type BlipOpts = {
