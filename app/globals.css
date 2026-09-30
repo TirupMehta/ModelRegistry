@@ -4,11 +4,6 @@
 
 :root {
   --accent: #ff501a;
-  --accent-hover: #ff6533;
-  --accent-glow: rgba(255, 80, 26, 0.20);
-  --live-signal: #00d68f;
-  --black: #111215;
-  --white: #ffffff;
   --bg: #f7f7f4;
   --card-bg: #ffffff;
   --fg: #111215;
@@ -27,9 +22,6 @@ html.dark {
   --text-secondary: rgba(244, 245, 247, 0.68);
   --text-primary: rgba(244, 245, 247, 0.95);
   --accent: #ff5d2e;
-  --accent-hover: #ff7347;
-  --accent-glow: rgba(255, 93, 46, 0.28);
-  --live-signal: #00e599;
 }
 
 /* Disable transitions on initial render */
@@ -102,10 +94,6 @@ body {
      Airiness belongs in word-spacing + line-height, not letter-spacing. */
   letter-spacing: normal;
   word-spacing: 0.02em;
-}
-
-.font-tabular {
-  font-variant-numeric: tabular-nums;
 }
 
 /* Dark mode utility overrides */

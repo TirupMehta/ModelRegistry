@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
-import { formatPrice } from "@/lib/utils"
+import { formatPrice, formatDate } from "@/lib/utils"
 import {
   X,
   ExternalLink,
@@ -59,16 +59,6 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
   if (!model) return null
 
   const company = companies[model.companyId]
-
-  const formatDate = (dateStr: string) => {
-    const [y, m, d] = dateStr.split("-").map(Number)
-    const date = new Date(y, m - 1, d)
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    })
-  }
 
   const handleCopyLink = () => {
     try {
@@ -225,6 +215,14 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
                   <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">SWE-bench</span>
                   <span className="text-base font-sans font-medium tabular-nums text-black dark:text-white">
                     {model.benchmarks.sweBench}
+                  </span>
+                </div>
+              )}
+              {model.benchmarks.terminalBench && (
+                <div className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[#13161c] hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default">
+                  <span className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-0.5">Terminal-Bench</span>
+                  <span className="text-base font-sans font-medium tabular-nums text-black dark:text-white">
+                    {model.benchmarks.terminalBench}
                   </span>
                 </div>
               )}

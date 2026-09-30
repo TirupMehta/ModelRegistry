@@ -39,6 +39,6 @@ export async function GET() {
     externalLiveCount: totalLiveModelsDetected,
     trackedLabsCount: Object.keys(companies).length,
     trackedModelsCount: modelsData.length,
-    message: "ModelPulse data index is up to date with frontier lab releases.",
+    message: "ModelRegistry data index is up to date with frontier lab releases.",
   })
 }

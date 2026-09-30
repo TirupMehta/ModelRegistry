@@ -6,7 +6,7 @@ import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
-import { formatDate } from "@/lib/utils"
+import { formatDate, parseLocalDate } from "@/lib/utils"
 import { ArrowUpRight, Calendar } from "lucide-react"
 
 export default function TimelinePage() {
@@ -21,7 +21,7 @@ export default function TimelinePage() {
   // Group by Month Year
   const groupedTimeline: { [key: string]: ModelItem[] } = {}
   sortedModels.forEach((model) => {
-    const d = new Date(model.releaseDate)
+    const d = parseLocalDate(model.releaseDate)
     const monthYear = d.toLocaleDateString("en-US", { month: "long", year: "numeric" })
     if (!groupedTimeline[monthYear]) {
       groupedTimeline[monthYear] = []

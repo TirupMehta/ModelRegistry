@@ -5,7 +5,7 @@ import Header from "@/components/header"
 import TextWithBlur from "@/components/text-with-blur"
 import { companies } from "@/data/companies"
 import { modelsData } from "@/data/models"
-import { formatDate, getRelativeTimeString, safeJsonLd } from "@/lib/utils"
+import { formatDate, getRelativeTimeString, parseLocalDate, safeJsonLd } from "@/lib/utils"
 import { ArrowLeft, ArrowUpRight, Globe, Layers, Boxes, Sparkles, Calendar } from "lucide-react"
 
 interface Props {
@@ -85,7 +85,7 @@ export default async function CompanyPage({ params }: Props) {
   // Month-grouped release rail (same grouping as /timeline)
   const groupedTimeline: { [key: string]: typeof labModels } = {}
   labModels.forEach((model) => {
-    const d = new Date(model.releaseDate)
+    const d = parseLocalDate(model.releaseDate)
     const monthYear = d.toLocaleDateString("en-US", { month: "long", year: "numeric" })
     if (!groupedTimeline[monthYear]) {
       groupedTimeline[monthYear] = []

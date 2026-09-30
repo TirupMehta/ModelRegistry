@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og"
+import { modelsData } from "@/data/models"
 
 export const runtime = "edge"
 export const alt = "ModelRegistry — The Open Frontier AI Model Registry"
@@ -9,6 +10,9 @@ export const size = {
 export const contentType = "image/png"
 
 export default async function Image() {
+  const flagships = modelsData.filter((m) => m.isCompanyFlagship)
+  const peakContext = modelsData.reduce((max, m) => Math.max(max, m.contextWindowTokens), 0)
+  const peakContextLabel = peakContext > 0 ? `${peakContext.toLocaleString("en-US")} Tokens` : "—"
   return new ImageResponse(
     (
       <div
@@ -110,7 +114,7 @@ export default async function Image() {
                 PRIMARY FLAGSHIPS
               </span>
               <span style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>
-                9 Frontier Labs
+                {flagships.length} Frontier Labs
               </span>
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -118,7 +122,7 @@ export default async function Image() {
                 PEAK CONTEXT
               </span>
               <span style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>
-                1,310,720 Tokens
+                {peakContextLabel}
               </span>
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>

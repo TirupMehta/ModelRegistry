@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
-import { formatPrice } from "@/lib/utils"
+import { formatPrice, formatDate } from "@/lib/utils"
 import Header from "@/components/header"
 import { ShareCardModal } from "@/components/share-card-modal"
 import {
@@ -33,16 +33,6 @@ export default function ModelPageView({ model }: ModelPageViewProps) {
   const [activeSnippetTab, setActiveSnippetTab] = useState<"curl" | "python" | "local">("curl")
 
   const company = companies[model.companyId]
-
-  const formatDate = (dateStr: string) => {
-    const [y, m, d] = dateStr.split("-").map(Number)
-    const date = new Date(y, m - 1, d)
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    })
-  }
 
   const handleCopyLink = () => {
     try {
@@ -260,6 +250,12 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[#0e1014] leading-relaxed">
                     <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1 tracking-wider">SWE-BENCH</div>
                     <div className="text-base font-semibold text-[#ff5d2e] tracking-wide">{model.benchmarks.sweBench}</div>
+                  </div>
+                )}
+                {model.benchmarks.terminalBench && (
+                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[#0e1014] leading-relaxed">
+                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1 tracking-wider">TERMINAL-BENCH</div>
+                    <div className="text-base font-semibold text-black dark:text-white tracking-wide">{model.benchmarks.terminalBench}</div>
                   </div>
                 )}
                 {model.benchmarks.aime2024 && (

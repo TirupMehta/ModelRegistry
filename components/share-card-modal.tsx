@@ -374,7 +374,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
         const bx = padding + idx * (bCardW + specGap)
         roundRect(bx, curY, bCardW, bCardH, 6, cardSurface, borderColor)
 
-        const label = bKey === "sweBench" ? "SWE-bench" : bKey === "aime2024" ? "AIME 2024" : bKey === "mmluPro" ? "MMLU-Pro" : "GPQA"
+        const label = bKey === "sweBench" ? "SWE-bench" : bKey === "aime2024" ? "AIME 2024" : bKey === "mmluPro" ? "MMLU-Pro" : bKey === "terminalBench" ? "Terminal-Bench" : "GPQA"
         ctx.font = `500 ${ratio === "story" ? 13 : 11}px ${F_MONO}`
         ctx.fillStyle = textDim
         ctx.fillText(label, bx + 16, curY + (ratio === "story" ? 34 : 24))

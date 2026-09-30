@@ -26,12 +26,10 @@ export async function GET(request: Request) {
     )
   }
 
-  if (openWeights !== null && openWeights !== undefined) {
-    if (openWeights === "true") {
-      filtered = filtered.filter((m) => m.openWeights)
-    } else if (openWeights === "false") {
-      filtered = filtered.filter((m) => !m.openWeights)
-    }
+  if (openWeights === "true") {
+    filtered = filtered.filter((m) => m.openWeights)
+  } else if (openWeights === "false") {
+    filtered = filtered.filter((m) => !m.openWeights)
   }
 
   if (flagshipOnly === "true") {

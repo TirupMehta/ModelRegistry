@@ -30,10 +30,19 @@ export function formatPrice(model: Pick<ModelItem, 'pricing' | 'pricingUnit' | '
   return model.openWeights ? `${base} (Open)` : base
 }
 
+/**
+ * Parse a plain YYYY-MM-DD release date as a LOCAL date, not UTC.
+ * `new Date("2026-09-01")` is midnight UTC; in the Americas that instant
+ * lands on Aug 31 local, so "Sep 1, 2026" could render as "Aug 31, 2026".
+ */
+export function parseLocalDate(dateString: string): Date {
+  const [y, m, d] = dateString.split("-").map(Number)
+  return new Date(y, (m ?? 1) - 1, d ?? 1)
+}
+
 export function formatDate(dateString: string): string {
   try {
-    const d = new Date(dateString)
-    return d.toLocaleDateString('en-US', {
+    return parseLocalDate(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -45,7 +54,7 @@ export function formatDate(dateString: string): string {
 
 export function getRelativeTimeString(dateString: string): string {
   try {
-    const date = new Date(dateString)
+    const date = parseLocalDate(dateString)
     const now = new Date()
     const diffMs = now.getTime() - date.getTime()
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
