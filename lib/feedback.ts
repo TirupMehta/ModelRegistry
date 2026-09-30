@@ -446,32 +446,84 @@ export function playClick(kind: ClickKind = "tap"): boolean {
 // Combined one-callers — what components actually import
 // ---------------------------------------------------------------------------
 
+/** Timestamp of the last explicit feedback call. The global delegated
+ *  listener (below) yields to explicit calls so e.g. a copy button keeps
+ *  its success double-buzz instead of being downgraded to a plain tap. */
+let lastExplicitAt = 0
+
+function noteExplicit() {
+  lastExplicitAt = performance.now()
+}
+
 /** Standard press: light haptic + micro tick. */
 export function tapFeedback() {
+  noteExplicit()
   triggerHaptic("tap")
   playClick("tap")
 }
 
 /** Segmented control / tab switch. */
 export function selectFeedback() {
+  noteExplicit()
   triggerHaptic("selection")
   playClick("select")
 }
 
 /** Copy / success actions. */
 export function successFeedback() {
+  noteExplicit()
   triggerHaptic("success")
   playClick("confirm")
 }
 
 /** Errors / destructive. */
 export function errorFeedback() {
+  noteExplicit()
   triggerHaptic("error")
   playClick("toggle")
 }
 
 /** Toggles (theme, switches). */
 export function toggleFeedback() {
+  noteExplicit()
   triggerHaptic("light")
   playClick("toggle")
+}
+
+// ---------------------------------------------------------------------------
+// Global delegated taps — vibration on MOST buttons without wiring each one
+// ---------------------------------------------------------------------------
+
+let globalInit = false
+
+function onDocumentClick(e: MouseEvent) {
+  try {
+    if (e.defaultPrevented || e.button !== 0) return
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    const target = e.target as Element | null
+    const el = target?.closest?.(
+      "a[href], button, [role='button'], input[type='checkbox'], input[type='radio'], select, summary"
+    ) as (HTMLElement & { disabled?: boolean }) | null
+    if (!el) return
+    if (el.disabled) return
+    if (el.getAttribute("aria-disabled") === "true") return
+    if (el.closest("[data-no-feedback]")) return
+    // An explicit handler (copy success, tab select, …) already fired in the
+    // element's own onClick, which runs before this document-bubble listener.
+    if (performance.now() - lastExplicitAt < 150) return
+    tapFeedback()
+  } catch {
+    // never break page clicks
+  }
+}
+
+/** Idempotent: call once from a client root component. Returns cleanup. */
+export function initGlobalFeedback(): () => void {
+  if (typeof document === "undefined" || globalInit) return () => {}
+  globalInit = true
+  document.addEventListener("click", onDocumentClick)
+  return () => {
+    document.removeEventListener("click", onDocumentClick)
+    globalInit = false
+  }
 }

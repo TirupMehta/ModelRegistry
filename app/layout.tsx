@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google"
 import "./globals.css"
 import AmbientShader from "@/components/ambient-shader"
+import FeedbackInit from "@/components/feedback-init"
 import { modelsData } from "@/data/models"
 import { companies, type Company } from "@/data/companies"
 import { safeJsonLd } from "@/lib/utils"
@@ -204,6 +205,7 @@ export default function RootLayout({
           }}
         />
 
+        <FeedbackInit />
         {children}
         <Analytics />
         <SpeedInsights />
