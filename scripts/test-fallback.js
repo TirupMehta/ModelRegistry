@@ -30,11 +30,12 @@ const { modelsData } = loadTsModule("../data/models.ts")
 const { resolveCompanyFallback } = loadTsModule("../lib/model-fallback.ts")
 
 // [unknown slug, expected target id (null = must 404)]
+// Targets track the CURRENT lab flagships: update them on flagship rotation.
 const cases = [
-  ["openai-astra", "gpt-6-astra"],
-  ["gpt-5-6-sol", "gpt-6-astra"],
-  ["gpt-5-6-luna", "gpt-6-astra"],
-  ["claude-opus-4-8", "claude-fable-5-1"],
+  ["openai-astra", "gpt-6-1-sol"],
+  ["gpt-5-6-sol", "gpt-6-1-sol"],
+  ["gpt-5-6-luna", "gpt-6-1-sol"],
+  ["claude-opus-4-8", "claude-opus-5-5"],
   ["xyz-nope-zz", null],
   ["pro", null], // ambiguous across labs: must 404, never guess
   ["", null],
