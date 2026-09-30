@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
-import { formatPrice } from "@/lib/utils"
+import { formatPrice, formatDate } from "@/lib/utils"
 import Header from "@/components/header"
 import { ShareCardModal } from "@/components/share-card-modal"
 import {
@@ -34,16 +34,6 @@ export default function ModelPageView({ model }: ModelPageViewProps) {
   const [activeSnippetTab, setActiveSnippetTab] = useState<"curl" | "python" | "local">("curl")
 
   const company = companies[model.companyId]
-
-  const formatDate = (dateStr: string) => {
-    const [y, m, d] = dateStr.split("-").map(Number)
-    const date = new Date(y, m - 1, d)
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    })
-  }
 
   const handleCopyLink = () => {
     try {

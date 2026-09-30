@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
-import { formatPrice } from "@/lib/utils"
+import { formatPrice, formatDate } from "@/lib/utils"
 import {
   X,
   ExternalLink,
@@ -59,16 +59,6 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
   if (!model) return null
 
   const company = companies[model.companyId]
-
-  const formatDate = (dateStr: string) => {
-    const [y, m, d] = dateStr.split("-").map(Number)
-    const date = new Date(y, m - 1, d)
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    })
-  }
 
   const handleCopyLink = () => {
     try {
