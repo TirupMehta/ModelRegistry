@@ -43,9 +43,9 @@ export const companies: Record<string, Company> = {
     website: "https://deepmind.google",
     headquarters: "London, UK / Mountain View, CA",
     accentColor: "#4285f4",
-    description: "Creators of the Gemini 3 family, leading ultra-fast agentic coding, multi-step workflows, and 1M+ token real-time multimodal streaming.",
-    latestFlagship: "Gemini 3.8 Flash",
-    latestReasoning: "Gemini 3.8 Flash / Gemini 3.1 Pro",
+    description: "Creators of the Gemini 4 family, led by Gemini 4 Argon for long-horizon software engineering, enterprise knowledge work, cyber defense, and 1M-token output at $2/$10 per 1M tokens.",
+    latestFlagship: "Gemini 4 Argon",
+    latestReasoning: "Gemini 4 Argon / Gemini 3.8 Flash",
     openWeightsAdvocate: true,
   },
   xai: {
