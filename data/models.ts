@@ -322,8 +322,8 @@ export const modelsData: ModelItem[] = [
     version: "3.8-Live",
     releaseDate: "2026-09-15",
     isCompanyFlagship: false,
-    isLatestCheckpoint: false,
-    statusBadge: "SPEECH-TO-SPEECH",
+    isLatestCheckpoint: true,
+    statusBadge: "#1 SPEECH-TO-SPEECH",
     category: "audio",
     categoryLabel: "Live Speech-to-Speech",
     contextWindow: "131,072 tokens",
@@ -334,7 +334,7 @@ export const modelsData: ModelItem[] = [
     license: "Google AI Studio / Vertex AI",
     pricing: { input: 0.75, output: 4.5 },
     highlight:
-      "Released Sept 15, 2026; Google's native speech-to-speech model that reasons and talks at once, with background tools, 97-language switching, and 82.6 on the Speech-to-Speech Quality Index.",
+      "Released Sept 15, 2026; Google's native speech-to-speech model that reasons and talks at once, with background tools, 97-language switching, and #1 82.6 on the Speech-to-Speech Quality Index.",
     modalities: ["Text", "Vision", "Audio", "Video"],
     variants: [
       {
