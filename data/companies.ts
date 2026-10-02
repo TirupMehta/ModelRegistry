@@ -211,4 +211,15 @@ export const companies: Record<string, Company> = {
     latestReasoning: "Sarvam 105B",
     openWeightsAdvocate: true,
   },
+  typesafe: {
+    id: "typesafe",
+    name: "TypeSafe AI",
+    shortName: "TypeSafe",
+    website: "https://typesafe.ai",
+    headquarters: "San Francisco, CA",
+    accentColor: "#14b8a6",
+    description: "Builders of System One decision models; first model Jev returns typed calibrated decisions in 70-500ms with free output tokens.",
+    latestFlagship: "Jev",
+    openWeightsAdvocate: false,
+  },
 }
