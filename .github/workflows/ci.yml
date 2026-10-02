@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+# Least privilege: CI only checks out, installs, tests, and builds.
+permissions:
+  contents: read
+
 jobs:
   validate:
     name: Validate registry data
