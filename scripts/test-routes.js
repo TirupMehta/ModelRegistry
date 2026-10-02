@@ -22,9 +22,14 @@ function countDataset() {
     vm.runInContext(transpiled, vm.createContext({ module: mod, exports: mod.exports, require, console }))
     return mod.exports
   }
+  const modelsData = loadTsModule("../data/models.ts").modelsData
   return {
-    models: loadTsModule("../data/models.ts").modelsData.length,
+    models: modelsData.length,
     labs: Object.keys(loadTsModule("../data/companies.ts").companies).length,
+    // Current OpenAI flagship: retired slugs and flagshipOnly filters must
+    // resolve here, whatever the next rotation brings.
+    openaiFlagship:
+      modelsData.find((m) => m.companyId === "openai" && m.isCompanyFlagship)?.id ?? null,
   }
 }
 const EXPECTED = countDataset()
@@ -121,7 +126,8 @@ async function main() {
   const redir = await expectStatus("/models/gpt-5-6-sol", 307, { redirect: "manual" })
   if (redir) {
     const loc = redir.headers.get("location") || ""
-    if (loc.endsWith("/models/gpt-6-astra")) pass("retired slug target", loc)
+    if (EXPECTED.openaiFlagship && loc.endsWith(`/models/${EXPECTED.openaiFlagship}`))
+      pass("retired slug target", loc)
     else fail("retired slug target", `location '${loc}'`)
   }
   await expectStatus("/models/pro", 404)
@@ -151,8 +157,8 @@ async function main() {
     const d = await res.json()
     return d
   }).catch(() => null)
-  if (flagship && flagship.total === 1 && flagship.models[0].id === "gpt-6-astra") {
-    pass("api flagshipOnly filter", "openai -> 1")
+  if (flagship && flagship.total === 1 && flagship.models[0].id === EXPECTED.openaiFlagship) {
+    pass("api flagshipOnly filter", `openai -> 1 (${EXPECTED.openaiFlagship})`)
   } else {
     fail("api flagshipOnly filter", JSON.stringify(flagship?.total))
   }
