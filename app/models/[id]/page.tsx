@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation"
 import { Metadata } from "next"
 import { modelsData } from "@/data/models"
 import { resolveCompanyFallback } from "@/lib/model-fallback"
-import { safeJsonLd } from "@/lib/utils"
+import { formatPrice, safeJsonLd } from "@/lib/utils"
 import ModelPageView from "@/components/model-page-view"
 
 interface Props {
@@ -69,7 +69,10 @@ export default async function ModelPage({ params }: Props) {
     redirect(`/models/${fallback.id}`)
   }
 
-  // JSON-LD Structured Data for Google Rich Snippets
+  // JSON-LD Structured Data for Google Rich Snippets.
+  // Pricing is the official hosted API rate per billing unit (1M tokens,
+  // or per second for visual models) — expressed as a UnitPriceSpecification
+  // so the figure is never mistaken for a one-time purchase price.
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -82,8 +85,20 @@ export default async function ModelPage({ params }: Props) {
     },
     offers: {
       "@type": "Offer",
-      price: model.openWeights ? "0" : String(model.pricing.input),
+      price: String(model.pricing.input),
       priceCurrency: "USD",
+      description: `Official hosted API rate: ${formatPrice(model)}${
+        model.pricingUnit ? "" : " per 1M tokens"
+      }${model.openWeights ? "; weights free to self-host" : ""}`,
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price: String(model.pricing.input),
+        priceCurrency: "USD",
+        unitText: model.pricingUnit ?? "per 1M input tokens",
+        referenceQuantity: model.pricingUnit
+          ? { "@type": "QuantitativeValue", value: 1, unitText: "second" }
+          : { "@type": "QuantitativeValue", value: 1000000, unitText: "tokens" },
+      },
     },
     description: model.highlight,
     url: `https://modelregistry.tirup.in/models/${model.id}`,

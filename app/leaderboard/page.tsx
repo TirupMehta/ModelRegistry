@@ -22,6 +22,17 @@ interface ComparisonCategory {
 export default function LeaderboardPage() {
   const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
 
+  // Freshness stamp for the intro copy: month of the newest tracked release.
+  const newestMonth = [...modelsData]
+    .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
+    ?.releaseDate.slice(0, 7)
+  const newestMonthLabel = newestMonth
+    ? new Date(`${newestMonth}-02`).toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      })
+    : ""
+
   const openModel = (model: ModelItem) => {
     tapFeedback()
     setActiveModalModel(model)
@@ -85,8 +96,11 @@ export default function LeaderboardPage() {
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         <div className="space-y-4 text-base md:text-[17px] font-normal text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
+            <h1 className="text-2xl sm:text-3xl font-medium tracking-tight text-black dark:text-white">
+              Frontier AI Leaderboard
+            </h1>
             <p>
-              Domain-by-domain evaluation of which foundation models hold the state of the art in September 2026.
+              Domain-by-domain evaluation of which foundation models hold the state of the art{newestMonthLabel ? ` in ${newestMonthLabel}` : ""}.
             </p>
           </TextWithBlur>
         </div>

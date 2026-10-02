@@ -30,23 +30,33 @@ export const metadata: Metadata = {
     template: "%s | ModelRegistry",
   },
   description:
-    "The open community registry tracking primary foundation flagships and research checkpoints across OpenAI, Anthropic, Google DeepMind, DeepSeek, Meta AI, xAI, and more.",
+    "The open community registry tracking primary foundation flagships and research checkpoints across OpenAI, Anthropic, Google DeepMind, DeepSeek, Meta AI, xAI, Qwen, Mistral, Tencent, Z.ai, TypeSafe AI, and more.",
   keywords: [
     "ModelRegistry",
     "Model Registry",
     "Open Frontier AI Models",
     "Latest AI Models",
+    "Newest AI Model",
+    "AI Model Leaderboard",
+    "AI Model Pricing Comparison",
+    "Open Weights AI Models",
     "OpenAI latest model",
-    "Meta latest model",
     "Anthropic latest model",
     "Google latest model",
-    "OpenAI ChatGPT 5.6",
-    "Meta Llama 4 Maverick",
-    "Anthropic Claude Fable 5.1",
-    "Google Gemini 3.8 Flash",
+    "Meta latest model",
+    "xAI latest model",
+    "GPT-6.1 Sol",
+    "GPT-6 Astra",
+    "Claude Opus 5.5",
+    "Claude Fable 5.1",
+    "Gemini 4 Argon",
+    "Muse Spark 1.3",
     "DeepSeek V4.1 Flash",
-    "xAI Grok 4.6",
-    "Qwen 2.4T",
+    "Grok 4.7",
+    "Qwen3.8",
+    "Kimi K3",
+    "GLM 5.3",
+    "Jev TypeSafe",
     "AI Models List",
     "Frontier LLMs",
     "Public Model Registry",
@@ -139,22 +149,27 @@ export default function RootLayout({
     ],
   }
 
-  const dynamicFaqQuestions = Object.values(companies).slice(0, 6).map((c: Company) => {
-    const flagship = modelsData.find((m) => m.companyId === c.id && m.isCompanyFlagship)
-    const checkpoint = modelsData.find((m) => m.companyId === c.id && m.isLatestCheckpoint && !m.isCompanyFlagship)
-    return {
-      "@type": "Question",
-      name: `What is the latest AI model from ${c.name}?`,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: flagship
-          ? `${c.name}'s primary flagship model is ${flagship.name} (${flagship.parameters}, ${flagship.contextWindow} context). ${flagship.highlight}${
-              checkpoint ? ` Their latest research checkpoint is ${checkpoint.name} (${checkpoint.categoryLabel}).` : ""
-            }`
-          : `ModelRegistry tracks verified releases from ${c.name} in its open technical index.`,
-      },
-    }
-  })
+  const dynamicFaqQuestions = Object.values(companies)
+    .map((c: Company) => {
+      const flagship = modelsData.find((m) => m.companyId === c.id && m.isCompanyFlagship)
+      return { company: c, flagship }
+    })
+    .filter(({ flagship }) => Boolean(flagship))
+    .map(({ company: c, flagship }) => {
+      const checkpoint = modelsData.find(
+        (m) => m.companyId === c.id && m.isLatestCheckpoint && m.id !== flagship!.id
+      )
+      return {
+        "@type": "Question",
+        name: `What is the latest AI model from ${c.name}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `${c.name}'s primary flagship model is ${flagship!.name} (${flagship!.parameters}, ${flagship!.contextWindow} context). ${flagship!.highlight}${
+            checkpoint ? ` Their latest research checkpoint is ${checkpoint.name} (${checkpoint.categoryLabel}).` : ""
+          }`,
+        },
+      }
+    })
 
   const jsonLdFAQ = {
     "@context": "https://schema.org",

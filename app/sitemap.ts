@@ -68,7 +68,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   })
 
-  // 4. Machine-Readable & Agent Discovery Feeds
+  // 4. Machine-Readable & Agent Discovery Feeds (crawlable text content only —
+  // JSON APIs and CLI text endpoints are intentionally excluded to conserve
+  // crawl budget for indexable pages)
   const feedRoutes: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/llms.txt`,
@@ -87,18 +89,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "hourly",
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/latest`,
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/api/v1/models`,
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 0.7,
     },
   ]
 

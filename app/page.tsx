@@ -140,6 +140,21 @@ export default function Home() {
       .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
   }
 
+  // Crawler-facing copy stays accurate as labs and releases are added.
+  const labNames = Object.values(companies)
+    .map((c) => c.name)
+    .join(", ")
+  const newestReleaseMonth = (() => {
+    const newest = [...modelsData].sort((a, b) =>
+      b.releaseDate.localeCompare(a.releaseDate)
+    )[0]
+    if (!newest) return ""
+    return new Date(`${newest.releaseDate.slice(0, 7)}-02`).toLocaleDateString(
+      "en-US",
+      { month: "long", year: "numeric" }
+    )
+  })()
+
   return (
     <main className="relative min-h-screen">
       <Header />
@@ -151,9 +166,9 @@ export default function Home() {
         <article style={{ maxWidth: "48rem", margin: "0 auto", padding: "2rem 1.5rem", fontFamily: "Plus Jakarta Sans, system-ui, sans-serif", lineHeight: 1.6, color: "#111" }}>
           <h1>ModelRegistry — Frontier AI Model Telemetry Index</h1>
           <p>
-            Official open machine-readable registry of premier frontier artificial intelligence models across OpenAI, Anthropic, Google DeepMind, DeepSeek, Meta AI, xAI, Mistral, Alibaba Cloud, Tencent Hunyuan, Z.ai, MiniMax, NVIDIA, Xiaomi, and Moonshot AI.
+            Official open machine-readable registry of premier frontier artificial intelligence models across {labNames}.
           </p>
-          <h2>Active Heavyweight Flagships (September 2026)</h2>
+          <h2>Active Heavyweight Flagships ({newestReleaseMonth})</h2>
           <ul>
             {modelsData.map((m) => (
               <li key={m.id}>

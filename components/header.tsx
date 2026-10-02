@@ -16,6 +16,19 @@ const NAV_ITEMS = [
   { label: "Changelog", short: "Changes", href: "/timeline" },
 ] as const
 
+// Freshness stamp derived from the newest tracked release — stays accurate
+// as the registry grows, with no manual month edits needed.
+const newestReleaseLabel = (() => {
+  const newest = [...modelsData].sort((a, b) =>
+    b.releaseDate.localeCompare(a.releaseDate)
+  )[0]
+  if (!newest) return ""
+  return new Date(`${newest.releaseDate.slice(0, 7)}-02`).toLocaleDateString(
+    "en-US",
+    { month: "short", year: "numeric" }
+  )
+})()
+
 function NavLinks({ pathname }: { pathname: string }) {
   function isLinkActive(href: string) {
     if (href === "/") return pathname === "/"
@@ -122,7 +135,7 @@ export default function Header() {
             </span>
             <span className="truncate tracking-wide">
               <span className="font-medium text-black/70 dark:text-zinc-200">Live index</span>
-              <span className="text-black/30 dark:text-zinc-500"> · {modelsData.length} models · Updated Sep 2026</span>
+              <span className="text-black/30 dark:text-zinc-500"> · {modelsData.length} models · Updated {newestReleaseLabel}</span>
             </span>
           </div>
 

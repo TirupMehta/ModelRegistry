@@ -4,6 +4,15 @@ import FeedbackToggle from "@/components/feedback-toggle"
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
+  const newest = [...modelsData].sort((a, b) =>
+    b.releaseDate.localeCompare(a.releaseDate)
+  )[0]
+  const updatedLabel = newest
+    ? new Date(`${newest.releaseDate.slice(0, 7)}-02`).toLocaleDateString(
+        "en-US",
+        { month: "short", year: "numeric" }
+      )
+    : ""
 
   return (
     <footer className="border-t border-black/10 dark:border-white/[0.08] max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 py-8">
@@ -13,7 +22,7 @@ export default function Footer() {
             © {currentYear} ModelRegistry
           </p>
           <p className="mt-0.5 text-[11px] font-sans tabular-nums text-black/45 dark:text-zinc-500">
-            The open technical index · {modelsData.length} models · Updated Sep 2026
+            The open technical index · {modelsData.length} models{updatedLabel ? ` · Updated ${updatedLabel}` : ""}
           </p>
         </div>
 

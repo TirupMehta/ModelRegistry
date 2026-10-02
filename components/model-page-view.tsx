@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { type ModelItem } from "@/data/models"
+import { modelsData, type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
 import { formatPrice, formatDate } from "@/lib/utils"
 import Header from "@/components/header"
@@ -34,6 +34,12 @@ export default function ModelPageView({ model }: ModelPageViewProps) {
   const [activeSnippetTab, setActiveSnippetTab] = useState<"curl" | "python" | "local">("curl")
 
   const company = companies[model.companyId]
+
+  // Same-lab siblings for crawlable internal linking (newest first).
+  const siblings = modelsData
+    .filter((m) => m.companyId === model.companyId && m.id !== model.id)
+    .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
+    .slice(0, 3)
 
   const handleCopyLink = () => {
     try {
@@ -467,6 +473,41 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
             </Link>
           </div>
         </div>
+
+        {/* Same-lab internal links: siblings + lab profile */}
+        {siblings.length > 0 && (
+          <nav
+            aria-label={`More models from ${model.companyName}`}
+            className="mb-6 sm:mb-8"
+          >
+            <h2 className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 uppercase tracking-widest leading-relaxed mb-3">
+              More from {model.companyName}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              {siblings.map((sibling) => (
+                <Link
+                  key={sibling.id}
+                  href={`/models/${sibling.id}`}
+                  className="group block p-3.5 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] hover:border-[#ff5d2e]/40 transition-colors duration-150"
+                >
+                  <div className="text-sm font-medium tracking-tight text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150 truncate">
+                    {sibling.name}
+                  </div>
+                  <div className="mt-1 text-[11px] font-sans text-black/45 dark:text-zinc-400 truncate">
+                    {sibling.categoryLabel} · {formatDate(sibling.releaseDate)}
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <Link
+              href={`/companies/${model.companyId}`}
+              className="mt-3 inline-flex items-center gap-1 text-[11px] font-sans uppercase tracking-wider text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] transition-colors duration-150"
+            >
+              <span>All {model.companyName} models</span>
+              <ChevronRight size={12} />
+            </Link>
+          </nav>
+        )}
       </main>
 
       {/* Share Studio Modal */}

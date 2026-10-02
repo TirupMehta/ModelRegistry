@@ -42,6 +42,9 @@ export default function TimelinePage() {
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         <div className="space-y-4 text-base md:text-[17px] font-normal text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
+            <h1 className="text-2xl sm:text-3xl font-medium tracking-tight text-black dark:text-white">
+              Release Timeline
+            </h1>
             <p>
               The chronological release log of major foundation model checkpoints and research breakthroughs.
             </p>

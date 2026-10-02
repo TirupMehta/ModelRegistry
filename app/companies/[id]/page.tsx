@@ -133,6 +133,17 @@ export default async function CompanyPage({ params }: Props) {
     url: `${SITE_URL}/companies/${lab.id}`,
   }
 
+  // Mirrors the visible LEDGER / LABORATORIES / {LAB} breadcrumb trail.
+  const jsonLdBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Ledger", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Laboratories", item: `${SITE_URL}/companies` },
+      { "@type": "ListItem", position: 3, name: lab.name, item: `${SITE_URL}/companies/${lab.id}` },
+    ],
+  }
+
   return (
     <main className="relative min-h-screen">
       <Header />
@@ -148,6 +159,10 @@ export default async function CompanyPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdCollection) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }}
       />
 
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
