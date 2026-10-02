@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
+import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import TextWithBlur from "@/components/text-with-blur"
@@ -9,7 +10,7 @@ import { modelsData, type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
 import { formatDate } from "@/lib/utils"
 import { selectFeedback, tapFeedback, successFeedback } from "@/lib/feedback"
-import { ArrowUpRight, Terminal, Copy, Check, X, SearchX } from "lucide-react"
+import { ArrowUpRight, Terminal, Copy, Check, X, SearchX, ChevronDown } from "lucide-react"
 
 type ViewTab = "flagships" | "latest-drops" | "open-weights" | "visual" | "all"
 
@@ -42,7 +43,8 @@ export default function Home() {
     setActiveModalModel(model)
   }
 
-  // URL Deep-Linking via ?model= query parameter (clean, no # hash)
+  // URL Deep-Linking via ?model= query parameter (clean, no # hash).
+  // Also honors ?q= so the WebSite SearchAction target actually filters.
   useEffect(() => {
     const handleUrlQuery = () => {
       const params = new URLSearchParams(window.location.search)
@@ -52,6 +54,10 @@ export default function Home() {
         if (found) {
           setActiveModalModel(found)
         }
+      }
+      const q = params.get("q")
+      if (q) {
+        setSearchQuery(q)
       }
     }
 
@@ -632,6 +638,51 @@ export default function Home() {
                   className="text-white dark:text-black group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-150 ease-out shrink-0"
                 />
               </a>
+            </div>
+          </div>
+        </TextWithBlur>
+
+        {/* Latest-model FAQ — visible answers for "latest {lab} model" queries.
+            Mirrors the FAQPage structured data in the root layout. */}
+        <TextWithBlur delay={320}>
+          <div className="mt-12">
+            <h2 className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold mb-4">
+              Latest model by lab — quick answers
+            </h2>
+            <div className="divide-y divide-black/10 dark:divide-white/[0.06] border-y border-black/10 dark:border-white/[0.08]">
+              {Object.values(companies).map((company) => {
+                const flagship = modelsData.find(
+                  (m) => m.companyId === company.id && m.isCompanyFlagship
+                )
+                if (!flagship) return null
+                return (
+                  <details key={company.id} className="group py-3">
+                    <summary className="flex items-center justify-between gap-3 text-sm font-medium tracking-tight text-black dark:text-white cursor-pointer list-none [&::-webkit-details-marker]:hidden hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150">
+                      <span>What is the latest {company.name} model?</span>
+                      <ChevronDown
+                        size={14}
+                        className="shrink-0 opacity-40 group-open:rotate-180 transition-transform duration-150"
+                      />
+                    </summary>
+                    <p className="mt-2 text-[13px] font-normal text-black/60 dark:text-zinc-400 leading-relaxed max-w-2xl">
+                      <Link
+                        href={`/models/${flagship.id}`}
+                        className="font-medium text-black dark:text-white hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
+                      >
+                        {flagship.name}
+                      </Link>{" "}
+                      (released {formatDate(flagship.releaseDate)}) —{" "}
+                      {flagship.highlight}{" "}
+                      <Link
+                        href={`/companies/${company.id}`}
+                        className="whitespace-nowrap font-medium text-[#ff5d2e] dark:text-[#ff7347] hover:underline underline-offset-2"
+                      >
+                        Full {company.shortName} profile
+                      </Link>
+                    </p>
+                  </details>
+                )
+              })}
             </div>
           </div>
         </TextWithBlur>

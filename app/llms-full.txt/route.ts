@@ -5,7 +5,9 @@ import { formatPrice } from "@/lib/utils"
 export const dynamic = "force-dynamic"
 
 function formatDate(iso: string): string {
-  const d = new Date(iso)
+  // Noon-local parse: plain YYYY-MM-DD is midnight UTC, which renders as the
+  // previous day in the Americas. Midday never shifts the calendar date.
+  const d = new Date(`${iso}T12:00:00`)
   return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
 }
 

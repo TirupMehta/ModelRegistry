@@ -58,7 +58,10 @@ export default function CompaniesPage() {
 
             return (
               <TextWithBlur key={company.id} delay={index * 35}>
-                <div className="card-lift p-4 sm:p-6 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#111317] shadow-sm [transition:border-color,background-color_120ms_ease-out]">
+                <div
+                  id={company.id}
+                  className="card-lift scroll-mt-24 p-4 sm:p-6 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#111317] shadow-sm [transition:border-color,background-color_120ms_ease-out]"
+                >
                   {/* Lab Header */}
                   <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 mb-2.5 sm:mb-4">
                     <div className="flex items-start gap-2.5 min-w-0 flex-1">

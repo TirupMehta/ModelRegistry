@@ -55,7 +55,10 @@ export default function TimelinePage() {
         <div className="flex flex-col list-hover-group space-y-8">
           {Object.entries(groupedTimeline).map(([monthYear, models], gIndex) => (
             <TextWithBlur key={monthYear} delay={gIndex * 40}>
-              <div className="border-l border-black/10 dark:border-white/[0.08] pl-3.5 sm:pl-6 ml-1.5 sm:ml-2 relative">
+              <div
+                id={monthYear.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
+                className="border-l border-black/10 dark:border-white/[0.08] pl-3.5 sm:pl-6 ml-1.5 sm:ml-2 relative scroll-mt-24"
+              >
                 {/* Technical node indicator */}
                 <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-[#ff5d2e] ring-4 ring-[#ff5d2e]/15" />
 

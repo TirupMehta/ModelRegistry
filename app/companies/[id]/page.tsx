@@ -24,14 +24,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!lab) {
     return {
-      title: "Laboratory Not Found | ModelRegistry",
+      title: "Laboratory Not Found",
       description: "The requested AI laboratory could not be located in the registry.",
     }
   }
 
   const labModels = modelsData.filter((m) => m.companyId === lab.id)
   const flagship = labModels.find((m) => m.isCompanyFlagship)
-  const title = `${lab.name} Models — ${flagship ? flagship.name : "Flagship"} & All Checkpoints | ModelRegistry`
+  const title = `${lab.name} Models — ${flagship ? flagship.name : "Flagship"} & All Checkpoints`
   const description = `${lab.description} Track every verified ${lab.name} release: ${labModels
     .slice(0, 4)
     .map((m) => m.name)

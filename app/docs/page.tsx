@@ -13,7 +13,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react"
 const SITE_URL = "https://modelregistry.tirup.in"
 
 export const metadata: Metadata = {
-  title: "API & Feeds Reference — Endpoints, Parameters, Examples | ModelRegistry",
+  title: "API & Feeds Reference — Endpoints, Parameters, Examples",
   description:
     "Free unauthenticated REST API, RSS, llms.txt, CLI, badges and health endpoints for the open frontier AI model registry. Authentication, rate limits, errors, full field reference, and copy-paste examples.",
   alternates: {

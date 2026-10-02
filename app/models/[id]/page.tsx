@@ -19,12 +19,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!model) {
     return {
-      title: "Model Not Found | ModelRegistry",
+      title: "Model Not Found",
       description: "The requested model specification could not be located in the registry.",
     }
   }
 
-  const title = `${model.name} (${model.companyName}) — Specs, Context & Benchmarks | ModelRegistry`
+  const title = `${model.name} (${model.companyName}) — Specs, Context & Benchmarks`
   const description = `${model.highlight} Context: ${model.contextWindow}. Architecture: ${model.parameters}. Release: ${model.releaseDate}.`
 
   return {
@@ -104,11 +104,36 @@ export default async function ModelPage({ params }: Props) {
     url: `https://modelregistry.tirup.in/models/${model.id}`,
   }
 
+  // Mirrors the visible LEDGER / {LAB} / {id} breadcrumb trail.
+  const jsonLdBreadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Ledger", item: "https://modelregistry.tirup.in/" },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: model.companyName,
+        item: `https://modelregistry.tirup.in/companies/${model.companyId}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: model.name,
+        item: `https://modelregistry.tirup.in/models/${model.id}`,
+      },
+    ],
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }}
       />
       <ModelPageView model={model} />
     </>

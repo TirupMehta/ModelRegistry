@@ -38,6 +38,22 @@ export default function LeaderboardPage() {
     setActiveModalModel(model)
   }
 
+  // Computable leaders stay accurate as registry pricing and context data
+  // change — no hardcoded figures to go stale.
+  const cheapestThree = [...modelsData]
+    .filter((m) => !m.pricingUnit)
+    .sort((a, b) => a.pricing.input - b.pricing.input)
+    .slice(0, 3)
+  const cheapestLeader = cheapestThree
+    .map((m) => `${m.name} ($${m.pricing.input}/M)`)
+    .join(" / ")
+  const contextThree = [...modelsData]
+    .sort((a, b) => b.contextWindowTokens - a.contextWindowTokens)
+    .slice(0, 3)
+  const contextLeader = contextThree
+    .map((m) => `${m.name} (${(m.contextWindowTokens / 1e6).toFixed(2)}M)`)
+    .join(" / ")
+
   const categories: ComparisonCategory[] = [
     {
       title: "Reasoning & STEM Intelligence",
@@ -77,14 +93,14 @@ export default function LeaderboardPage() {
       title: "Context Window Capacity",
       icon: Maximize,
       description: "Maximum tokens accommodated in a single inference session without losing retrieval precision or needle recall.",
-      leader: "Llama 4 Scout (1.31M) / OpenAI Astra (1.05M) / Gemini 3.8 (1.048M)",
+      leader: contextLeader,
       models: [...modelsData].sort((a, b) => b.contextWindowTokens - a.contextWindowTokens).slice(0, 5),
     },
     {
       title: "Inference Cost & Value",
       icon: Coins,
       description: "Lowest input/output pricing per 1M tokens combined with near-frontier intelligence for production applications.",
-      leader: "Muse Voice ($0.04/M) / Muse Spark ($0.05/M) / DeepSeek Flash ($0.12/M)",
+      leader: cheapestLeader,
       models: [...modelsData].filter((m) => !m.pricingUnit).sort((a, b) => a.pricing.input - b.pricing.input).slice(0, 5),
     },
   ]
@@ -109,10 +125,17 @@ export default function LeaderboardPage() {
         <div className="flex flex-col list-hover-group space-y-6">
           {categories.map((category, index) => {
             const Icon = category.icon
+            const anchorId = category.title
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/(^-|-$)/g, "")
 
             return (
               <TextWithBlur key={category.title} delay={index * 35}>
-                <div className="card-lift p-4 sm:p-6 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#111317] shadow-sm [transition:border-color,background-color_120ms_ease-out]">
+                <div
+                  id={anchorId}
+                  className="card-lift scroll-mt-24 p-4 sm:p-6 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#111317] shadow-sm [transition:border-color,background-color_120ms_ease-out]"
+                >
                   {/* Category Header */}
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3">
