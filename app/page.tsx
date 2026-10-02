@@ -10,7 +10,7 @@ import { modelsData, type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
 import { formatDate } from "@/lib/utils"
 import { selectFeedback, tapFeedback, successFeedback } from "@/lib/feedback"
-import { ArrowUpRight, Terminal, Copy, Check, X, SearchX, ChevronDown } from "lucide-react"
+import { ArrowUpRight, Terminal, Copy, Check, X, SearchX } from "lucide-react"
 
 type ViewTab = "flagships" | "latest-drops" | "open-weights" | "visual" | "all"
 
@@ -642,45 +642,51 @@ export default function Home() {
           </div>
         </TextWithBlur>
 
-        {/* Latest-model FAQ — visible answers for "latest {lab} model" queries.
-            Mirrors the FAQPage structured data in the root layout. */}
+        {/* Latest flagship by lab — compact quick-answer index */}
         <TextWithBlur delay={320}>
           <div className="mt-12">
-            <h2 className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold mb-4">
-              Latest model by lab — quick answers
-            </h2>
-            <div className="divide-y divide-black/10 dark:divide-white/[0.06] border-y border-black/10 dark:border-white/[0.08]">
+            <div className="flex items-baseline justify-between gap-3 mb-2">
+              <h2 className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold">
+                Latest flagship by lab
+              </h2>
+              <Link
+                href="/companies"
+                className="text-[11px] font-sans font-medium text-[#ff5d2e] dark:text-[#ff7347] hover:underline underline-offset-2 shrink-0"
+              >
+                All labs
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 border-y border-black/10 dark:border-white/[0.08]">
               {Object.values(companies).map((company) => {
                 const flagship = modelsData.find(
                   (m) => m.companyId === company.id && m.isCompanyFlagship
                 )
                 if (!flagship) return null
+                const stamp = new Date(
+                  `${flagship.releaseDate.slice(0, 7)}-02`
+                ).toLocaleDateString("en-US", { month: "short", year: "numeric" })
                 return (
-                  <details key={company.id} className="group py-3">
-                    <summary className="flex items-center justify-between gap-3 text-sm font-medium tracking-tight text-black dark:text-white cursor-pointer list-none [&::-webkit-details-marker]:hidden hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150">
-                      <span>What is the latest {company.name} model?</span>
-                      <ChevronDown
-                        size={14}
-                        className="shrink-0 opacity-40 group-open:rotate-180 transition-transform duration-150"
-                      />
-                    </summary>
-                    <p className="mt-2 text-[13px] font-normal text-black/60 dark:text-zinc-400 leading-relaxed max-w-2xl">
-                      <Link
-                        href={`/models/${flagship.id}`}
-                        className="font-medium text-black dark:text-white hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
-                      >
-                        {flagship.name}
-                      </Link>{" "}
-                      (released {formatDate(flagship.releaseDate)}) —{" "}
-                      {flagship.highlight}{" "}
-                      <Link
-                        href={`/companies/${company.id}`}
-                        className="whitespace-nowrap font-medium text-[#ff5d2e] dark:text-[#ff7347] hover:underline underline-offset-2"
-                      >
-                        Full {company.shortName} profile
-                      </Link>
-                    </p>
-                  </details>
+                  <div
+                    key={company.id}
+                    className="flex items-baseline gap-2 py-2 border-b border-black/5 dark:border-white/[0.05] text-[13px] font-sans min-w-0"
+                  >
+                    <Link
+                      href={`/companies/${company.id}`}
+                      className="text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150 shrink-0"
+                    >
+                      {company.shortName}
+                    </Link>
+                    <span className="text-black/20 dark:text-white/20 select-none">→</span>
+                    <Link
+                      href={`/models/${flagship.id}`}
+                      className="font-medium tracking-tight text-black dark:text-white hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150 truncate"
+                    >
+                      {flagship.name}
+                    </Link>
+                    <span className="ml-auto text-[11px] tabular-nums text-black/35 dark:text-zinc-500 shrink-0">
+                      {stamp}
+                    </span>
+                  </div>
                 )
               })}
             </div>
