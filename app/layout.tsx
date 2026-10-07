@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google"
+import { sans, display } from "./fonts"
 import "./globals.css"
 import AmbientShader from "@/components/ambient-shader"
 import FeedbackInit from "@/components/feedback-init"
@@ -8,20 +8,6 @@ import { companies, type Company } from "@/data/companies"
 import { safeJsonLd } from "@/lib/utils"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
-
-const sans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
-})
-
-const display = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://modelregistry.tirup.in"),
