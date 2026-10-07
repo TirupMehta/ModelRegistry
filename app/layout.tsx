@@ -4,6 +4,7 @@ import "./globals.css"
 import AmbientShader from "@/components/ambient-shader"
 import FeedbackInit from "@/components/feedback-init"
 import { modelsData } from "@/data/models"
+import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -109,7 +110,11 @@ export default function RootLayout({
   const jsonLdDataset = {
     "@context": "https://schema.org",
     "@type": "Dataset",
+    "@id": "https://modelregistry.tirup.in/api/v1/models",
+    identifier: "https://modelregistry.tirup.in/api/v1/models",
     name: "Frontier AI Models Specification Registry",
+    version: datasetRevision.datasetVersion,
+    dateModified: datasetRevision.revisedAt,
     description:
       "Source-linked specifications, context limits, pricing, release dates, and lab-published benchmark metrics for active frontier AI foundation models and research checkpoints.",
     url: "https://modelregistry.tirup.in",
@@ -117,6 +122,7 @@ export default function RootLayout({
       "@type": "Organization",
       name: "ModelRegistry Open Source Contributors",
       url: "https://github.com/TirupMehta/ModelRegistry",
+      sameAs: ["https://github.com/TirupMehta/ModelRegistry"],
     },
     license: "https://opensource.org/licenses/MIT",
     temporalCoverage,
