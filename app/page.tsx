@@ -102,7 +102,9 @@ export default function Home() {
   // NEW_DROPS_WINDOW_DAYS, newest releaseDate first.
   const filteredModels = useMemo(() => {
     const filtered = modelsData.filter((model) => {
-      if (activeTab === "flagships" && !model.isCompanyFlagship) return false
+      // Flagships tab is the LLM-frontier landing strip: company flagships
+      // except pure video generators (they live under the Visual tab).
+      if (activeTab === "flagships" && (!model.isCompanyFlagship || model.category === "video")) return false
       if (activeTab === "latest-drops" && !isNewDrop(model.releaseDate)) return false
       if (activeTab === "open-weights" && !model.openWeights) return false
       if (activeTab === "visual" && model.category !== "image" && model.category !== "video") return false
@@ -129,7 +131,7 @@ export default function Home() {
   // Filter counters
   const counts = useMemo(() => {
     return {
-      flagships: modelsData.filter((m) => m.isCompanyFlagship).length,
+      flagships: modelsData.filter((m) => m.isCompanyFlagship && m.category !== "video").length,
       latestDrops: modelsData.filter((m) => isNewDrop(m.releaseDate)).length,
       openWeights: modelsData.filter((m) => m.openWeights).length,
       visual: modelsData.filter((m) => m.category === "image" || m.category === "video").length,
