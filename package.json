@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "validate": "node scripts/validate-registry.js",
-    "test": "node scripts/validate-registry.js && node scripts/test-fallback.js && node scripts/test-site-integrity.js",
+    "test": "node scripts/validate-registry.js && node scripts/test-fallback.js && node scripts/test-site-integrity.js && node scripts/test-provenance.js",
     "test:routes": "node scripts/test-routes.js"
   },
   "dependencies": {

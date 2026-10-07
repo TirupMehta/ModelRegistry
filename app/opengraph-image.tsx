@@ -13,6 +13,13 @@ export default async function Image() {
   const flagships = modelsData.filter((m) => m.isCompanyFlagship)
   const peakContext = modelsData.reduce((max, m) => Math.max(max, m.contextWindowTokens), 0)
   const peakContextLabel = peakContext > 0 ? `${peakContext.toLocaleString("en-US")} Tokens` : "—"
+  // Content-based month of the newest tracked release — never hard-coded.
+  const newestRelease = [...modelsData].sort((a, b) =>
+    b.releaseDate.localeCompare(a.releaseDate)
+  )[0]
+  const radarLabel = newestRelease
+    ? `Frontier Radar • ${new Date(`${newestRelease.releaseDate.slice(0, 7)}-02`).toLocaleDateString("en-US", { month: "long", year: "numeric" })}`
+    : "Frontier Radar"
   return new ImageResponse(
     (
       <div
@@ -66,7 +73,7 @@ export default async function Image() {
               color: "rgba(255, 255, 255, 0.6)",
             }}
           >
-            Live Frontier Radar • September 2026
+            {radarLabel}
           </div>
         </div>
 
@@ -127,10 +134,10 @@ export default async function Image() {
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
-                FRESHNESS
+                SOURCES CHECKED
               </span>
               <span style={{ fontSize: "20px", fontWeight: 500, color: "#10b981" }}>
-                Real-Time Verified
+                {modelsData.length} Models Indexed
               </span>
             </div>
           </div>

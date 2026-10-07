@@ -36,6 +36,15 @@ export async function GET(req: NextRequest) {
     const architecture = model ? model.parameters : labNewest ? labNewest.name : "All Top Labs"
     const badge = model ? model.statusBadge : lab ? `${labModels.length} MODELS TRACKED` : "SOTA INDEX"
     const accentColor = company?.accentColor || "#ff5d2e"
+    // Badge reflects the record's actual verification state — never a
+    // blanket "verified" claim.
+    const recordState = model
+      ? model.verificationStatus === "verified"
+        ? "VERIFIED RECORD"
+        : model.verificationStatus === "partially_verified"
+          ? "SOURCE-LINKED RECORD"
+          : model.verificationStatus.toUpperCase().replace(/_/g, " ") + " RECORD"
+      : "SOURCE-LINKED INDEX"
 
     return new ImageResponse(
       (
@@ -124,7 +133,7 @@ export async function GET(req: NextRequest) {
                   backgroundColor: "#00e599",
                 }}
               />
-              <span>VERIFIED RECORD</span>
+              <span>{recordState}</span>
             </div>
           </div>
 

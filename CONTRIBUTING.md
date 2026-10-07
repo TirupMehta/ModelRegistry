@@ -46,12 +46,30 @@ Open `data/models.ts` and add your model to the `modelsData` array:
   highlight: "Sub-80ms real-time audio-visual foundation model for live voice & vision reasoning.",
   modalities: ["Text", "Vision", "Audio"],
   links: {
-    announcement: "https://ai.meta.com/blog/...", // Official announcement / paper (MANDATORY)
+    announcement: "https://ai.meta.com/blog/...", // Official announcement / paper (MANDATORY, must be live)
     playground: "https://...",                    // Optional API playground or chat URL
     weights: "https://huggingface.co/...",       // Optional Hugging Face weights URL
   },
+  // Provenance is mandatory — the validator rejects records without it:
+  sources: [{                                     // >= 1 live official source (see links above)
+    url: "https://ai.meta.com/blog/...",
+    publisher: "Meta",
+    title: "Muse Spark 1.3 announcement",
+    accessedAt: "2026-10-07",                    // date you confirmed the URL loads
+    sourceType: "announcement",                  // announcement | api-docs | pricing | model-card | paper | weights | benchmark | console
+    live: true,
+  }],
+  fieldSources: {                                // per-field citations (cite only pages you read)
+    releaseDate: [{ url: "https://ai.meta.com/blog/...", publisher: "Meta", title: "Muse Spark 1.3 announcement", accessedAt: "2026-10-07", sourceType: "announcement", live: true }],
+    pricing: [{ url: "https://...", publisher: "Meta", title: "Model API pricing", accessedAt: "2026-10-07", sourceType: "pricing", live: true }],
+  },
+  lastVerifiedAt: "2026-10-07",                  // date of your source check
+  verificationStatus: "partially_verified",      // verified ONLY if you read every core field against live sources
+  changeLog: [{ date: "2026-09-03", summary: "Initial registry entry.", sources: ["https://ai.meta.com/blog/..."] }],
 }
 ```
+
+> **📎 The Provenance Rule (STRICT)**: every record must cite live official sources (`sources`), carry per-field citations for the facts you personally confirmed (`fieldSources`), a `lastVerifiedAt` date, a `verificationStatus`, and a `changeLog`. Never cite a page you did not open. Never mark `verified` unless every core field (release date, context, output limit, parameters, license, pricing, modalities, benchmarks, flagship/latest status) was read against a live primary source. Dead links are never cited — find the canonical URL or leave the record `unverified`. Figures without a citable source are omitted or explicitly marked, never guessed. Full definitions: [/methodology](https://modelregistry.tirup.in/methodology).
 
 > **💡 The Flagship Rule**: Each company has exactly **1 active flagship** (`isCompanyFlagship: true`). If your new model is the lab's primary flagship, set `isCompanyFlagship: true` on it and set `isCompanyFlagship: false` on the lab's previous flagship.
 
@@ -94,5 +112,7 @@ A public profile page (`/companies/laboratory-id`) with the lab's full release h
 ---
 
 ## 📋 Quality Standards
-- **Official Source Required**: Every model must link to an official announcement, technical report, arXiv paper, or verified Hugging Face repository. No rumors or social leaks.
-- **Accurate API Pricing**: For open-weights models, provide the lab's official hosted API rate per 1M tokens.
+- **Official Source Required**: Every model must link to an official announcement, technical report, arXiv paper, or verified Hugging Face repository. No rumors or social leaks. Links must load — dead URLs are never cited.
+- **No guessing**: values the source does not state are omitted or marked, never inferred. Benchmark figures are lab-reported; do not present them as independently measured.
+- **Accurate API Pricing**: For open-weights models, provide the lab's official hosted API rate per 1M tokens. Audio/per-second billed models use `pricingUnit: "per second"` with the provider's headline rate — never token-price equivalents you computed.
+- **Fresh labels only**: flagship/latest designations require sources checked within the last 90 days; the validator enforces this automatically.

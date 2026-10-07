@@ -245,6 +245,24 @@ export default async function CompanyPage({ params }: Props) {
           </div>
         </TextWithBlur>
 
+        {/* Visible answer matching the FAQPage schema below */}
+        <TextWithBlur delay={110}>
+          <div className="mb-6 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4 sm:p-5">
+            <h2 className="text-sm font-medium tracking-tight text-black dark:text-white mb-1.5">
+              What is the latest AI model from {lab.name}?
+            </h2>
+            <p className="text-[13px] font-sans text-black/60 dark:text-zinc-400 leading-relaxed">
+              {faqAnswer}{" "}
+              <Link
+                href="/methodology"
+                className="text-[#ff5d2e] hover:underline underline-offset-2 whitespace-nowrap"
+              >
+                How we define “latest”
+              </Link>
+            </p>
+          </div>
+        </TextWithBlur>
+
         {/* Release Timeline (month-grouped rail, mirrors /timeline) */}
         <TextWithBlur delay={140}>
           <div className="flex items-baseline justify-between gap-3 mb-5">

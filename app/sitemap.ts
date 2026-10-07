@@ -1,42 +1,99 @@
 import { MetadataRoute } from "next"
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
+import { datasetRevision } from "@/data/revision"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://modelregistry.tirup.in"
+  // Content-based freshness: the last real data revision — never build time.
+  const revisedAt = new Date(`${datasetRevision.revisedAt}T00:00:00Z`)
   const now = new Date()
 
   // 1. Primary Hub Pages
   const coreRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: now,
+      lastModified: revisedAt,
       changeFrequency: "daily",
       priority: 1.0,
     },
     {
       url: `${baseUrl}/leaderboard`,
-      lastModified: now,
+      lastModified: revisedAt,
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/companies`,
-      lastModified: now,
+      lastModified: revisedAt,
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/timeline`,
-      lastModified: now,
+      lastModified: revisedAt,
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/docs`,
-      lastModified: now,
+      lastModified: revisedAt,
       changeFrequency: "weekly",
       priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/methodology`,
+      lastModified: revisedAt,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/editorial-policy`,
+      lastModified: revisedAt,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/changelog`,
+      lastModified: revisedAt,
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/flagships`,
+      lastModified: revisedAt,
+      changeFrequency: "daily",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/pricing`,
+      lastModified: revisedAt,
+      changeFrequency: "daily",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/context`,
+      lastModified: revisedAt,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/licenses`,
+      lastModified: revisedAt,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/modalities`,
+      lastModified: revisedAt,
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/retired`,
+      lastModified: revisedAt,
+      changeFrequency: "monthly",
+      priority: 0.4,
     },
   ]
 
@@ -74,21 +131,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const feedRoutes: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/llms.txt`,
-      lastModified: now,
+      lastModified: revisedAt,
       changeFrequency: "daily",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/llms-full.txt`,
-      lastModified: now,
+      lastModified: revisedAt,
       changeFrequency: "daily",
       priority: 0.7,
     },
     {
       url: `${baseUrl}/rss.xml`,
-      lastModified: now,
+      lastModified: revisedAt,
       changeFrequency: "hourly",
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/feed.json`,
+      lastModified: revisedAt,
+      changeFrequency: "hourly",
+      priority: 0.7,
     },
   ]
 

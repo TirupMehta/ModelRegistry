@@ -25,7 +25,54 @@ function loadTsModule(relPath) {
 
 const { modelsData } = loadTsModule("../data/models.ts")
 const { companies } = loadTsModule("../data/companies.ts")
-const { leaderboardSpotlights } = loadTsModule("../data/leaderboard.ts")
+const { leaderboardSpotlights, leaderboardMethodology } = loadTsModule("../data/leaderboard.ts")
+
+// Records labelled current (flagship / latest checkpoint) must have been
+// source-checked within this window, or the label is stale.
+const VERIFICATION_FRESHNESS_DAYS = 90
+const VERIFICATION_STATUSES = new Set(["verified", "partially_verified", "unverified", "retired"])
+const SOURCE_TYPES = new Set([
+  "announcement",
+  "api-docs",
+  "pricing",
+  "model-card",
+  "paper",
+  "weights",
+  "benchmark",
+  "console",
+])
+const CORE_SOURCED_FIELDS = [
+  "releaseDate",
+  "contextWindow",
+  "maxOutputTokens",
+  "parameters",
+  "license",
+  "pricing",
+  "modalities",
+  "isCompanyFlagship",
+  "isLatestCheckpoint",
+]
+
+function isValidDate(s) {
+  return (
+    typeof s === "string" &&
+    /^\d{4}-\d{2}-\d{2}$/.test(s) &&
+    !Number.isNaN(new Date(`${s}T00:00:00Z`).getTime())
+  )
+}
+
+function isHttpUrl(u) {
+  try {
+    const parsed = new URL(u)
+    return parsed.protocol === "http:" || parsed.protocol === "https:"
+  } catch {
+    return false
+  }
+}
+
+function daysSince(dateStr) {
+  return (Date.now() - new Date(`${dateStr}T00:00:00Z`).getTime()) / (1000 * 60 * 60 * 24)
+}
 
 const errors = []
 const seenIds = new Set()
@@ -131,6 +178,111 @@ modelsData.forEach((model, index) => {
   }
 })
 
+// Verify provenance: every published record must explain where its claims
+// come from, and current/latest/flagship labels require live evidence.
+modelsData.forEach((model, index) => {
+  const prefix = `Model #${index + 1} [${model.id || "MISSING_ID"}]`
+  const isCurrent = Boolean(model.isCompanyFlagship || model.isLatestCheckpoint)
+
+  if (!VERIFICATION_STATUSES.has(model.verificationStatus)) {
+    errors.push(
+      `${prefix}: Unknown verificationStatus '${model.verificationStatus}'. Valid: ${Array.from(VERIFICATION_STATUSES).join(", ")}.`
+    )
+  }
+  if (!isValidDate(model.lastVerifiedAt)) {
+    errors.push(`${prefix}: 'lastVerifiedAt' must be YYYY-MM-DD (got: ${model.lastVerifiedAt}).`)
+  }
+  if (!Array.isArray(model.sources) || model.sources.length === 0) {
+    errors.push(`${prefix}: Published model has no official source. Add at least one SourceRef.`)
+  } else {
+    model.sources.forEach((s, sIdx) => {
+      if (!s || !isHttpUrl(s.url)) {
+        errors.push(`${prefix}: sources[${sIdx}] has a malformed URL ('${s && s.url}').`)
+      }
+      if (!s || typeof s.publisher !== "string" || s.publisher.trim().length === 0) {
+        errors.push(`${prefix}: sources[${sIdx}] needs a publisher.`)
+      }
+      if (!s || typeof s.title !== "string" || s.title.trim().length === 0) {
+        errors.push(`${prefix}: sources[${sIdx}] needs a title.`)
+      }
+      if (!s || !isValidDate(s.accessedAt)) {
+        errors.push(`${prefix}: sources[${sIdx}] needs accessedAt as YYYY-MM-DD.`)
+      }
+      if (!s || !SOURCE_TYPES.has(s.sourceType)) {
+        errors.push(
+          `${prefix}: sources[${sIdx}] has unknown sourceType '${s && s.sourceType}'. Valid: ${Array.from(SOURCE_TYPES).join(", ")}.`
+        )
+      }
+    })
+  }
+  if (!model.changeLog || !Array.isArray(model.changeLog) || model.changeLog.length === 0) {
+    errors.push(`${prefix}: 'changeLog' must contain at least the initial entry.`)
+  }
+  if (model.supersededBy !== undefined) {
+    if (!seenIds.has(model.supersededBy)) {
+      errors.push(`${prefix}: supersededBy '${model.supersededBy}' does not match any model id.`)
+    }
+    if (model.supersededBy === model.id) {
+      errors.push(`${prefix}: supersededBy must reference a different model.`)
+    }
+  }
+
+  // `verified` means every core fact was read against a live primary source:
+  // field-level citations are mandatory, benchmarks included when published.
+  if (model.verificationStatus === "verified") {
+    const required = [...CORE_SOURCED_FIELDS]
+    if (model.benchmarks && Object.keys(model.benchmarks).length > 0) required.push("benchmarks")
+    required.forEach((field) => {
+      const refs = model.fieldSources && model.fieldSources[field]
+      if (!Array.isArray(refs) || refs.length === 0) {
+        errors.push(`${prefix}: 'verified' record lacks field-level sourcing for '${field}'.`)
+      } else {
+        refs.forEach((r) => {
+          if (!r || !isHttpUrl(r.url)) {
+            errors.push(`${prefix}: 'verified' field '${field}' cites a malformed URL.`)
+          }
+        })
+      }
+    })
+  }
+
+  // Current / latest / flagship labels require fresh, live evidence.
+  if (isCurrent) {
+    if (model.verificationStatus !== "verified" && model.verificationStatus !== "partially_verified") {
+      errors.push(
+        `${prefix}: Labeled flagship/latest but verificationStatus is '${model.verificationStatus}'. Current labels require verified or partially_verified evidence.`
+      )
+    }
+    const liveSources = (model.sources || []).filter((s) => s && s.live === true)
+    if (liveSources.length === 0) {
+      errors.push(`${prefix}: Labeled flagship/latest but has no live (HTTP 2xx) official source.`)
+    }
+    if (isValidDate(model.lastVerifiedAt) && daysSince(model.lastVerifiedAt) > VERIFICATION_FRESHNESS_DAYS) {
+      errors.push(
+        `${prefix}: Labeled flagship/latest but lastVerifiedAt (${model.lastVerifiedAt}) is older than ${VERIFICATION_FRESHNESS_DAYS} days.`
+      )
+    }
+  }
+})
+
+// Every leaderboard section needs a published methodology with cited sources.
+for (const section of Object.keys(leaderboardSpotlights)) {
+  const method = leaderboardMethodology && leaderboardMethodology[section]
+  if (!method || typeof method.basis !== "string" || method.basis.trim().length < 20) {
+    errors.push(`Leaderboard section '${section}' lacks a published methodology basis.`)
+  }
+  if (!method || !isValidDate(method.evaluatedAt)) {
+    errors.push(`Leaderboard section '${section}' lacks a valid evaluatedAt date.`)
+  }
+  if (!method || !Array.isArray(method.sources) || method.sources.length === 0) {
+    errors.push(`Leaderboard section '${section}' lacks cited source data.`)
+  } else {
+    method.sources.forEach((u) => {
+      if (!isHttpUrl(u)) errors.push(`Leaderboard section '${section}' cites a malformed URL ('${u}').`)
+    })
+  }
+}
+
 // Verify that every leaderboard spotlight ID points at a real model,
 // so renames/merges can never silently empty a leaderboard section.
 for (const [section, ids] of Object.entries(leaderboardSpotlights)) {
@@ -181,10 +333,16 @@ if (errors.length > 0) {
   console.log(
     `\n✔ Dataset verified successfully: ${modelsData.length} models across ${validCompanyIds.size} laboratories.`
   )
+  const statusCounts = {}
+  modelsData.forEach((m) => {
+    statusCounts[m.verificationStatus] = (statusCounts[m.verificationStatus] || 0) + 1
+  })
+  console.log(`  Verification: ${Object.entries(statusCounts).map(([k, v]) => `${k}=${v}`).join(", ")}.`)
 
   // Automatically synchronize README.md table
   try {
     const { execFileSync } = require("child_process")
+    execFileSync(process.execPath, [path.resolve(__dirname, "write-revision.js")], { stdio: "inherit" })
     execFileSync(process.execPath, [path.resolve(__dirname, "sync-readme.js")], { stdio: "inherit" })
   } catch (err) {
     console.warn("⚠️ Note: Could not auto-sync README table:", err.message)

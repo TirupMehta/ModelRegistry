@@ -39,6 +39,18 @@ export default function Footer() {
           <Link href="/docs" className="hover:text-[#ff5d2e] transition-colors">
             Docs
           </Link>
+          <Link href="/flagships" className="hover:text-[#ff5d2e] transition-colors">
+            Flagships
+          </Link>
+          <Link href="/pricing" className="hover:text-[#ff5d2e] transition-colors">
+            Pricing
+          </Link>
+          <Link href="/methodology" className="hover:text-[#ff5d2e] transition-colors">
+            Methodology
+          </Link>
+          <Link href="/changelog" className="hover:text-[#ff5d2e] transition-colors">
+            Changelog
+          </Link>
           <a
             href="https://github.com/TirupMehta/ModelRegistry"
             target="_blank"

@@ -18,6 +18,7 @@ import {
   Share2,
 } from "lucide-react"
 import { ShareCardModal } from "./share-card-modal"
+import VerificationSection from "./verification-section"
 import { tapFeedback, successFeedback } from "@/lib/feedback"
 
 interface ModelDetailsModalProps {
@@ -216,9 +217,12 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         {/* Verified Benchmarks Section */}
         {Object.keys(model.benchmarks).length > 0 && (
           <div className="mb-6 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-black/20 p-3 sm:p-4">
-            <h3 className="text-[10px] font-sans uppercase tracking-[0.14em] text-black/45 dark:text-zinc-500 font-semibold mb-3">
-              Verified benchmarks
+            <h3 className="text-[10px] font-sans uppercase tracking-[0.14em] text-black/45 dark:text-zinc-500 font-semibold mb-1">
+              Published benchmarks · lab-reported
             </h3>
+            <p className="text-[11px] font-sans text-black/45 dark:text-zinc-500 mb-3">
+              Vendor-published figures, not independently reproduced.
+            </p>
             <div className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] gap-2">
               {(
                 [
@@ -361,6 +365,8 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <span>SHARE STORY / CARD</span>
           </button>
         </div>
+
+        <VerificationSection model={model} />
       </div>
 
       {isShareStudioOpen && (

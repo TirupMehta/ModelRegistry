@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
 
   if (Object.keys(model.benchmarks).length > 0) {
     lines.push(makeBoxRow(""))
-    lines.push(makeBoxRow(`  ${SLATE}${BOLD}VERIFIED BENCHMARKS${RESET}`))
+    lines.push(makeBoxRow(`  ${SLATE}${BOLD}PUBLISHED BENCHMARKS (LAB-REPORTED)${RESET}`))
     const b = model.benchmarks
     const benchEntries: string[] = []
     if (b.sweBench) benchEntries.push(`SWE-bench: ${b.sweBench}`)

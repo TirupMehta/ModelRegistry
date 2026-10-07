@@ -8,7 +8,13 @@ export async function GET() {
 
   let table = ""
   table += "================================================================================\n"
-  table += " MODELREGISTRY.TIRUP.IN  •  FRONTIER AI MODEL REGISTRY  •  SEPTEMBER 2026\n"
+  const newest = [...modelsData].sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
+  const monthLabel = newest
+    ? new Date(`${newest.releaseDate.slice(0, 7)}-02`)
+        .toLocaleDateString("en-US", { month: "long", year: "numeric" })
+        .toUpperCase()
+    : ""
+  table += ` MODELREGISTRY.TIRUP.IN  •  FRONTIER AI MODEL REGISTRY  •  ${monthLabel}\n`
   table += "================================================================================\n\n"
 
   table += " PRIMARY FOUNDATION FLAGSHIPS:\n"

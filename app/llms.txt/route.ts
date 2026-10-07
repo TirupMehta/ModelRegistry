@@ -1,5 +1,6 @@
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
+import { datasetRevision } from "@/data/revision"
 
 export const dynamic = "force-dynamic"
 
@@ -12,9 +13,16 @@ function formatDate(iso: string): string {
 
 export async function GET() {
   const siteUrl = "https://modelregistry.tirup.in"
-  const now = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+  const counts = { verified: 0, partially_verified: 0, unverified: 0, retired: 0 }
+  let oldestVerificationDate: string | null = null
+  for (const m of modelsData) {
+    counts[m.verificationStatus] = (counts[m.verificationStatus] || 0) + 1
+    if (!oldestVerificationDate || m.lastVerifiedAt < oldestVerificationDate) {
+      oldestVerificationDate = m.lastVerifiedAt
+    }
+  }
 
-  let text = `# ModelRegistry: The Open Frontier AI Model & Checkpoint Registry (${now})
+  let text = `# ModelRegistry: The Open Frontier AI Model & Checkpoint Registry (dataset ${datasetRevision.datasetVersion})
 
 > The internet's open-source public registry tracking primary foundation flagships and research checkpoints across every major AI lab.
 
@@ -24,7 +32,8 @@ export async function GET() {
 - RSS Feed: ${siteUrl}/rss.xml
 - Full LLM Matrix: ${siteUrl}/llms-full.txt
 - GitHub: https://github.com/TirupMehta/ModelRegistry
-- Last Verified: ${now}
+- Dataset version: ${datasetRevision.datasetVersion} (data revised ${datasetRevision.revisedAt})
+- Verification: ${counts.verified} verified, ${counts.partially_verified} partially verified, ${counts.unverified} unverified of ${modelsData.length} models; oldest source check ${oldestVerificationDate}. Methodology: ${siteUrl}/methodology. Figures below are lab-reported unless a model page shows otherwise.
 
 ---
 

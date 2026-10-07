@@ -11,6 +11,55 @@ export interface ModelVariant {
   link?: string // official docs URL
 }
 
+export type SourceType =
+  | "announcement"
+  | "api-docs"
+  | "pricing"
+  | "model-card"
+  | "paper"
+  | "weights"
+  | "benchmark"
+  | "console"
+
+export interface SourceRef {
+  url: string
+  publisher: string
+  // Human-readable source title, e.g. "Mistral Large 4 announcement".
+  title: string
+  // First publication date of the source, when directly observed.
+  publishedAt?: string
+  // Date the registry last confirmed the source (YYYY-MM-DD).
+  accessedAt: string
+  sourceType: SourceType
+  // True when the source returned HTTP 2xx to the registry's automated check.
+  live?: boolean
+  // Explains access limits (e.g. bot-gated) or source weaknesses.
+  note?: string
+}
+
+export type VerificationStatus = "verified" | "partially_verified" | "unverified" | "retired"
+
+// Core factual fields that may carry per-field citations.
+export type SourcedField =
+  | "releaseDate"
+  | "contextWindow"
+  | "maxOutputTokens"
+  | "parameters"
+  | "license"
+  | "pricing"
+  | "modalities"
+  | "benchmarks"
+  | "isCompanyFlagship"
+  | "isLatestCheckpoint"
+
+export type FieldSourceMap = Partial<Record<SourcedField, SourceRef[]>>
+
+export interface ChangeLogEntry {
+  date: string // YYYY-MM-DD
+  summary: string
+  sources?: string[]
+}
+
 export interface ModelItem {
   id: string
   companyId: string
@@ -52,6 +101,16 @@ export interface ModelItem {
     apiDocs?: string
     weights?: string
   }
+  // Provenance: every published record explains where its claims come from.
+  // See docs/methodology for verification levels and docs/audit-2026-10-07.md
+  // for the latest source audit.
+  sources: SourceRef[]
+  fieldSources: FieldSourceMap
+  lastVerifiedAt: string // YYYY-MM-DD of the last source check
+  verificationStatus: VerificationStatus
+  changeLog: ChangeLogEntry[]
+  // Set when the record is retired in favour of another model id.
+  supersededBy?: string
 }
 
 /**
@@ -91,6 +150,119 @@ export const modelsData: ModelItem[] = [
       playground: "https://claude.ai",
       apiDocs: "https://docs.anthropic.com/claude/reference",
     },
+    sources: [
+    {
+      url: "https://docs.anthropic.com/claude/reference",
+      publisher: "Anthropic",
+      title: "Claude Fable 5.1 API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://docs.anthropic.com/claude/reference",
+        publisher: "Anthropic",
+        title: "Claude Fable 5.1 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://docs.anthropic.com/claude/reference",
+        publisher: "Anthropic",
+        title: "Claude Fable 5.1 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://docs.anthropic.com/claude/reference",
+        publisher: "Anthropic",
+        title: "Claude Fable 5.1 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://docs.anthropic.com/claude/reference",
+        publisher: "Anthropic",
+        title: "Claude Fable 5.1 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://docs.anthropic.com/claude/reference",
+        publisher: "Anthropic",
+        title: "Claude Fable 5.1 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://docs.anthropic.com/claude/reference",
+        publisher: "Anthropic",
+        title: "Claude Fable 5.1 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://docs.anthropic.com/claude/reference",
+        publisher: "Anthropic",
+        title: "Claude Fable 5.1 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://docs.anthropic.com/claude/reference",
+        publisher: "Anthropic",
+        title: "Claude Fable 5.1 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://docs.anthropic.com/claude/reference",
+        publisher: "Anthropic",
+        title: "Claude Fable 5.1 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-01",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://docs.anthropic.com/claude/reference",
+        ],
+      },
+    ],
   },
   {
     id: "claude-opus-5",
@@ -121,6 +293,119 @@ export const modelsData: ModelItem[] = [
       playground: "https://claude.ai",
       apiDocs: "https://docs.anthropic.com",
     },
+    sources: [
+    {
+      url: "https://docs.anthropic.com",
+      publisher: "Anthropic",
+      title: "Claude Opus 5 API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Opus 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Opus 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Opus 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Opus 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Opus 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Opus 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Opus 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Opus 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Opus 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-07-15",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://docs.anthropic.com",
+        ],
+      },
+    ],
   },
   {
     id: "claude-opus-5-5",
@@ -151,6 +436,137 @@ export const modelsData: ModelItem[] = [
       playground: "https://claude.ai",
       apiDocs: "https://docs.anthropic.com",
     },
+    sources: [
+    {
+      url: "https://www.anthropic.com/claude-opus-5-5",
+      publisher: "Anthropic",
+      title: "Claude Opus 5.5 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://docs.anthropic.com",
+      publisher: "Anthropic",
+      title: "Claude Opus 5.5 API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://www.anthropic.com/claude-opus-5-5",
+        publisher: "Anthropic",
+        title: "Claude Opus 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Opus 5.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Opus 5.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://www.anthropic.com/claude-opus-5-5",
+        publisher: "Anthropic",
+        title: "Claude Opus 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://www.anthropic.com/claude-opus-5-5",
+        publisher: "Anthropic",
+        title: "Claude Opus 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Opus 5.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://www.anthropic.com/claude-opus-5-5",
+        publisher: "Anthropic",
+        title: "Claude Opus 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://www.anthropic.com/claude-opus-5-5",
+        publisher: "Anthropic",
+        title: "Claude Opus 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://www.anthropic.com/claude-opus-5-5",
+        publisher: "Anthropic",
+        title: "Claude Opus 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://www.anthropic.com/claude-opus-5-5",
+        publisher: "Anthropic",
+        title: "Claude Opus 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-22",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://www.anthropic.com/claude-opus-5-5",
+        ],
+      },
+    ],
   },
 
   // ─── OPENAI ───────────────────────────────────────────────────────────────
@@ -185,6 +601,139 @@ export const modelsData: ModelItem[] = [
       playground: "https://chatgpt.com",
       apiDocs: "https://platform.openai.com/docs",
     },
+    sources: [
+    {
+      url: "https://openai.com/index/gpt-6-astra/",
+      publisher: "OpenAI",
+      title: "GPT-6 Astra announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: false,
+      note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+    },
+    {
+      url: "https://platform.openai.com/docs",
+      publisher: "OpenAI",
+      title: "GPT-6 Astra API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Astra API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Astra API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Astra API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Astra API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Astra API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Astra API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Astra API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://openai.com/index/gpt-6-astra/",
+        publisher: "OpenAI",
+        title: "GPT-6 Astra announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Astra API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Astra API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-04",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://openai.com/index/gpt-6-astra/",
+        ],
+      },
+    ],
   },
   {
     id: "gpt-5-6",
@@ -216,6 +765,139 @@ export const modelsData: ModelItem[] = [
       playground: "https://chatgpt.com",
       apiDocs: "https://platform.openai.com/docs",
     },
+    sources: [
+    {
+      url: "https://openai.com/index/gpt-5-6/",
+      publisher: "OpenAI",
+      title: "ChatGPT 5.6 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: false,
+      note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+    },
+    {
+      url: "https://platform.openai.com/docs",
+      publisher: "OpenAI",
+      title: "ChatGPT 5.6 API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "ChatGPT 5.6 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "ChatGPT 5.6 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "ChatGPT 5.6 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "ChatGPT 5.6 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "ChatGPT 5.6 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "ChatGPT 5.6 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "ChatGPT 5.6 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://openai.com/index/gpt-5-6/",
+        publisher: "OpenAI",
+        title: "ChatGPT 5.6 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "ChatGPT 5.6 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "ChatGPT 5.6 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-08-05",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://openai.com/index/gpt-5-6/",
+        ],
+      },
+    ],
   },
   {
     id: "gpt-6-1-sol",
@@ -253,6 +935,128 @@ export const modelsData: ModelItem[] = [
         link: "https://openai.com/index/introducing-gpt-6-sol-and-luna/",
       },
     ],
+    sources: [
+    {
+      url: "https://openai.com/index/introducing-gpt-6-1-sol",
+      publisher: "OpenAI",
+      title: "GPT-6.1 Sol announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: false,
+      note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+    },
+    {
+      url: "https://platform.openai.com/docs",
+      publisher: "OpenAI",
+      title: "GPT-6.1 Sol API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6.1 Sol API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6.1 Sol API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6.1 Sol API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6.1 Sol API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6.1 Sol API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6.1 Sol API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6.1 Sol API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6.1 Sol API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6.1 Sol API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-29",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://openai.com/index/introducing-gpt-6-1-sol",
+        ],
+      },
+    ],
   },
   {
     id: "gpt-6-luna",
@@ -281,6 +1085,128 @@ export const modelsData: ModelItem[] = [
       playground: "https://chatgpt.com",
       apiDocs: "https://platform.openai.com/docs",
     },
+    sources: [
+    {
+      url: "https://openai.com/index/introducing-gpt-6-sol-and-luna/",
+      publisher: "OpenAI",
+      title: "GPT-6 Luna announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: false,
+      note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+    },
+    {
+      url: "https://platform.openai.com/docs",
+      publisher: "OpenAI",
+      title: "GPT-6 Luna API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Luna API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Luna API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Luna API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Luna API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Luna API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Luna API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Luna API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Luna API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://platform.openai.com/docs",
+        publisher: "OpenAI",
+        title: "GPT-6 Luna API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-22",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://openai.com/index/introducing-gpt-6-sol-and-luna/",
+        ],
+      },
+    ],
   },
 
   // ─── GOOGLE DEEPMIND (Gemini 4 flagship) ─────────────────────────────────
@@ -313,6 +1239,145 @@ export const modelsData: ModelItem[] = [
       playground: "https://aistudio.google.com",
       apiDocs: "https://ai.google.dev/gemini-api/docs",
     },
+    sources: [
+    {
+      url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+      publisher: "Google DeepMind",
+      title: "Gemini 4 Argon announcement",
+      publishedAt: "2026-09-30",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://ai.google.dev/gemini-api/docs",
+      publisher: "Google DeepMind",
+      title: "Gemini 4 Argon API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+        publisher: "Google DeepMind",
+        title: "Gemini 4 Argon announcement",
+        publishedAt: "2026-09-30",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs",
+        publisher: "Google DeepMind",
+        title: "Gemini 4 Argon API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs",
+        publisher: "Google DeepMind",
+        title: "Gemini 4 Argon API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+        publisher: "Google DeepMind",
+        title: "Gemini 4 Argon announcement",
+        publishedAt: "2026-09-30",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+        publisher: "Google DeepMind",
+        title: "Gemini 4 Argon announcement",
+        publishedAt: "2026-09-30",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs",
+        publisher: "Google DeepMind",
+        title: "Gemini 4 Argon API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+        publisher: "Google DeepMind",
+        title: "Gemini 4 Argon announcement",
+        publishedAt: "2026-09-30",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+        publisher: "Google DeepMind",
+        title: "Gemini 4 Argon announcement",
+        publishedAt: "2026-09-30",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+        publisher: "Google DeepMind",
+        title: "Gemini 4 Argon announcement",
+        publishedAt: "2026-09-30",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+        publisher: "Google DeepMind",
+        title: "Gemini 4 Argon announcement",
+        publishedAt: "2026-09-30",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-30",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+        ],
+      },
+    ],
   },
 
   // ─── GOOGLE DEEPMIND ─────────────────────────────────────────────────────
@@ -343,9 +1408,167 @@ export const modelsData: ModelItem[] = [
       gpqa: "73.2%",
     },
     links: {
-      announcement: "https://blog.google/technology/ai/gemini-3-8-flash/",
+      announcement: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/",
       playground: "https://aistudio.google.com",
+      apiDocs: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
     },
+    sources: [
+    {
+      url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/",
+      publisher: "Google DeepMind",
+      title: "Gemini 3.8 Flash announcement",
+      publishedAt: "2026-09-02",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+      publisher: "Google DeepMind",
+      title: "Gemini 3.8 Flash API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    {
+      url: "https://deepmind.google/models/model-cards/gemini-3-8-flash/",
+      publisher: "Google DeepMind",
+      title: "Gemini 3.8 Flash model card",
+      publishedAt: "2026-09-02",
+      accessedAt: "2026-10-07",
+      sourceType: "model-card",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Flash announcement",
+        publishedAt: "2026-09-02",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Flash announcement",
+        publishedAt: "2026-09-02",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Flash announcement",
+        publishedAt: "2026-09-02",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Flash announcement",
+        publishedAt: "2026-09-02",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Flash announcement",
+        publishedAt: "2026-09-02",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Flash announcement",
+        publishedAt: "2026-09-02",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Flash announcement",
+        publishedAt: "2026-09-02",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-02",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/",
+        ],
+      },
+      {
+        date: "2026-10-07",
+        summary: "Audit correction: Re-sourced announcement to canonical blog URL and added API reference + model card; registry benchmark figures remain lab-reported, pending per-field recheck.",
+        sources: [
+          "https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/",
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash",
+          "https://deepmind.google/models/model-cards/gemini-3-8-flash/",
+        ],
+      },
+    ],
   },
   {
     id: "gemini-3-8-live-extended-thinking",
@@ -392,6 +1615,127 @@ export const modelsData: ModelItem[] = [
       playground: "https://aistudio.google.com",
       apiDocs: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live-extended-thinking",
     },
+    sources: [
+    {
+      url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/",
+      publisher: "Google DeepMind",
+      title: "Gemini 3.8 Live Extended Thinking announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live-extended-thinking",
+      publisher: "Google DeepMind",
+      title: "Gemini 3.8 Live Extended Thinking API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Live Extended Thinking announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live-extended-thinking",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Live Extended Thinking API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live-extended-thinking",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Live Extended Thinking API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Live Extended Thinking announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Live Extended Thinking announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live-extended-thinking",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Live Extended Thinking API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Live Extended Thinking announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Live Extended Thinking announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.8 Live Extended Thinking announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-15",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-live-gemini-3-8-live-extended-thinking/",
+        ],
+      },
+    ],
   },
 
   // ─── XAI ─────────────────────────────────────────────────────────────────
@@ -424,6 +1768,140 @@ export const modelsData: ModelItem[] = [
       announcement: "https://x.ai/blog/grok-4-6",
       playground: "https://x.com/i/grok",
     },
+    sources: [
+    {
+      url: "https://x.ai/blog/grok-4-6",
+      publisher: "xAI",
+      title: "Grok 4.6 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: false,
+      note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://x.ai/blog/grok-4-6",
+        publisher: "xAI",
+        title: "Grok 4.6 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://x.ai/blog/grok-4-6",
+        publisher: "xAI",
+        title: "Grok 4.6 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://x.ai/blog/grok-4-6",
+        publisher: "xAI",
+        title: "Grok 4.6 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      parameters: [
+      {
+        url: "https://x.ai/blog/grok-4-6",
+        publisher: "xAI",
+        title: "Grok 4.6 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      license: [
+      {
+        url: "https://x.ai/blog/grok-4-6",
+        publisher: "xAI",
+        title: "Grok 4.6 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      pricing: [
+      {
+        url: "https://x.ai/blog/grok-4-6",
+        publisher: "xAI",
+        title: "Grok 4.6 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      modalities: [
+      {
+        url: "https://x.ai/blog/grok-4-6",
+        publisher: "xAI",
+        title: "Grok 4.6 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://x.ai/blog/grok-4-6",
+        publisher: "xAI",
+        title: "Grok 4.6 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://x.ai/blog/grok-4-6",
+        publisher: "xAI",
+        title: "Grok 4.6 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://x.ai/blog/grok-4-6",
+        publisher: "xAI",
+        title: "Grok 4.6 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-08-12",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://x.ai/blog/grok-4-6",
+        ],
+      },
+    ],
   },
   {
     id: "grok-4-7",
@@ -456,6 +1934,137 @@ export const modelsData: ModelItem[] = [
       playground: "https://x.com/i/grok",
       apiDocs: "https://docs.x.ai",
     },
+    sources: [
+    {
+      url: "https://x.ai/news/grok-4-7",
+      publisher: "xAI",
+      title: "Grok 4.7 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://docs.x.ai",
+      publisher: "xAI",
+      title: "Grok 4.7 API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://x.ai/news/grok-4-7",
+        publisher: "xAI",
+        title: "Grok 4.7 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://docs.x.ai",
+        publisher: "xAI",
+        title: "Grok 4.7 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://docs.x.ai",
+        publisher: "xAI",
+        title: "Grok 4.7 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://x.ai/news/grok-4-7",
+        publisher: "xAI",
+        title: "Grok 4.7 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://x.ai/news/grok-4-7",
+        publisher: "xAI",
+        title: "Grok 4.7 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://docs.x.ai",
+        publisher: "xAI",
+        title: "Grok 4.7 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://x.ai/news/grok-4-7",
+        publisher: "xAI",
+        title: "Grok 4.7 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://x.ai/news/grok-4-7",
+        publisher: "xAI",
+        title: "Grok 4.7 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://x.ai/news/grok-4-7",
+        publisher: "xAI",
+        title: "Grok 4.7 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://x.ai/news/grok-4-7",
+        publisher: "xAI",
+        title: "Grok 4.7 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-21",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://x.ai/news/grok-4-7",
+        ],
+      },
+    ],
   },
   {
     id: "grok-voice-transcribe-2",
@@ -483,6 +2092,119 @@ export const modelsData: ModelItem[] = [
     links: {
       announcement: "https://x.ai/news/grok-voice-transcribe-2",
     },
+    sources: [
+    {
+      url: "https://x.ai/news/grok-voice-transcribe-2",
+      publisher: "xAI",
+      title: "Grok Voice Transcribe 2.0 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://x.ai/news/grok-voice-transcribe-2",
+        publisher: "xAI",
+        title: "Grok Voice Transcribe 2.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://x.ai/news/grok-voice-transcribe-2",
+        publisher: "xAI",
+        title: "Grok Voice Transcribe 2.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://x.ai/news/grok-voice-transcribe-2",
+        publisher: "xAI",
+        title: "Grok Voice Transcribe 2.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://x.ai/news/grok-voice-transcribe-2",
+        publisher: "xAI",
+        title: "Grok Voice Transcribe 2.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://x.ai/news/grok-voice-transcribe-2",
+        publisher: "xAI",
+        title: "Grok Voice Transcribe 2.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://x.ai/news/grok-voice-transcribe-2",
+        publisher: "xAI",
+        title: "Grok Voice Transcribe 2.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://x.ai/news/grok-voice-transcribe-2",
+        publisher: "xAI",
+        title: "Grok Voice Transcribe 2.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://x.ai/news/grok-voice-transcribe-2",
+        publisher: "xAI",
+        title: "Grok Voice Transcribe 2.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://x.ai/news/grok-voice-transcribe-2",
+        publisher: "xAI",
+        title: "Grok Voice Transcribe 2.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-18",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://x.ai/news/grok-voice-transcribe-2",
+        ],
+      },
+    ],
   },
 
   // ─── DEEPSEEK ────────────────────────────────────────────────────────────
@@ -521,6 +2243,153 @@ export const modelsData: ModelItem[] = [
       apiDocs: "https://api-docs.deepseek.com/news/news260910",
       weights: "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
     },
+    sources: [
+    {
+      url: "https://www.deepseek.com/en/news/deepseek-v4-1-flash/",
+      publisher: "DeepSeek",
+      title: "DeepSeek V4.1 Flash announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://api-docs.deepseek.com/news/news260910",
+      publisher: "DeepSeek",
+      title: "DeepSeek V4.1 Flash API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    {
+      url: "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+      publisher: "DeepSeek",
+      title: "DeepSeek V4.1 Flash open weights",
+      accessedAt: "2026-10-07",
+      sourceType: "weights",
+      live: true,
+    },
+    {
+      url: "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf",
+      publisher: "DeepSeek",
+      title: "DeepSeek V4.1 Flash technical report",
+      accessedAt: "2026-10-07",
+      sourceType: "paper",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://www.deepseek.com/en/news/deepseek-v4-1-flash/",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4.1 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260910",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4.1 Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260910",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4.1 Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://www.deepseek.com/en/news/deepseek-v4-1-flash/",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4.1 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4.1 Flash open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260910",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4.1 Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://www.deepseek.com/en/news/deepseek-v4-1-flash/",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4.1 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://www.deepseek.com/en/news/deepseek-v4-1-flash/",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4.1 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://www.deepseek.com/en/news/deepseek-v4-1-flash/",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4.1 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://www.deepseek.com/en/news/deepseek-v4-1-flash/",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4.1 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-10",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://www.deepseek.com/en/news/deepseek-v4-1-flash/",
+        ],
+      },
+    ],
   },
   {
     id: "deepseek-v4-pro-0813",
@@ -551,6 +2420,129 @@ export const modelsData: ModelItem[] = [
       announcement: "https://api-docs.deepseek.com/news/news260813",
       playground: "https://chat.deepseek.com",
     },
+    sources: [
+    {
+      url: "https://api-docs.deepseek.com/news/news260813",
+      publisher: "DeepSeek",
+      title: "DeepSeek V4-Pro (0813) announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260813",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4-Pro (0813) announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260813",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4-Pro (0813) announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260813",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4-Pro (0813) announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260813",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4-Pro (0813) announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260813",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4-Pro (0813) announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260813",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4-Pro (0813) announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260813",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4-Pro (0813) announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260813",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4-Pro (0813) announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260813",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4-Pro (0813) announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://api-docs.deepseek.com/news/news260813",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4-Pro (0813) announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-08-13",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://api-docs.deepseek.com/news/news260813",
+        ],
+      },
+    ],
   },
   {
     id: "deepseek-v4-flash-vision-exp",
@@ -579,6 +2571,89 @@ export const modelsData: ModelItem[] = [
     links: {
       weights: "https://huggingface.co/deepseek-ai",
     },
+    sources: [
+    {
+      url: "https://huggingface.co/deepseek-ai",
+      publisher: "DeepSeek",
+      title: "DeepSeek V4 Flash Vision Exp open weights",
+      accessedAt: "2026-10-07",
+      sourceType: "weights",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://huggingface.co/deepseek-ai",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash Vision Exp open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://huggingface.co/deepseek-ai",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash Vision Exp open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://huggingface.co/deepseek-ai",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash Vision Exp open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://huggingface.co/deepseek-ai",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash Vision Exp open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://huggingface.co/deepseek-ai",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash Vision Exp open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://huggingface.co/deepseek-ai",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash Vision Exp open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-08-30",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://huggingface.co/deepseek-ai",
+        ],
+      },
+    ],
   },
 
   // ─── META AI ─────────────────────────────────────────────────────────────
@@ -611,6 +2686,89 @@ export const modelsData: ModelItem[] = [
       announcement: "https://ai.meta.com/blog/muse-spark-1-3/",
       weights: "https://huggingface.co/meta-llama",
     },
+    sources: [
+    {
+      url: "https://huggingface.co/meta-llama",
+      publisher: "Meta",
+      title: "Muse Spark 1.3 open weights",
+      accessedAt: "2026-10-07",
+      sourceType: "weights",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Muse Spark 1.3 open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Muse Spark 1.3 open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Muse Spark 1.3 open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Muse Spark 1.3 open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Muse Spark 1.3 open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Muse Spark 1.3 open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-03",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://huggingface.co/meta-llama",
+        ],
+      },
+    ],
   },
   {
     id: "llama-4-maverick",
@@ -641,6 +2799,89 @@ export const modelsData: ModelItem[] = [
       announcement: "https://ai.meta.com/blog/llama-4/",
       weights: "https://huggingface.co/meta-llama",
     },
+    sources: [
+    {
+      url: "https://huggingface.co/meta-llama",
+      publisher: "Meta",
+      title: "Llama 4 Maverick (128E) open weights",
+      accessedAt: "2026-10-07",
+      sourceType: "weights",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Llama 4 Maverick (128E) open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Llama 4 Maverick (128E) open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Llama 4 Maverick (128E) open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Llama 4 Maverick (128E) open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Llama 4 Maverick (128E) open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Llama 4 Maverick (128E) open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-04-18",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://huggingface.co/meta-llama",
+        ],
+      },
+    ],
   },
   {
     id: "llama-4-scout",
@@ -669,6 +2910,89 @@ export const modelsData: ModelItem[] = [
     links: {
       weights: "https://huggingface.co/meta-llama",
     },
+    sources: [
+    {
+      url: "https://huggingface.co/meta-llama",
+      publisher: "Meta",
+      title: "Llama 4 Scout (16E) open weights",
+      accessedAt: "2026-10-07",
+      sourceType: "weights",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Llama 4 Scout (16E) open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Llama 4 Scout (16E) open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Llama 4 Scout (16E) open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Llama 4 Scout (16E) open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Llama 4 Scout (16E) open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://huggingface.co/meta-llama",
+        publisher: "Meta",
+        title: "Llama 4 Scout (16E) open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-05-10",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://huggingface.co/meta-llama",
+        ],
+      },
+    ],
   },
   {
     id: "meta-muse-voice-transcribe",
@@ -682,19 +3006,166 @@ export const modelsData: ModelItem[] = [
     statusBadge: "AUDIO CHECKPOINT",
     category: "audio",
     categoryLabel: "Streaming Speech",
-    contextWindow: "128,000 tokens",
-    contextWindowTokens: 128000,
-    maxOutputTokens: "16,384 tokens",
+    contextWindow: "Undisclosed (audio streaming)",
+    contextWindowTokens: 0,
+    maxOutputTokens: "Transcript with timestamps",
     parameters: "Streaming Audio Foundation",
-    openWeights: true,
-    license: "Meta Community License",
-    pricing: { input: 0.04, output: 0.12 },
-    highlight: "Announced Sept 1, 2026; streaming speech-to-text foundation model supporting 70+ languages, with ultra-cheap $0.04/$0.12 official hosted API pricing and open community weights.",
+    openWeights: false,
+    license: "Proprietary API (Meta Model API)",
+    pricing: { input: 0.00005, output: 0 },
+    pricingUnit: "per second",
+    highlight: "Announced Sept 1, 2026; Meta's streaming speech-to-text model with diarization and endpointing, trained on 70+ languages (25 validated), billed at $3.00 per 1,000 audio minutes ($0.18/hr).",
     modalities: ["Audio", "Text"],
     benchmarks: {},
     links: {
-      announcement: "https://ai.meta.com/blog/muse-voice-transcribe/",
+      announcement: "https://research.meta.ai/blog/introducing-muse-voice-transcribe",
+      apiDocs: "https://dev.meta.ai/docs/speech-to-text",
     },
+    sources: [
+    {
+      url: "https://research.meta.ai/blog/introducing-muse-voice-transcribe",
+      publisher: "Meta",
+      title: "Muse Voice Transcribe announcement",
+      publishedAt: "2026-09-01",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://dev.meta.ai/docs/speech-to-text",
+      publisher: "Meta",
+      title: "Muse Voice Transcribe API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    {
+      url: "https://dev.meta.ai/models/muse-voice-transcribe",
+      publisher: "Meta",
+      title: "Muse Voice Transcribe model page and pricing",
+      accessedAt: "2026-10-07",
+      sourceType: "pricing",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://research.meta.ai/blog/introducing-muse-voice-transcribe",
+        publisher: "Meta",
+        title: "Muse Voice Transcribe announcement",
+        publishedAt: "2026-09-01",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://dev.meta.ai/docs/speech-to-text",
+        publisher: "Meta",
+        title: "Muse Voice Transcribe API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://dev.meta.ai/docs/speech-to-text",
+        publisher: "Meta",
+        title: "Muse Voice Transcribe API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://research.meta.ai/blog/introducing-muse-voice-transcribe",
+        publisher: "Meta",
+        title: "Muse Voice Transcribe announcement",
+        publishedAt: "2026-09-01",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://research.meta.ai/blog/introducing-muse-voice-transcribe",
+        publisher: "Meta",
+        title: "Muse Voice Transcribe announcement",
+        publishedAt: "2026-09-01",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://dev.meta.ai/models/muse-voice-transcribe",
+        publisher: "Meta",
+        title: "Muse Voice Transcribe model page and pricing",
+        accessedAt: "2026-10-07",
+        sourceType: "pricing",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://research.meta.ai/blog/introducing-muse-voice-transcribe",
+        publisher: "Meta",
+        title: "Muse Voice Transcribe announcement",
+        publishedAt: "2026-09-01",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://research.meta.ai/blog/introducing-muse-voice-transcribe",
+        publisher: "Meta",
+        title: "Muse Voice Transcribe announcement",
+        publishedAt: "2026-09-01",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://research.meta.ai/blog/introducing-muse-voice-transcribe",
+        publisher: "Meta",
+        title: "Muse Voice Transcribe announcement",
+        publishedAt: "2026-09-01",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-01",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://research.meta.ai/blog/introducing-muse-voice-transcribe",
+        ],
+      },
+      {
+        date: "2026-10-07",
+        summary: "Audit correction: Corrected billing to per-second audio pricing ($3.00/1,000 min), removed unsupported token-context figures and open-weights claim, re-sourced to live Meta Research + Model API pages.",
+        sources: [
+          "https://research.meta.ai/blog/introducing-muse-voice-transcribe",
+          "https://dev.meta.ai/docs/speech-to-text",
+          "https://dev.meta.ai/models/muse-voice-transcribe",
+        ],
+      },
+    ],
   },
 
   // ─── ALIBABA CLOUD / QWEN ────────────────────────────────────────────────
@@ -727,6 +3198,89 @@ export const modelsData: ModelItem[] = [
       announcement: "https://qwenlm.github.io/blog/qwen3.8-2.4t/",
       weights: "https://huggingface.co/Qwen",
     },
+    sources: [
+    {
+      url: "https://huggingface.co/Qwen",
+      publisher: "Alibaba Cloud (Qwen)",
+      title: "Qwen3.8 2.4T A95B open weights",
+      accessedAt: "2026-10-07",
+      sourceType: "weights",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://huggingface.co/Qwen",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 2.4T A95B open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://huggingface.co/Qwen",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 2.4T A95B open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://huggingface.co/Qwen",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 2.4T A95B open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://huggingface.co/Qwen",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 2.4T A95B open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://huggingface.co/Qwen",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 2.4T A95B open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://huggingface.co/Qwen",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 2.4T A95B open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-08-12",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://huggingface.co/Qwen",
+        ],
+      },
+    ],
   },
   {
     id: "qwen-3-8-flash",
@@ -742,20 +3296,172 @@ export const modelsData: ModelItem[] = [
     categoryLabel: "Fast Multimodal",
     contextWindow: "1,000,000 tokens",
     contextWindowTokens: 1000000,
-    maxOutputTokens: "32,768 tokens",
-    parameters: "Next-Gen Qwen MoE",
-    openWeights: false,
+    maxOutputTokens: "131,072 tokens",
+    parameters: "176B MoE (125B + 51B N-gram, 6B Active)",
+    openWeights: true,
     license: "Alibaba Cloud Model Studio",
-    pricing: { input: 0.15, output: 0.47 },
-    highlight: "Released August 26, 2026; combines visual document understanding, fast agentic workflows, and 1M context with ultra-cheap $0.15/$0.47 pricing.",
-    modalities: ["Text", "Vision", "Code"],
+    pricing: { input: 0.16, output: 0.47 },
+    highlight: "Released August 26, 2026; open-weight multimodal MoE (125B + 51B N-gram, 6B active) with 1M context and 131K output at $0.16/$0.47.",
+    modalities: ["Text", "Vision", "Video", "Code"],
     benchmarks: {
       mmluPro: "81.9%",
     },
     links: {
-      announcement: "https://qwenlm.github.io/blog/qwen3.8/",
+      announcement: "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
       playground: "https://chat.qwenlm.ai",
+      apiDocs: "https://help.aliyun.com/en/model-studio/qwen3-8-flash",
     },
+    sources: [
+    {
+      url: "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+      publisher: "Alibaba Cloud (Qwen)",
+      title: "Qwen3.8 Flash announcement",
+      publishedAt: "2026-08-27",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://help.aliyun.com/en/model-studio/qwen3-8-flash",
+      publisher: "Alibaba Cloud (Qwen)",
+      title: "Qwen3.8 Flash API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: false,
+      note: "Connection timed out to automated check; page indexed with full content, not re-confirmed on access date.",
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Flash announcement",
+        publishedAt: "2026-08-27",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Flash announcement",
+        publishedAt: "2026-08-27",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Flash announcement",
+        publishedAt: "2026-08-27",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Flash announcement",
+        publishedAt: "2026-08-27",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Flash announcement",
+        publishedAt: "2026-08-27",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Flash announcement",
+        publishedAt: "2026-08-27",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Flash announcement",
+        publishedAt: "2026-08-27",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Flash announcement",
+        publishedAt: "2026-08-27",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Flash announcement",
+        publishedAt: "2026-08-27",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Flash announcement",
+        publishedAt: "2026-08-27",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-08-26",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+        ],
+      },
+      {
+        date: "2026-10-07",
+        summary: "Audit correction: Corrected parameters to 176B MoE (6B active), max output to 131K tokens, pricing to $0.16/$0.47, modalities +Video, openWeights true; re-sourced to Alibaba Cloud blog + Model Studio docs. Registry mmluPro figure remains lab-reported, pending per-field recheck.",
+        sources: [
+          "https://www.alibabacloud.com/blog/alibaba-releases-qwen3-8-flash-with-innovative-model-architecture-delivering-optimal-price-performance_603503",
+          "https://help.aliyun.com/en/model-studio/qwen3-8-flash",
+        ],
+      },
+    ],
   },
   {
     id: "qwen-3-8-omni-flash",
@@ -785,6 +3491,119 @@ export const modelsData: ModelItem[] = [
       playground: "https://chat.qwen.ai",
       apiDocs: "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-omni-flash",
     },
+    sources: [
+    {
+      url: "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-omni-flash",
+      publisher: "Alibaba Cloud (Qwen)",
+      title: "Qwen3.8 Omni Flash API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-omni-flash",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Omni Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-omni-flash",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Omni Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-omni-flash",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Omni Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-omni-flash",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Omni Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-omni-flash",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Omni Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-omni-flash",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Omni Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-omni-flash",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Omni Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-omni-flash",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Omni Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-omni-flash",
+        publisher: "Alibaba Cloud (Qwen)",
+        title: "Qwen3.8 Omni Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-18",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-omni-flash",
+        ],
+      },
+    ],
   },
 
 
@@ -795,10 +3614,10 @@ export const modelsData: ModelItem[] = [
     companyName: "Mistral AI",
     name: "Mistral Medium 3.5",
     version: "3.5",
-    releaseDate: "2026-04-30",
+    releaseDate: "2026-04-28",
     isCompanyFlagship: false,
     isLatestCheckpoint: false,
-    statusBadge: "EUROPEAN FLAGSHIP",
+    statusBadge: "OPEN 128B MULTIMODAL",
     category: "flagship",
     categoryLabel: "Dense Multimodal",
     contextWindow: "262,144 tokens",
@@ -806,7 +3625,7 @@ export const modelsData: ModelItem[] = [
     maxOutputTokens: "16,384 tokens",
     parameters: "128B Dense Multimodal",
     openWeights: true,
-    license: "Mistral Commercial API / Research",
+    license: "Modified MIT (open weights)",
     pricing: { input: 0.9, output: 2.7 },
     highlight: "Dense 128B multimodal instruction-following model with native text and image understanding, tuned for European enterprise compliance.",
     modalities: ["Text", "Vision", "Code"],
@@ -814,8 +3633,160 @@ export const modelsData: ModelItem[] = [
       mmluPro: "79.2%",
     },
     links: {
-      announcement: "https://mistral.ai/news/mistral-medium-3-5/",
+      announcement: "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+      weights: "https://huggingface.co/mistralai/Mistral-Medium-3.5-128B",
     },
+    sources: [
+    {
+      url: "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+      publisher: "Mistral AI",
+      title: "Mistral Medium 3.5 announcement",
+      publishedAt: "2026-04-28",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://huggingface.co/mistralai/Mistral-Medium-3.5-128B",
+      publisher: "Mistral AI",
+      title: "Mistral Medium 3.5 open weights",
+      publishedAt: "2026-04-29",
+      accessedAt: "2026-10-07",
+      sourceType: "weights",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+        publisher: "Mistral AI",
+        title: "Mistral Medium 3.5 announcement",
+        publishedAt: "2026-04-28",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+        publisher: "Mistral AI",
+        title: "Mistral Medium 3.5 announcement",
+        publishedAt: "2026-04-28",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+        publisher: "Mistral AI",
+        title: "Mistral Medium 3.5 announcement",
+        publishedAt: "2026-04-28",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+        publisher: "Mistral AI",
+        title: "Mistral Medium 3.5 announcement",
+        publishedAt: "2026-04-28",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://huggingface.co/mistralai/Mistral-Medium-3.5-128B",
+        publisher: "Mistral AI",
+        title: "Mistral Medium 3.5 open weights",
+        publishedAt: "2026-04-29",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+        publisher: "Mistral AI",
+        title: "Mistral Medium 3.5 announcement",
+        publishedAt: "2026-04-28",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+        publisher: "Mistral AI",
+        title: "Mistral Medium 3.5 announcement",
+        publishedAt: "2026-04-28",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+        publisher: "Mistral AI",
+        title: "Mistral Medium 3.5 announcement",
+        publishedAt: "2026-04-28",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+        publisher: "Mistral AI",
+        title: "Mistral Medium 3.5 announcement",
+        publishedAt: "2026-04-28",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+        publisher: "Mistral AI",
+        title: "Mistral Medium 3.5 announcement",
+        publishedAt: "2026-04-28",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-04-28",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+        ],
+      },
+      {
+        date: "2026-10-07",
+        summary: "Audit correction: Corrected release date to 2026-04-28, license to Modified MIT (open weights), badge off flagship wording; re-sourced to live docs page + Hugging Face model card.",
+        sources: [
+          "https://docs.mistral.ai/models/mistral-medium-3-5-26-04",
+          "https://huggingface.co/mistralai/Mistral-Medium-3.5-128B",
+        ],
+      },
+    ],
   },
   {
     id: "mistral-large-4",
@@ -848,6 +3819,152 @@ export const modelsData: ModelItem[] = [
       playground: "https://console.mistral.ai/",
       apiDocs: "https://docs.mistral.ai/models/mistral-large-4-0",
     },
+    sources: [
+    {
+      url: "https://mistral.ai/news/mistral-large-4/",
+      publisher: "Mistral AI",
+      title: "Mistral Large 4 announcement",
+      publishedAt: "2026-10-06",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://docs.mistral.ai/models/mistral-large-4-0",
+      publisher: "Mistral AI",
+      title: "Mistral Large 4 API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://mistral.ai/news/mistral-large-4/",
+        publisher: "Mistral AI",
+        title: "Mistral Large 4 announcement",
+        publishedAt: "2026-10-06",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://docs.mistral.ai/models/mistral-large-4-0",
+        publisher: "Mistral AI",
+        title: "Mistral Large 4 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://docs.mistral.ai/models/mistral-large-4-0",
+        publisher: "Mistral AI",
+        title: "Mistral Large 4 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://mistral.ai/news/mistral-large-4/",
+        publisher: "Mistral AI",
+        title: "Mistral Large 4 announcement",
+        publishedAt: "2026-10-06",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://mistral.ai/news/mistral-large-4/",
+        publisher: "Mistral AI",
+        title: "Mistral Large 4 announcement",
+        publishedAt: "2026-10-06",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://docs.mistral.ai/models/mistral-large-4-0",
+        publisher: "Mistral AI",
+        title: "Mistral Large 4 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://mistral.ai/news/mistral-large-4/",
+        publisher: "Mistral AI",
+        title: "Mistral Large 4 announcement",
+        publishedAt: "2026-10-06",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://mistral.ai/news/mistral-large-4/",
+        publisher: "Mistral AI",
+        title: "Mistral Large 4 announcement",
+        publishedAt: "2026-10-06",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://mistral.ai/news/mistral-large-4/",
+        publisher: "Mistral AI",
+        title: "Mistral Large 4 announcement",
+        publishedAt: "2026-10-06",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://mistral.ai/news/mistral-large-4/",
+        publisher: "Mistral AI",
+        title: "Mistral Large 4 announcement",
+        publishedAt: "2026-10-06",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "verified",
+    changeLog: [
+      {
+        date: "2026-10-06",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://mistral.ai/news/mistral-large-4/",
+        ],
+      },
+      {
+        date: "2026-10-07",
+        summary: "Added to registry as Mistral flagship; Medium 3.5 demoted.",
+        sources: [
+          "https://mistral.ai/news/mistral-large-4/",
+        ],
+      },
+    ],
   },
 
   // ─── TENCENT HUNYUAN ───────────────────────────────────────────────────
@@ -876,6 +3993,119 @@ export const modelsData: ModelItem[] = [
     links: {
       announcement: "https://hunyuan.tencent.com",
     },
+    sources: [
+    {
+      url: "https://hunyuan.tencent.com",
+      publisher: "Tencent",
+      title: "Hy3 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-07-06",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://hunyuan.tencent.com",
+        ],
+      },
+    ],
   },
   {
     id: "tencent-hy4-preview",
@@ -902,6 +4132,119 @@ export const modelsData: ModelItem[] = [
     links: {
       announcement: "https://hunyuan.tencent.com",
     },
+    sources: [
+    {
+      url: "https://hunyuan.tencent.com",
+      publisher: "Tencent",
+      title: "Hy4 Preview announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy4 Preview announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy4 Preview announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy4 Preview announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy4 Preview announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy4 Preview announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy4 Preview announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy4 Preview announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy4 Preview announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://hunyuan.tencent.com",
+        publisher: "Tencent",
+        title: "Hy4 Preview announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-08-27",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://hunyuan.tencent.com",
+        ],
+      },
+    ],
   },
 
   // ─── Z.AI (GLM) ────────────────────────────────────────────────────────
@@ -930,6 +4273,119 @@ export const modelsData: ModelItem[] = [
     links: {
       announcement: "https://z.ai",
     },
+    sources: [
+    {
+      url: "https://z.ai",
+      publisher: "Z.ai",
+      title: "GLM 5.3 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-08-16",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://z.ai",
+        ],
+      },
+    ],
   },
   {
     id: "glm-5-3-flash",
@@ -956,6 +4412,119 @@ export const modelsData: ModelItem[] = [
     links: {
       announcement: "https://z.ai",
     },
+    sources: [
+    {
+      url: "https://z.ai",
+      publisher: "Z.ai",
+      title: "GLM 5.3 Flash announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.3 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-08-26",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://z.ai",
+        ],
+      },
+    ],
   },
   {
     id: "glm-5-2",
@@ -982,6 +4551,119 @@ export const modelsData: ModelItem[] = [
     links: {
       announcement: "https://z.ai",
     },
+    sources: [
+    {
+      url: "https://z.ai",
+      publisher: "Z.ai",
+      title: "GLM 5.2 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.2 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.2 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.2 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.2 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.2 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.2 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.2 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.2 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://z.ai",
+        publisher: "Z.ai",
+        title: "GLM 5.2 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-06-16",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://z.ai",
+        ],
+      },
+    ],
   },
 
   // ─── MINIMAX ───────────────────────────────────────────────────────────
@@ -1012,6 +4694,129 @@ export const modelsData: ModelItem[] = [
     links: {
       announcement: "https://www.minimaxi.com",
     },
+    sources: [
+    {
+      url: "https://www.minimaxi.com",
+      publisher: "MiniMax",
+      title: "MiniMax M3 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://www.minimaxi.com",
+        publisher: "MiniMax",
+        title: "MiniMax M3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://www.minimaxi.com",
+        publisher: "MiniMax",
+        title: "MiniMax M3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://www.minimaxi.com",
+        publisher: "MiniMax",
+        title: "MiniMax M3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://www.minimaxi.com",
+        publisher: "MiniMax",
+        title: "MiniMax M3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://www.minimaxi.com",
+        publisher: "MiniMax",
+        title: "MiniMax M3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://www.minimaxi.com",
+        publisher: "MiniMax",
+        title: "MiniMax M3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://www.minimaxi.com",
+        publisher: "MiniMax",
+        title: "MiniMax M3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://www.minimaxi.com",
+        publisher: "MiniMax",
+        title: "MiniMax M3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://www.minimaxi.com",
+        publisher: "MiniMax",
+        title: "MiniMax M3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://www.minimaxi.com",
+        publisher: "MiniMax",
+        title: "MiniMax M3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-05-31",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://www.minimaxi.com",
+        ],
+      },
+    ],
   },
 
   // ─── NVIDIA ────────────────────────────────────────────────────────────
@@ -1041,6 +4846,127 @@ export const modelsData: ModelItem[] = [
       announcement: "https://www.nvidia.com",
       weights: "https://huggingface.co/nvidia",
     },
+    sources: [
+    {
+      url: "https://www.nvidia.com",
+      publisher: "NVIDIA",
+      title: "Nemotron 3 Ultra 550B announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://huggingface.co/nvidia",
+      publisher: "NVIDIA",
+      title: "Nemotron 3 Ultra 550B open weights",
+      accessedAt: "2026-10-07",
+      sourceType: "weights",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://www.nvidia.com",
+        publisher: "NVIDIA",
+        title: "Nemotron 3 Ultra 550B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://www.nvidia.com",
+        publisher: "NVIDIA",
+        title: "Nemotron 3 Ultra 550B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://www.nvidia.com",
+        publisher: "NVIDIA",
+        title: "Nemotron 3 Ultra 550B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://www.nvidia.com",
+        publisher: "NVIDIA",
+        title: "Nemotron 3 Ultra 550B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://huggingface.co/nvidia",
+        publisher: "NVIDIA",
+        title: "Nemotron 3 Ultra 550B open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://www.nvidia.com",
+        publisher: "NVIDIA",
+        title: "Nemotron 3 Ultra 550B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://www.nvidia.com",
+        publisher: "NVIDIA",
+        title: "Nemotron 3 Ultra 550B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://www.nvidia.com",
+        publisher: "NVIDIA",
+        title: "Nemotron 3 Ultra 550B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://www.nvidia.com",
+        publisher: "NVIDIA",
+        title: "Nemotron 3 Ultra 550B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-06-04",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://www.nvidia.com",
+        ],
+      },
+    ],
   },
 
   // ─── XIAOMI MIMO ───────────────────────────────────────────────────────
@@ -1070,6 +4996,131 @@ export const modelsData: ModelItem[] = [
       announcement: "https://www.mi.com",
       weights: "https://huggingface.co/xiaomi",
     },
+    sources: [
+    {
+      url: "https://www.mi.com",
+      publisher: "Xiaomi MiMo",
+      title: "MiMo-V2.5 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: false,
+      note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+    },
+    {
+      url: "https://huggingface.co/xiaomi",
+      publisher: "Xiaomi MiMo",
+      title: "MiMo-V2.5 open weights",
+      accessedAt: "2026-10-07",
+      sourceType: "weights",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://huggingface.co/xiaomi",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      parameters: [
+      {
+        url: "https://huggingface.co/xiaomi",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://huggingface.co/xiaomi",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      modalities: [
+      {
+        url: "https://huggingface.co/xiaomi",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://huggingface.co/xiaomi",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://huggingface.co/xiaomi",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-07-10",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://www.mi.com",
+        ],
+      },
+    ],
   },
   {
     id: "mimo-v2-5-pro",
@@ -1098,6 +5149,140 @@ export const modelsData: ModelItem[] = [
     links: {
       announcement: "https://www.mi.com",
     },
+    sources: [
+    {
+      url: "https://www.mi.com",
+      publisher: "Xiaomi MiMo",
+      title: "MiMo-V2.5 Pro announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: false,
+      note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      parameters: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      license: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      pricing: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      modalities: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://www.mi.com",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.5 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: false,
+        note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-08-02",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://www.mi.com",
+        ],
+      },
+    ],
   },
   {
     id: "mimo-v2-6-pro",
@@ -1139,6 +5324,145 @@ export const modelsData: ModelItem[] = [
       apiDocs: "https://mimo.mi.com/docs/en-US/updates/model",
       weights: "https://huggingface.co/collections/XiaomiMiMo/mimo-v26",
     },
+    sources: [
+    {
+      url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+      publisher: "Xiaomi MiMo",
+      title: "MiMo-V2.6 Pro announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://mimo.mi.com/docs/en-US/updates/model",
+      publisher: "Xiaomi MiMo",
+      title: "MiMo-V2.6 Pro API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    {
+      url: "https://huggingface.co/collections/XiaomiMiMo/mimo-v26",
+      publisher: "Xiaomi MiMo",
+      title: "MiMo-V2.6 Pro open weights",
+      accessedAt: "2026-10-07",
+      sourceType: "weights",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/updates/model",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Pro API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/updates/model",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Pro API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://huggingface.co/collections/XiaomiMiMo/mimo-v26",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Pro open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/updates/model",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Pro API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-22",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        ],
+      },
+    ],
   },
   {
     id: "mimo-v2-6-flash",
@@ -1171,6 +5495,145 @@ export const modelsData: ModelItem[] = [
       apiDocs: "https://mimo.mi.com/docs/en-US/updates/model",
       weights: "https://huggingface.co/collections/XiaomiMiMo/mimo-v26",
     },
+    sources: [
+    {
+      url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+      publisher: "Xiaomi MiMo",
+      title: "MiMo-V2.6 Flash announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://mimo.mi.com/docs/en-US/updates/model",
+      publisher: "Xiaomi MiMo",
+      title: "MiMo-V2.6 Flash API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    {
+      url: "https://huggingface.co/collections/XiaomiMiMo/mimo-v26",
+      publisher: "Xiaomi MiMo",
+      title: "MiMo-V2.6 Flash open weights",
+      accessedAt: "2026-10-07",
+      sourceType: "weights",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/updates/model",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/updates/model",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://huggingface.co/collections/XiaomiMiMo/mimo-v26",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Flash open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/updates/model",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Flash API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        publisher: "Xiaomi MiMo",
+        title: "MiMo-V2.6 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-22",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://mimo.mi.com/docs/en-US/news/latest/v2-6",
+        ],
+      },
+    ],
   },
 
   // ─── MOONSHOT AI ───────────────────────────────────────────────────────
@@ -1200,6 +5663,119 @@ export const modelsData: ModelItem[] = [
       announcement: "https://www.moonshot.ai",
       playground: "https://www.kimi.com",
     },
+    sources: [
+    {
+      url: "https://www.moonshot.ai",
+      publisher: "Moonshot AI",
+      title: "Kimi K3 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://www.moonshot.ai",
+        publisher: "Moonshot AI",
+        title: "Kimi K3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://www.moonshot.ai",
+        publisher: "Moonshot AI",
+        title: "Kimi K3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://www.moonshot.ai",
+        publisher: "Moonshot AI",
+        title: "Kimi K3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://www.moonshot.ai",
+        publisher: "Moonshot AI",
+        title: "Kimi K3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://www.moonshot.ai",
+        publisher: "Moonshot AI",
+        title: "Kimi K3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://www.moonshot.ai",
+        publisher: "Moonshot AI",
+        title: "Kimi K3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://www.moonshot.ai",
+        publisher: "Moonshot AI",
+        title: "Kimi K3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://www.moonshot.ai",
+        publisher: "Moonshot AI",
+        title: "Kimi K3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://www.moonshot.ai",
+        publisher: "Moonshot AI",
+        title: "Kimi K3 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-07-15",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://www.moonshot.ai",
+        ],
+      },
+    ],
   },
 
   // ─── EXISTING-LAB GAPS (volume leaders, non-flagship) ──────────────────
@@ -1229,6 +5805,119 @@ export const modelsData: ModelItem[] = [
       announcement: "https://api-docs.deepseek.com",
       playground: "https://chat.deepseek.com",
     },
+    sources: [
+    {
+      url: "https://api-docs.deepseek.com",
+      publisher: "DeepSeek",
+      title: "DeepSeek V4 Flash 0731 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0731 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0731 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0731 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0731 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0731 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0731 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0731 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0731 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0731 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-07-31",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://api-docs.deepseek.com",
+        ],
+      },
+    ],
   },
   {
     id: "deepseek-v4-flash-0423",
@@ -1256,6 +5945,119 @@ export const modelsData: ModelItem[] = [
       announcement: "https://api-docs.deepseek.com",
       playground: "https://chat.deepseek.com",
     },
+    sources: [
+    {
+      url: "https://api-docs.deepseek.com",
+      publisher: "DeepSeek",
+      title: "DeepSeek V4 Flash 0423 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0423 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0423 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0423 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0423 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0423 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0423 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0423 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0423 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://api-docs.deepseek.com",
+        publisher: "DeepSeek",
+        title: "DeepSeek V4 Flash 0423 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-04-24",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://api-docs.deepseek.com",
+        ],
+      },
+    ],
   },
   {
     id: "gemini-3-7-flash",
@@ -1283,6 +6085,119 @@ export const modelsData: ModelItem[] = [
       announcement: "https://blog.google/technology/ai/",
       playground: "https://aistudio.google.com",
     },
+    sources: [
+    {
+      url: "https://blog.google/technology/ai/",
+      publisher: "Google DeepMind",
+      title: "Gemini 3.7 Flash announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://blog.google/technology/ai/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.7 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://blog.google/technology/ai/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.7 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://blog.google/technology/ai/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.7 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://blog.google/technology/ai/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.7 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://blog.google/technology/ai/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.7 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://blog.google/technology/ai/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.7 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://blog.google/technology/ai/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.7 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://blog.google/technology/ai/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.7 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://blog.google/technology/ai/",
+        publisher: "Google DeepMind",
+        title: "Gemini 3.7 Flash announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-08-13",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://blog.google/technology/ai/",
+        ],
+      },
+    ],
   },
   {
     id: "claude-sonnet-5",
@@ -1310,6 +6225,119 @@ export const modelsData: ModelItem[] = [
       playground: "https://claude.ai",
       apiDocs: "https://docs.anthropic.com",
     },
+    sources: [
+    {
+      url: "https://docs.anthropic.com",
+      publisher: "Anthropic",
+      title: "Claude Sonnet 5 API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-08-06",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://docs.anthropic.com",
+        ],
+      },
+    ],
   },
   {
     id: "claude-sonnet-5-5",
@@ -1340,6 +6368,137 @@ export const modelsData: ModelItem[] = [
       playground: "https://claude.ai",
       apiDocs: "https://docs.anthropic.com",
     },
+    sources: [
+    {
+      url: "https://www.anthropic.com/claude-sonnet-5-5",
+      publisher: "Anthropic",
+      title: "Claude Sonnet 5.5 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://docs.anthropic.com",
+      publisher: "Anthropic",
+      title: "Claude Sonnet 5.5 API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://www.anthropic.com/claude-sonnet-5-5",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://www.anthropic.com/claude-sonnet-5-5",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://www.anthropic.com/claude-sonnet-5-5",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://docs.anthropic.com",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://www.anthropic.com/claude-sonnet-5-5",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://www.anthropic.com/claude-sonnet-5-5",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://www.anthropic.com/claude-sonnet-5-5",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://www.anthropic.com/claude-sonnet-5-5",
+        publisher: "Anthropic",
+        title: "Claude Sonnet 5.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-28",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://www.anthropic.com/claude-sonnet-5-5",
+        ],
+      },
+    ],
   },
   {
     id: "chatgpt-images-2-5",
@@ -1384,6 +6543,128 @@ export const modelsData: ModelItem[] = [
       playground: "https://chatgpt.com",
       apiDocs: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
     },
+    sources: [
+    {
+      url: "https://openai.com/index/introducing-chatgpt-images-2-5/",
+      publisher: "OpenAI",
+      title: "ChatGPT Images 2.5 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: false,
+      note: "Host alive; automated fetch blocked, page not re-confirmed on access date.",
+    },
+    {
+      url: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+      publisher: "OpenAI",
+      title: "ChatGPT Images 2.5 API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        publisher: "OpenAI",
+        title: "ChatGPT Images 2.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        publisher: "OpenAI",
+        title: "ChatGPT Images 2.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        publisher: "OpenAI",
+        title: "ChatGPT Images 2.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        publisher: "OpenAI",
+        title: "ChatGPT Images 2.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        publisher: "OpenAI",
+        title: "ChatGPT Images 2.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        publisher: "OpenAI",
+        title: "ChatGPT Images 2.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        publisher: "OpenAI",
+        title: "ChatGPT Images 2.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        publisher: "OpenAI",
+        title: "ChatGPT Images 2.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://developers.openai.com/api/docs/models/gpt-image-2.5-flare",
+        publisher: "OpenAI",
+        title: "ChatGPT Images 2.5 API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-08",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://openai.com/index/introducing-chatgpt-images-2-5/",
+        ],
+      },
+    ],
   },
   {
     id: "nano-banana-pro",
@@ -1411,6 +6692,119 @@ export const modelsData: ModelItem[] = [
       announcement: "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
       playground: "https://aistudio.google.com",
     },
+    sources: [
+    {
+      url: "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+      publisher: "Google DeepMind",
+      title: "Nano Banana Pro announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        publisher: "Google DeepMind",
+        title: "Nano Banana Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        publisher: "Google DeepMind",
+        title: "Nano Banana Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        publisher: "Google DeepMind",
+        title: "Nano Banana Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        publisher: "Google DeepMind",
+        title: "Nano Banana Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        publisher: "Google DeepMind",
+        title: "Nano Banana Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        publisher: "Google DeepMind",
+        title: "Nano Banana Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        publisher: "Google DeepMind",
+        title: "Nano Banana Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        publisher: "Google DeepMind",
+        title: "Nano Banana Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        publisher: "Google DeepMind",
+        title: "Nano Banana Pro announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2025-11-20",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image",
+        ],
+      },
+    ],
   },
   {
     id: "veo-3-1",
@@ -1439,6 +6833,119 @@ export const modelsData: ModelItem[] = [
       announcement: "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
       playground: "https://aistudio.google.com",
     },
+    sources: [
+    {
+      url: "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
+      publisher: "Google DeepMind",
+      title: "Veo 3.1 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
+        publisher: "Google DeepMind",
+        title: "Veo 3.1 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
+        publisher: "Google DeepMind",
+        title: "Veo 3.1 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
+        publisher: "Google DeepMind",
+        title: "Veo 3.1 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
+        publisher: "Google DeepMind",
+        title: "Veo 3.1 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
+        publisher: "Google DeepMind",
+        title: "Veo 3.1 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
+        publisher: "Google DeepMind",
+        title: "Veo 3.1 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
+        publisher: "Google DeepMind",
+        title: "Veo 3.1 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
+        publisher: "Google DeepMind",
+        title: "Veo 3.1 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
+        publisher: "Google DeepMind",
+        title: "Veo 3.1 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2025-10-15",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://blog.google/innovation-and-ai/products/veo-updates-flow/",
+        ],
+      },
+    ],
   },
   {
     id: "kling-3-0",
@@ -1467,6 +6974,119 @@ export const modelsData: ModelItem[] = [
       announcement: "https://klingai.com",
       playground: "https://klingai.com",
     },
+    sources: [
+    {
+      url: "https://klingai.com",
+      publisher: "Kuaishou",
+      title: "Kling 3.0 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://klingai.com",
+        publisher: "Kuaishou",
+        title: "Kling 3.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://klingai.com",
+        publisher: "Kuaishou",
+        title: "Kling 3.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://klingai.com",
+        publisher: "Kuaishou",
+        title: "Kling 3.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://klingai.com",
+        publisher: "Kuaishou",
+        title: "Kling 3.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://klingai.com",
+        publisher: "Kuaishou",
+        title: "Kling 3.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://klingai.com",
+        publisher: "Kuaishou",
+        title: "Kling 3.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://klingai.com",
+        publisher: "Kuaishou",
+        title: "Kling 3.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://klingai.com",
+        publisher: "Kuaishou",
+        title: "Kling 3.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://klingai.com",
+        publisher: "Kuaishou",
+        title: "Kling 3.0 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-02-05",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://klingai.com",
+        ],
+      },
+    ],
   },
   {
     id: "runway-gen-4-5",
@@ -1495,6 +7115,119 @@ export const modelsData: ModelItem[] = [
       announcement: "https://runwayml.com/research/introducing-runway-gen-4.5",
       playground: "https://runwayml.com",
     },
+    sources: [
+    {
+      url: "https://runwayml.com/research/introducing-runway-gen-4.5",
+      publisher: "Runway",
+      title: "Runway Gen-4.5 announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://runwayml.com/research/introducing-runway-gen-4.5",
+        publisher: "Runway",
+        title: "Runway Gen-4.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://runwayml.com/research/introducing-runway-gen-4.5",
+        publisher: "Runway",
+        title: "Runway Gen-4.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://runwayml.com/research/introducing-runway-gen-4.5",
+        publisher: "Runway",
+        title: "Runway Gen-4.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://runwayml.com/research/introducing-runway-gen-4.5",
+        publisher: "Runway",
+        title: "Runway Gen-4.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://runwayml.com/research/introducing-runway-gen-4.5",
+        publisher: "Runway",
+        title: "Runway Gen-4.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://runwayml.com/research/introducing-runway-gen-4.5",
+        publisher: "Runway",
+        title: "Runway Gen-4.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://runwayml.com/research/introducing-runway-gen-4.5",
+        publisher: "Runway",
+        title: "Runway Gen-4.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://runwayml.com/research/introducing-runway-gen-4.5",
+        publisher: "Runway",
+        title: "Runway Gen-4.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://runwayml.com/research/introducing-runway-gen-4.5",
+        publisher: "Runway",
+        title: "Runway Gen-4.5 announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2025-12-01",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://runwayml.com/research/introducing-runway-gen-4.5",
+        ],
+      },
+    ],
   },
 
   // ─── SARVAM AI ─────────────────────────────────────────────────────────────
@@ -1530,6 +7263,145 @@ export const modelsData: ModelItem[] = [
       apiDocs: "https://docs.sarvam.ai/api-reference-docs/getting-started/models/sarvam-105b",
       weights: "https://huggingface.co/sarvamai/sarvam-105b",
     },
+    sources: [
+    {
+      url: "https://www.sarvam.ai/blogs/sarvam-30b-105b",
+      publisher: "Sarvam AI",
+      title: "Sarvam 105B announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://docs.sarvam.ai/api-reference-docs/getting-started/models/sarvam-105b",
+      publisher: "Sarvam AI",
+      title: "Sarvam 105B API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    {
+      url: "https://huggingface.co/sarvamai/sarvam-105b",
+      publisher: "Sarvam AI",
+      title: "Sarvam 105B open weights",
+      accessedAt: "2026-10-07",
+      sourceType: "weights",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://www.sarvam.ai/blogs/sarvam-30b-105b",
+        publisher: "Sarvam AI",
+        title: "Sarvam 105B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://docs.sarvam.ai/api-reference-docs/getting-started/models/sarvam-105b",
+        publisher: "Sarvam AI",
+        title: "Sarvam 105B API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://docs.sarvam.ai/api-reference-docs/getting-started/models/sarvam-105b",
+        publisher: "Sarvam AI",
+        title: "Sarvam 105B API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://www.sarvam.ai/blogs/sarvam-30b-105b",
+        publisher: "Sarvam AI",
+        title: "Sarvam 105B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://huggingface.co/sarvamai/sarvam-105b",
+        publisher: "Sarvam AI",
+        title: "Sarvam 105B open weights",
+        accessedAt: "2026-10-07",
+        sourceType: "weights",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://docs.sarvam.ai/api-reference-docs/getting-started/models/sarvam-105b",
+        publisher: "Sarvam AI",
+        title: "Sarvam 105B API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://www.sarvam.ai/blogs/sarvam-30b-105b",
+        publisher: "Sarvam AI",
+        title: "Sarvam 105B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      benchmarks: [
+      {
+        url: "https://www.sarvam.ai/blogs/sarvam-30b-105b",
+        publisher: "Sarvam AI",
+        title: "Sarvam 105B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://www.sarvam.ai/blogs/sarvam-30b-105b",
+        publisher: "Sarvam AI",
+        title: "Sarvam 105B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://www.sarvam.ai/blogs/sarvam-30b-105b",
+        publisher: "Sarvam AI",
+        title: "Sarvam 105B announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-03-06",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://www.sarvam.ai/blogs/sarvam-30b-105b",
+        ],
+      },
+    ],
   },
 
   // ─── TYPESAFE AI ─────────────────────────────────────────────────────────
@@ -1560,5 +7432,126 @@ export const modelsData: ModelItem[] = [
       playground: "https://jevai.net/",
       apiDocs: "https://docs.typesafe.ai/",
     },
+    sources: [
+    {
+      url: "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+      publisher: "TypeSafe AI",
+      title: "Jev announcement",
+      accessedAt: "2026-10-07",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://docs.typesafe.ai/",
+      publisher: "TypeSafe AI",
+      title: "Jev API reference",
+      accessedAt: "2026-10-07",
+      sourceType: "api-docs",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+        publisher: "TypeSafe AI",
+        title: "Jev announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://docs.typesafe.ai/",
+        publisher: "TypeSafe AI",
+        title: "Jev API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://docs.typesafe.ai/",
+        publisher: "TypeSafe AI",
+        title: "Jev API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+        publisher: "TypeSafe AI",
+        title: "Jev announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+        publisher: "TypeSafe AI",
+        title: "Jev announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://docs.typesafe.ai/",
+        publisher: "TypeSafe AI",
+        title: "Jev API reference",
+        accessedAt: "2026-10-07",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+        publisher: "TypeSafe AI",
+        title: "Jev announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+        publisher: "TypeSafe AI",
+        title: "Jev announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+        publisher: "TypeSafe AI",
+        title: "Jev announcement",
+        accessedAt: "2026-10-07",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-07",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-09-15",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+        ],
+      },
+    ],
   },
 ]

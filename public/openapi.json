@@ -3,7 +3,7 @@
   "info": {
     "title": "ModelRegistry API",
     "version": "v1",
-    "description": "Free unauthenticated read-only REST API for the open frontier AI model registry at https://modelregistry.tirup.in. No API keys, no signup. CORS-open (Access-Control-Allow-Origin: *). Human-readable reference: https://modelregistry.tirup.in/docs.",
+    "description": "Free unauthenticated read-only REST API for the open frontier AI model registry at https://modelregistry.tirup.in. No API keys, no signup. CORS-open (Access-Control-Allow-Origin: *). Human-readable reference: https://modelregistry.tirup.in/docs. Every record carries provenance (sources, field-level citations, verification status, changelog); benchmark figures are lab-reported unless a model page shows otherwise. Revision policy: stable kebab-case record IDs; additive fields only within v1; breaking changes ship as v2. Dataset revisions are dated (see datasetVersion); record history at https://modelregistry.tirup.in/changelog.",
     "license": {
       "name": "MIT (Open Data)",
       "url": "https://github.com/TirupMehta/ModelRegistry/blob/main/LICENSE"
@@ -23,7 +23,7 @@
     "/api/v1/models": {
       "get": {
         "summary": "List tracked frontier AI models",
-        "description": "Primary endpoint. Returns every tracked model plus a per-laboratory rollup. All query parameters are optional and combinable.",
+        "description": "Primary endpoint. Returns every tracked model plus a per-laboratory rollup. All query parameters are optional and combinable. Supports conditional requests: send the ETag back as If-None-Match to receive 304 when the dataset revision and filters are unchanged.",
         "parameters": [
           {
             "name": "company",
@@ -54,26 +54,51 @@
             "in": "query",
             "schema": { "type": "string", "enum": ["true", "false"] },
             "description": "\"true\" returns each lab's newest shipped checkpoint(s)."
+          },
+          {
+            "name": "If-None-Match",
+            "in": "header",
+            "schema": { "type": "string" },
+            "description": "ETag from a previous response. Returns 304 with an empty body when nothing changed."
           }
         ],
         "responses": {
           "200": {
             "description": "Registry snapshot. Unknown filter values return 200 with an empty models list (total 0).",
+            "headers": {
+              "ETag": { "description": "Revision + query hash. Echo as If-None-Match.", "schema": { "type": "string" } },
+              "Last-Modified": { "description": "Dataset revision date, not request time.", "schema": { "type": "string" } }
+            },
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "total", "models"],
+                  "required": ["status", "total", "models", "datasetVersion", "verification"],
                   "properties": {
                     "status": { "type": "string", "example": "success" },
                     "total": { "type": "integer" },
-                    "updatedAt": { "type": "string", "format": "date-time" },
+                    "updatedAt": { "type": "string", "format": "date", "description": "Last real data revision (YYYY-MM-DD), never the request time.", "example": "2026-10-07" },
+                    "datasetVersion": { "type": "string", "example": "2026.10.07" },
+                    "verification": {
+                      "type": "object",
+                      "description": "Status counts over the returned models.",
+                      "properties": {
+                        "verified": { "type": "integer" },
+                        "partially_verified": { "type": "integer" },
+                        "unverified": { "type": "integer" },
+                        "retired": { "type": "integer" }
+                      }
+                    },
+                    "methodology": { "type": "string", "example": "https://modelregistry.tirup.in/methodology" },
                     "companies": { "type": "array", "items": { "type": "object" } },
-                    "models": { "type": "array", "items": { "type": "object" } }
+                    "models": { "type": "array", "items": { "$ref": "#/components/schemas/ModelItem" } }
                   }
                 }
               }
             }
+          },
+          "304": {
+            "description": "Not modified — dataset revision and filters unchanged since the ETag was issued."
           }
         }
       }
@@ -96,8 +121,8 @@
     },
     "/api/check-updates": {
       "get": {
-        "summary": "Service health and dataset heartbeat",
-        "description": "Heartbeat endpoint with edge-cache status and live dataset counts. Poll no more than once every 5 minutes; a change in trackedModelsCount signals a re-fetch of /api/v1/models.",
+        "summary": "Service health and dataset verification snapshot",
+        "description": "Honest health signal. Upstream reachability (OpenRouter heartbeat) is reported separately and never implies factual verification; factual freshness comes only from per-record verification dates. Poll no more than once every 5 minutes.",
         "responses": {
           "200": {
             "description": "Health payload.",
@@ -105,17 +130,161 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["status", "trackedModelsCount"],
+                  "required": ["status", "generatedAt", "datasetVersion", "trackedModelsCount"],
                   "properties": {
                     "status": { "type": "string", "example": "ok" },
-                    "verifiedAt": { "type": "string", "format": "date-time" },
+                    "generatedAt": { "type": "string", "format": "date-time", "description": "Response generation time. Not a verification claim." },
+                    "datasetVersion": { "type": "string", "example": "2026.10.07" },
+                    "datasetLastChangedAt": { "type": "string", "format": "date", "description": "Last real data change." },
+                    "oldestVerificationDate": { "type": "string", "format": "date", "description": "Oldest per-record source check in the dataset." },
+                    "verifiedModelCount": { "type": "integer" },
+                    "partiallyVerifiedModelCount": { "type": "integer" },
+                    "unverifiedModelCount": { "type": "integer" },
+                    "retiredModelCount": { "type": "integer" },
+                    "upstreamAvailability": {
+                      "type": "object",
+                      "description": "Unrelated third-party reachability. Never read as registry verification.",
+                      "properties": {
+                        "openrouter": { "type": "string", "enum": ["reachable", "unreachable", "unchecked"] },
+                        "externalLiveCount": { "type": "integer" }
+                      }
+                    },
                     "trackedLabsCount": { "type": "integer" },
-                    "trackedModelsCount": { "type": "integer" }
+                    "trackedModelsCount": { "type": "integer" },
+                    "methodology": { "type": "string" }
                   }
                 }
               }
             }
           }
+        }
+      }
+    },
+    "/feed.json": {
+      "get": {
+        "summary": "JSON Feed of model releases",
+        "description": "JSON Feed 1.1 with the same items and ordering as /rss.xml, plus per-item verification status and record modification dates.",
+        "responses": {
+          "200": {
+            "description": "JSON Feed.",
+            "content": {
+              "application/feed+json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rss.xml": {
+      "get": {
+        "summary": "RSS 2.0 feed of model releases",
+        "description": "Newest-first release items with stable /models/:id GUIDs.",
+        "responses": {
+          "200": {
+            "description": "RSS feed.",
+            "content": {
+              "application/xml": {
+                "schema": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/llms.txt": {
+      "get": {
+        "summary": "LLM-readable registry summary",
+        "description": "Per-lab flagships and checkpoints with dataset version and verification counts. Benchmark figures are lab-reported.",
+        "responses": {
+          "200": {
+            "description": "Plain text.",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/llms-full.txt": {
+      "get": {
+        "summary": "Exhaustive machine-readable model matrix",
+        "description": "Every record with verification status, sources, and changelog pointers. Benchmark figures are lab-reported.",
+        "responses": {
+          "200": {
+            "description": "Plain text.",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SourceRef": {
+        "type": "object",
+        "description": "One cited primary source behind a record.",
+        "required": ["url", "publisher", "title", "accessedAt", "sourceType"],
+        "properties": {
+          "url": { "type": "string", "format": "uri", "example": "https://mistral.ai/news/mistral-large-4/" },
+          "publisher": { "type": "string", "example": "Mistral AI" },
+          "title": { "type": "string", "example": "Mistral Large 4 announcement" },
+          "publishedAt": { "type": "string", "format": "date", "description": "Source publication date, when directly observed." },
+          "accessedAt": { "type": "string", "format": "date", "description": "Date the registry last confirmed the source.", "example": "2026-10-07" },
+          "sourceType": { "type": "string", "enum": ["announcement", "api-docs", "pricing", "model-card", "paper", "weights", "benchmark", "console"] },
+          "live": { "type": "boolean", "description": "True when the source returned HTTP 2xx to the automated check." },
+          "note": { "type": "string", "description": "Access limits or source weaknesses, e.g. bot-gated pages." }
+        }
+      },
+      "ModelItem": {
+        "type": "object",
+        "description": "One registry record. Benchmark figures are lab-reported, not independently reproduced.",
+        "required": ["id", "companyId", "name", "releaseDate", "pricing", "sources", "fieldSources", "lastVerifiedAt", "verificationStatus", "changeLog"],
+        "properties": {
+          "id": { "type": "string", "description": "Stable kebab-case record ID.", "example": "mistral-large-4" },
+          "companyId": { "type": "string", "example": "mistral" },
+          "companyName": { "type": "string", "example": "Mistral AI" },
+          "name": { "type": "string", "example": "Mistral Large 4" },
+          "releaseDate": { "type": "string", "format": "date" },
+          "isCompanyFlagship": { "type": "boolean", "description": "Lab's primary general-purpose model. Requires fresh, live evidence." },
+          "isLatestCheckpoint": { "type": "boolean", "description": "Lab's newest shipped release. Requires fresh, live evidence." },
+          "contextWindowTokens": { "type": "integer", "description": "0 means undisclosed or non-token billing." },
+          "pricing": {
+            "type": "object",
+            "required": ["input", "output"],
+            "properties": {
+              "input": { "type": "number", "description": "USD per billing unit." },
+              "output": { "type": "number" }
+            }
+          },
+          "pricingUnit": { "type": "string", "description": "Only 'per second'; absent means per-1M-tokens." },
+          "sources": { "type": "array", "items": { "$ref": "#/components/schemas/SourceRef" } },
+          "fieldSources": {
+            "type": "object",
+            "description": "Per-field citations keyed by releaseDate, contextWindow, maxOutputTokens, parameters, license, pricing, modalities, benchmarks, isCompanyFlagship, isLatestCheckpoint. Missing keys mean no citable source yet.",
+            "additionalProperties": { "type": "array", "items": { "$ref": "#/components/schemas/SourceRef" } }
+          },
+          "lastVerifiedAt": { "type": "string", "format": "date" },
+          "verificationStatus": { "type": "string", "enum": ["verified", "partially_verified", "unverified", "retired"] },
+          "changeLog": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["date", "summary"],
+              "properties": {
+                "date": { "type": "string", "format": "date" },
+                "summary": { "type": "string" },
+                "sources": { "type": "array", "items": { "type": "string", "format": "uri" } }
+              }
+            }
+          },
+          "supersededBy": { "type": "string", "description": "Replacement record id, when retired." }
         }
       }
     }

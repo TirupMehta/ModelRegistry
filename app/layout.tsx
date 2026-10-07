@@ -4,7 +4,6 @@ import "./globals.css"
 import AmbientShader from "@/components/ambient-shader"
 import FeedbackInit from "@/components/feedback-init"
 import { modelsData } from "@/data/models"
-import { companies, type Company } from "@/data/companies"
 import { safeJsonLd } from "@/lib/utils"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -102,12 +101,17 @@ export default function RootLayout({
     },
   }
 
+  const sortedDates = modelsData.map((m) => m.releaseDate).sort()
+  const temporalCoverage = sortedDates.length > 0
+    ? `${sortedDates[0].slice(0, 7)}/${sortedDates[sortedDates.length - 1].slice(0, 7)}`
+    : "2026/2026"
+
   const jsonLdDataset = {
     "@context": "https://schema.org",
     "@type": "Dataset",
     name: "Frontier AI Models Specification Registry",
     description:
-      "Verified specifications, context limits, pricing, release dates, and benchmark performance metrics for active frontier AI foundation models and research checkpoints.",
+      "Source-linked specifications, context limits, pricing, release dates, and lab-published benchmark metrics for active frontier AI foundation models and research checkpoints.",
     url: "https://modelregistry.tirup.in",
     creator: {
       "@type": "Organization",
@@ -115,7 +119,7 @@ export default function RootLayout({
       url: "https://github.com/TirupMehta/ModelRegistry",
     },
     license: "https://opensource.org/licenses/MIT",
-    temporalCoverage: "2026/..",
+    temporalCoverage,
     distribution: [
       {
         "@type": "DataDownload",
@@ -132,36 +136,16 @@ export default function RootLayout({
         encodingFormat: "text/plain",
         contentUrl: "https://modelregistry.tirup.in/llms.txt",
       },
+      {
+        "@type": "DataDownload",
+        encodingFormat: "application/feed+json",
+        contentUrl: "https://modelregistry.tirup.in/feed.json",
+      },
     ],
   }
 
-  const dynamicFaqQuestions = Object.values(companies)
-    .map((c: Company) => {
-      const flagship = modelsData.find((m) => m.companyId === c.id && m.isCompanyFlagship)
-      return { company: c, flagship }
-    })
-    .filter(({ flagship }) => Boolean(flagship))
-    .map(({ company: c, flagship }) => {
-      const checkpoint = modelsData.find(
-        (m) => m.companyId === c.id && m.isLatestCheckpoint && m.id !== flagship!.id
-      )
-      return {
-        "@type": "Question",
-        name: `What is the latest AI model from ${c.name}?`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${c.name}'s primary flagship model is ${flagship!.name} (${flagship!.parameters}, ${flagship!.contextWindow} context). ${flagship!.highlight}${
-            checkpoint ? ` Their latest research checkpoint is ${checkpoint.name} (${checkpoint.categoryLabel}).` : ""
-          }`,
-        },
-      }
-    })
-
-  const jsonLdFAQ = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: dynamicFaqQuestions,
-  }
+  // NOTE: no sitewide FAQPage schema — structured Q&A is emitted only on
+  // pages that render the questions visibly (see app/companies/[id]/page.tsx).
 
   return (
     <html lang="en" className="scroll-smooth no-transitions" suppressHydrationWarning>
@@ -183,10 +167,6 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdDataset) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdFAQ) }}
         />
 
         {/* Inline script to set default light theme unless explicitly dark */}

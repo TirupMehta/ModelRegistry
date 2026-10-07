@@ -78,15 +78,19 @@ export default function DocsPage() {
   const sampleResponse = `{
   "status": "success",
   "total": ${modelsData.length},
-  "updatedAt": "2026-09-09T00:00:00.000Z",
+  "updatedAt": "2026-10-07",
+  "datasetVersion": "2026.10.07",
+  "verification": { "verified": 1, "partially_verified": 48 },
   "metadata": { "registry": "ModelRegistry", "license": "Open Data / MIT" },
   "companies": [{ "id": "openai", "page": "/companies/openai",
-    "latestFlagship": "GPT-6 Astra", "latestCheckpoint": "ChatGPT Images 2.5" }],
+    "latestFlagship": "GPT-6.1 Sol", "latestCheckpoint": "ChatGPT Images 2.5" }],
   "models": [{
-    "id": "${sampleFlagship?.id ?? "gpt-6-astra"}",
-    "name": "${sampleFlagship?.name ?? "GPT-6 Astra"}",
-    "releaseDate": "${sampleFlagship?.releaseDate ?? "2026-09-04"}",
-    "pricing": { "input": ${sampleFlagship?.pricing.input ?? 10}, "output": ${sampleFlagship?.pricing.output ?? 50} }
+    "id": "${sampleFlagship?.id ?? "gpt-6-1-sol"}",
+    "name": "${sampleFlagship?.name ?? "GPT-6.1 Sol"}",
+    "releaseDate": "${sampleFlagship?.releaseDate ?? "2026-09-29"}",
+    "pricing": { "input": ${sampleFlagship?.pricing.input ?? 2}, "output": ${sampleFlagship?.pricing.output ?? 10} },
+    "verificationStatus": "${sampleFlagship?.verificationStatus ?? "partially_verified"}",
+    "sources": [{ "url": "https://openai.com/index/introducing-gpt-6-1-sol", "sourceType": "announcement" }]
   }]
 }`
 
@@ -463,9 +467,12 @@ ${SITE_URL}/api/check-updates`}
                 The <code className="font-mono text-xs">/v1/</code> prefix is a stability
                 contract: breaking renames or removals ship under a new version, never
                 silently. Additive changes — new fields, new labs, new models — land in v1
-                without notice. Recent additive changes: per-laboratory profile pages and{" "}
-                <code className="font-mono text-xs">companies[].page</code> (September 2026),
-                per-second pricing units for video models, and named sub-variants.
+                without notice. Recent additive changes: per-record provenance (
+                <code className="font-mono text-xs">sources</code>,{" "}
+                <code className="font-mono text-xs">fieldSources</code>,{" "}
+                <code className="font-mono text-xs">verificationStatus</code>,{" "}
+                <code className="font-mono text-xs">changeLog</code>), dataset
+                versioning, ETag support, and per-second pricing units for audio models.
               </p>
               <Note>
                 Model <code className="font-mono text-xs">id</code> values are append-only.
@@ -501,6 +508,25 @@ ${SITE_URL}/api/check-updates`}
                   </Link>
                 ))}
               </div>
+            </TextWithBlur>
+          </div>
+
+          <div id="citing" className="scroll-mt-24 mb-12">
+            <TextWithBlur>
+              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-3">
+                Citing this registry
+              </h2>
+              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+                Cite the canonical record URL plus the dataset version you used, e.g.{" "}
+                <code className="font-mono text-xs">https://modelregistry.tirup.in/models/mistral-large-4 (dataset 2026.10.07)</code>.
+                Record IDs are stable; field values can be corrected, with history on{" "}
+                <Link href="/changelog" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                  /changelog
+                </Link>
+                . Versioned full-dataset downloads:{" "}
+                <code className="font-mono text-xs">/api/v1/snapshot</code>. Benchmark figures
+                are lab-reported — cite the linked primary source for the number itself.
+              </p>
             </TextWithBlur>
           </div>
 

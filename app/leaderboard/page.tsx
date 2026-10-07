@@ -6,7 +6,8 @@ import Footer from "@/components/footer"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, ModelItem } from "@/data/models"
-import { leaderboardSpotlights } from "@/data/leaderboard"
+import { leaderboardSpotlights, leaderboardMethodology } from "@/data/leaderboard"
+import Link from "next/link"
 import { formatPrice } from "@/lib/utils"
 import { tapFeedback } from "@/lib/feedback"
 import { Code, Brain, Maximize, Coins, Layers, ArrowUpRight } from "lucide-react"
@@ -17,6 +18,9 @@ interface ComparisonCategory {
   description: string
   leader: string
   models: ModelItem[]
+  // Key into leaderboardMethodology for curated sections; omitted for
+  // sections ranked live from current registry figures.
+  methodKey?: "reasoning" | "coding" | "value"
 }
 
 export default function LeaderboardPage() {
@@ -60,6 +64,7 @@ export default function LeaderboardPage() {
       icon: Brain,
       description: "Models with adaptive test-time compute, deep chain-of-thought, and autonomous multi-turn reasoning.",
       leader: "Claude Fable 5.1 / GPT-6 Astra / Grok 4.6",
+      methodKey: "reasoning",
       models: modelsData.filter((m) =>
         leaderboardSpotlights.reasoning.includes(m.id)
       ),
@@ -68,7 +73,8 @@ export default function LeaderboardPage() {
       title: "Agentic Software Engineering & Coding",
       icon: Code,
       description: "Frontier performance on long-horizon code refactoring, Terminal-Bench execution, and tool orchestration.",
-      leader: "Claude Fable 5.1 (Terminal-Bench 52.6% SOTA) / Gemini 3.8 Flash",
+      leader: "Claude Fable 5.1 (Terminal-Bench 52.6%, lab-reported) / Gemini 3.8 Flash",
+      methodKey: "coding",
       models: modelsData.filter((m) =>
         leaderboardSpotlights.coding.includes(m.id)
       ),
@@ -76,8 +82,9 @@ export default function LeaderboardPage() {
     {
       title: "High-Volume Value",
       icon: Layers,
-      description: "Models developers actually route at massive scale on OpenRouter — proven price-performance in production, not benchmark scores.",
-      leader: "DeepSeek V4 Flash 0731 (49.9T/30d) / MiMo-V2.5 (coding share #1)",
+      description: "Models developers actually route at massive scale on OpenRouter — observed usage share in production, not benchmark scores.",
+      leader: "DeepSeek V4 Flash 0731 (49.9T tokens/30d observed) / MiMo-V2.5 (leading coding share)",
+      methodKey: "value",
       models: modelsData.filter((m) =>
         leaderboardSpotlights.value.includes(m.id)
       ),
@@ -116,7 +123,10 @@ export default function LeaderboardPage() {
               Frontier AI Leaderboard
             </h1>
             <p>
-              Domain-by-domain evaluation of which foundation models hold the state of the art{newestMonthLabel ? ` in ${newestMonthLabel}` : ""}.
+              Editorial snapshots comparing foundation models domain by domain
+              {newestMonthLabel ? `, reviewed ${newestMonthLabel}` : ""}. Leaders hold the
+              highest <em>published</em> score in each comparison — not a universal “best model”
+              title. <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">Methodology</Link>
             </p>
           </TextWithBlur>
         </div>
@@ -157,7 +167,7 @@ export default function LeaderboardPage() {
                   <div className="mb-4 py-2 px-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/10 dark:border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 text-xs font-sans">
                     <span className="inline-flex items-center gap-1.5 text-[#ff5d2e] font-semibold uppercase tracking-[0.12em] text-[10px] shrink-0">
                       <span className="w-1 h-1 rounded-full bg-[#ff5d2e]" />
-                      Domain SOTA
+                      Comparison leader
                     </span>
                     <span className="font-medium tabular-nums text-black/70 dark:text-zinc-200 text-[11px] sm:text-xs break-words sm:text-right">
                       {category.leader}
@@ -209,10 +219,42 @@ export default function LeaderboardPage() {
                       </div>
                     ))}
                   </div>
+
+                  {/* Section methodology + evaluation date */}
+                  <div className="mt-4 pt-3 border-t border-black/5 dark:border-white/[0.06] text-[11px] font-sans text-black/45 dark:text-zinc-500 leading-relaxed">
+                    {category.methodKey && leaderboardMethodology[category.methodKey] ? (
+                      <p>
+                        <span className="font-medium text-black/60 dark:text-zinc-400">How this is judged: </span>
+                        {leaderboardMethodology[category.methodKey].basis}{" "}
+                        <span className="tabular-nums">Reviewed {leaderboardMethodology[category.methodKey].evaluatedAt}.</span>{" "}
+                        {leaderboardMethodology[category.methodKey].sources.map((u) => (
+                          <a key={u} href={u} target="_blank" rel="noopener noreferrer" className="text-[#ff5d2e] hover:underline underline-offset-2 mr-2">
+                            {new URL(u).hostname.replace(/^www\./, "")}
+                          </a>
+                        ))}
+                      </p>
+                    ) : (
+                      <p>
+                        <span className="font-medium text-black/60 dark:text-zinc-400">How this is judged: </span>
+                        Ranked live from current registry figures — no editorial shortlist, no fixed evaluation date.
+                      </p>
+                    )}
+                  </div>
                 </div>
               </TextWithBlur>
             )
           })}
+        </div>
+
+        <div className="mt-8 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.6] dark:bg-white/[0.02] p-4 sm:p-5 text-xs sm:text-sm font-sans text-black/60 dark:text-zinc-400 leading-relaxed">
+          <p>
+            This leaderboard is an editorial snapshot, not an objective ranking. Scores are
+            lab-published figures that vendors measure with different harnesses and versions;
+            usage stats reflect observed public routing share. Full rules:{" "}
+            <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">/methodology</Link>
+            {" "}· Record-level sources:{" "}
+            <Link href="/changelog" className="text-[#ff5d2e] hover:underline underline-offset-2">/changelog</Link>
+          </p>
         </div>
       </section>
 

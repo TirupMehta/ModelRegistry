@@ -7,6 +7,7 @@ import { companies } from "@/data/companies"
 import { formatPrice, formatDate } from "@/lib/utils"
 import Header from "@/components/header"
 import { ShareCardModal } from "@/components/share-card-modal"
+import VerificationSection from "@/components/verification-section"
 import {
   ExternalLink,
   Layers,
@@ -259,9 +260,12 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           {/* Verified Benchmarks Section */}
           {Object.keys(model.benchmarks).length > 0 && (
             <div className="mb-6 sm:mb-8 border border-black/10 dark:border-white/[0.08] rounded-lg p-4 sm:p-5 bg-black/[0.01] dark:bg-black/20">
-              <div className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 uppercase tracking-widest leading-relaxed mb-4">
-                Verified Benchmark Suite
+              <div className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 uppercase tracking-widest leading-relaxed mb-1">
+                Published benchmarks · lab-reported
               </div>
+              <p className="-mt-1 mb-4 text-[11px] font-sans text-black/45 dark:text-zinc-500">
+                Vendor-published figures, not independently reproduced. Sources in Verification below.
+              </p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 font-sans text-xs">
                 {model.benchmarks.sweBench && (
                   <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[#0e1014] leading-relaxed">
@@ -472,6 +476,8 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
               <ChevronRight size={13} />
             </Link>
           </div>
+
+          <VerificationSection model={model} />
         </div>
 
         {/* Same-lab internal links: siblings + lab profile */}

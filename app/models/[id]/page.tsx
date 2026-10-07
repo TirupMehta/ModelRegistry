@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation"
 import { Metadata } from "next"
 import { modelsData } from "@/data/models"
 import { resolveCompanyFallback } from "@/lib/model-fallback"
-import { formatPrice, safeJsonLd } from "@/lib/utils"
+import { safeJsonLd } from "@/lib/utils"
 import ModelPageView from "@/components/model-page-view"
 
 interface Props {
@@ -69,38 +69,26 @@ export default async function ModelPage({ params }: Props) {
     redirect(`/models/${fallback.id}`)
   }
 
-  // JSON-LD Structured Data for Google Rich Snippets.
-  // Pricing is the official hosted API rate per billing unit (1M tokens,
-  // or per second for visual models) — expressed as a UnitPriceSpecification
-  // so the figure is never mistaken for a one-time purchase price.
+  // JSON-LD: this page is a registry datasheet about the model (a
+  // TechArticle), not the model software itself — so no SoftwareApplication
+  // type. Citations point at the primary sources behind the record.
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: model.name,
-    operatingSystem: "Cloud / Local GPU",
-    applicationCategory: "Artificial Intelligence Foundation Model",
+    "@type": "TechArticle",
+    headline: `${model.name} — specs, context and benchmarks`,
+    description: model.highlight,
+    datePublished: model.releaseDate,
+    dateModified: model.lastVerifiedAt,
     author: {
+      "@type": "Organization",
+      name: "ModelRegistry",
+      url: "https://modelregistry.tirup.in",
+    },
+    about: {
       "@type": "Organization",
       name: model.companyName,
     },
-    offers: {
-      "@type": "Offer",
-      price: String(model.pricing.input),
-      priceCurrency: "USD",
-      description: `Official hosted API rate: ${formatPrice(model)}${
-        model.pricingUnit ? "" : " per 1M tokens"
-      }${model.openWeights ? "; weights free to self-host" : ""}`,
-      priceSpecification: {
-        "@type": "UnitPriceSpecification",
-        price: String(model.pricing.input),
-        priceCurrency: "USD",
-        unitText: model.pricingUnit ?? "per 1M input tokens",
-        referenceQuantity: model.pricingUnit
-          ? { "@type": "QuantitativeValue", value: 1, unitText: "second" }
-          : { "@type": "QuantitativeValue", value: 1000000, unitText: "tokens" },
-      },
-    },
-    description: model.highlight,
+    citation: model.sources.map((s) => s.url),
     url: `https://modelregistry.tirup.in/models/${model.id}`,
   }
 

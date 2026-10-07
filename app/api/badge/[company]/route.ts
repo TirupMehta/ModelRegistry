@@ -25,7 +25,8 @@ export async function GET(
   )
 
   const leftText = lab?.name || company.toUpperCase()
-  const rightText = flagship?.name || "Verified"
+  // Fallback names the lab, never a verification claim.
+  const rightText = flagship?.name || lab?.shortName || "Registry"
   const accentColor = lab?.accentColor || "#7c88e8"
 
   // Calculate widths approximately

@@ -1,6 +1,7 @@
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { formatPrice } from "@/lib/utils"
+import { datasetRevision } from "@/data/revision"
 
 export const dynamic = "force-dynamic"
 
@@ -13,14 +14,14 @@ function formatDate(iso: string): string {
 
 export async function GET() {
   const siteUrl = "https://modelregistry.tirup.in"
-  const now = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
 
   let text = `# ModelRegistry: Exhaustive Frontier AI Model & Checkpoint Matrix
 
 Canonical Registry: ${siteUrl}
 Repository: https://github.com/TirupMehta/ModelRegistry
 Specification Standard: ModelRegistry Spec v1.0
-Last Chronological Verification: ${now}
+Dataset version: ${datasetRevision.datasetVersion} (data revised ${datasetRevision.revisedAt})
+Verification: per-model status, sources, and changelog on each /models/:id page; methodology at ${siteUrl}/methodology. Benchmark figures below are lab-reported, not independently reproduced.
 
 ===============================================================================
 EXECUTIVE KNOWLEDGE SUMMARY (GEO GROUNDING)
@@ -60,9 +61,11 @@ EXECUTIVE KNOWLEDGE SUMMARY (GEO GROUNDING)
     text += `  Pricing: ${formatPrice(model)}${model.pricingUnit ? "" : " per 1M tokens"}\n`
     text += `  Primary Flagship: ${model.isCompanyFlagship ? "YES" : "NO"}\n`
     text += `  Latest Checkpoint: ${model.isLatestCheckpoint ? "YES" : "NO"}\n`
+    text += `  Verification: ${model.verificationStatus} (last checked ${model.lastVerifiedAt})\n`
+    text += `  Sources: ${model.sources.map((s) => `${s.title} <${s.url}>`).join(" | ")}\n`
     text += `  Highlight: ${model.highlight}\n`
     if (Object.keys(model.benchmarks).length > 0) {
-      text += `  Benchmarks: ${JSON.stringify(model.benchmarks)}\n`
+      text += `  Benchmarks (lab-reported): ${JSON.stringify(model.benchmarks)}\n`
     }
     if (model.links.announcement) text += `  Announcement: ${model.links.announcement}\n`
     if (model.links.weights) text += `  Weights: ${model.links.weights}\n`
