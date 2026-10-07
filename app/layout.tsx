@@ -12,7 +12,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 export const metadata: Metadata = {
   metadataBase: new URL("https://modelregistry.tirup.in"),
   title: {
-    default: "ModelRegistry — The Open Frontier AI Model Registry",
+    default: "ModelRegistry - The Open Frontier AI Model Registry",
     template: "%s | ModelRegistry",
   },
   description:
@@ -64,14 +64,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://modelregistry.tirup.in",
-    title: "ModelRegistry — The Open Frontier AI Model Registry",
+    title: "ModelRegistry - The Open Frontier AI Model Registry",
     description:
       "Real-time open community registry tracking the latest frontier AI flagships and research checkpoints across all premier AI labs.",
     siteName: "ModelRegistry",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ModelRegistry — The Open Frontier AI Model Registry",
+    title: "ModelRegistry - The Open Frontier AI Model Registry",
     description:
       "Real-time open community registry tracking the latest frontier AI flagships and research checkpoints across all premier AI labs.",
   },
@@ -150,7 +150,7 @@ export default function RootLayout({
     ],
   }
 
-  // NOTE: no sitewide FAQPage schema — structured Q&A is emitted only on
+  // NOTE: no sitewide FAQPage schema - structured Q&A is emitted only on
   // pages that render the questions visibly (see app/companies/[id]/page.tsx).
 
   return (

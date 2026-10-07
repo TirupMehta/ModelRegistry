@@ -1,7 +1,7 @@
 /**
  * scripts/test-provenance.js
  * Trust-surface tests: proves the site never claims verification, currency,
- * or leadership it cannot evidence — across copy, schema, feeds, sitemap,
+ * or leadership it cannot evidence - across copy, schema, feeds, sitemap,
  * OpenAPI, and the revision system. Runs offline (no server needed).
  *
  * Fails (exit 1) on the first violated invariant, naming the file and rule.
@@ -17,7 +17,7 @@ function check(name, cond, detail) {
     console.log(`  ✓ ${name}`)
   } else {
     failures++
-    console.error(`  ✗ ${name}${detail ? ` — ${detail}` : ""}`)
+    console.error(`  ✗ ${name}${detail ? ` - ${detail}` : ""}`)
   }
 }
 
@@ -30,6 +30,9 @@ function exists(rel) {
 }
 
 // 1. No dishonest freshness / leadership copy anywhere in app copy or data.
+// House style bans the em dash outright (use "-" or restructure), so its
+// U+2014 code point is forbidden here as an escape: the guard file itself
+// stays em-dash-free, which also keeps future scripts/ scans honest.
 const FORBIDDEN = [
   "Real-Time Verified",
   "Last Verified:",
@@ -41,12 +44,16 @@ const FORBIDDEN = [
   "SEPTEMBER 2026",
   "September 2026",
   "Live Frontier Radar",
+  "\u2014",
 ]
-const SCAN_DIRS = ["app", "components", "lib", "data", "public/openapi.json", "README.md", "CONTRIBUTING.md"]
+const SCAN_DIRS = ["app", "components", "lib", "data", "public", "docs", "README.md", "CONTRIBUTING.md"]
 function allFiles(dir, out = []) {
   const full = path.resolve(ROOT, dir)
   if (!fs.existsSync(full)) return out
-  if (fs.statSync(full).isFile()) return [...out, full]
+  if (fs.statSync(full).isFile()) {
+    out.push(full)
+    return out
+  }
   for (const e of fs.readdirSync(full)) {
     if (["node_modules", ".next"].includes(e)) continue
     allFiles(path.join(dir, e), out)

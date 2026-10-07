@@ -2,7 +2,7 @@ import { QUERY_MODELREGISTRY_SKILL_MD } from "@/lib/skills"
 
 /**
  * Skill artifact: query-modelregistry SKILL.md.
- * Served verbatim from the single source in lib/skills.ts — the discovery
+ * Served verbatim from the single source in lib/skills.ts - the discovery
  * index hashes that same string, so artifact and digest cannot drift.
  */
 export async function GET() {

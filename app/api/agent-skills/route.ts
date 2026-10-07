@@ -7,7 +7,7 @@ import { QUERY_MODELREGISTRY_SKILL_MD } from "@/lib/skills"
  * /.well-known/agent-skills/index.json (see rewrites() in next.config.mjs).
  *
  * The digest is computed over the served artifact bytes at request time,
- * so it is correct by construction — no hand-maintained hashes.
+ * so it is correct by construction - no hand-maintained hashes.
  */
 const SKILL_URL = "https://modelregistry.tirup.in/skills/query-modelregistry/SKILL.md"
 

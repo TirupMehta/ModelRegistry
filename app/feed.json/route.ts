@@ -4,7 +4,7 @@ import { datasetRevision } from "@/data/revision"
 export const dynamic = "force-dynamic"
 
 // JSON Feed 1.1 (https://www.jsonfeed.org/version/1.1/) generated from the
-// same dataset as /rss.xml — same items, same ordering, same revision stamp.
+// same dataset as /rss.xml - same items, same ordering, same revision stamp.
 export async function GET() {
   const siteUrl = "https://modelregistry.tirup.in"
   const sorted = [...modelsData].sort(
@@ -13,7 +13,7 @@ export async function GET() {
 
   const feed = {
     version: "https://jsonfeed.org/version/1.1",
-    title: "ModelRegistry — Frontier AI Models & Releases",
+    title: "ModelRegistry - Frontier AI Models & Releases",
     home_page_url: siteUrl,
     feed_url: `${siteUrl}/feed.json`,
     description:

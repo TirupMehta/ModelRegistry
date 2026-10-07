@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const labModels = modelsData.filter((m) => m.companyId === lab.id)
   const flagship = labModels.find((m) => m.isCompanyFlagship)
-  const title = `${lab.name} Models — ${flagship ? flagship.name : "Flagship"} & All Checkpoints`
+  const title = `${lab.name} Models - ${flagship ? flagship.name : "Flagship"} & All Checkpoints`
   const description = `${lab.description} Track every verified ${lab.name} release: ${labModels
     .slice(0, 4)
     .map((m) => m.name)
@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${lab.name} — Models & Checkpoints`,
+      title: `${lab.name} - Models & Checkpoints`,
       description,
       images: [`${SITE_URL}/api/og?lab=${lab.id}`],
     },
@@ -128,7 +128,7 @@ export default async function CompanyPage({ params }: Props) {
   const jsonLdCollection = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: `${lab.name} Models — ModelRegistry`,
+    name: `${lab.name} Models - ModelRegistry`,
     description: `Complete verified release history for ${lab.name}.`,
     url: `${SITE_URL}/companies/${lab.id}`,
   }

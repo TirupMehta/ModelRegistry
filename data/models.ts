@@ -85,7 +85,7 @@ export interface ModelItem {
   highlight: string
   modalities: ("Text" | "Vision" | "Audio" | "Video" | "Code" | "Image")[]
   // Named sub-variants shipped under this entry (e.g. API twins).
-  // Rendered inside the parent model page — not separate index entries.
+  // Rendered inside the parent model page - not separate index entries.
   variants?: ModelVariant[]
   benchmarks: {
     mmluPro?: string
@@ -754,7 +754,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "Proprietary API / ChatGPT Plus & Pro",
     pricing: { input: 3.0, output: 12.0 },
-    highlight: "OpenAI's unified ChatGPT 5.6 family — Sol (reasoning), Terra (balanced), Luna (speed) — on one 1.05M-context foundation with multi-agent orchestration.",
+    highlight: "OpenAI's unified ChatGPT 5.6 family - Sol (reasoning), Terra (balanced), Luna (speed) - on one 1.05M-context foundation with multi-agent orchestration.",
     modalities: ["Text", "Vision", "Audio", "Code"],
     benchmarks: {
       mmluPro: "86.4%",
@@ -1077,7 +1077,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "Proprietary API / ChatGPT Plus & Pro",
     pricing: { input: 0.1, output: 0.5 },
-    highlight: "Released Sept 22, 2026; high-volume tier at $0.10/$0.50 — half the 5.6 Luna price — matching GPT-5.6 Sol on factuality at ~1% of the cost.",
+    highlight: "Released Sept 22, 2026; high-volume tier at $0.10/$0.50 - half the 5.6 Luna price - matching GPT-5.6 Sol on factuality at ~1% of the cost.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {},
     links: {
@@ -3808,7 +3808,7 @@ export const modelsData: ModelItem[] = [
     license: "Open Weights (27 Oct 2026) / Mistral API Preview",
     pricing: { input: 1.36, output: 4.18 },
     highlight:
-      "Released Oct 6, 2026 in public preview on Mistral Studio ($1.36/$4.18); Mistral's largest model — 1.05T total / 49B active MoE with 1.6B vision encoder, native multimodal, 1M context, 160+ languages; SOTA open-weight outside China for cyber, finance and legal with 61.7% DeepSWE v1.1; weights drop Oct 27.",
+      "Released Oct 6, 2026 in public preview on Mistral Studio ($1.36/$4.18); Mistral's largest model - 1.05T total / 49B active MoE with 1.6B vision encoder, native multimodal, 1M context, 160+ languages; SOTA open-weight outside China for cyber, finance and legal with 61.7% DeepSWE v1.1; weights drop Oct 27.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {
       sweBench: "61.7% (DeepSWE v1.1)",
@@ -5311,7 +5311,7 @@ export const modelsData: ModelItem[] = [
         name: "MiMo-V2.6 Pro UltraSpeed",
         role: "20X ULTRASPEED",
         detail: "Flagship V2.6-Pro quality at up to 20x inference speed for real-time and latency-sensitive workloads.",
-        pricingNote: "API mimo-v2.6-pro-ultraspeed — speed-optimized tier",
+        pricingNote: "API mimo-v2.6-pro-ultraspeed - speed-optimized tier",
         link: "https://mimo.mi.com/docs/en-US/updates/model",
       },
     ],
@@ -7108,7 +7108,7 @@ export const modelsData: ModelItem[] = [
     license: "Runway API / App",
     pricing: { input: 0.15, output: 0.15 },
     pricingUnit: "per second",
-    highlight: "Launched Dec 2025 with 1,247 Elo — No. 1 in text-to-video: director camera moves and reference characters at ~$1.49 per 10s clip.",
+    highlight: "Launched Dec 2025 with 1,247 Elo - No. 1 in text-to-video: director camera moves and reference characters at ~$1.49 per 10s clip.",
     modalities: ["Text", "Image", "Video"],
     benchmarks: {},
     links: {

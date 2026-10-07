@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 
 /**
- * AmbientShader Component — "Cinematic Obsidian Atmosphere"
+ * AmbientShader Component - "Cinematic Obsidian Atmosphere"
  * 
  * An ultra-luxurious, procedural ambient lighting canvas.
  * Delivers deep velvety obsidian blacks with soft, organic top radiance
@@ -73,7 +73,7 @@ export default function AmbientShader() {
       lastTime = time
       t += dt * 0.2
 
-      // The drift is glacial — painting at ~30fps is visually identical
+      // The drift is glacial - painting at ~30fps is visually identical
       // and stops the full-screen canvas from competing with tap
       // animations on mobile GPUs.
       if (time - lastPaint < 33) {

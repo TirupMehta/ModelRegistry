@@ -11,7 +11,7 @@ import {
 /**
  * Tiny persisted click-sound toggle. Haptics stay on whenever the
  * device supports them (they're silent); only the audible tick is
- * toggleable — nobody likes a site they can't mute.
+ * toggleable - nobody likes a site they can't mute.
  */
 export default function FeedbackToggle() {
   const [on, setOn] = useState(true)

@@ -6,7 +6,7 @@ import { modelsData } from "@/data/models"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Changelog — ModelRegistry record history",
+  title: "Changelog - ModelRegistry record history",
   description:
     "Dated history of additions, corrections, and re-sourcing across ModelRegistry model records.",
   alternates: { canonical: "https://modelregistry.tirup.in/changelog" },

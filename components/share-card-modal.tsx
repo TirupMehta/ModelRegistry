@@ -64,7 +64,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
   const company = companies[model.companyId]
   const accentColor = company?.accentColor || "#ff5d2e"
 
-  // Site type system — must match app/layout.tsx (next/font):
+  // Site type system - must match app/layout.tsx (next/font):
   // Display = Space Grotesk, Body/labels = Plus Jakarta Sans.
   // Canvas can only use document-loaded fonts, so every render is preceded
   // by ensureCardFonts() (document.fonts.load + fonts.ready).
@@ -73,7 +73,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
   const F_MONO = '"Plus Jakarta Sans", system-ui, -apple-system, sans-serif'
 
   // next/font serves: Sans 300-700, Display 400-700.
-  // Tracking: card text felt congested — open letter/word spacing a touch.
+  // Tracking: card text felt congested - open letter/word spacing a touch.
   const TRACK_LETTER = "0.02em"
   const TRACK_WORD = "0.06em"
   const TRACK_TITLE_LETTER = "-0.01em"
@@ -431,8 +431,8 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
     const urlW = ctx.measureText(urlText).width
     ctx.fillText(urlText, width - padding - urlW, footerY - 9)
     } catch {
-      // Never let a canvas failure crash the page — surface a fallback instead.
-      setRenderError("Preview failed to render on this device — export actions below remain available.")
+      // Never let a canvas failure crash the page - surface a fallback instead.
+      setRenderError("Preview failed to render on this device - export actions below remain available.")
     } finally {
       setIsRendering(false)
     }
@@ -448,7 +448,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
       try {
         await ensureCardFonts()
       } catch {
-        // Offline / blocked fonts — fall through to system fallbacks
+        // Offline / blocked fonts - fall through to system fallbacks
       }
       if (!cancelled) drawCard()
     }
@@ -460,7 +460,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
     try {
       document.fonts?.ready?.then?.(redrawOnFontReady)?.catch?.(() => {})
     } catch {
-      // Older browsers without the FontFaceSet API — initial render stands.
+      // Older browsers without the FontFaceSet API - initial render stands.
     }
 
     return () => {
@@ -477,11 +477,11 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
       setIsBadgeCopied(true)
       setTimeout(() => setIsBadgeCopied(false), 2000)
     } catch {
-      // Clipboard unavailable — no-op instead of a crash.
+      // Clipboard unavailable - no-op instead of a crash.
     }
   }
 
-  // Fullscreen zoom preview — snapshots the 1x export so small text reads
+  // Fullscreen zoom preview - snapshots the 1x export so small text reads
   // clearly. Capture-phase listener so Esc closes only the zoom, not the
   // parent model popup behind it.
   const openZoom = () => {
@@ -491,7 +491,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
       setZoomSrc(out.toDataURL("image/png"))
       setIsZoomed(true)
     } catch {
-      // Snapshot unavailable — leave the inline preview as-is.
+      // Snapshot unavailable - leave the inline preview as-is.
     }
   }
   const closeZoom = () => {
@@ -511,7 +511,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
     return () => window.removeEventListener("keydown", onKey, true)
   }, [isZoomed])
 
-  // Hooks must run unconditionally — render gating happens after them.
+  // Hooks must run unconditionally - render gating happens after them.
   if (!isOpen) return null
 
   // Downscale the 2x working canvas to exact export dimensions
@@ -547,7 +547,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
       document.body.appendChild(link)
       link.click()
     } catch {
-      // Canvas export unavailable on this device — no-op instead of a crash.
+      // Canvas export unavailable on this device - no-op instead of a crash.
     } finally {
       try {
         link?.remove()
@@ -563,7 +563,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
       try {
         navigator.clipboard.writeText(`https://modelregistry.tirup.in/?model=${model.id}`)
       } catch {
-        // Clipboard unavailable — still flip the confirmation state.
+        // Clipboard unavailable - still flip the confirmation state.
       }
       setIsCopied(true)
       setTimeout(() => setIsCopied(false), 2000)
@@ -620,14 +620,14 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
       try {
         if (typeof navigator.share === "function" && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
           await navigator.share({
-            title: `${model.name} — ModelRegistry Specification`,
+            title: `${model.name} - ModelRegistry Specification`,
             text: `Verified specifications & benchmarks for ${model.name} (${company?.name || model.companyName}).`,
             files: [file],
           })
           return
         }
       } catch (e) {
-        // User cancelled the share sheet — stay silent. Anything else falls
+        // User cancelled the share sheet - stay silent. Anything else falls
         // through to a plain download so the tap never appears dead.
         if (e instanceof DOMException && e.name === "AbortError") return
       }

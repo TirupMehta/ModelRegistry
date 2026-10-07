@@ -6,7 +6,7 @@ import { datasetRevision } from "@/data/revision"
 export const dynamic = "force-dynamic"
 
 // Honest health signal. The OpenRouter fetch below is an unrelated
-// third-party availability heartbeat — it says nothing about whether this
+// third-party availability heartbeat - it says nothing about whether this
 // registry's facts are correct, and the response never conflates the two.
 // Factual freshness comes only from per-record verification dates.
 export async function GET() {

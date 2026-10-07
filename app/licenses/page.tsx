@@ -7,9 +7,9 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Open-weight AI license comparison — ModelRegistry",
+  title: "Open-weight AI license comparison - ModelRegistry",
   description:
-    "Which frontier models publish weights, under which license, grouped for enterprise review — with primary sources and verification status.",
+    "Which frontier models publish weights, under which license, grouped for enterprise review - with primary sources and verification status.",
   alternates: { canonical: "https://modelregistry.tirup.in/licenses" },
 }
 
@@ -40,7 +40,7 @@ export default function LicensesPage() {
           Open weights &amp; licenses
         </h1>
         <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-8 max-w-3xl">
-          License strings are the vendor&apos;s stated terms, grouped verbatim — read the linked
+          License strings are the vendor&apos;s stated terms, grouped verbatim - read the linked
           source before deploying, especially “community” and “research” licenses with use
           restrictions. A missing weights link means no downloadable weights were found, and the
           record says so (see{" "}

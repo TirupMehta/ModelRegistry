@@ -110,7 +110,7 @@ async function main() {
   // NOTE: "/" is intentionally not asserted here. It is the only path behind
   // middleware.ts, and `next start` on newer Node runtimes (>=22) crashes the
   // edge sandbox with EvalError on Next's own compiled middleware bootstrap
-  // (eval-source-map devtool) — an environment quirk, not app code. Vercel
+  // (eval-source-map devtool) - an environment quirk, not app code. Vercel
   // production executes the identical bundle without issue.
   console.log("  skip: '/' (middleware edge-sandbox quirk under local next start)")
   await expectStatus("/companies", 200)
@@ -259,7 +259,7 @@ async function main() {
 
   // Badge XSS guard: injected markup must come back escaped, never raw.
   // A payload containing a literal '/' (e.g. </script>) 404s at the routing
-  // layer — also safe (fail-closed) — so probe without one to reach handler.
+  // layer - also safe (fail-closed) - so probe without one to reach handler.
   // The handler uppercases the company text, so compare case-insensitively.
   try {
     const { res } = await get("/api/badge/%3Cscript%3Ealert(1)%3C")
@@ -276,7 +276,7 @@ async function main() {
   try {
     const slashProbe = await get("/api/badge/%3Cscript%3Ealert(1)%3C/script%3E", { redirect: "manual" })
     if (slashProbe.res.status === 404) pass("badge slash payload fail-closed (404)")
-    else if (slashProbe.res.status === 200) fail("badge slash payload", "raw path slash served — check route guard")
+    else if (slashProbe.res.status === 200) fail("badge slash payload", "raw path slash served - check route guard")
     else pass("badge slash payload fail-closed", `status ${slashProbe.res.status}`)
   } catch (e) {
     fail("badge slash probe", e.message)
@@ -297,7 +297,7 @@ async function main() {
     const kb = body.length / 1024
     console.log(`  info: /api/v1/models payload ${kb.toFixed(1)}KB in ${ms}ms`)
     if (kb < 1024) pass("api payload under 1MB budget", `${kb.toFixed(1)}KB`)
-    else fail("api payload budget", `${kb.toFixed(1)}KB >= 1MB — add pagination`)
+    else fail("api payload budget", `${kb.toFixed(1)}KB >= 1MB - add pagination`)
   } catch (e) {
     fail("api payload probe", e.message)
   }

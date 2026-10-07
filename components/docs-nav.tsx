@@ -22,7 +22,7 @@ const INDEX = [
   { id: "support", label: "Support" },
 ]
 
-// Scrolls without touching the URL — no hashes, no query params, ever.
+// Scrolls without touching the URL - no hashes, no query params, ever.
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })
 }
@@ -61,7 +61,7 @@ export default function DocsSidebar() {
   const stickRef = useRef<string | null>(null)
   const settleYRef = useRef(-1)
 
-  // Scroll-spy over window scroll. The probe rides at 35% viewport height —
+  // Scroll-spy over window scroll. The probe rides at 35% viewport height -
   // shallow enough that a clicked section still owns it once the click lock
   // releases. In the last screenful the probe eases down toward the page end
   // so every short trailing section (Laboratories, Support) gets crossed in
@@ -85,7 +85,7 @@ export default function DocsSidebar() {
       if (stickRef.current && settleYRef.current < 0) {
         settleYRef.current = window.scrollY
       }
-      // No user scroll since the click settled — keep the clicked item.
+      // No user scroll since the click settled - keep the clicked item.
       if (
         stickRef.current &&
         Math.abs(window.scrollY - settleYRef.current) < 2

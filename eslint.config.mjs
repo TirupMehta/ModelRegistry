@@ -15,7 +15,7 @@ const eslintConfig = [
   },
   {
     // Maintenance scripts are plain CommonJS Node programs run directly
-    // with node — ESM imports and TS types don't apply there.
+    // with node - ESM imports and TS types don't apply there.
     files: ["scripts/**/*.js"],
     rules: {
       "@typescript-eslint/no-require-imports": "off",

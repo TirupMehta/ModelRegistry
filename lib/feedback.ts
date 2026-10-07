@@ -1,14 +1,14 @@
 "use client"
 
 /**
- * Hand-rolled tactile + click feedback — zero dependencies.
+ * Hand-rolled tactile + click feedback - zero dependencies.
  *
  * Haptics: Web Vibration API with PWM intensity simulation
  * (same principle as web-haptics.lochie.me, reimplemented here so we
  * ship no extra package). Silently no-ops on desktop / iOS Safari.
  *
  * Click sound: WebAudio-synthesized micro-tick (sine blip + filtered
- * noise transient). No audio assets, ~30ms, ultra-quiet — the iOS
+ * noise transient). No audio assets, ~30ms, ultra-quiet - the iOS
  * keyboard-tick school of sound, not a UI "pop".
  */
 
@@ -26,10 +26,10 @@ export type HapticPresetName =
   | "error"
   | "nudge"
 
-const PWM_CYCLE = 16 // ms — perceptual intensity slicing window
+const PWM_CYCLE = 16 // ms - perceptual intensity slicing window
 
 const PRESETS: Record<HapticPresetName, Vibration[]> = {
-  // Single solid pulses at full intensity — unmistakable on any motor.
+  // Single solid pulses at full intensity - unmistakable on any motor.
   // (12–15ms micro-pulses are below perception on many Android motors,
   // which is why section tabs felt dead. Floor is now 20ms.)
   tap: [{ duration: 25, intensity: 1 }],
@@ -71,7 +71,7 @@ function lsSet(key: string, value: boolean) {
   try {
     localStorage.setItem(key, value ? "1" : "0")
   } catch {
-    // private mode — ignore
+    // private mode - ignore
   }
   try {
     window.dispatchEvent(new CustomEvent("mr-feedback-change"))
@@ -120,7 +120,7 @@ export function isHapticsSupported(): boolean {
 function modulate(duration: number, intensity: number): number[] {
   const d = Math.max(1, Math.round(duration))
   // Short taps: PWM slicing would shave energy into a trimmed trailing
-  // pause, making them unfelt on eccentric motors — fire them whole.
+  // pause, making them unfelt on eccentric motors - fire them whole.
   if (d <= 32) return [d]
   const k = Math.min(1, Math.max(0, intensity))
   if (k >= 1) return [d]
@@ -198,14 +198,14 @@ let warnedNoVibrate = false
  * One-shot diagnostics for "why don't I feel anything" debugging.
  * Run in the phone's remote console: `getFeedbackDiagnostics()`.
  * Note: iOS Safari exposes navigator.vibrate but Apple never drives the
- * motor — `motorDriven` will be false there by platform, not by bug.
+ * motor - `motorDriven` will be false there by platform, not by bug.
  */
 export function getFeedbackDiagnostics() {
   const ua = typeof navigator !== "undefined" ? navigator.userAgent : "ssr"
   const isIOS = /iPad|iPhone|iPod/.test(ua)
   return {
     vibrateApiPresent: isHapticsSupported(),
-    // iOS has the API but the motor never fires — platform restriction.
+    // iOS has the API but the motor never fires - platform restriction.
     motorDriven: isHapticsSupported() && !isIOS,
     secureContext: typeof window !== "undefined" ? window.isSecureContext : false,
     hapticsEnabled: isHapticsEnabled(),
@@ -280,7 +280,7 @@ function ensureCtx(): AudioContext | null {
     if (!ctx) {
       ctx = new AC()
       master = ctx.createGain()
-      master.gain.value = 0.55 // global ceiling — stays subtle
+      master.gain.value = 0.55 // global ceiling - stays subtle
       // gentle lowpass so ticks never sound harsh on laptop speakers
       const lp = ctx.createBiquadFilter()
       lp.type = "lowpass"
@@ -361,7 +361,7 @@ function blip({ freq, freqEnd, dur = 0.03, gain = 0.05, type = "sine", when = 0 
     if (freqEnd && freqEnd !== freq) {
       osc.frequency.exponentialRampToValueAtTime(Math.max(40, freqEnd), t0 + dur)
     }
-    // snappy exp decay — the whole "non-cringe" secret
+    // snappy exp decay - the whole "non-cringe" secret
     g.gain.setValueAtTime(0.0001, t0)
     g.gain.exponentialRampToValueAtTime(Math.max(0.0002, gain), t0 + 0.004)
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur)
@@ -374,7 +374,7 @@ function blip({ freq, freqEnd, dur = 0.03, gain = 0.05, type = "sine", when = 0 
   }
 }
 
-/** Airy transient layered under the blip — what makes it feel "physical". */
+/** Airy transient layered under the blip - what makes it feel "physical". */
 function transient(when = 0, gain = 0.028, dur = 0.012) {
   const ac = ensureCtx()
   if (!ac || !master) return
@@ -445,7 +445,7 @@ export function playClick(kind: ClickKind = "tap"): boolean {
 }
 
 // ---------------------------------------------------------------------------
-// Combined one-callers — what components actually import
+// Combined one-callers - what components actually import
 // ---------------------------------------------------------------------------
 
 /** Timestamp of the last explicit feedback call. The global delegated
@@ -493,7 +493,7 @@ export function toggleFeedback() {
 }
 
 // ---------------------------------------------------------------------------
-// Global delegated taps — vibration on MOST buttons without wiring each one
+// Global delegated taps - vibration on MOST buttons without wiring each one
 // ---------------------------------------------------------------------------
 
 let globalInit = false

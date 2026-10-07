@@ -27,7 +27,7 @@ export async function GET() {
   const rssFeed = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ModelRegistry — Frontier AI Models &amp; Releases</title>
+    <title>ModelRegistry - Frontier AI Models &amp; Releases</title>
     <link>${siteUrl}</link>
     <description>The open public registry tracking primary foundation flagships and research checkpoints across all premier AI labs.</description>
     <language>en-us</language>

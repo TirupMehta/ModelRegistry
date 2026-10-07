@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  const title = `${model.name} (${model.companyName}) — Specs, Context & Benchmarks`
+  const title = `${model.name} (${model.companyName}) - Specs, Context & Benchmarks`
   const description = `${model.highlight} Context: ${model.contextWindow}. Architecture: ${model.parameters}. Release: ${model.releaseDate}.`
 
   return {
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${model.name} — Technical Specs & Benchmarks`,
+      title: `${model.name} - Technical Specs & Benchmarks`,
       description,
       images: [`https://modelregistry.tirup.in/api/og?model=${model.id}`],
     },
@@ -70,12 +70,12 @@ export default async function ModelPage({ params }: Props) {
   }
 
   // JSON-LD: this page is a registry datasheet about the model (a
-  // TechArticle), not the model software itself — so no SoftwareApplication
-  // type. Citations point at the primary sources behind the record.
+  // TechArticle), not the model software itself - so no Software-Application
+  // type is emitted. Citations point at the primary sources behind the record.
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    headline: `${model.name} — specs, context and benchmarks`,
+    headline: `${model.name} - specs, context and benchmarks`,
     description: model.highlight,
     datePublished: model.releaseDate,
     dateModified: model.lastVerifiedAt,

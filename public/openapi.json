@@ -98,7 +98,7 @@
             }
           },
           "304": {
-            "description": "Not modified — dataset revision and filters unchanged since the ETag was issued."
+            "description": "Not modified - dataset revision and filters unchanged since the ETag was issued."
           }
         }
       }
@@ -148,7 +148,7 @@
             }
           },
           "304": {
-            "description": "Not modified — dataset revision unchanged since the ETag was issued."
+            "description": "Not modified - dataset revision unchanged since the ETag was issued."
           },
           "404": {
             "description": "Unknown model id. Includes a flagship suggestion when the slug unambiguously belongs to one lab.",
@@ -246,7 +246,7 @@
             }
           },
           "304": {
-            "description": "Not modified — dataset revision and query unchanged since the ETag was issued."
+            "description": "Not modified - dataset revision and query unchanged since the ETag was issued."
           },
           "400": {
             "description": "Malformed since/until date or limit.",

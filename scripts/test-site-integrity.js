@@ -18,7 +18,7 @@ function loadTsModule(relPath, registry = {}) {
     exports: mod.exports,
     require: (spec) => {
       // Lib modules import the dataset with relative or @/-aliased paths that
-      // plain node cannot resolve — serve the already-loaded modules instead.
+      // plain node cannot resolve - serve the already-loaded modules instead.
       if (spec in registry) return registry[spec]
       return require(spec)
     },

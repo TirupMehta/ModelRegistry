@@ -7,7 +7,7 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "AI model pricing comparison with sources — ModelRegistry",
+  title: "AI model pricing comparison with sources - ModelRegistry",
   description:
     "Official hosted API pricing per lab flagship and checkpoint, with billing units, source links, and the dataset revision they were checked against.",
   alternates: { canonical: "https://modelregistry.tirup.in/pricing" },
@@ -38,7 +38,7 @@ export default function PricingPage() {
           Pricing comparison
         </h1>
         <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-8 max-w-3xl">
-          Official hosted list prices only — no reseller or volume-tier figures. Token-billed and
+          Official hosted list prices only - no reseller or volume-tier figures. Token-billed and
           per-second-billed models are never mixed in one ranking. Per-record citations live on
           each <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">model page</Link>;
           providers change prices, so check the linked source before budgeting.
@@ -72,7 +72,7 @@ export default function PricingPage() {
         {unitModels.length > 0 && (
           <>
             <h2 className="text-sm font-sans font-semibold uppercase tracking-wider text-black/60 dark:text-zinc-300 mb-2">
-              Non-token billing (separate units — not comparable above)
+              Non-token billing (separate units - not comparable above)
             </h2>
             <div className="border-t border-black/10 dark:border-white/[0.08]">
               {unitModels.map((m) => (

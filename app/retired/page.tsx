@@ -7,7 +7,7 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Retired & archived AI models — ModelRegistry",
+  title: "Retired & archived AI models - ModelRegistry",
   description:
     "Superseded registry records kept for reference, with their replacements. Nothing is currently retired.",
   alternates: { canonical: "https://modelregistry.tirup.in/retired" },
@@ -35,7 +35,7 @@ export default function RetiredPage() {
           Retired &amp; archived
         </h1>
         <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-8 max-w-3xl">
-          Superseded records are kept here for reference — never silently deleted — with a pointer
+          Superseded records are kept here for reference - never silently deleted - with a pointer
           to their replacement. Removal happens only for duplicates, hoaxes, or records that never
           had a verifiable official source (see{" "}
           <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">methodology</Link>).

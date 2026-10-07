@@ -29,17 +29,17 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**DeepSeek**](https://www.deepseek.com) | [DeepSeek V4.1 Flash](https://modelregistry.tirup.in/models/deepseek-v4-1-flash) | [DeepSeek V4-Pro (0813)](https://modelregistry.tirup.in/models/deepseek-v4-pro-0813) | 1M | Open (MIT) | $0.3 in / $1.2 out *(Open)* |
 | [**Meta AI**](https://ai.meta.com) | [Muse Spark 1.3](https://modelregistry.tirup.in/models/meta-muse-spark-1-3) | [Muse Voice Transcribe](https://modelregistry.tirup.in/models/meta-muse-voice-transcribe) | 262k | Open (Meta Community) | $0.05 in / $0.15 out *(Open)* |
 | [**Alibaba Cloud (Qwen)**](https://qwenlm.github.io) | [Qwen3.8 2.4T A95B](https://modelregistry.tirup.in/models/qwen-3-8-2-4t-a95b) | [Qwen3.8 Flash](https://modelregistry.tirup.in/models/qwen-3-8-flash) | 1M | Open (Qwen Community) | $0.8 in / $2.4 out *(Open)* |
-| [**Mistral AI**](https://mistral.ai) | [Mistral Large 4](https://modelregistry.tirup.in/models/mistral-large-4) | — | 1M | Open (Open Weights (27 Oct 2026)) | $1.36 in / $4.18 out *(Open)* |
+| [**Mistral AI**](https://mistral.ai) | [Mistral Large 4](https://modelregistry.tirup.in/models/mistral-large-4) | - | 1M | Open (Open Weights (27 Oct 2026)) | $1.36 in / $4.18 out *(Open)* |
 | [**Tencent Hunyuan**](https://hunyuan.tencent.com) | [Hy3](https://modelregistry.tirup.in/models/tencent-hy3) | [Hy4 Preview](https://modelregistry.tirup.in/models/tencent-hy4-preview) | 262k | Open (Tencent Hunyuan Community) | $0.13 in / $0.53 out *(Open)* |
 | [**Z.ai**](https://z.ai) | [GLM 5.3](https://modelregistry.tirup.in/models/glm-5-3) | [GLM 5.3 Flash](https://modelregistry.tirup.in/models/glm-5-3-flash) | 1M | Proprietary | $0.9 in / $2.7 out |
-| [**MiniMax**](https://www.minimaxi.com) | [MiniMax M3](https://modelregistry.tirup.in/models/minimax-m3) | — | 1M | Proprietary | $0.3 in / $1.2 out |
-| [**NVIDIA**](https://www.nvidia.com) | [Nemotron 3 Ultra 550B](https://modelregistry.tirup.in/models/nemotron-3-ultra) | — | 262k | Open (NVIDIA Open Model) | $0.6 in / $2.4 out *(Open)* |
+| [**MiniMax**](https://www.minimaxi.com) | [MiniMax M3](https://modelregistry.tirup.in/models/minimax-m3) | - | 1M | Proprietary | $0.3 in / $1.2 out |
+| [**NVIDIA**](https://www.nvidia.com) | [Nemotron 3 Ultra 550B](https://modelregistry.tirup.in/models/nemotron-3-ultra) | - | 262k | Open (NVIDIA Open Model) | $0.6 in / $2.4 out *(Open)* |
 | [**Xiaomi MiMo**](https://www.mi.com) | [MiMo-V2.6 Pro](https://modelregistry.tirup.in/models/mimo-v2-6-pro) | [MiMo-V2.6 Flash](https://modelregistry.tirup.in/models/mimo-v2-6-flash) | 1M | Open (MIT) | $0.435 in / $0.87 out *(Open)* |
-| [**Moonshot AI**](https://www.moonshot.ai) | [Kimi K3](https://modelregistry.tirup.in/models/kimi-k3) | — | 262k | Proprietary | $3 in / $15 out |
-| [**Kuaishou Kling**](https://klingai.com) | [Kling 3.0](https://modelregistry.tirup.in/models/kling-3-0) | — | — | Proprietary | $0.084 per second |
-| [**Runway**](https://runwayml.com) | [Runway Gen-4.5](https://modelregistry.tirup.in/models/runway-gen-4-5) | — | — | Proprietary | $0.15 per second |
-| [**Sarvam AI**](https://www.sarvam.ai) | [Sarvam 105B](https://modelregistry.tirup.in/models/sarvam-105b) | — | 128k | Open (Apache 2.0) | $0.33 in / $0.83 out *(Open)* |
-| [**TypeSafe AI**](https://typesafe.ai) | [Jev](https://modelregistry.tirup.in/models/jev-1) | — | — | Proprietary | $0.042 in / $0 out |
+| [**Moonshot AI**](https://www.moonshot.ai) | [Kimi K3](https://modelregistry.tirup.in/models/kimi-k3) | - | 262k | Proprietary | $3 in / $15 out |
+| [**Kuaishou Kling**](https://klingai.com) | [Kling 3.0](https://modelregistry.tirup.in/models/kling-3-0) | - | - | Proprietary | $0.084 per second |
+| [**Runway**](https://runwayml.com) | [Runway Gen-4.5](https://modelregistry.tirup.in/models/runway-gen-4-5) | - | - | Proprietary | $0.15 per second |
+| [**Sarvam AI**](https://www.sarvam.ai) | [Sarvam 105B](https://modelregistry.tirup.in/models/sarvam-105b) | - | 128k | Open (Apache 2.0) | $0.33 in / $0.83 out *(Open)* |
+| [**TypeSafe AI**](https://typesafe.ai) | [Jev](https://modelregistry.tirup.in/models/jev-1) | - | - | Proprietary | $0.042 in / $0 out |
 <!-- REGISTRY_TABLE_END -->
 
 ---
@@ -49,12 +49,12 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 - **Dual-Tier Model Organization**: Immediate distinction between heavyweight general foundation models and newly trained checkpoints.
 - **SOTA Domain Leaderboard**: Head-to-head verified evaluations across Reasoning, Agentic Coding, Context Capacity, and Inference Value.
 - **Open Telemetry & Syndication**:
-  - `GET /api/v1/models` — Public JSON REST API with filtering parameters.
-  - `GET /api/v1/models/{id}` — Single-record fetch for polling one model.
-  - `GET /api/v1/changes?since=YYYY-MM-DD` — Incremental changelog sync.
+  - `GET /api/v1/models` - Public JSON REST API with filtering parameters.
+  - `GET /api/v1/models/{id}` - Single-record fetch for polling one model.
+  - `GET /api/v1/changes?since=YYYY-MM-DD` - Incremental changelog sync.
   - Full human reference with examples: [modelregistry.tirup.in/docs](https://modelregistry.tirup.in/docs).
-  - `GET /rss.xml` — Live RSS 2.0 syndication feed for newly registered models.
-  - `GET /llms.txt` — Machine-readable ground truth formatted for AI answer engines and web crawlers.
+  - `GET /rss.xml` - Live RSS 2.0 syndication feed for newly registered models.
+  - `GET /llms.txt` - Machine-readable ground truth formatted for AI answer engines and web crawlers.
 
 ---
 
@@ -115,7 +115,7 @@ Full parameter reference, live counts, and Python/JS examples: [modelregistry.ti
 ModelRegistry uses a **single-file contribution workflow**. You only ever edit **one file**: [`data/models.ts`](./data/models.ts).
 
 1. **Add your model** to [`data/models.ts`](./data/models.ts).
-2. **Run `pnpm test`** — it validates the schema and **auto-syncs this README table**.
+2. **Run `pnpm test`** - it validates the schema and **auto-syncs this README table**.
 3. **Open a Pull Request**!
 
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the copy-paste snippet.
@@ -129,7 +129,7 @@ Paste this into any AI agent (Claude, Cursor, Codex, Copilot) and it will walk y
 ```text
 You are helping me contribute a new AI model to ModelRegistry (https://modelregistry.tirup.in, repo: https://github.com/TirupMehta/ModelRegistry), the open registry of frontier AI models.
 
-Follow this workflow step by step. Ask me for any fact you cannot verify from an official source — never invent specifications, benchmarks, pricing, or dates.
+Follow this workflow step by step. Ask me for any fact you cannot verify from an official source - never invent specifications, benchmarks, pricing, or dates.
 
 1. Clone and set up:
    git clone https://github.com/TirupMehta/ModelRegistry.git
@@ -145,7 +145,7 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
   name: "Model Display Name",
   version: "1.0",                   // lab version string
   releaseDate: "2026-09-08",        // YYYY-MM-DD, first public availability
-  isCompanyFlagship: false,         // true ONLY if this is the lab's primary flagship (exactly 1 per lab — demote the previous flagship to false)
+  isCompanyFlagship: false,         // true ONLY if this is the lab's primary flagship (exactly 1 per lab - demote the previous flagship to false)
   isLatestCheckpoint: true,         // true if this is the lab's newest release
   statusBadge: "NEW DROP",          // short uppercase pill, e.g. "NEW DROP", "OPEN WEIGHTS", "EXPIRES SEPT 10"
   category: "flagship",             // one of: reasoning | flagship | audio | open-weights | multimodal | code | image | video
@@ -153,7 +153,7 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
   contextWindow: "1,048,576 tokens", // human string; visual models use descriptive windows like "8s clips"
   contextWindowTokens: 1048576,     // sortable number; use 0 for non-token windows
   maxOutputTokens: "65,536 tokens",
-  parameters: "1.6T MoE",           // architecture; write "Undisclosed (...)" when the lab published nothing — never fabricate
+  parameters: "1.6T MoE",           // architecture; write "Undisclosed (...)" when the lab published nothing - never fabricate
   openWeights: false,
   license: "Proprietary API",       // e.g. "MIT License" for open weights
   pricing: { input: 10.0, output: 50.0 }, // USD per 1M tokens; per-second video models add pricingUnit: "per second"
@@ -170,10 +170,10 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
 
 3. If the model is from a laboratory not yet tracked, also add it to data/companies.ts with: id, name, shortName, description, website, headquarters, accentColor, latestFlagship.
 
-4. Freshness sweep (STRICT — never skip): the registry must never contradict itself.
-   a. Exactly ONE isCompanyFlagship:true per lab — demote the previous flagship to false.
+4. Freshness sweep (STRICT - never skip): the registry must never contradict itself.
+   a. Exactly ONE isCompanyFlagship:true per lab - demote the previous flagship to false.
    b. Scrub stale superlatives on the entries this release dethrones (same lab first, plus any cross-lab record it takes): #1, NEWEST, SOTA, best, latest, reigning, most advanced, newly. Rewrite those badges/highlights in past-neutral terms.
-   c. A record belongs ONLY to its verified current holder — never copy a crown onto the newcomer without an official source.
+   c. A record belongs ONLY to its verified current holder - never copy a crown onto the newcomer without an official source.
    d. Update data/companies.ts latestFlagship / latestReasoning / description when they changed.
    e. Update data/leaderboard.ts spotlights if the newcomer takes a spotlight slot.
    f. Keep every highlight to 1-2 tight lines; trim any older highlight that grew into a paragraph.

@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og"
 import { modelsData } from "@/data/models"
 
 export const runtime = "edge"
-export const alt = "ModelRegistry — The Open Frontier AI Model Registry"
+export const alt = "ModelRegistry - The Open Frontier AI Model Registry"
 export const size = {
   width: 1200,
   height: 630,
@@ -12,8 +12,8 @@ export const contentType = "image/png"
 export default async function Image() {
   const flagships = modelsData.filter((m) => m.isCompanyFlagship)
   const peakContext = modelsData.reduce((max, m) => Math.max(max, m.contextWindowTokens), 0)
-  const peakContextLabel = peakContext > 0 ? `${peakContext.toLocaleString("en-US")} Tokens` : "—"
-  // Content-based month of the newest tracked release — never hard-coded.
+  const peakContextLabel = peakContext > 0 ? `${peakContext.toLocaleString("en-US")} Tokens` : "-"
+  // Content-based month of the newest tracked release - never hard-coded.
   const newestRelease = [...modelsData].sort((a, b) =>
     b.releaseDate.localeCompare(a.releaseDate)
   )[0]

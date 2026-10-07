@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic"
 // Fixed column widths. This table is consumed by raw terminals (including
 // Windows consoles, where wide characters can render double-width), so every
 // cell is BOTH padded and sliced to its width: a value can never push the
-// columns after it out of alignment — it truncates instead. The header row
+// columns after it out of alignment - it truncates instead. The header row
 // is built with the same helpers, so labels and data always line up.
 const COL_LAB = 15
 const COL_MODEL = 22
@@ -37,7 +37,7 @@ function labDisplay(m: ModelItem): string {
 // consoles, which silently breaks fixed columns. Footnotes are free text, but
 // ASCII keeps them readable everywhere, so transliterate there too.
 function toAscii(s: string): string {
-  return s.replace(/[–—]/g, "-").replace(/\s*·\s*/g, ", ")
+  return s.replace(/[\u2013\u2014]/g, "-").replace(/\s*·\s*/g, ", ")
 }
 
 // Token windows render as the compact count ("1,000,000"). Descriptive
@@ -112,7 +112,7 @@ export async function GET() {
   table += "\n"
   table += " RECENT SPECIALIZED CHECKPOINTS:\n"
   specialized.forEach((m) => {
-    table += ` • ${m.companyName}: ${m.name} (${m.categoryLabel}) — Released ${m.releaseDate}\n`
+    table += ` • ${m.companyName}: ${m.name} (${m.categoryLabel}) - Released ${m.releaseDate}\n`
   })
 
   table += "\n"

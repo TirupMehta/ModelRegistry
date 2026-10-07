@@ -67,7 +67,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
       const url = `${window.location.origin}/models/${model.id}`
       navigator.clipboard.writeText(url)
     } catch {
-      // Clipboard unavailable — still confirm.
+      // Clipboard unavailable - still confirm.
     }
     successFeedback()
     setCopied(true)

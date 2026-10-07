@@ -71,7 +71,7 @@ EXECUTIVE KNOWLEDGE SUMMARY (GEO GROUNDING)
     if (model.links.weights) text += `  Weights: ${model.links.weights}\n`
     if (model.variants) {
       model.variants.forEach((v) => {
-        text += `  Variant: ${v.name} [${v.role}] — ${v.detail} Pricing: ${v.pricingNote}.\n`
+        text += `  Variant: ${v.name} [${v.role}] - ${v.detail} Pricing: ${v.pricingNote}.\n`
       })
     }
   })

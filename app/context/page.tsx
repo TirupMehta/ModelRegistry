@@ -7,14 +7,14 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "AI model context window comparison — ModelRegistry",
+  title: "AI model context window comparison - ModelRegistry",
   description:
     "Maximum input context per frontier AI model, sorted largest first, with primary sources and the dataset revision they were checked against.",
   alternates: { canonical: "https://modelregistry.tirup.in/context" },
 }
 
 function fmt(tokens: number) {
-  if (tokens <= 0) return "—"
+  if (tokens <= 0) return "-"
   if (tokens >= 1_000_000) return `${(tokens / 1_000_000).toFixed(tokens % 1_000_000 === 0 ? 0 : 2)}M`
   return `${Math.round(tokens / 1000)}K`
 }
@@ -41,8 +41,8 @@ export default function ContextPage() {
           Context window comparison
         </h1>
         <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-8 max-w-3xl">
-          Maximum input tokens per model, largest first. “—” means undisclosed or non-token
-          (audio/video billing) — never zero. Long context alone says nothing about retrieval
+          Maximum input tokens per model, largest first. A dash means undisclosed or non-token
+          (audio/video billing) - never zero. Long context alone says nothing about retrieval
           quality; per-record citations are on each{" "}
           <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">model page</Link>.
         </p>

@@ -16,7 +16,7 @@ const NAV_ITEMS = [
   { label: "Changelog", short: "Changes", href: "/timeline" },
 ] as const
 
-// Freshness stamp derived from the newest tracked release — stays accurate
+// Freshness stamp derived from the newest tracked release - stays accurate
 // as the registry grows, with no manual month edits needed.
 const newestReleaseLabel = (() => {
   const newest = [...modelsData].sort((a, b) =>
@@ -77,7 +77,7 @@ export default function Header() {
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Viewport-fixed explainer card, anchored under the button via measured
-  // rect — the nav row is a scroll container, so nothing may overflow it.
+  // rect - the nav row is a scroll container, so nothing may overflow it.
   function showHint() {
     const r = promptBtnRef.current?.getBoundingClientRect()
     if (!r) return
@@ -244,7 +244,7 @@ export default function Header() {
           </button>
         </div>
 
-      {/* Viewport-fixed explainer card — zero layout impact, never clipped */}
+      {/* Viewport-fixed explainer card - zero layout impact, never clipped */}
       {hintPos && !promptCopied && (
         <div
           aria-hidden="true"
@@ -257,7 +257,7 @@ export default function Header() {
             Contribute with AI
           </p>
           <p className="mt-1 text-[11px] font-sans leading-relaxed text-black/55 dark:text-zinc-400">
-            One click copies the full agent prompt — paste it into Claude, Cursor, or
+            One click copies the full agent prompt - paste it into Claude, Cursor, or
             Codex and it adds the model for you.
           </p>
           <span

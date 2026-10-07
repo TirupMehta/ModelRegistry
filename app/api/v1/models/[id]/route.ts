@@ -12,7 +12,7 @@ interface RouteContext {
 
 // Single-record fetch so agents/tools can poll one model without pulling
 // the full ~168KB registry. IDs are stable kebab-case (case-insensitive on
-// read). Unknown ids return a JSON 404 — never a redirect — with a lab
+// read). Unknown ids return a JSON 404 - never a redirect - with a lab
 // flagship suggestion when the slug unambiguously belongs to one lab (same
 // resolver as the /models/[id] page fallback).
 export async function GET(request: Request, { params }: RouteContext) {

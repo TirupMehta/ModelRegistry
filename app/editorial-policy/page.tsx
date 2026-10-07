@@ -5,7 +5,7 @@ import Footer from "@/components/footer"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Editorial Policy — ModelRegistry",
+  title: "Editorial Policy - ModelRegistry",
   description:
     "ModelRegistry's editorial policy: sourcing requirements, no paid placement, no manipulated SEO, correction process, and what this registry does not claim.",
   alternates: { canonical: "https://modelregistry.tirup.in/editorial-policy" },
@@ -58,8 +58,8 @@ export default function EditorialPolicyPage() {
         <P>
           A community-maintained, machine-readable index of frontier AI models
           with visible primary sources for its factual claims. Verification
-          means careful source review by maintainers — not independent
-          laboratory testing, benchmark reproduction, or insider access — and
+          means careful source review by maintainers - not independent
+          laboratory testing, benchmark reproduction, or insider access - and
           every page says so where it matters.
         </P>
 
@@ -99,7 +99,7 @@ export default function EditorialPolicyPage() {
         <P>
           Counts, prices, and context figures are dataset facts with sources.
           Leaderboard placements are editorial judgments with a published
-          methodology, evaluation date, and cited metric definitions — not
+          methodology, evaluation date, and cited metric definitions - not
           objective “best model” verdicts.
         </P>
       </section>

@@ -26,13 +26,13 @@ function modalities(): string {
 
 /**
  * Single source of truth for the "contribute with AI" prompt. Rendered on the
- * homepage, in /docs, and injected into README.md by scripts/sync-readme.js —
+ * homepage, in /docs, and injected into README.md by scripts/sync-readme.js -
  * never copy-paste the text anywhere else.
  */
 export function buildContributePrompt(): string {
   return `You are helping me contribute a new AI model to ModelRegistry (${SITE_URL}, repo: ${REPO_URL}), the open registry of frontier AI models.
 
-Follow this workflow step by step. Ask me for any fact you cannot verify from an official source — never invent specifications, benchmarks, pricing, or dates.
+Follow this workflow step by step. Ask me for any fact you cannot verify from an official source - never invent specifications, benchmarks, pricing, or dates.
 
 1. Clone and set up:
    git clone ${REPO_URL}.git
@@ -48,7 +48,7 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
   name: "Model Display Name",
   version: "1.0",                   // lab version string
   releaseDate: "2026-09-08",        // YYYY-MM-DD, first public availability
-  isCompanyFlagship: false,         // true ONLY if this is the lab's primary flagship (exactly 1 per lab — demote the previous flagship to false)
+  isCompanyFlagship: false,         // true ONLY if this is the lab's primary flagship (exactly 1 per lab - demote the previous flagship to false)
   isLatestCheckpoint: true,         // true if this is the lab's newest release
   statusBadge: "NEW DROP",          // short uppercase pill, e.g. "NEW DROP", "OPEN WEIGHTS", "EXPIRES SEPT 10"
   category: "flagship",             // one of: ${categories()}
@@ -56,7 +56,7 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
   contextWindow: "1,048,576 tokens", // human string; visual models use descriptive windows like "8s clips"
   contextWindowTokens: 1048576,     // sortable number; use 0 for non-token windows
   maxOutputTokens: "65,536 tokens",
-  parameters: "1.6T MoE",           // architecture; write "Undisclosed (...)" when the lab published nothing — never fabricate
+  parameters: "1.6T MoE",           // architecture; write "Undisclosed (...)" when the lab published nothing - never fabricate
   openWeights: false,
   license: "Proprietary API",       // e.g. "MIT License" for open weights
   pricing: { input: 10.0, output: 50.0 }, // USD per 1M tokens; per-second video models add pricingUnit: "per second"
@@ -73,10 +73,10 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
 
 3. If the model is from a laboratory not yet tracked, also add it to data/companies.ts with: id, name, shortName, description, website, headquarters, accentColor, latestFlagship.
 
-4. Freshness sweep (STRICT — never skip): the registry must never contradict itself.
-   a. Exactly ONE isCompanyFlagship:true per lab — demote the previous flagship to false.
+4. Freshness sweep (STRICT - never skip): the registry must never contradict itself.
+   a. Exactly ONE isCompanyFlagship:true per lab - demote the previous flagship to false.
    b. Scrub stale superlatives on the entries this release dethrones (same lab first, plus any cross-lab record it takes): #1, NEWEST, SOTA, best, latest, reigning, most advanced, newly. Rewrite those badges/highlights in past-neutral terms.
-   c. A record belongs ONLY to its verified current holder — never copy a crown onto the newcomer without an official source.
+   c. A record belongs ONLY to its verified current holder - never copy a crown onto the newcomer without an official source.
    d. Update data/companies.ts latestFlagship / latestReasoning / description when they changed.
    e. Update data/leaderboard.ts spotlights if the newcomer takes a spotlight slot.
    f. Keep every highlight to 1-2 tight lines; trim any older highlight that grew into a paragraph.
@@ -97,14 +97,14 @@ RULES:
  * Short prompt that teaches an agent to query the registry API.
  * Shown in /docs alongside the full reference.
  */
-export const API_USE_PROMPT = `Query ModelRegistry (${SITE_URL}) — the open frontier-AI model index. Free, no auth, CORS-open, read-only (GET only).
+export const API_USE_PROMPT = `Query ModelRegistry (${SITE_URL}) - the open frontier-AI model index. Free, no auth, CORS-open, read-only (GET only).
 
 - List & filter models: GET ${SITE_URL}/api/v1/models with optional combinable params:
   ?company=openai & ?category=video (flagship|reasoning|open-weights|code|multimodal|audio|image|video)
   & ?openWeights=true & ?flagshipOnly=true & ?latestOnly=true
-  Unknown values return HTTP 200 with an empty list — never an error.
+  Unknown values return HTTP 200 with an empty list - never an error.
 - Response shape: { status, total, updatedAt, metadata, companies[{id,name,page,latestFlagship,latestCheckpoint}], models[{id,companyId,name,releaseDate,pricing,highlight,modalities,benchmarks,links,…}] }
-- Single model: GET ${SITE_URL}/api/v1/models/{id} returns { status, updatedAt, datasetVersion, page, model }. Unknown ids return HTTP 404 JSON { status:"error", suggestion } — never a redirect.
+- Single model: GET ${SITE_URL}/api/v1/models/{id} returns { status, updatedAt, datasetVersion, page, model }. Unknown ids return HTTP 404 JSON { status:"error", suggestion } - never a redirect.
 - Incremental sync: GET ${SITE_URL}/api/v1/changes?since=YYYY-MM-DD (inclusive; also until, model, company, limit≤500) returns { status, total, returned, changes[{date,summary,modelId,modelName,companyId,page}] } newest first. Poll this, then fetch changed records via /api/v1/models/{id}.
 - Stay fresh: poll GET ${SITE_URL}/api/check-updates (at most every 5 minutes) and re-fetch /api/v1/models when trackedModelsCount changes.
 - Ground truth for reasoning: ${SITE_URL}/llms-full.txt · Human reference: ${SITE_URL}/docs

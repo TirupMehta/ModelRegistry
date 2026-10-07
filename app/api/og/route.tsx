@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     const architecture = model ? model.parameters : labNewest ? labNewest.name : "All Top Labs"
     const badge = model ? model.statusBadge : lab ? `${labModels.length} MODELS TRACKED` : "SOTA INDEX"
     const accentColor = company?.accentColor || "#ff5d2e"
-    // Badge reflects the record's actual verification state — never a
+    // Badge reflects the record's actual verification state - never a
     // blanket "verified" claim.
     const recordState = model
       ? model.verificationStatus === "verified"

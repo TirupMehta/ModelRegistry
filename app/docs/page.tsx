@@ -13,7 +13,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react"
 const SITE_URL = "https://modelregistry.tirup.in"
 
 export const metadata: Metadata = {
-  title: "API & Feeds Reference — Endpoints, Parameters, Examples",
+  title: "API & Feeds Reference - Endpoints, Parameters, Examples",
   description:
     "Free unauthenticated REST API, RSS, llms.txt, CLI, badges and health endpoints for the open frontier AI model registry. Authentication, rate limits, errors, full field reference, and copy-paste examples.",
   alternates: {
@@ -117,14 +117,14 @@ export default function DocsPage() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
 
-      {/* Wide docs shell — sidebar docked outside the narrow site column */}
-      {/* Margin rail — fixed outside the site column, hugging the content
+      {/* Wide docs shell - sidebar docked outside the narrow site column */}
+      {/* Margin rail - fixed outside the site column, hugging the content
           with a constant gap, so the content keeps the exact title edge. */}
       <aside className="hidden min-[1440px]:block fixed z-30 w-52 top-24 bottom-8 left-[calc((100vw-56rem)/2-232px)]">
         <DocsSidebar />
       </aside>
 
-      {/* True site column — identical box to every other page */}
+      {/* True site column - identical box to every other page */}
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         {/* Breadcrumb */}
         <TextWithBlur>
@@ -164,7 +164,7 @@ export default function DocsPage() {
                     {SITE_URL}
                   </span>
                   . Conventions used throughout this reference:{" "}
-                  GET only — the registry is
+                  GET only - the registry is
                   read-only, so there are no write, update, or delete operations.
                 </p>
               </div>
@@ -185,8 +185,8 @@ export default function DocsPage() {
               </p>
               <Note>
                 Because the API is open by design, please cache responses on your side for
-                high-traffic use. The dataset changes when labs ship — typically a few
-                times per week — so aggressive polling gains nothing.
+                high-traffic use. The dataset changes when labs ship - typically a few
+                times per week - so aggressive polling gains nothing.
               </Note>
             </TextWithBlur>
           </div>
@@ -198,7 +198,7 @@ export default function DocsPage() {
               </h2>
               <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
                 No published per-client rate limit is enforced today. Abuse protection is
-                handled at the edge. Responses carry explicit cache directives — honor them
+                handled at the edge. Responses carry explicit cache directives - honor them
                 instead of re-requesting:
               </p>
               <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] mb-4">
@@ -224,7 +224,7 @@ export default function DocsPage() {
               </h2>
               <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
                 The API prefers empty results over failed requests. Unknown filter values
-                return HTTP 200 with an empty collection — parse defensively and key off{" "}
+                return HTTP 200 with an empty collection - parse defensively and key off{" "}
                 <code className="font-mono text-xs">status</code> and{" "}
                 <code className="font-mono text-xs">total</code>.
               </p>
@@ -247,12 +247,12 @@ export default function DocsPage() {
                 </code>
               </div>
               <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
-                The primary endpoint. Returns the full registry — every model with its
-                specifications — plus a per-laboratory rollup. All parameters are optional
+                The primary endpoint. Returns the full registry - every model with its
+                specifications - plus a per-laboratory rollup. All parameters are optional
                 and combinable.
               </p>
               <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] mb-3">
-                <ParamRow name="company" type="string" desc={`Lab id — ${labList.map((l) => l.id).join(", ")}.`} />
+                <ParamRow name="company" type="string" desc={`Lab id - ${labList.map((l) => l.id).join(", ")}.`} />
                 <ParamRow name="category" type="string" desc="flagship · reasoning · open-weights · code · multimodal · audio · image · video" />
                 <ParamRow name="openWeights" type="string" desc="“true” for downloadable weights, “false” for proprietary API models." />
                 <ParamRow name="flagshipOnly" type="string" desc="“true” returns exactly one primary flagship per laboratory." />
@@ -298,7 +298,7 @@ export default function DocsPage() {
                 </code>
               </div>
               <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
-                Incremental sync over per-model changelog history — same source as{" "}
+                Incremental sync over per-model changelog history - same source as{" "}
                 <Link href="/changelog" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
                   /changelog
                 </Link>
@@ -310,7 +310,7 @@ export default function DocsPage() {
                 dates return 400.
               </p>
               <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] mb-3">
-                <ParamRow name="since" type="date" desc="Inclusive lower bound, YYYY-MM-DD — e.g. 2026-10-01." />
+                <ParamRow name="since" type="date" desc="Inclusive lower bound, YYYY-MM-DD - e.g. 2026-10-01." />
                 <ParamRow name="until" type="date" desc="Inclusive upper bound, YYYY-MM-DD." />
                 <ParamRow name="model" type="string" desc="Filter to one record id (case-insensitive)." />
                 <ParamRow name="company" type="string" desc="Filter to one laboratory id (e.g. openai)." />
@@ -336,11 +336,11 @@ export default function DocsPage() {
                 <FieldRow name="companyId · companyName" type="string" desc="Owning laboratory. companyId matches ?company= and /companies/:id." />
                 <FieldRow name="name · version" type="string" desc="Display name and lab version string (e.g. “6.0-Astra”, “V4.1-Flash-Beta”)." />
                 <FieldRow name="releaseDate" type="date" desc="First public availability, YYYY-MM-DD. The canonical ordering key across the registry." />
-                <FieldRow name="isCompanyFlagship" type="boolean" desc="Exactly one true per lab — its primary general-purpose model." />
+                <FieldRow name="isCompanyFlagship" type="boolean" desc="Exactly one true per lab - its primary general-purpose model." />
                 <FieldRow name="isLatestCheckpoint" type="boolean" desc="True for the lab's newest shipped release. May coincide with the flagship." />
                 <FieldRow name="category · categoryLabel" type="string" desc="Machine bucket (image, video, flagship…) plus the human display label." />
                 <FieldRow name="contextWindow(Tokens)" type="string · number" desc="Human string plus sortable token count. Visual models use descriptive windows with a 0 count so they never outrank token models." />
-                <FieldRow name="parameters" type="string" desc="Architecture description. “Undisclosed (…)” where the lab has published nothing — never fabricated." />
+                <FieldRow name="parameters" type="string" desc="Architecture description. “Undisclosed (…)” where the lab has published nothing - never fabricated." />
                 <FieldRow name="pricing · pricingUnit" type="object · string?" desc="Per-1M-token input/output USD by default; pricingUnit (e.g. “per second”) marks non-token billing." />
                 <FieldRow name="modalities" type="string[]" desc="Text · Vision · Audio · Video · Code · Image, as applicable." />
                 <FieldRow name="benchmarks" type="object" desc="Lab-published scores only (sweBench, mmluPro, gpqa…). Empty object means none published." />
@@ -356,12 +356,12 @@ export default function DocsPage() {
                 Examples
               </h2>
               <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
-                Each recipe below does one job — pick your language, copy, run.
+                Each recipe below does one job - pick your language, copy, run.
               </p>
               <div className="grid grid-cols-1 gap-5">
                 <div>
                   <p className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.18em] text-[#ff5d2e] dark:text-[#ff7347] mb-2">
-                    01 · One flagship per lab — cURL
+                    01 · One flagship per lab - cURL
                   </p>
                   <CodeBlock
                     code={`curl -s "${SITE_URL}/api/v1/models?flagshipOnly=true" | head -c 400`}
@@ -369,22 +369,22 @@ export default function DocsPage() {
                 </div>
                 <div>
                   <p className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.18em] text-[#ff5d2e] dark:text-[#ff7347] mb-2">
-                    02 · Newest video checkpoints — Python
+                    02 · Newest video checkpoints - Python
                   </p>
                   <CodeBlock
                     code={`import requests
 res = requests.get("${SITE_URL}/api/v1/models",
     params={"category": "video", "latestOnly": "true"}).json()
 for m in res["models"]:
-    print(m["name"], "—", m["releaseDate"])`}
+    print(m["name"], "-", m["releaseDate"])`}
                   />
                 </div>
                 <div>
                   <p className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.18em] text-[#ff5d2e] dark:text-[#ff7347] mb-2">
-                    03 · Filter by lab in the browser — JavaScript
+                    03 · Filter by lab in the browser - JavaScript
                   </p>
                   <CodeBlock
-                    code={`// No proxy needed — the API sends Access-Control-Allow-Origin: *
+                    code={`// No proxy needed - the API sends Access-Control-Allow-Origin: *
 const { total, models } = await (
   await fetch("${SITE_URL}/api/v1/models?company=deepseek")
 ).json();`}
@@ -401,7 +401,7 @@ const { total, models } = await (
                 </h2>
                 <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
                   Copy-paste prompts that teach any AI agent to contribute models or query
-                  this registry. Same source as the header button and README — always current.
+                  this registry. Same source as the header button and README - always current.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-5 text-xs font-sans">
                   {[
@@ -421,8 +421,8 @@ const { total, models } = await (
                   ))}
                 </div>
                 <div className="grid grid-cols-1 gap-5">
-                  <PromptBlock title="Contribute a model — full workflow" text={buildContributePrompt()} />
-                  <PromptBlock title="Query the API — agent briefing" text={API_USE_PROMPT} previewLines={4} />
+                  <PromptBlock title="Contribute a model - full workflow" text={buildContributePrompt()} />
+                  <PromptBlock title="Query the API - agent briefing" text={API_USE_PROMPT} previewLines={4} />
                 </div>
               </TextWithBlur>
             </div>
@@ -434,7 +434,7 @@ const { total, models } = await (
               </h2>
               <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
                 Three terminal-native routes. The root URL sniffs curl and answers in
-                plain text — nothing to install, no keys.
+                plain text - nothing to install, no keys.
               </p>
               <div className="grid grid-cols-1 gap-3">
                 <div>
@@ -481,9 +481,9 @@ const { total, models } = await (
               </h2>
               <div className="divide-y divide-black/5 dark:divide-white/[0.06] rounded-md border border-black/10 dark:border-white/[0.08]">
                 {[
-                  { href: "/rss.xml", cmd: "GET /rss.xml", desc: "RSS 2.0 — one item per model, newest first." },
+                  { href: "/rss.xml", cmd: "GET /rss.xml", desc: "RSS 2.0 - one item per model, newest first." },
                   { href: "/llms.txt", cmd: "GET /llms.txt", desc: "Per-lab ground truth for answer engines and crawlers." },
-                  { href: "/llms-full.txt", cmd: "GET /llms-full.txt", desc: "Exhaustive dump — every field of every model, including variants." },
+                  { href: "/llms-full.txt", cmd: "GET /llms-full.txt", desc: "Exhaustive dump - every field of every model, including variants." },
                 ].map((f) => (
                   <Link
                     key={f.href}
@@ -529,7 +529,7 @@ ${SITE_URL}/api/check-updates`}
               <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
                 The <code className="font-mono text-xs">/v1/</code> prefix is a stability
                 contract: breaking renames or removals ship under a new version, never
-                silently. Additive changes — new fields, new labs, new models — land in v1
+                silently. Additive changes - new fields, new labs, new models - land in v1
                 without notice. Recent additive changes: per-record provenance (
                 <code className="font-mono text-xs">sources</code>,{" "}
                 <code className="font-mono text-xs">fieldSources</code>,{" "}
@@ -539,7 +539,7 @@ ${SITE_URL}/api/check-updates`}
               </p>
               <Note>
                 Model <code className="font-mono text-xs">id</code> values are append-only.
-                Entries are never deleted or recycled — retired slugs resolve to the lab&apos;s
+                Entries are never deleted or recycled - retired slugs resolve to the lab&apos;s
                 flagship through the fallback documented in the Errors section.
               </Note>
             </TextWithBlur>
@@ -588,7 +588,7 @@ ${SITE_URL}/api/check-updates`}
                 </Link>
                 . Versioned full-dataset downloads:{" "}
                 <code className="font-mono text-xs">/api/v1/snapshot</code>. Benchmark figures
-                are lab-reported — cite the linked primary source for the number itself.
+                are lab-reported - cite the linked primary source for the number itself.
               </p>
             </TextWithBlur>
           </div>
@@ -608,7 +608,7 @@ ${SITE_URL}/api/check-updates`}
                 >
                   GitHub
                 </a>{" "}
-                — model corrections take 60 seconds via{" "}
+                - model corrections take 60 seconds via{" "}
                 <code className="font-mono text-xs">data/models.ts</code>, and the full
                 pipeline (site, API, feeds, README) re-syncs automatically.
               </p>

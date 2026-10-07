@@ -7,9 +7,9 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "AI model capability & modality matrix — ModelRegistry",
+  title: "AI model capability & modality matrix - ModelRegistry",
   description:
-    "Which frontier models handle text, vision, audio, video, code, and images — as declared by each lab, with sources.",
+    "Which frontier models handle text, vision, audio, video, code, and images - as declared by each lab, with sources.",
   alternates: { canonical: "https://modelregistry.tirup.in/modalities" },
 }
 
@@ -36,7 +36,7 @@ export default function ModalitiesPage() {
           Capability &amp; modality matrix
         </h1>
         <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-8 max-w-3xl">
-          Modalities as declared by each lab — a dot means the vendor lists the capability, not
+          Modalities as declared by each lab - a dot means the vendor lists the capability, not
           that it leads at it. Depth of support varies widely; check the{" "}
           <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">model pages</Link>{" "}
           and linked sources for details.

@@ -43,7 +43,7 @@ html.dark {
   border-radius: 6px;
 }
 
-/* Pointer users never see a focus ring or focus shadow — taps show :active
+/* Pointer users never see a focus ring or focus shadow - taps show :active
    press states instead, keyboard users keep every ring. This is what kills
    Safari's black/white tap outline and any focus-shadow flash on controls
    like the filter search box. */
@@ -83,7 +83,7 @@ html {
   scrollbar-gutter: stable;
 }
 
-/* 110% root scale on tablet/desktop only — phones keep 100%.
+/* 110% root scale on tablet/desktop only - phones keep 100%.
    All rem-based type, spacing, and containers render ~10% larger on
    high-resolution displays. px values, borders, and breakpoints unaffected. */
 @media (min-width: 768px) {
@@ -144,7 +144,7 @@ body {
 .dark .border-black\/5 { border-color: rgba(255, 255, 255, 0.05) !important; }
 .dark .border-black\/10 { border-color: var(--border-color) !important; }
 
-/* Custom silky scrollbar — slightly more present, finished feel */
+/* Custom silky scrollbar - slightly more present, finished feel */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -175,13 +175,13 @@ body {
   background-clip: padding-box;
 }
 
-/* Shared finished-product card hover — use via `card-lift` class */
+/* Shared finished-product card hover - use via `card-lift` class */
 @layer components {
   .card-lift {
     transition: border-color 150ms ease-out, background-color 150ms ease-out,
       box-shadow 180ms ease-out, transform 180ms ease-out;
   }
-  /* Hover lift only where hover exists — touch taps must not leave a
+  /* Hover lift only where hover exists - touch taps must not leave a
      stuck shadow behind (same reason as the tailwind hover gating). */
   @media (hover: hover) and (pointer: fine) {
     .card-lift:hover {
@@ -220,7 +220,7 @@ input {
 }
 
 /*
- * Light-theme legibility lift — muted black text renders washed out in the
+ * Light-theme legibility lift - muted black text renders washed out in the
  * light theme (especially in proportional sans), so step it slightly darker.
  * Unlayered rules win over Tailwind's layered utilities at equal specificity;
  * `dark:` / hover variants (higher specificity) are unaffected.

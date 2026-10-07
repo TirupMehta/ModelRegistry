@@ -12,7 +12,7 @@ interface PromptBlockProps {
 
 /**
  * Agent prompt card: 3-line preview with read-more expansion.
- * Never scrolls internally — the card grows instead.
+ * Never scrolls internally - the card grows instead.
  */
 export default function PromptBlock({ title, text, previewLines = 3 }: PromptBlockProps) {
   const [expanded, setExpanded] = useState(false)

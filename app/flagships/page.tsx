@@ -7,7 +7,7 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Current flagship AI model by lab — ModelRegistry",
+  title: "Current flagship AI model by lab - ModelRegistry",
   description:
     "The current primary flagship foundation model for every tracked AI lab, with release dates, context windows, pricing, verification status, and primary sources.",
   alternates: { canonical: "https://modelregistry.tirup.in/flagships" },
@@ -42,7 +42,7 @@ export default function FlagshipsPage() {
           Current flagship by lab
         </h1>
         <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-8 max-w-3xl">
-          One row per lab: its primary general-purpose model. “Flagship” never means “best” —
+          One row per lab: its primary general-purpose model. “Flagship” never means “best” -
           it means the lab&apos;s main model. Every label requires fresh, live evidence (see{" "}
           <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">methodology</Link>).
           Chronological view: <Link href="/timeline" className="text-[#ff5d2e] hover:underline underline-offset-2">release timeline</Link>.

@@ -13,8 +13,8 @@ non-latest models as latest.
 
 1. Variants merge into single family entries (ChatGPT 5.6 = Sol · Terra · Luna).
 2. The `/companies` second slot shows a true latest checkpoint labeled as such,
-   otherwise the newest non-flagship labeled "More from {lab}" — never a false
-   "latest". The README table shows "—" instead of a fallback model.
+   otherwise the newest non-flagship labeled "More from {lab}" - never a false
+   "latest". The README table shows "-" instead of a fallback model.
 3. Curation rule (also in CONTRIBUTING.md): top-15 OpenRouter weekly volume,
    lab flagship, or genuinely frontier capability. Obscure checkpoints are slop.
 

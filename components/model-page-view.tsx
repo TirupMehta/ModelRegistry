@@ -47,7 +47,7 @@ export default function ModelPageView({ model }: ModelPageViewProps) {
       const url = `https://modelregistry.tirup.in/models/${model.id}`
       navigator.clipboard.writeText(url)
     } catch {
-      // Clipboard unavailable (e.g. non-secure context) — still confirm.
+      // Clipboard unavailable (e.g. non-secure context) - still confirm.
     }
     successFeedback()
     setCopiedLink(true)
@@ -99,7 +99,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
     try {
       navigator.clipboard.writeText(code)
     } catch {
-      // Clipboard unavailable — still confirm to avoid a dead button.
+      // Clipboard unavailable - still confirm to avoid a dead button.
     }
     successFeedback()
     setCopiedCode(true)

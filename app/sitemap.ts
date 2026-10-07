@@ -5,7 +5,7 @@ import { datasetRevision } from "@/data/revision"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://modelregistry.tirup.in"
-  // Content-based freshness: the last real data revision — never build time.
+  // Content-based freshness: the last real data revision - never build time.
   const revisedAt = new Date(`${datasetRevision.revisedAt}T00:00:00Z`)
   const now = new Date()
 
@@ -125,7 +125,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   })
 
-  // 4. Machine-Readable & Agent Discovery Feeds (crawlable text content only —
+  // 4. Machine-Readable & Agent Discovery Feeds (crawlable text content only -
   // JSON APIs and CLI text endpoints are intentionally excluded to conserve
   // crawl budget for indexable pages)
   const feedRoutes: MetadataRoute.Sitemap = [

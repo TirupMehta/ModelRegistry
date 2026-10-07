@@ -36,7 +36,7 @@ const { modelsData } = loadTsModule("../data/models.ts")
 const { companies } = loadTsModule("../data/companies.ts")
 
 function formatContext(tokens) {
-  if (!tokens) return "—"
+  if (!tokens) return "-"
   if (tokens >= 1000000) {
     const val = tokens / 1000000
     if (Math.abs(val - 1.048576) < 0.06 || Math.abs(val - 1) < 0.01) return "1M"
@@ -77,17 +77,17 @@ function generateMarkdownTable() {
 
     const flagshipCell = flagship
       ? `[${flagship.name}](https://modelregistry.tirup.in/models/${flagship.id})`
-      : "—"
+      : "-"
 
     const latestDropCell = latestDrop
       ? `[${latestDrop.name}](https://modelregistry.tirup.in/models/${latestDrop.id})`
-      : "—"
+      : "-"
 
-    const contextCell = flagship ? formatContext(flagship.contextWindowTokens) : "—"
+    const contextCell = flagship ? formatContext(flagship.contextWindowTokens) : "-"
     const licenseCell = flagship?.openWeights
       ? `Open (${flagship.license.replace(/ License| \/ .*$/g, "")})`
       : "Proprietary"
-    const pricingCell = flagship ? formatPricing(flagship) : "—"
+    const pricingCell = flagship ? formatPricing(flagship) : "-"
 
     return `| [**${company.name}**](${company.website}) | ${flagshipCell} | ${latestDropCell} | ${contextCell} | ${licenseCell} | ${pricingCell} |`
   })

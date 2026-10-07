@@ -27,7 +27,7 @@ Out of scope:
 - Volumetric DDoS without a demonstrated exploit
 - Reports that the README table is stale (run `pnpm test` / see `scripts/sync-readme.js`)
 
-This project handles no secrets, payments, or user credentials. There are no API keys to leak — the REST API is intentionally public and unauthenticated.
+This project handles no secrets, payments, or user credentials. There are no API keys to leak - the REST API is intentionally public and unauthenticated.
 
 ## Reporting a Vulnerability
 
@@ -50,7 +50,7 @@ Include:
 
 - Acknowledgement: within 48 hours
 - Triage + fix or mitigation plan: within 7 days for valid High/Critical reports
-- Disclosure: coordinated — please do not publish until a fix is live on `main`
+- Disclosure: coordinated - please do not publish until a fix is live on `main`
 
 We credit reporters in the fix PR unless anonymity is requested. No bug bounty program is offered at this time.
 

@@ -1,6 +1,6 @@
 import localFont from "next/font/local"
 
-// Self-hosted variable fonts (latin subsets) — previously served via
+// Self-hosted variable fonts (latin subsets) - previously served via
 // next/font/google, which hard-fails the production build whenever the
 // Google Fonts fetch flakes in CI. Same files, zero network at build time.
 export const sans = localFont({

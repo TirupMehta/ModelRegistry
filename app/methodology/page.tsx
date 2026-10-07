@@ -5,7 +5,7 @@ import Footer from "@/components/footer"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Methodology — How ModelRegistry verifies models",
+  title: "Methodology - How ModelRegistry verifies models",
   description:
     "ModelRegistry's inclusion standard, primary-source rules, flagship and latest definitions, benchmark policy, verification levels, and maintenance schedule.",
   alternates: { canonical: "https://modelregistry.tirup.in/methodology" },
@@ -90,10 +90,10 @@ export default function MethodologyPage() {
 
         <H2>Verification levels</H2>
         <div className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3 space-y-2">
-          <p><strong className="text-black dark:text-white">Verified</strong> — every core field (release date, context, output limit, parameters, license, pricing, modalities, benchmarks where published, flagship/latest status) was read and confirmed against live primary sources.</p>
-          <p><strong className="text-black dark:text-white">Partially verified</strong> — one or more live official sources are cited, but full per-field rechecking is still pending. Figures are transcribed from the cited pages.</p>
-          <p><strong className="text-black dark:text-white">Unverified</strong> — no working official source. Figures must be treated as unconfirmed; such records can never carry flagship or latest labels.</p>
-          <p><strong className="text-black dark:text-white">Retired</strong> — superseded and kept for reference only, with a pointer to its replacement.</p>
+          <p><strong className="text-black dark:text-white">Verified</strong> - every core field (release date, context, output limit, parameters, license, pricing, modalities, benchmarks where published, flagship/latest status) was read and confirmed against live primary sources.</p>
+          <p><strong className="text-black dark:text-white">Partially verified</strong> - one or more live official sources are cited, but full per-field rechecking is still pending. Figures are transcribed from the cited pages.</p>
+          <p><strong className="text-black dark:text-white">Unverified</strong> - no working official source. Figures must be treated as unconfirmed; such records can never carry flagship or latest labels.</p>
+          <p><strong className="text-black dark:text-white">Retired</strong> - superseded and kept for reference only, with a pointer to its replacement.</p>
         </div>
 
         <H2>What “flagship”, “latest”, and leaderboard places mean</H2>
@@ -101,7 +101,7 @@ export default function MethodologyPage() {
           <strong className="text-black dark:text-white">Flagship</strong> = the lab&apos;s primary general-purpose model
           (exactly one per lab). <strong className="text-black dark:text-white">Latest checkpoint</strong> = the
           lab&apos;s newest shipped release, which may be a specialized model rather than the flagship.
-          Both labels require fresh (≤ 90 days), live evidence, enforced automatically — stale labels fail validation.
+          Both labels require fresh (≤ 90 days), live evidence, enforced automatically - stale labels fail validation.
           Leaderboard sections are an <strong className="text-black dark:text-white">editorial snapshot</strong>, not
           objective fact: leaders hold the highest <em>published</em> score in that comparison as of the stated
           evaluation date. We say “highest published score in this comparison”, never “best model”.
@@ -128,7 +128,7 @@ export default function MethodologyPage() {
         <H2>Maintainers and corrections</H2>
         <P>
           ModelRegistry is a community project maintained via its public GitHub repository. Verification
-          is source review by maintainers — not independent laboratory testing, and we do not claim
+          is source review by maintainers - not independent laboratory testing, and we do not claim
           otherwise. To report an error, use the “Report an error in this record” link on any model
           page, which opens a correction issue requiring an official source. High-severity factual
           errors (wrong price, wrong flagship) are fixed within days; routine re-verification follows
@@ -137,9 +137,9 @@ export default function MethodologyPage() {
 
         <H2>Maintenance schedule</H2>
         <div className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3 space-y-2">
-          <p><strong className="text-black dark:text-white">Every 30 days</strong> — automated liveness check of all cited sources; dead links re-sourced or records downgraded.</p>
-          <p><strong className="text-black dark:text-white">Every 60 days</strong> — pricing and context figures re-checked against official pricing/docs pages for all current flagships and latest checkpoints.</p>
-          <p><strong className="text-black dark:text-white">Every 90 days</strong> — full freshness rotation: any flagship/latest label older than 90 days fails validation until re-verified; leaderboard comparisons re-evaluated and re-dated; a new dated audit note is published.</p>
+          <p><strong className="text-black dark:text-white">Every 30 days</strong> - automated liveness check of all cited sources; dead links re-sourced or records downgraded.</p>
+          <p><strong className="text-black dark:text-white">Every 60 days</strong> - pricing and context figures re-checked against official pricing/docs pages for all current flagships and latest checkpoints.</p>
+          <p><strong className="text-black dark:text-white">Every 90 days</strong> - full freshness rotation: any flagship/latest label older than 90 days fails validation until re-verified; leaderboard comparisons re-evaluated and re-dated; a new dated audit note is published.</p>
         </div>
       </section>
       <Footer />

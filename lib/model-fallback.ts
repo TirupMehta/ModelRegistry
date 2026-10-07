@@ -4,7 +4,7 @@ import type { ModelItem } from "@/data/models"
  * Generic fallback for unknown model slugs (e.g. ids retired by a merge).
  * Scores every model by token overlap between the slug and the model's
  * id / name / version / company, then returns the winning company's flagship
- * (falling back to its newest model when a lab has none marked) — e.g.
+ * (falling back to its newest model when a lab has none marked) - e.g.
  * `gpt-5-6-sol` resolves to GPT-6 Astra, not to a newer sibling from another
  * modality. Requires a unique winning company, so unrelated slugs return
  * null (caller 404s) instead of redirecting somewhere arbitrary. Zero

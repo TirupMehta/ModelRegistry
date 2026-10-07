@@ -89,7 +89,7 @@ export async function GET(request: Request) {
     filtered = filtered.filter((e) => e.companyId.toLowerCase() === needle)
   }
 
-  // Newest first — same ordering as the /changelog page.
+  // Newest first - same ordering as the /changelog page.
   filtered.sort((a, b) => b.date.localeCompare(a.date) || a.modelName.localeCompare(b.modelName))
 
   const total = filtered.length

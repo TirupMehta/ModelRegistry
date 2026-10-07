@@ -43,7 +43,7 @@ export default function LeaderboardPage() {
   }
 
   // Computable leaders stay accurate as registry pricing and context data
-  // change — no hardcoded figures to go stale.
+  // change - no hardcoded figures to go stale.
   const cheapestThree = [...modelsData]
     .filter((m) => !m.pricingUnit)
     .sort((a, b) => a.pricing.input - b.pricing.input)
@@ -82,7 +82,7 @@ export default function LeaderboardPage() {
     {
       title: "High-Volume Value",
       icon: Layers,
-      description: "Models developers actually route at massive scale on OpenRouter — observed usage share in production, not benchmark scores.",
+      description: "Models developers actually route at massive scale on OpenRouter - observed usage share in production, not benchmark scores.",
       leader: "DeepSeek V4 Flash 0731 (49.9T tokens/30d observed) / MiMo-V2.5 (leading coding share)",
       methodKey: "value",
       models: modelsData.filter((m) =>
@@ -125,7 +125,7 @@ export default function LeaderboardPage() {
             <p>
               Editorial snapshots comparing foundation models domain by domain
               {newestMonthLabel ? `, reviewed ${newestMonthLabel}` : ""}. Leaders hold the
-              highest <em>published</em> score in each comparison — not a universal “best model”
+              highest <em>published</em> score in each comparison - not a universal “best model”
               title. <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">Methodology</Link>
             </p>
           </TextWithBlur>
@@ -236,7 +236,7 @@ export default function LeaderboardPage() {
                     ) : (
                       <p>
                         <span className="font-medium text-black/60 dark:text-zinc-400">How this is judged: </span>
-                        Ranked live from current registry figures — no editorial shortlist, no fixed evaluation date.
+                        Ranked live from current registry figures - no editorial shortlist, no fixed evaluation date.
                       </p>
                     )}
                   </div>

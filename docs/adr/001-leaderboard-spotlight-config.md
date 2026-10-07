@@ -14,7 +14,7 @@ silently vanished with no error anywhere.
 Curated spotlight ID lists live in `data/leaderboard.ts`
 (`leaderboardSpotlights`). The page imports them. `scripts/validate-registry.js`
 fails `pnpm test` if any listed ID does not exist, and if any configured
-section is not rendered by the page — so neither stale IDs nor orphan sections
+section is not rendered by the page - so neither stale IDs nor orphan sections
 can slip through silently again.
 
 ## Consequences

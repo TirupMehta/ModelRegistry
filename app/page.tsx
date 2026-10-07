@@ -32,7 +32,7 @@ export default function Home() {
   const [curlCopied, setCurlCopied] = useState(false)
 
   const handleTab = (tab: ViewTab) => {
-    // Fire on every tap, even re-tapping the active tab — a button that
+    // Fire on every tap, even re-tapping the active tab - a button that
     // sometimes silently does nothing feels broken.
     selectFeedback()
     setActiveTab(tab)
@@ -172,7 +172,7 @@ export default function Home() {
       */}
       <noscript>
         <article style={{ maxWidth: "48rem", margin: "0 auto", padding: "2rem 1.5rem", fontFamily: "Plus Jakarta Sans, system-ui, sans-serif", lineHeight: 1.6, color: "#111" }}>
-          <h1>ModelRegistry — Frontier AI Model Telemetry Index</h1>
+          <h1>ModelRegistry - Frontier AI Model Telemetry Index</h1>
           <p>
             Official open machine-readable registry of premier frontier artificial intelligence models across {labNames}.
           </p>
@@ -180,7 +180,7 @@ export default function Home() {
           <ul>
             {modelsData.map((m) => (
               <li key={m.id}>
-                <strong>{m.name}</strong> ({m.companyName}) — {m.categoryLabel}. Released: {m.releaseDate}. Context: {m.contextWindow}. Parameters: {m.parameters}. Status: {m.statusBadge}. Summary: {m.highlight}
+                <strong>{m.name}</strong> ({m.companyName}) - {m.categoryLabel}. Released: {m.releaseDate}. Context: {m.contextWindow}. Parameters: {m.parameters}. Status: {m.statusBadge}. Summary: {m.highlight}
               </li>
             ))}
           </ul>
@@ -232,7 +232,7 @@ export default function Home() {
         {/* View Switcher & Search */}
         <TextWithBlur delay={180}>
           <div className="mb-2 flex flex-col md:flex-row md:items-center justify-between gap-3">
-            {/* Unified Segmented Filter Track — grid-cols-5 so the five tabs
+            {/* Unified Segmented Filter Track - grid-cols-5 so the five tabs
                 always fill the track exactly on every screen width (no
                 trailing blank space, no squeeze, no scroll). */}
             <div className="grid grid-cols-5 md:flex md:items-center p-1 rounded-xl bg-black/[0.035] dark:bg-[#101318] border border-black/10 dark:border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] w-full md:w-auto gap-0.5">
@@ -357,7 +357,7 @@ export default function Home() {
               <p className="mt-1 text-xs font-sans text-black/50 dark:text-zinc-400">
                 {searchQuery.trim()
                   ? `Nothing found for "${searchQuery.trim()}". Try a lab, model, or capability.`
-                  : "Try a different tab — the full index is one click away."}
+                  : "Try a different tab - the full index is one click away."}
               </p>
               {(searchQuery.trim() || activeTab !== "all") && (
                 <button
@@ -482,7 +482,7 @@ export default function Home() {
 
                     {/* Desktop Ledger Row (sm and up) */}
                     <div className="hidden sm:flex items-baseline gap-4">
-                      {/* Monospace Ledger Index — compact */}
+                      {/* Monospace Ledger Index - compact */}
                       <span className="font-mono tabular-nums text-[10px] text-black/30 dark:text-zinc-600 select-none w-4 shrink-0 transition-colors duration-150 group-hover:text-[#ff5d2e]">
                         {String(index + 1).padStart(2, "0")}
                       </span>
@@ -558,7 +558,7 @@ export default function Home() {
               )
             })
           )}
-          {/* Bottom ledger rule (desktop only — mobile uses cards) */}
+          {/* Bottom ledger rule (desktop only - mobile uses cards) */}
           <div className="hidden sm:block border-t border-black/10 dark:border-white/[0.08]" />
         </div>
 
@@ -644,7 +644,7 @@ export default function Home() {
           </div>
         </TextWithBlur>
 
-        {/* Latest flagship by lab — compact quick-answer index */}
+        {/* Latest flagship by lab - compact quick-answer index */}
         <TextWithBlur delay={320}>
           <div className="mt-12">
             <div className="flex items-baseline justify-between gap-3 mb-2">
