@@ -282,6 +282,39 @@ export const modelsData: ModelItem[] = [
       apiDocs: "https://platform.openai.com/docs",
     },
   },
+
+  // ─── GOOGLE DEEPMIND (Gemini 4 flagship) ─────────────────────────────────
+  {
+    id: "gemini-4-argon",
+    companyId: "google",
+    companyName: "Google DeepMind",
+    name: "Gemini 4 Argon",
+    version: "4.0-Argon",
+    releaseDate: "2026-09-30",
+    isCompanyFlagship: true,
+    isLatestCheckpoint: true,
+    statusBadge: "NEW DROP",
+    category: "flagship",
+    categoryLabel: "Frontier Enterprise",
+    contextWindow: "1,048,576 tokens",
+    contextWindowTokens: 1048576,
+    maxOutputTokens: "1,000,000 tokens",
+    parameters: "Undisclosed (Google DeepMind)",
+    openWeights: false,
+    license: "Proprietary API",
+    pricing: { input: 2.0, output: 10.0 },
+    highlight: "Announced Sept 30, 2026; Gemini 4 Argon is Google DeepMind's frontier model for long-horizon software engineering, enterprise knowledge work, and cyber defense, with 1M output tokens and an introductory price of $2/$10 per 1M tokens.",
+    modalities: ["Text", "Vision", "Code"],
+    benchmarks: {
+      sweBench: "77.9% (DeepSWE v1.1)",
+    },
+    links: {
+      announcement: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
+      playground: "https://aistudio.google.com",
+      apiDocs: "https://ai.google.dev/gemini-api/docs",
+    },
+  },
+
   // ─── GOOGLE DEEPMIND ─────────────────────────────────────────────────────
   {
     id: "gemini-3-8-flash",
@@ -1496,38 +1529,6 @@ export const modelsData: ModelItem[] = [
       playground: "https://dashboard.sarvam.ai/",
       apiDocs: "https://docs.sarvam.ai/api-reference-docs/getting-started/models/sarvam-105b",
       weights: "https://huggingface.co/sarvamai/sarvam-105b",
-    },
-  },
-
-  // ─── GOOGLE DEEPMIND (Gemini 4) ──────────────────────────────────────────
-  {
-    id: "gemini-4-argon",
-    companyId: "google",
-    companyName: "Google DeepMind",
-    name: "Gemini 4 Argon",
-    version: "4.0-Argon",
-    releaseDate: "2026-09-30",
-    isCompanyFlagship: true,
-    isLatestCheckpoint: true,
-    statusBadge: "NEW DROP",
-    category: "flagship",
-    categoryLabel: "Frontier Enterprise",
-    contextWindow: "1,048,576 tokens",
-    contextWindowTokens: 1048576,
-    maxOutputTokens: "1,000,000 tokens",
-    parameters: "Undisclosed (Google DeepMind)",
-    openWeights: false,
-    license: "Proprietary API",
-    pricing: { input: 2.0, output: 10.0 },
-    highlight: "Announced Sept 30, 2026; Gemini 4 Argon is Google DeepMind's frontier model for long-horizon software engineering, enterprise knowledge work, and cyber defense, with 1M output tokens and an introductory price of $2/$10 per 1M tokens.",
-    modalities: ["Text", "Vision", "Code"],
-    benchmarks: {
-      sweBench: "77.9% (DeepSWE v1.1)",
-    },
-    links: {
-      announcement: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/",
-      playground: "https://aistudio.google.com",
-      apiDocs: "https://ai.google.dev/gemini-api/docs",
     },
   },
 
