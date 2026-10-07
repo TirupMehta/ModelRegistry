@@ -103,8 +103,9 @@ export const companies: Record<string, Company> = {
     website: "https://mistral.ai",
     headquarters: "Paris, France",
     accentColor: "#f97316",
-    description: "European frontier lab building high-efficiency dense and MoE models including Mistral Medium 3.5, Mistral Small 4, and Devstral 2.",
-    latestFlagship: "Mistral Medium 3.5",
+    description:
+      "European frontier lab behind Mistral Large 4 (1.05T MoE, 49B active, native multimodal, 1M context) — new open-weight flagship in preview API with weights 27 Oct 2026 — alongside Medium 3.5, Small 4, and Devstral 2.",
+    latestFlagship: "Mistral Large 4",
     latestReasoning: "Mistral Small 4",
     openWeightsAdvocate: true,
   },
