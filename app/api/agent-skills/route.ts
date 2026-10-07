@@ -21,7 +21,7 @@ function buildIndex() {
         name: "query-modelregistry",
         type: "skill-md",
         description:
-          "Query ModelRegistry by Tirup Mehta: list flagships and checkpoints, filter by lab or category, poll for updates. Free, unauthenticated, read-only.",
+          "Query ModelRegistry by Tirup Mehta: list flagships and checkpoints, filter by lab or category, fetch one model by id, diff the changelog, poll for updates. Free, unauthenticated, read-only.",
         url: SKILL_URL,
         digest,
       },

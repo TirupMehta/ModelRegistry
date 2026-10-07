@@ -9,6 +9,8 @@ const INDEX = [
   { id: "rate-limits", label: "Rate limits & caching" },
   { id: "errors", label: "Errors" },
   { id: "get-models", label: "GET /v1/models" },
+  { id: "get-model", label: "GET /v1/models/{id}" },
+  { id: "get-changes", label: "GET /v1/changes" },
   { id: "model-object", label: "The model object" },
   { id: "examples", label: "Examples" },
   { id: "agent-prompts", label: "Agent prompts" },

@@ -10,7 +10,7 @@
 
 export const QUERY_MODELREGISTRY_SKILL_MD = `---
 name: query-modelregistry
-description: Query ModelRegistry by Tirup Mehta. List flagship models and research checkpoints across all premier labs, filter by lab or category, and poll for updates. Free, unauthenticated, read-only REST API plus feeds.
+description: Query ModelRegistry by Tirup Mehta. List flagship models and research checkpoints across all premier labs, filter by lab or category, fetch one model by id, diff the changelog, and poll for updates. Free, unauthenticated, read-only REST API plus feeds.
 ---
 
 # Query ModelRegistry
@@ -49,6 +49,34 @@ Each \`models[]\` entry carries stable append-only \`id\`, \`companyId\`,
 \`name\`, \`releaseDate\` (YYYY-MM-DD, the canonical ordering key),
 \`isCompanyFlagship\`, \`isLatestCheckpoint\`, context window, parameters,
 pricing, modalities, lab-published benchmarks, and official links.
+
+## Single model: fetch one record
+
+\`GET /api/v1/models/{id}\`
+
+Poll one model without pulling the full registry. IDs are stable
+kebab-case, matched case-insensitively. Returns
+\`{ status, updatedAt, datasetVersion, page, model }\`. Unknown ids return
+HTTP 404 JSON \`{ status: "error", suggestion }\` — never a redirect.
+Supports \`If-None-Match\` / 304.
+
+\`\`\`bash
+curl -s "https://modelregistry.tirup.in/api/v1/models/gpt-6-astra" | head -c 300
+\`\`\`
+
+## Incremental sync: changelog diffs
+
+\`GET /api/v1/changes?since=YYYY-MM-DD\`
+
+Changelog history across all records, newest first (same source as
+\`/changelog\`). \`since\` is inclusive; also accepts \`until\`, \`model\`,
+\`company\`, and \`limit\` (default 100, max 500). Returns
+\`{ status, total, returned, changes[{date,summary,modelId,modelName,companyId,page}] }\`.
+Poll this, then fetch each changed record via \`/api/v1/models/{id}\`.
+
+\`\`\`bash
+curl -s "https://modelregistry.tirup.in/api/v1/changes?since=2026-10-01" | head -c 300
+\`\`\`
 
 Examples:
 

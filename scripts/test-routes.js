@@ -172,6 +172,78 @@ async function main() {
     fail("api category=video filter", JSON.stringify(video?.total))
   }
 
+  // Single-model endpoint: one record without the full payload.
+  try {
+    const { res } = await get("/api/v1/models/gpt-6-astra")
+    const one = await res.json()
+    if (res.status === 200 && one.status === "success" && one.model?.id === "gpt-6-astra") {
+      pass("api single model", `${(JSON.stringify(one).length / 1024).toFixed(1)}KB`)
+    } else {
+      fail("api single model", `status ${res.status}`)
+    }
+    if (res.headers.get("etag")) pass("api single model etag")
+    else fail("api single model etag", "missing ETag")
+  } catch (e) {
+    fail("/api/v1/models/gpt-6-astra", e.message)
+  }
+  try {
+    const { res } = await get("/api/v1/models/nope-not-real")
+    const body = await res.json()
+    if (res.status === 404 && body.status === "error") pass("api unknown model -> 404 json")
+    else fail("api unknown model", `status ${res.status}`)
+  } catch (e) {
+    fail("api unknown model probe", e.message)
+  }
+
+  // Changelog diff endpoint: incremental sync without the full payload.
+  try {
+    const { res } = await get("/api/v1/changes?since=2026-10-01")
+    const ch = await res.json()
+    if (res.status === 200 && ch.status === "success" && Array.isArray(ch.changes) && ch.total >= ch.returned) {
+      pass("api changes since filter", `total ${ch.total}`)
+    } else {
+      fail("api changes since filter", `status ${res.status}`)
+    }
+  } catch (e) {
+    fail("/api/v1/changes", e.message)
+  }
+  try {
+    const { res } = await get("/api/v1/changes?since=last-week")
+    if (res.status === 400) pass("api changes bad date -> 400")
+    else fail("api changes bad date", `status ${res.status}`)
+  } catch (e) {
+    fail("api changes bad date probe", e.message)
+  }
+
+  // CLI table: fixed-width columns must stay aligned, lab names untruncated,
+  // prices complete, and the curl view must carry an edge-cacheable TTL.
+  try {
+    const { res } = await get("/api/v1/cli")
+    const text = await res.text()
+    const cc = res.headers.get("cache-control") || ""
+    const rows = text.split("\n").filter((l) => /^ \d{2}  /.test(l))
+    const widths = new Set(rows.map((r) => r.length))
+    if (res.status === 200 && rows.length === EXPECTED.labs && widths.size === 1) {
+      pass("cli flagship rows aligned", `${rows.length} rows x ${[...widths][0]} cols`)
+    } else {
+      fail("cli flagship rows aligned", `${rows.length} rows (expected ${EXPECTED.labs}), widths ${[...widths].join(",")}`)
+    }
+    const rowText = rows.join("\n")
+    if (!rowText.includes("Alibaba Cloud (Qw") && rowText.includes("Alibaba (Qwen)")) {
+      pass("cli lab name shortened")
+    } else {
+      fail("cli lab name shortened", "long lab name truncated mid-word")
+    }
+    if (text.includes("$0.084/$0.084")) pass("cli full per-second price")
+    else fail("cli full per-second price", "Kling price truncated")
+    if (/[^\x00-\x7F]/.test(rows.join("\n"))) fail("cli rows ascii-only", "wide char in fixed columns")
+    else pass("cli rows ascii-only")
+    if (cc.includes("s-maxage=3600")) pass("cli edge cache ttl", cc)
+    else fail("cli edge cache ttl", `'${cc}'`)
+  } catch (e) {
+    fail("/api/v1/cli table", e.message)
+  }
+
   // Health heartbeat reflects the live dataset
   try {
     const { res } = await get("/api/check-updates")

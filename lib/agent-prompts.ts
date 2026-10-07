@@ -104,6 +104,8 @@ export const API_USE_PROMPT = `Query ModelRegistry (${SITE_URL}) — the open fr
   & ?openWeights=true & ?flagshipOnly=true & ?latestOnly=true
   Unknown values return HTTP 200 with an empty list — never an error.
 - Response shape: { status, total, updatedAt, metadata, companies[{id,name,page,latestFlagship,latestCheckpoint}], models[{id,companyId,name,releaseDate,pricing,highlight,modalities,benchmarks,links,…}] }
+- Single model: GET ${SITE_URL}/api/v1/models/{id} returns { status, updatedAt, datasetVersion, page, model }. Unknown ids return HTTP 404 JSON { status:"error", suggestion } — never a redirect.
+- Incremental sync: GET ${SITE_URL}/api/v1/changes?since=YYYY-MM-DD (inclusive; also until, model, company, limit≤500) returns { status, total, returned, changes[{date,summary,modelId,modelName,companyId,page}] } newest first. Poll this, then fetch changed records via /api/v1/models/{id}.
 - Stay fresh: poll GET ${SITE_URL}/api/check-updates (at most every 5 minutes) and re-fetch /api/v1/models when trackedModelsCount changes.
 - Ground truth for reasoning: ${SITE_URL}/llms-full.txt · Human reference: ${SITE_URL}/docs
 - Ask the user which lab, modality, or budget matters before dumping the full list.`

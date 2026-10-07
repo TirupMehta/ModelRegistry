@@ -209,7 +209,10 @@ export default function DocsPage() {
                 Practical guidance: poll <code className="font-mono text-xs">/api/check-updates</code> no
                 more than once every 5 minutes, and treat a change in{" "}
                 <code className="font-mono text-xs">trackedModelsCount</code> as your signal to
-                re-fetch <code className="font-mono text-xs">/api/v1/models</code>.
+                re-fetch <code className="font-mono text-xs">/api/v1/models</code>. For
+                incremental sync, poll <code className="font-mono text-xs">/api/v1/changes?since=YYYY-MM-DD</code> and
+                fetch only the changed records via{" "}
+                <code className="font-mono text-xs">/api/v1/models/{"{id}"}</code>.
               </Note>
             </TextWithBlur>
           </div>
@@ -256,6 +259,66 @@ export default function DocsPage() {
                 <ParamRow name="latestOnly" type="string" desc="“true” returns each lab's newest shipped checkpoint(s)." />
               </div>
               <CodeBlock code={sampleResponse} />
+            </TextWithBlur>
+          </div>
+
+          <div id="get-model" className="scroll-mt-24 mb-12">
+            <TextWithBlur>
+              <div className="flex flex-wrap items-center gap-2.5 mb-2">
+                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 shrink-0">
+                  GET
+                </span>
+                <code className="font-mono text-sm sm:text-[15px] font-medium text-black dark:text-white break-all">
+                  /api/v1/models/{"{id}"}
+                </code>
+              </div>
+              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+                Poll one model without pulling the full registry. IDs are stable
+                kebab-case and matched case-insensitively. Unknown ids return a JSON
+                404 with a flagship suggestion when the slug unambiguously belongs to
+                one lab. Supports{" "}
+                <code className="font-mono text-xs">If-None-Match</code> / 304 like the
+                list endpoint.
+              </p>
+              <CodeBlock
+                code={`curl -s ${SITE_URL}/api/v1/models/gpt-6-astra | head -c 300
+# 404 shape: {"status":"error","error":"Model 'xyz' not found.","suggestion":"...","suggestionPage":"/models/..."}`}
+              />
+            </TextWithBlur>
+          </div>
+
+          <div id="get-changes" className="scroll-mt-24 mb-12">
+            <TextWithBlur>
+              <div className="flex flex-wrap items-center gap-2.5 mb-2">
+                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 shrink-0">
+                  GET
+                </span>
+                <code className="font-mono text-sm sm:text-[15px] font-medium text-black dark:text-white break-all">
+                  /api/v1/changes
+                </code>
+              </div>
+              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+                Incremental sync over per-model changelog history — same source as{" "}
+                <Link href="/changelog" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                  /changelog
+                </Link>
+                , newest first. Poll with{" "}
+                <code className="font-mono text-xs">?since=YYYY-MM-DD</code> (inclusive),
+                then fetch each changed record via{" "}
+                <code className="font-mono text-xs">/api/v1/models/{"{id}"}</code>.
+                Unknown model/company filters return 200 with an empty list; malformed
+                dates return 400.
+              </p>
+              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] mb-3">
+                <ParamRow name="since" type="date" desc="Inclusive lower bound, YYYY-MM-DD — e.g. 2026-10-01." />
+                <ParamRow name="until" type="date" desc="Inclusive upper bound, YYYY-MM-DD." />
+                <ParamRow name="model" type="string" desc="Filter to one record id (case-insensitive)." />
+                <ParamRow name="company" type="string" desc="Filter to one laboratory id (e.g. openai)." />
+                <ParamRow name="limit" type="integer" desc="Max entries returned. Defaults to 100, capped at 500. total is the full match count." />
+              </div>
+              <CodeBlock
+                code={`curl -s "${SITE_URL}/api/v1/changes?since=2026-10-01" | head -c 300`}
+              />
             </TextWithBlur>
           </div>
 

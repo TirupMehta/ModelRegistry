@@ -103,6 +103,169 @@
         }
       }
     },
+    "/api/v1/models/{id}": {
+      "get": {
+        "summary": "Get one tracked model by id",
+        "description": "Single-record fetch so consumers can poll one model without pulling the full registry (~168KB). IDs are stable kebab-case and matched case-insensitively. Unknown ids return a JSON 404 with a lab flagship suggestion when the slug unambiguously belongs to one lab. Supports conditional requests via If-None-Match.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Stable kebab-case record id (e.g. gpt-6-astra)."
+          },
+          {
+            "name": "If-None-Match",
+            "in": "header",
+            "schema": { "type": "string" },
+            "description": "ETag from a previous response. Returns 304 with an empty body when the dataset revision is unchanged."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "One registry record.",
+            "headers": {
+              "ETag": { "description": "Dataset revision + model id hash. Echo as If-None-Match.", "schema": { "type": "string" } },
+              "Last-Modified": { "description": "Dataset revision date, not request time.", "schema": { "type": "string" } }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["status", "model", "datasetVersion"],
+                  "properties": {
+                    "status": { "type": "string", "example": "success" },
+                    "updatedAt": { "type": "string", "format": "date", "description": "Last real data revision (YYYY-MM-DD), never the request time.", "example": "2026-10-07" },
+                    "datasetVersion": { "type": "string", "example": "2026.10.07" },
+                    "methodology": { "type": "string", "example": "https://modelregistry.tirup.in/methodology" },
+                    "page": { "type": "string", "example": "/models/gpt-6-astra" },
+                    "url": { "type": "string", "example": "https://modelregistry.tirup.in/models/gpt-6-astra" },
+                    "model": { "$ref": "#/components/schemas/ModelItem" }
+                  }
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not modified — dataset revision unchanged since the ETag was issued."
+          },
+          "404": {
+            "description": "Unknown model id. Includes a flagship suggestion when the slug unambiguously belongs to one lab.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["status", "error", "id"],
+                  "properties": {
+                    "status": { "type": "string", "example": "error" },
+                    "error": { "type": "string", "example": "Model 'gpt-5-6-sol' not found." },
+                    "id": { "type": "string" },
+                    "suggestion": { "type": "string", "description": "Suggested current record id, when resolvable.", "example": "gpt-6-1-sol" },
+                    "suggestionPage": { "type": "string", "example": "/models/gpt-6-1-sol" },
+                    "suggestionUrl": { "type": "string", "example": "https://modelregistry.tirup.in/models/gpt-6-1-sol" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/changes": {
+      "get": {
+        "summary": "List registry changelog entries (incremental sync)",
+        "description": "Changelog history across all records, newest first (same source as /changelog). Poll with ?since=<YYYY-MM-DD> (inclusive) to fetch only what changed, then fetch changed records via GET /api/v1/models/{id}. Unknown model/company filters return 200 with an empty list; malformed dates or limits return 400. Supports conditional requests via If-None-Match.",
+        "parameters": [
+          {
+            "name": "since",
+            "in": "query",
+            "schema": { "type": "string", "format": "date" },
+            "description": "Inclusive lower bound, YYYY-MM-DD (e.g. 2026-10-01)."
+          },
+          {
+            "name": "until",
+            "in": "query",
+            "schema": { "type": "string", "format": "date" },
+            "description": "Inclusive upper bound, YYYY-MM-DD."
+          },
+          {
+            "name": "model",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "Filter to one record id (case-insensitive)."
+          },
+          {
+            "name": "company",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "Filter to one laboratory id (e.g. openai)."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 100 },
+            "description": "Max entries returned. Defaults to 100, capped at 500."
+          },
+          {
+            "name": "If-None-Match",
+            "in": "header",
+            "schema": { "type": "string" },
+            "description": "ETag from a previous response. Returns 304 with an empty body when nothing changed."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Changelog entries, newest first. total is the full match count; changes is capped by limit.",
+            "headers": {
+              "ETag": { "description": "Revision + query hash. Echo as If-None-Match.", "schema": { "type": "string" } },
+              "Last-Modified": { "description": "Dataset revision date, not request time.", "schema": { "type": "string" } }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["status", "total", "returned", "changes", "datasetVersion"],
+                  "properties": {
+                    "status": { "type": "string", "example": "success" },
+                    "total": { "type": "integer", "description": "Full match count before the limit cap." },
+                    "returned": { "type": "integer", "description": "Entries in this response (<= limit)." },
+                    "limit": { "type": "integer", "example": 100 },
+                    "since": { "type": ["string", "null"], "format": "date" },
+                    "until": { "type": ["string", "null"], "format": "date" },
+                    "model": { "type": ["string", "null"] },
+                    "company": { "type": ["string", "null"] },
+                    "updatedAt": { "type": "string", "format": "date", "example": "2026-10-07" },
+                    "datasetVersion": { "type": "string", "example": "2026.10.07" },
+                    "methodology": { "type": "string", "example": "https://modelregistry.tirup.in/methodology" },
+                    "changelog": { "type": "string", "example": "https://modelregistry.tirup.in/changelog" },
+                    "changes": { "type": "array", "items": { "$ref": "#/components/schemas/ChangeEntry" } }
+                  }
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not modified — dataset revision and query unchanged since the ETag was issued."
+          },
+          "400": {
+            "description": "Malformed since/until date or limit.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["status", "error"],
+                  "properties": {
+                    "status": { "type": "string", "example": "error" },
+                    "error": { "type": "string", "example": "Invalid 'since' date 'last-week'. Expected YYYY-MM-DD." }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/cli": {
       "get": {
         "summary": "Plain-text registry table for terminals",
@@ -285,6 +448,22 @@
             }
           },
           "supersededBy": { "type": "string", "description": "Replacement record id, when retired." }
+        }
+      },
+      "ChangeEntry": {
+        "type": "object",
+        "description": "One dated changelog entry from a model's changeLog history, with its owning record attached.",
+        "required": ["date", "summary", "modelId", "modelName", "companyId"],
+        "properties": {
+          "date": { "type": "string", "format": "date", "example": "2026-10-07" },
+          "summary": { "type": "string", "example": "Audit correction: re-sourced announcement to canonical blog URL." },
+          "sources": { "type": "array", "items": { "type": "string", "format": "uri" } },
+          "modelId": { "type": "string", "example": "gemini-3-8-flash" },
+          "modelName": { "type": "string", "example": "Gemini 3.8 Flash" },
+          "companyId": { "type": "string", "example": "google" },
+          "companyName": { "type": "string", "example": "Google DeepMind" },
+          "page": { "type": "string", "example": "/models/gemini-3-8-flash" },
+          "url": { "type": "string", "example": "https://modelregistry.tirup.in/models/gemini-3-8-flash" }
         }
       }
     }
