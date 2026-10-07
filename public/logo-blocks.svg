@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">ModelRegistry logo — blocks</title>
+  <desc id="logoDesc">Model grid with one flagship lit coral.</desc>
+  <g transform="scale(16)">
+    <rect width="32" height="32" rx="7" fill="#090a0d" />
+    <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+    <rect x="7" y="7" width="8.5" height="8.5" rx="2.2" fill="#ffffff" />
+    <rect x="16.5" y="7" width="8.5" height="8.5" rx="2.2" fill="#ffffff" fill-opacity="0.45" />
+    <rect x="7" y="16.5" width="8.5" height="8.5" rx="2.2" fill="#ffffff" fill-opacity="0.45" />
+    <rect x="16.5" y="16.5" width="8.5" height="8.5" rx="2.2" fill="#ff5d2e" />
+  </g>
+</svg>
