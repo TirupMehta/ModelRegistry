@@ -1,0 +1,13 @@
+# Single-package repo: only the root project is a workspace member.
+packages:
+  - .
+allowBuilds:
+  unrs-resolver: true
+# Stop modern pnpm from rewriting the lockfile with its own version metadata
+# (managed by CI's frozen install instead). Unknown to pnpm 9 (ignored).
+manage-package-manager-versions: false
+# pnpm 10+ no longer reads the `pnpm` field in package.json, so overrides
+# live here — honored by pnpm 9 (CI), pnpm 10 (Vercel) and pnpm 11 (local).
+# Keeps `pnpm install --frozen-lockfile` green everywhere.
+overrides:
+  postcss@<8.5.23: ^8.5.28
