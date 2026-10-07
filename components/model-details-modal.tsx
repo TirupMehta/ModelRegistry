@@ -175,30 +175,30 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
 
         {/* Key Hardware Specs Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 mb-5 sm:mb-6 text-xs font-sans">
-          <div className="p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] shadow-sm hover:border-[#ff5d2e]/40 transition-all duration-150 cursor-default">
-            <div className="flex items-center gap-1.5 text-black/40 dark:text-zinc-500 mb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em]">
-              <Layers size={12} className="text-[#ff5d2e]" />
-              <span>Context</span>
+          <div className="p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] shadow-sm hover:border-[#ff5d2e]/40 transition-all duration-150 cursor-default min-w-0">
+            <div className="flex items-center gap-1.5 text-black/40 dark:text-zinc-500 mb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] min-w-0">
+              <Layers size={12} className="text-[#ff5d2e] shrink-0" />
+              <span className="truncate">Context</span>
             </div>
             <p className="tabular-nums text-xs sm:text-sm font-semibold text-black dark:text-white leading-tight">
               {model.contextWindow}
             </p>
           </div>
 
-          <div className="p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] shadow-sm hover:border-[#ff5d2e]/40 transition-all duration-150 cursor-default">
-            <div className="flex items-center gap-1.5 text-black/40 dark:text-zinc-500 mb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em]">
-              <Cpu size={12} className="text-[#ff5d2e]" />
-              <span>Architecture</span>
+          <div className="p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] shadow-sm hover:border-[#ff5d2e]/40 transition-all duration-150 cursor-default min-w-0">
+            <div className="flex items-center gap-1.5 text-black/40 dark:text-zinc-500 mb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] min-w-0">
+              <Cpu size={12} className="text-[#ff5d2e] shrink-0" />
+              <span className="truncate">Architecture</span>
             </div>
             <p className="tabular-nums text-xs sm:text-sm font-semibold text-black dark:text-white leading-tight break-words">
               {model.parameters}
             </p>
           </div>
 
-          <div className="p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] col-span-2 sm:col-span-1 shadow-sm hover:border-[#ff5d2e]/40 transition-all duration-150 cursor-default">
-            <div className="flex items-center gap-1.5 text-black/40 dark:text-zinc-500 mb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em]">
-              <DollarSign size={12} className="text-[#ff5d2e]" />
-              <span>{model.pricingUnit ? "Official API" : "Official API / 1M"}</span>
+          <div className="p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] col-span-2 sm:col-span-1 shadow-sm hover:border-[#ff5d2e]/40 transition-all duration-150 cursor-default min-w-0">
+            <div className="flex items-center gap-1.5 text-black/40 dark:text-zinc-500 mb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] min-w-0">
+              <DollarSign size={12} className="text-[#ff5d2e] shrink-0" />
+              <span className="truncate">{model.pricingUnit ? "Official API" : "Official API / 1M"}</span>
             </div>
             <div className="tabular-nums text-xs sm:text-sm font-semibold text-black dark:text-white leading-tight">
               <span>
@@ -219,7 +219,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             <h3 className="text-[10px] font-sans uppercase tracking-[0.14em] text-black/45 dark:text-zinc-500 font-semibold mb-3">
               Verified benchmarks
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(9rem,1fr))] gap-2">
               {(
                 [
                   ["SWE-bench", model.benchmarks.sweBench],
@@ -235,13 +235,13 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
                   return (
                     <div
                       key={label}
-                      className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-white dark:bg-[#13161c] shadow-sm hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default"
+                      className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-white dark:bg-[#13161c] shadow-sm hover:border-[#ff5d2e]/30 transition-colors duration-150 cursor-default min-w-0"
                     >
-                      <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.1em] text-black/40 dark:text-zinc-500 block mb-1">
+                      <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.1em] text-black/40 dark:text-zinc-500 block mb-1 break-words">
                         {label}
                       </span>
                       <span
-                        className={`text-base font-sans font-semibold tabular-nums ${
+                        className={`block text-sm sm:text-base font-sans font-semibold tabular-nums leading-snug break-words ${
                           i === 0 ? "text-[#ff5d2e]" : "text-black dark:text-white"
                         }`}
                       >
@@ -293,14 +293,14 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
         )}
 
         {/* Modalities & License */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3.5 border-t border-black/10 dark:border-white/[0.08] mb-6 text-xs font-sans text-black/60 dark:text-zinc-400">
-          <div className="flex items-center gap-2">
-            <span className="text-black/40 dark:text-zinc-400">MODALITIES:</span>
-            <div className="flex gap-1">
+        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pt-3.5 border-t border-black/10 dark:border-white/[0.08] mb-6 text-xs font-sans text-black/60 dark:text-zinc-400">
+          <div className="flex flex-wrap items-center gap-1.5 min-w-0">
+            <span className="text-black/40 dark:text-zinc-400 shrink-0">MODALITIES:</span>
+            <div className="flex flex-wrap gap-1">
               {model.modalities.map((m) => (
                 <span
                   key={m}
-                  className="px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.04] text-[11px] text-black/75 dark:text-zinc-300"
+                  className="px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.04] text-[11px] text-black/75 dark:text-zinc-300 whitespace-nowrap"
                 >
                   {m}
                 </span>
@@ -308,20 +308,20 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <ShieldCheck size={13} className="opacity-40" />
-            <span className="text-[11px] text-black/60 dark:text-zinc-400">{model.license}</span>
+          <div className="flex items-center gap-1.5 min-w-0">
+            <ShieldCheck size={13} className="opacity-40 shrink-0" />
+            <span className="text-[11px] text-black/60 dark:text-zinc-400 break-words">{model.license}</span>
           </div>
         </div>
 
         {/* Action Links */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="grid grid-cols-1 min-[400px]:grid-cols-2 sm:flex sm:flex-wrap sm:items-center gap-2 sm:gap-2.5">
           {model.links.announcement && (
             <a
               href={model.links.announcement}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white transition-colors duration-150 cursor-pointer"
+              className="group inline-flex w-full sm:w-auto items-center justify-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white transition-colors duration-150 cursor-pointer"
             >
               <span>LAB ANNOUNCEMENT</span>
               <ExternalLink size={12} className="opacity-60" />
@@ -332,7 +332,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               href={model.links.playground}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
+              className="group inline-flex w-full sm:w-auto items-center justify-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
             >
               <span>OPEN PLAYGROUND</span>
               <ExternalLink size={12} className="opacity-60" />
@@ -343,7 +343,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               href={model.links.weights}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
+              className="group inline-flex w-full sm:w-auto items-center justify-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
             >
               <span>HUGGING FACE WEIGHTS</span>
               <ExternalLink size={12} className="opacity-60" />
@@ -355,7 +355,7 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
               tapFeedback()
               setIsShareStudioOpen(true)
             }}
-            className="group inline-flex items-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-[#ff5d2e]/40 bg-[#ff5d2e]/10 text-[#ff5d2e] hover:bg-[#ff5d2e] hover:text-white dark:hover:text-black transition-colors duration-150 cursor-pointer"
+            className="group inline-flex w-full sm:w-auto col-span-full min-[400px]:col-span-2 sm:col-span-1 items-center justify-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-[#ff5d2e]/40 bg-[#ff5d2e]/10 text-[#ff5d2e] hover:bg-[#ff5d2e] hover:text-white dark:hover:text-black transition-colors duration-150 cursor-pointer"
           >
             <Share2 size={12} />
             <span>SHARE STORY / CARD</span>
