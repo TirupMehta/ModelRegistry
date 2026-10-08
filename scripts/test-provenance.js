@@ -159,6 +159,8 @@ check("methodology page exists", exists("app/methodology/page.tsx"))
 check("editorial policy page exists", exists("app/editorial-policy/page.tsx"))
 check("changelog page exists", exists("app/changelog/page.tsx"))
 check("contributor guide requires primary sources", read("CONTRIBUTING.md").includes("Provenance Rule"))
+check("contributor guide points at live lab list", read("CONTRIBUTING.md").includes("data/companies.ts"))
+check("contributor guide carries no hardcoded lab enumeration", !/one of:\s*anthropic/.test(read("CONTRIBUTING.md")))
 
 if (failures > 0) {
   console.error(`\n❌ test-provenance failed with ${failures} failure(s).`)

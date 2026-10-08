@@ -2,7 +2,9 @@ import { notFound, redirect } from "next/navigation"
 import { Metadata } from "next"
 import { modelsData } from "@/data/models"
 import { resolveCompanyFallback } from "@/lib/model-fallback"
+import { modelSiblings, modelFolio } from "@/lib/registry"
 import { safeJsonLd } from "@/lib/utils"
+import Header from "@/components/header"
 import ModelPageView from "@/components/model-page-view"
 
 interface Props {
@@ -113,6 +115,11 @@ export default async function ModelPage({ params }: Props) {
     ],
   }
 
+  // Sibling links and export folio are derived server-side so the client
+  // view never bundles the dataset for them.
+  const siblings = modelSiblings(model, 3, modelsData)
+  const { folio, folioId } = modelFolio(model.id, modelsData)
+
   return (
     <>
       <script
@@ -123,7 +130,8 @@ export default async function ModelPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }}
       />
-      <ModelPageView model={model} />
+      <Header />
+      <ModelPageView model={model} siblings={siblings} folio={folio} folioId={folioId} />
     </>
   )
 }

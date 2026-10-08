@@ -5,6 +5,7 @@ import TextWithBlur from "@/components/text-with-blur"
 import DocsSidebar, { DocsIndexChips } from "@/components/docs-nav"
 import { companies } from "@/data/companies"
 import { modelsData } from "@/data/models"
+import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import { API_USE_PROMPT, buildContributePrompt } from "@/lib/agent-prompts"
 import PromptBlock from "@/components/prompt-block"
@@ -74,23 +75,36 @@ function Note({ children }: { children: React.ReactNode }) {
 export default function DocsPage() {
   const labList = Object.values(companies)
   const sampleFlagship = modelsData.find((m) => m.isCompanyFlagship)
+  // Sample mirrors GET /api/v1/models in trimmed form. Every value below
+  // derives from the live dataset so the reference cannot rot - see
+  // app/api/v1/models/route.ts for the canonical shape.
+  const verification = { verified: 0, partially_verified: 0, unverified: 0, retired: 0 }
+  for (const m of modelsData) {
+    verification[m.verificationStatus] = (verification[m.verificationStatus] || 0) + 1
+  }
+  const openaiFlagship = modelsData.find((m) => m.companyId === "openai" && m.isCompanyFlagship)
+  const openaiCheckpoint = modelsData.find(
+    (m) => m.companyId === "openai" && m.isLatestCheckpoint && !m.isCompanyFlagship
+  )
+  const sampleSourceUrl =
+    sampleFlagship?.sources?.[0]?.url ?? sampleFlagship?.links?.announcement ?? ""
 
   const sampleResponse = `{
   "status": "success",
   "total": ${modelsData.length},
-  "updatedAt": "2026-10-07",
-  "datasetVersion": "2026.10.07",
-  "verification": { "verified": 1, "partially_verified": 48 },
+  "updatedAt": "${datasetRevision.revisedAt}",
+  "datasetVersion": "${datasetRevision.datasetVersion}",
+  "verification": ${JSON.stringify(verification)},
   "metadata": { "registry": "ModelRegistry", "license": "Open Data / MIT" },
   "companies": [{ "id": "openai", "page": "/companies/openai",
-    "latestFlagship": "GPT-6.1 Sol", "latestCheckpoint": "ChatGPT Images 2.5" }],
+    "latestFlagship": "${openaiFlagship?.name ?? ""}", "latestCheckpoint": "${openaiCheckpoint?.name ?? ""}" }],
   "models": [{
-    "id": "${sampleFlagship?.id ?? "gpt-6-1-sol"}",
-    "name": "${sampleFlagship?.name ?? "GPT-6.1 Sol"}",
-    "releaseDate": "${sampleFlagship?.releaseDate ?? "2026-09-29"}",
-    "pricing": { "input": ${sampleFlagship?.pricing.input ?? 2}, "output": ${sampleFlagship?.pricing.output ?? 10} },
-    "verificationStatus": "${sampleFlagship?.verificationStatus ?? "partially_verified"}",
-    "sources": [{ "url": "https://openai.com/index/introducing-gpt-6-1-sol", "sourceType": "announcement" }]
+    "id": "${sampleFlagship?.id ?? ""}",
+    "name": "${sampleFlagship?.name ?? ""}",
+    "releaseDate": "${sampleFlagship?.releaseDate ?? ""}",
+    "pricing": { "input": ${sampleFlagship?.pricing.input ?? 0}, "output": ${sampleFlagship?.pricing.output ?? 0} },
+    "verificationStatus": "${sampleFlagship?.verificationStatus ?? ""}",
+    "sources": [{ "url": "${sampleSourceUrl}", "sourceType": "${sampleFlagship?.sources?.[0]?.sourceType ?? "announcement"}" }]
   }]
 }`
 
@@ -581,7 +595,7 @@ ${SITE_URL}/api/check-updates`}
               </h2>
               <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
                 Cite the canonical record URL plus the dataset version you used, e.g.{" "}
-                <code className="font-mono text-xs">https://modelregistry.tirup.in/models/mistral-large-4 (dataset 2026.10.07)</code>.
+                <code className="font-mono text-xs">https://modelregistry.tirup.in/models/mistral-large-4 (dataset {datasetRevision.datasetVersion})</code>.
                 Record IDs are stable; field values can be corrected, with history on{" "}
                 <Link href="/changelog" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
                   /changelog

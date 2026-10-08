@@ -1,9 +1,14 @@
-// Live route-contract tests. Requires a production server:
+// Live route-contract tests. Run in CI (see .github/workflows/ci.yml, routes
+// job: build -> serve production on :3100 -> test), or manually:
 //   npm run build
 //   node node_modules/next/dist/bin/next start -p 3100
-//   BASE_URL=http://localhost:3100 node scripts/test-routes.js
+//   BASE_URL=http://localhost:3100 pnpm test:routes
 // Verifies status codes, redirects, API shapes, the badge XSS guard,
 // OG image bytes, payload size, and basic response timing.
+//
+// Content assertions derive from the live dataset (EXPECTED below) so they
+// stay green when models rotate - never hardcode model names, dates, or
+// prices in new checks.
 const fs = require("fs")
 const path = require("path")
 const ts = require("typescript")
@@ -23,16 +28,48 @@ function countDataset() {
     return mod.exports
   }
   const modelsData = loadTsModule("../data/models.ts").modelsData
+  const labIds = Object.keys(loadTsModule("../data/companies.ts").companies)
+  const sorted = [...modelsData].sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
+  const newest = sorted[0]
+  const openaiFlagship = modelsData.find((m) => m.companyId === "openai" && m.isCompanyFlagship)
+  // A priced flagship whose "$in/$out" pair fits the fixed CLI column:
+  // asserts the full pair survives layout untruncated (over-long values
+  // truncate by design, and non-flagships never appear in the table, so
+  // only a fitting flagship pair can prove this).
+  const pairFits = (m) => `$${m.pricing.input}/$${m.pricing.output}`.length <= 13
+  const priceModel =
+    modelsData.find((m) => m.pricingUnit && m.isCompanyFlagship && pairFits(m)) ??
+    modelsData.find((m) => m.isCompanyFlagship && pairFits(m)) ??
+    openaiFlagship
   return {
     models: modelsData.length,
-    labs: Object.keys(loadTsModule("../data/companies.ts").companies).length,
-    // Current OpenAI flagship: retired slugs and flagshipOnly filters must
-    // resolve here, whatever the next rotation brings.
-    openaiFlagship:
-      modelsData.find((m) => m.companyId === "openai" && m.isCompanyFlagship)?.id ?? null,
+    labs: labIds.length,
+    lastLab: labIds[labIds.length - 1] ?? null,
+    openaiFlagship: openaiFlagship?.id ?? null,
+    openaiFlagshipName: openaiFlagship?.name ?? null,
+    newestId: newest?.id ?? null,
+    newestName: newest?.name ?? null,
+    // Near-miss slug of a real record: exercises the fuzzy fallback
+    // redirect without depending on any retired slug existing.
+    nearMissSlug: openaiFlagship ? `${openaiFlagship.id}-v2` : null,
+    priceModelId: priceModel?.id ?? openaiFlagship?.id ?? null,
+    // Full "$in/$out" pair must survive CLI column layout untruncated.
+    pricePair:
+      priceModel != null ? `$${priceModel.pricing.input}/$${priceModel.pricing.output}` : null,
+    // Rolling window keeps the changes filter exercised whatever today is.
+    sinceDate: new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10),
   }
 }
 const EXPECTED = countDataset()
+
+// Fail fast when the dataset cannot supply a fixture - a clear message here
+// beats twenty confusing downstream failures after a data rotation.
+for (const key of ["openaiFlagship", "newestId", "nearMissSlug", "priceModelId"]) {
+  if (!EXPECTED[key]) {
+    console.error(`❌ Route tests need dataset fixture '${key}' - check data/models.ts.`)
+    process.exit(1)
+  }
+}
 
 console.log(`🌐 Testing live routes against ${BASE}...`)
 
@@ -116,14 +153,15 @@ async function main() {
   await expectStatus("/companies", 200)
   await expectStatus("/companies/openai", 200)
   await expectStatus("/companies/nope", 404)
-  await expectStatus("/models/gpt-6-astra", 200)
-  await expectStatus("/models/chatgpt-images-2-5", 200)
+  await expectStatus(`/models/${EXPECTED.openaiFlagship}`, 200)
+  await expectStatus(`/models/${EXPECTED.newestId}`, 200)
   await expectStatus("/leaderboard", 200)
   await expectStatus("/timeline", 200)
   await expectStatus("/docs", 200)
 
-  // Retired slug redirects to flagship (manual: assert target, no follow)
-  const redir = await expectStatus("/models/gpt-5-6-sol", 307, { redirect: "manual" })
+  // Fuzzy fallback: a near-miss slug of a real record redirects (307) to the
+  // owning lab's flagship (manual: assert target, no follow).
+  const redir = await expectStatus(`/models/${EXPECTED.nearMissSlug}`, 307, { redirect: "manual" })
   if (redir) {
     const loc = redir.headers.get("location") || ""
     if (EXPECTED.openaiFlagship && loc.endsWith(`/models/${EXPECTED.openaiFlagship}`))
@@ -132,14 +170,14 @@ async function main() {
   }
   await expectStatus("/models/pro", 404)
 
-  // Content spot-checks
-  await expectContains("/companies/openai", "GPT-6 Astra", "text/html")
+  // Content spot-checks (all subjects derived from live data above)
+  await expectContains("/companies/openai", EXPECTED.openaiFlagshipName, "text/html")
   await expectContains("/docs", "?company=", "text/html")
   await expectContains("/sitemap.xml", "/companies/openai", "xml")
   await expectContains("/sitemap.xml", "/docs", "xml")
-  await expectContains("/rss.xml", "ChatGPT Images 2.5", "xml")
-  await expectContains("/llms.txt", "/companies/kuaishou", "text/plain")
-  await expectContains("/llms-full.txt", "GPT-Image-2.5 Flare", "text/plain")
+  await expectContains("/rss.xml", EXPECTED.newestName, "xml")
+  await expectContains("/llms.txt", `/companies/${EXPECTED.lastLab}`, "text/plain")
+  await expectContains("/llms-full.txt", EXPECTED.newestName, "text/plain")
 
   // API contracts
   const api = await expectContains("/api/v1/models", '"status":"success"', "application/json")
@@ -174,9 +212,9 @@ async function main() {
 
   // Single-model endpoint: one record without the full payload.
   try {
-    const { res } = await get("/api/v1/models/gpt-6-astra")
+    const { res } = await get(`/api/v1/models/${EXPECTED.openaiFlagship}`)
     const one = await res.json()
-    if (res.status === 200 && one.status === "success" && one.model?.id === "gpt-6-astra") {
+    if (res.status === 200 && one.status === "success" && one.model?.id === EXPECTED.openaiFlagship) {
       pass("api single model", `${(JSON.stringify(one).length / 1024).toFixed(1)}KB`)
     } else {
       fail("api single model", `status ${res.status}`)
@@ -184,7 +222,7 @@ async function main() {
     if (res.headers.get("etag")) pass("api single model etag")
     else fail("api single model etag", "missing ETag")
   } catch (e) {
-    fail("/api/v1/models/gpt-6-astra", e.message)
+    fail(`/api/v1/models/${EXPECTED.openaiFlagship}`, e.message)
   }
   try {
     const { res } = await get("/api/v1/models/nope-not-real")
@@ -197,7 +235,7 @@ async function main() {
 
   // Changelog diff endpoint: incremental sync without the full payload.
   try {
-    const { res } = await get("/api/v1/changes?since=2026-10-01")
+    const { res } = await get(`/api/v1/changes?since=${EXPECTED.sinceDate}`)
     const ch = await res.json()
     if (res.status === 200 && ch.status === "success" && Array.isArray(ch.changes) && ch.total >= ch.returned) {
       pass("api changes since filter", `total ${ch.total}`)
@@ -234,8 +272,8 @@ async function main() {
     } else {
       fail("cli lab name shortened", "long lab name truncated mid-word")
     }
-    if (text.includes("$0.084/$0.084")) pass("cli full per-second price")
-    else fail("cli full per-second price", "Kling price truncated")
+    if (text.includes(EXPECTED.pricePair)) pass("cli full per-second price", EXPECTED.pricePair)
+    else fail("cli full per-second price", `pair '${EXPECTED.pricePair}' truncated`)
     if (/[^\x00-\x7F]/.test(rows.join("\n"))) fail("cli rows ascii-only", "wide char in fixed columns")
     else pass("cli rows ascii-only")
     if (cc.includes("s-maxage=3600")) pass("cli edge cache ttl", cc)
@@ -282,11 +320,11 @@ async function main() {
     fail("badge slash probe", e.message)
   }
   await expectStatus("/api/badge/openai", 200)
-  await expectStatus("/api/badge?model=chatgpt-images-2-5&type=pricing", 200)
+  await expectStatus(`/api/badge?model=${EXPECTED.priceModelId}&type=pricing`, 200)
   await expectContains("/api/agent-prompt", "ModelRegistry", "text/plain")
 
   // OG cards render real PNGs (model, lab, default)
-  await expectPng("/api/og?model=gpt-6-astra")
+  await expectPng(`/api/og?model=${EXPECTED.openaiFlagship}`)
   await expectPng("/api/og?lab=openai")
   await expectPng("/api/og")
 

@@ -24,9 +24,12 @@ import { tapFeedback, successFeedback } from "@/lib/feedback"
 interface ModelDetailsModalProps {
   model: ModelItem | null
   onClose: () => void
+  // Dossier folio, derived where the dataset lives (see lib/registry).
+  folio: string
+  folioId: string
 }
 
-export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalProps) {
+export default function ModelDetailsModal({ model, onClose, folio, folioId }: ModelDetailsModalProps) {
   const [copied, setCopied] = useState(false)
   const [isShareStudioOpen, setIsShareStudioOpen] = useState(false)
 
@@ -374,6 +377,8 @@ export default function ModelDetailsModal({ model, onClose }: ModelDetailsModalP
           model={model}
           isOpen={isShareStudioOpen}
           onClose={() => setIsShareStudioOpen(false)}
+          folio={folio}
+          folioId={folioId}
         />
       )}
       </div>

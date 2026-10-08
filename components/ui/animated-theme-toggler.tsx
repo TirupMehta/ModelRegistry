@@ -6,11 +6,8 @@ import { flushSync } from "react-dom"
 import { cn } from "@/lib/utils"
 import { toggleFeedback } from "@/lib/feedback"
 
-export type TransitionVariant = "circle" | "square" | "diamond"
-
 interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<"button"> {
   duration?: number
-  variant?: TransitionVariant
 }
 
 export const AnimatedThemeToggler = ({

@@ -2,10 +2,9 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { modelsData, type ModelItem } from "@/data/models"
+import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
 import { formatPrice, formatDate } from "@/lib/utils"
-import Header from "@/components/header"
 import { ShareCardModal } from "@/components/share-card-modal"
 import VerificationSection from "@/components/verification-section"
 import {
@@ -26,21 +25,20 @@ import { tapFeedback, selectFeedback, successFeedback } from "@/lib/feedback"
 
 interface ModelPageViewProps {
   model: ModelItem
+  // Computed server-side (see app/models/[id]/page.tsx) so this client
+  // view never bundles the full dataset for three links and a folio.
+  siblings: ModelItem[]
+  folio: string
+  folioId: string
 }
 
-export default function ModelPageView({ model }: ModelPageViewProps) {
+export default function ModelPageView({ model, siblings, folio, folioId }: ModelPageViewProps) {
   const [copiedLink, setCopiedLink] = useState(false)
   const [copiedCode, setCopiedCode] = useState(false)
   const [isShareStudioOpen, setIsShareStudioOpen] = useState(false)
   const [activeSnippetTab, setActiveSnippetTab] = useState<"curl" | "python" | "local">("curl")
 
   const company = companies[model.companyId]
-
-  // Same-lab siblings for crawlable internal linking (newest first).
-  const siblings = modelsData
-    .filter((m) => m.companyId === model.companyId && m.id !== model.id)
-    .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
-    .slice(0, 3)
 
   const handleCopyLink = () => {
     try {
@@ -61,18 +59,41 @@ export default function ModelPageView({ model }: ModelPageViewProps) {
 
   const curlCommand = `curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
+  // Snippets never invent identifiers. The only verified local handle is
+  // links.weights when it points at an exact repo (org/name). Org pages,
+  // bare domains, or missing links yield a template with a placeholder the
+  // user must fill in - never a guessed repo or Ollama tag.
+  const weightsUrl = model.links?.weights
+  const weightRepo = weightsUrl?.match(/^https:\/\/huggingface\.co\/([^/\s]+\/[^/\s]+)\/?$/)?.[1] ?? null
+
+  // True when the visible snippet runs as-is against a verified handle.
+  const isSnippetVerified =
+    activeSnippetTab === "curl" ||
+    (!model.openWeights && activeSnippetTab === "local") ||
+    (model.openWeights && weightRepo !== null)
+
   // Generate clean developer code snippets
   const getPythonSnippet = () => {
     if (model.openWeights) {
-      return `# Run locally via vLLM or Hugging Face
-from vllm import LLM, SamplingParams
+      if (weightRepo) {
+        return `# Run ${model.name} locally - weights: ${weightsUrl}
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-llm = LLM(model="${model.companyName.toLowerCase()}/${model.id}")
-prompts = ["Explain quantum error correction:"]
-outputs = llm.generate(prompts, SamplingParams(temperature=0.7, max_tokens=1024))
-print(outputs[0].outputs[0].text)`
+repo = "${weightRepo}"
+tok = AutoTokenizer.from_pretrained(repo)
+model = AutoModelForCausalLM.from_pretrained(repo, device_map="auto")
+print(tok.decode(model.generate(**tok("Explain quantum error correction:", return_tensors="pt"), max_new_tokens=256)[0])))`
+      }
+      return `# Template - replace <weights-repo> with the repository from WEIGHTS / REPOSITORY below${
+        weightsUrl ? `\n# Start here: ${weightsUrl}` : ""
+      }
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+repo = "<weights-repo>"
+tok = AutoTokenizer.from_pretrained(repo)
+model = AutoModelForCausalLM.from_pretrained(repo, device_map="auto")`
     }
-    return `# Call ${model.name} via OpenAI-compatible SDK
+    return `# Template - set base_url and api key per your provider
 from openai import OpenAI
 
 client = OpenAI()
@@ -85,11 +106,13 @@ print(response.choices[0].message.content)`
 
   const getLocalRunSnippet = () => {
     if (model.openWeights) {
-      return `# Pull and run on local GPU or Apple Silicon via Ollama
-ollama run ${model.id.replace(/-128e|-pro|-flash/g, "")}
-
-# Or serve high-throughput API with vLLM
-vllm serve ${model.companyName.toLowerCase()}/${model.id} --tensor-parallel-size 4`
+      if (weightRepo) {
+        return `# Serve with vLLM from the verified repository
+vllm serve ${weightRepo} --tensor-parallel-size 4`
+      }
+      return `# Template - no exact weights repo on file for ${model.id}${
+        weightsUrl ? `\n# Start here: ${weightsUrl}` : "\n# See WEIGHTS / REPOSITORY below when published"
+      }\n# Then: vllm serve <weights-repo> --tensor-parallel-size 4`
     }
     return `# Query ModelRegistry live terminal datasheet
 curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
@@ -118,8 +141,6 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
   return (
     <div className="min-h-screen bg-[#f7f7f4] dark:bg-[#07080a] text-[#111215] dark:text-[#f4f5f7] transition-colors duration-150">
-      <Header />
-
       <main className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 py-6 sm:py-10">
         {/* Breadcrumb Navigation */}
         <div className="flex items-center gap-2.5 mb-7 text-xs font-sans tracking-wider leading-relaxed text-black/50 dark:text-zinc-400 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
@@ -417,6 +438,11 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   : getLocalRunSnippet()}
               </code>
             </pre>
+            {!isSnippetVerified && (
+              <p className="px-3.5 sm:px-5 py-2 text-[11px] font-sans tracking-wide text-black/45 dark:text-zinc-500 border-t border-black/10 dark:border-white/[0.08]">
+                Template - adapt repo, model name, and endpoint to your provider before running.
+              </p>
+            )}
           </div>
 
           {/* External Links Bar */}
@@ -521,6 +547,8 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
         isOpen={isShareStudioOpen}
         onClose={() => setIsShareStudioOpen(false)}
         model={model}
+        folio={folio}
+        folioId={folioId}
       />
     </div>
   )

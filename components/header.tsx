@@ -1,128 +1,26 @@
-"use client"
-
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
 import TextWithBlur from "@/components/text-with-blur"
+import HeaderBrand from "@/components/header-brand"
+import HeaderNav from "@/components/header-nav"
+import HeaderPrompt from "@/components/header-prompt"
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
-import { selectFeedback, successFeedback } from "@/lib/feedback"
+import { Rss, Code2, File, GitPullRequest, ArrowUpRight } from "lucide-react"
 import { modelsData } from "@/data/models"
-import { Rss, Code2, File, GitPullRequest, ArrowUpRight, Sparkles, Check } from "lucide-react"
+import { newestReleaseMonth } from "@/lib/registry"
 
-const NAV_ITEMS = [
-  { label: "Overview", short: "Overview", href: "/" },
-  { label: "Laboratories", short: "Labs", href: "/companies" },
-  { label: "Comparison", short: "Compare", href: "/leaderboard" },
-  { label: "Changelog", short: "Changes", href: "/timeline" },
-] as const
-
-// Freshness stamp derived from the newest tracked release - stays accurate
-// as the registry grows, with no manual month edits needed.
-const newestReleaseLabel = (() => {
-  const newest = [...modelsData].sort((a, b) =>
-    b.releaseDate.localeCompare(a.releaseDate)
-  )[0]
-  if (!newest) return ""
-  return new Date(`${newest.releaseDate.slice(0, 7)}-02`).toLocaleDateString(
-    "en-US",
-    { month: "short", year: "numeric" }
-  )
-})()
-
-function NavLinks({ pathname }: { pathname: string }) {
-  function isLinkActive(href: string) {
-    if (href === "/") return pathname === "/"
-    return pathname.startsWith(href)
-  }
-
-  return (
-    <nav className="grid w-full grid-cols-4 items-center gap-0.5 p-1 rounded-xl bg-black/[0.03] dark:bg-[#101318] border border-black/10 dark:border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] overflow-visible sm:inline-flex sm:w-auto sm:max-w-full sm:overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-      {NAV_ITEMS.map(({ label, short, href }) => {
-        const active = isLinkActive(href)
-        return (
-          <Link
-            key={href}
-            href={href}
-            onClick={() => {
-              selectFeedback()
-            }}
-            aria-current={active ? "page" : undefined}
-            className={[
-              "group relative inline-flex min-w-0 flex-1 sm:flex-none items-center justify-center gap-1.5 sm:gap-2 py-1.5 px-1 sm:px-3 rounded-lg text-[11px] sm:text-[13px] font-sans tracking-tight select-none cursor-pointer whitespace-nowrap transition-all duration-150 ease-out",
-              active
-                ? "bg-white dark:bg-[#1e222a] text-black dark:text-white font-medium shadow-sm ring-1 ring-black/10 dark:ring-white/10"
-                : "text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]",
-            ].join(" ")}
-          >
-            {active ? (
-              <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-[#ff5d2e] shadow-[0_0_6px_rgba(255,93,46,0.8)] shrink-0" />
-            ) : (
-              <span className="hidden sm:block w-1.5 h-1.5 rounded-full bg-black/10 dark:bg-white/10 group-hover:bg-black/25 dark:group-hover:bg-white/25 transition-colors shrink-0" />
-            )}
-            <span className="truncate sm:hidden">{short}</span>
-            <span className="hidden sm:inline">{label}</span>
-          </Link>
-        )
-      })}
-    </nav>
-  )
-}
+// Server component: telemetry and layout render from the server-side
+// dataset (never shipped to the browser). All interactivity lives in the
+// header-*/ islands below. Freshness stamp derives from the newest tracked
+// release - stays accurate as the registry grows, with no manual edits.
+const newestMonth = newestReleaseMonth(modelsData)
+const newestReleaseLabel = newestMonth
+  ? new Date(`${newestMonth}-02`).toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    })
+  : ""
 
 export default function Header() {
-  const pathname = usePathname()
-  const isHome = pathname === "/"
-  const [promptCopied, setPromptCopied] = useState(false)
-  const [hintPos, setHintPos] = useState<{ top: number; right: number } | null>(null)
-  const promptBtnRef = useRef<HTMLButtonElement>(null)
-  const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  // Viewport-fixed explainer card, anchored under the button via measured
-  // rect - the nav row is a scroll container, so nothing may overflow it.
-  function showHint() {
-    const r = promptBtnRef.current?.getBoundingClientRect()
-    if (!r) return
-    if (hintTimer.current) clearTimeout(hintTimer.current)
-    setHintPos({ top: r.bottom + 10, right: Math.max(window.innerWidth - r.right, 12) })
-  }
-
-  function hideHint() {
-    if (hintTimer.current) clearTimeout(hintTimer.current)
-    hintTimer.current = setTimeout(() => setHintPos(null), 90)
-  }
-
-  useEffect(() => {
-    const close = () => setHintPos(null)
-    window.addEventListener("scroll", close, { passive: true })
-    return () => window.removeEventListener("scroll", close)
-  }, [])
-
-  // Fetches the live agent prompt (zero bundle cost) and copies it.
-  // Falls back to the docs page when clipboard or network is unavailable.
-  async function handleCopyPrompt() {
-    try {
-      const res = await fetch("/api/agent-prompt")
-      if (!res.ok) throw new Error("prompt fetch failed")
-      const text = await res.text()
-      try {
-        await navigator.clipboard.writeText(text)
-      } catch {
-        const ta = document.createElement("textarea")
-        ta.value = text
-        ta.style.position = "fixed"
-        ta.style.opacity = "0"
-        document.body.appendChild(ta)
-        ta.select()
-        document.execCommand("copy")
-        document.body.removeChild(ta)
-      }
-      setPromptCopied(true)
-      successFeedback()
-      setTimeout(() => setPromptCopied(false), 2000)
-    } catch {
-      window.location.href = "/docs"
-    }
-  }
-
   return (
     <>
       {/* ── Top Telemetry Readout Bar ────────────────────────────────────── */}
@@ -172,20 +70,7 @@ export default function Header() {
         <TextWithBlur>
           <div className="flex items-center justify-between gap-3 mb-4 md:mb-6">
             <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
-              <Link href="/" className="group inline-flex items-end gap-1.5 sm:gap-2 select-none">
-                {isHome ? (
-                  <h1 className="text-xl sm:text-2xl md:text-3xl font-display font-medium tracking-tight text-black dark:text-white leading-none">
-                    Model<span className="font-bold text-[#ff5d2e]">Registry</span>
-                  </h1>
-                ) : (
-                  <p className="text-xl sm:text-2xl md:text-3xl font-display font-medium tracking-tight text-black dark:text-white leading-none">
-                    Model<span className="font-bold text-[#ff5d2e]">Registry</span>
-                  </p>
-                )}
-                <span className="mb-0.5 sm:mb-1 inline-flex items-center text-[10px] sm:text-[11px] font-mono tabular-nums px-1.5 py-0.5 rounded-md border border-dashed border-black/15 dark:border-white/15 text-black/40 dark:text-zinc-500 bg-transparent group-hover:border-[#ff5d2e]/50 group-hover:text-[#ff5d2e] transition-colors duration-150 leading-none shrink-0">
-                  v2026.9
-                </span>
-              </Link>
+              <HeaderBrand />
             </div>
 
             {/* Contribute Action & Theme Toggle */}
@@ -207,7 +92,6 @@ export default function Header() {
               </a>
 
               <AnimatedThemeToggler
-                variant="circle"
                 className="flex items-center justify-center w-7 h-7 rounded-lg border border-black/10 dark:border-white/[0.08] bg-white/60 dark:bg-white/[0.03] text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:border-black/20 dark:hover:border-white/20 hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-95 transition-all duration-150 cursor-pointer shrink-0"
               />
             </div>
@@ -217,55 +101,11 @@ export default function Header() {
         {/* ── Segmented Navigation Line ──────────────────────────────────── */}
         <div className="flex items-center gap-3 sm:gap-4 mb-6 md:mb-8 border-b border-black/5 dark:border-white/[0.07] pb-3 sm:justify-between overflow-visible">
           <TextWithBlur delay={100} className="min-w-0 flex-1 sm:flex-none w-full sm:w-auto max-w-full">
-            <NavLinks pathname={pathname} />
+            <HeaderNav />
           </TextWithBlur>
 
-          <button
-            ref={promptBtnRef}
-            type="button"
-            onClick={handleCopyPrompt}
-            onMouseEnter={showHint}
-            onMouseLeave={hideHint}
-            onFocus={showHint}
-            onBlur={hideHint}
-            className={[
-              "hidden sm:inline-flex items-center gap-1.5 sm:gap-2 py-1.5 px-2.5 sm:px-3 rounded-md text-xs sm:text-[13px] font-sans tracking-tight whitespace-nowrap transition-colors duration-200 select-none cursor-pointer shrink-0",
-              promptCopied
-                ? "bg-emerald-500/10 border border-emerald-500/50 text-emerald-600 dark:text-emerald-400"
-                : "bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/[0.08] text-black/60 dark:text-zinc-300 hover:border-[#ff5d2e]/60 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] active:scale-[0.97]",
-            ].join(" ")}
-          >
-            {promptCopied ? (
-              <Check key="copied" size={13} className="draw-check shrink-0" />
-            ) : (
-              <Sparkles size={13} className="text-[#ff5d2e] shrink-0" />
-            )}
-            <span>{promptCopied ? "Copied" : "Copy Prompt"}</span>
-          </button>
+          <HeaderPrompt />
         </div>
-
-      {/* Viewport-fixed explainer card - zero layout impact, never clipped */}
-      {hintPos && !promptCopied && (
-        <div
-          aria-hidden="true"
-          onMouseEnter={showHint}
-          onMouseLeave={hideHint}
-          className="hidden sm:block fixed z-[60] w-64 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#13161c] px-3.5 py-3 shadow-2xl ring-1 ring-black/5 dark:ring-white/5 animate-in fade-in duration-150"
-          style={{ top: hintPos.top, right: hintPos.right }}
-        >
-          <p className="text-xs font-sans font-semibold text-black dark:text-white">
-            Contribute with AI
-          </p>
-          <p className="mt-1 text-[11px] font-sans leading-relaxed text-black/55 dark:text-zinc-400">
-            One click copies the full agent prompt - paste it into Claude, Cursor, or
-            Codex and it adds the model for you.
-          </p>
-          <span
-            aria-hidden="true"
-            className="absolute -top-[5px] right-8 w-2 h-2 rotate-45 bg-white dark:bg-[#13161c] border-l border-t border-black/10 dark:border-white/10"
-          />
-        </div>
-      )}
       </header>
     </>
   )

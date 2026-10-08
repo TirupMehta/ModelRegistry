@@ -1,0 +1,270 @@
+"use client"
+
+import { useState } from "react"
+import TextWithBlur from "@/components/text-with-blur"
+import ModelDetailsModal from "@/components/model-details-modal"
+import { modelsData, ModelItem } from "@/data/models"
+import { leaderboardSpotlights, leaderboardMethodology } from "@/data/leaderboard"
+import { folioFor } from "@/lib/registry"
+import Link from "next/link"
+import { formatPrice } from "@/lib/utils"
+import { tapFeedback } from "@/lib/feedback"
+import { Code, Brain, Maximize, Coins, Layers, ArrowUpRight } from "lucide-react"
+
+interface ComparisonCategory {
+  title: string
+  icon: any
+  description: string
+  leader: string
+  models: ModelItem[]
+  // Key into leaderboardMethodology for curated sections; omitted for
+  // sections ranked live from current registry figures.
+  methodKey?: "reasoning" | "coding" | "value"
+}
+
+export default function LeaderboardClient() {
+  const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
+  const modalFolio = folioFor(activeModalModel, modelsData)
+
+  // Freshness stamp for the intro copy: month of the newest tracked release.
+  const newestMonth = [...modelsData]
+    .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
+    ?.releaseDate.slice(0, 7)
+  const newestMonthLabel = newestMonth
+    ? new Date(`${newestMonth}-02`).toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      })
+    : ""
+
+  const openModel = (model: ModelItem) => {
+    tapFeedback()
+    setActiveModalModel(model)
+  }
+
+  // Computable leaders stay accurate as registry pricing and context data
+  // change - no hardcoded figures to go stale.
+  const cheapestThree = [...modelsData]
+    .filter((m) => !m.pricingUnit)
+    .sort((a, b) => a.pricing.input - b.pricing.input)
+    .slice(0, 3)
+  const cheapestLeader = cheapestThree
+    .map((m) => `${m.name} ($${m.pricing.input}/M)`)
+    .join(" / ")
+  const contextThree = [...modelsData]
+    .sort((a, b) => b.contextWindowTokens - a.contextWindowTokens)
+    .slice(0, 3)
+  const contextLeader = contextThree
+    .map((m) => `${m.name} (${(m.contextWindowTokens / 1e6).toFixed(2)}M)`)
+    .join(" / ")
+
+  const categories: ComparisonCategory[] = [
+    {
+      title: "Reasoning & STEM Intelligence",
+      icon: Brain,
+      description: "Models with adaptive test-time compute, deep chain-of-thought, and autonomous multi-turn reasoning.",
+      leader: "Claude Fable 5.1 / GPT-6 Astra / Grok 4.6",
+      methodKey: "reasoning",
+      models: modelsData.filter((m) =>
+        leaderboardSpotlights.reasoning.includes(m.id)
+      ),
+    },
+    {
+      title: "Agentic Software Engineering & Coding",
+      icon: Code,
+      description: "Frontier performance on long-horizon code refactoring, Terminal-Bench execution, and tool orchestration.",
+      leader: "Claude Fable 5.1 (Terminal-Bench 52.6%, lab-reported) / Gemini 3.8 Flash",
+      methodKey: "coding",
+      models: modelsData.filter((m) =>
+        leaderboardSpotlights.coding.includes(m.id)
+      ),
+    },
+    {
+      title: "High-Volume Value",
+      icon: Layers,
+      description: "Models developers actually route at massive scale on OpenRouter - observed usage share in production, not benchmark scores.",
+      leader: "DeepSeek V4 Flash 0731 (49.9T tokens/30d observed) / MiMo-V2.5 (leading coding share)",
+      methodKey: "value",
+      models: modelsData.filter((m) =>
+        leaderboardSpotlights.value.includes(m.id)
+      ),
+    },
+    {
+      title: "Open Weights & Self-Hosting",
+      icon: Maximize,
+      description: "Publicly downloadable weights under open and community licenses for enterprise sovereignty and private clusters.",
+      leader: "Qwen3.8 2.4T A95B (2.4T MoE) / Llama 4 Maverick (128E MoE)",
+      models: modelsData.filter((m) => m.openWeights).slice(0, 5),
+    },
+    {
+      title: "Context Window Capacity",
+      icon: Maximize,
+      description: "Maximum tokens accommodated in a single inference session without losing retrieval precision or needle recall.",
+      leader: contextLeader,
+      models: [...modelsData].sort((a, b) => b.contextWindowTokens - a.contextWindowTokens).slice(0, 5),
+    },
+    {
+      title: "Inference Cost & Value",
+      icon: Coins,
+      description: "Lowest input/output pricing per 1M tokens combined with near-frontier intelligence for production applications.",
+      leader: cheapestLeader,
+      models: [...modelsData].filter((m) => !m.pricingUnit).sort((a, b) => a.pricing.input - b.pricing.input).slice(0, 5),
+    },
+  ]
+
+  return (
+    <>
+
+      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+        <div className="space-y-4 text-base md:text-[17px] font-normal text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
+          <TextWithBlur delay={120}>
+            <h1 className="text-2xl sm:text-3xl font-medium tracking-tight text-black dark:text-white">
+              Frontier AI Leaderboard
+            </h1>
+            <p>
+              Editorial snapshots comparing foundation models domain by domain
+              {newestMonthLabel ? `, reviewed ${newestMonthLabel}` : ""}. Leaders hold the
+              highest <em>published</em> score in each comparison - not a universal “best model”
+              title. <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">Methodology</Link>
+            </p>
+          </TextWithBlur>
+        </div>
+
+        {/* Categories Stack with Sibling Dimming */}
+        <div className="flex flex-col list-hover-group space-y-6">
+          {categories.map((category, index) => {
+            const Icon = category.icon
+            const anchorId = category.title
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/(^-|-$)/g, "")
+
+            return (
+              <TextWithBlur key={category.title} delay={index * 35}>
+                <div
+                  id={anchorId}
+                  className="card-lift scroll-mt-24 p-4 sm:p-6 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#111317] shadow-sm [transition:border-color,background-color_120ms_ease-out]"
+                >
+                  {/* Category Header */}
+                  <div className="flex items-start justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded flex items-center justify-center bg-black/5 dark:bg-[#15181e] border border-black/10 dark:border-white/[0.08] text-[#ff5d2e] shrink-0">
+                        <Icon size={16} />
+                      </div>
+                      <div>
+                        <h2 className="text-base sm:text-xl font-medium text-black dark:text-white">
+                          {category.title}
+                        </h2>
+                        <p className="text-xs sm:text-sm font-normal text-black/60 dark:text-zinc-400">
+                          {category.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Leader Banner */}
+                  <div className="mb-4 py-2 px-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/10 dark:border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 text-xs font-sans">
+                    <span className="inline-flex items-center gap-1.5 text-[#ff5d2e] font-semibold uppercase tracking-[0.12em] text-[10px] shrink-0">
+                      <span className="w-1 h-1 rounded-full bg-[#ff5d2e]" />
+                      Comparison leader
+                    </span>
+                    <span className="font-medium tabular-nums text-black/70 dark:text-zinc-200 text-[11px] sm:text-xs break-words sm:text-right">
+                      {category.leader}
+                    </span>
+                  </div>
+
+                  {/* Contenders Table */}
+                  <div className="space-y-2">
+                    {category.models.map((model, mIndex) => (
+                      <div
+                        key={model.id}
+                        onClick={() => openModel(model)}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`View details for ${model.name}`}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault()
+                            openModel(model)
+                          }
+                        }}
+                        className="group cursor-pointer p-2.5 sm:p-3 rounded-xl border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.995] transition-all duration-150 flex items-center justify-between gap-2.5 sm:gap-3 text-xs"
+                      >
+                        <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                          <span className="font-mono text-[11px] text-black/30 dark:text-zinc-600 w-5 shrink-0 tabular-nums transition-colors group-hover:text-[#ff5d2e]">
+                            {String(mIndex + 1).padStart(2, "0")}
+                          </span>
+                          <span className="font-medium text-black dark:text-zinc-100 truncate group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
+                            {model.name}
+                          </span>
+                          <span className="text-black/40 dark:text-zinc-400 font-sans text-[11px] shrink-0 hidden sm:inline">
+                            ({model.companyName})
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-2 sm:gap-3 shrink-0 font-sans">
+                          <span className="text-[11px] text-black/55 dark:text-zinc-400 hidden sm:inline tabular-nums">
+                            {model.contextWindow.replace(" tokens", "")}
+                          </span>
+                          <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] tabular-nums whitespace-nowrap">
+                            {model.pricingUnit
+                              ? formatPrice(model)
+                              : model.pricing.input === 0
+                                ? "Free"
+                                : `$${model.pricing.input}/M`}
+                          </span>
+                          <ArrowUpRight size={12} className="opacity-30 group-hover:opacity-100 group-hover:translate-x-px group-hover:-translate-y-px text-black dark:text-white group-hover:text-[#ff5d2e] transition-all duration-150" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Section methodology + evaluation date */}
+                  <div className="mt-4 pt-3 border-t border-black/5 dark:border-white/[0.06] text-[11px] font-sans text-black/45 dark:text-zinc-500 leading-relaxed">
+                    {category.methodKey && leaderboardMethodology[category.methodKey] ? (
+                      <p>
+                        <span className="font-medium text-black/60 dark:text-zinc-400">How this is judged: </span>
+                        {leaderboardMethodology[category.methodKey].basis}{" "}
+                        <span className="tabular-nums">Reviewed {leaderboardMethodology[category.methodKey].evaluatedAt}.</span>{" "}
+                        {leaderboardMethodology[category.methodKey].sources.map((u) => (
+                          <a key={u} href={u} target="_blank" rel="noopener noreferrer" className="text-[#ff5d2e] hover:underline underline-offset-2 mr-2">
+                            {new URL(u).hostname.replace(/^www\./, "")}
+                          </a>
+                        ))}
+                      </p>
+                    ) : (
+                      <p>
+                        <span className="font-medium text-black/60 dark:text-zinc-400">How this is judged: </span>
+                        Ranked live from current registry figures - no editorial shortlist, no fixed evaluation date.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </TextWithBlur>
+            )
+          })}
+        </div>
+
+        <div className="mt-8 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.6] dark:bg-white/[0.02] p-4 sm:p-5 text-xs sm:text-sm font-sans text-black/60 dark:text-zinc-400 leading-relaxed">
+          <p>
+            This leaderboard is an editorial snapshot, not an objective ranking. Scores are
+            lab-published figures that vendors measure with different harnesses and versions;
+            usage stats reflect observed public routing share. Full rules:{" "}
+            <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">/methodology</Link>
+            {" "}· Record-level sources:{" "}
+            <Link href="/changelog" className="text-[#ff5d2e] hover:underline underline-offset-2">/changelog</Link>
+          </p>
+        </div>
+      </section>
+
+      {/* Model Details Modal */}
+      <ModelDetailsModal
+        model={activeModalModel}
+        onClose={() => setActiveModalModel(null)}
+        folio={modalFolio.folio}
+        folioId={modalFolio.folioId}
+      />
+
+    </>
+  )
+}

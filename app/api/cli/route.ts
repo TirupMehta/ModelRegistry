@@ -45,7 +45,14 @@ export async function GET(req: NextRequest) {
   }
 
   if (!model) {
-    model = modelsData[0]
+    const safeId = modelId.replace(/[\r\n]+/g, " ").slice(0, 80)
+    const msg = `MODEL NOT FOUND: "${safeId}" - see https://modelregistry.tirup.in/api/v1/models for valid ids.\n`
+    return new Response(msg, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "public, max-age=1800, s-maxage=86400, stale-while-revalidate=86400",
+      },
+    })
   }
 
   const company = companies[model.companyId]

@@ -10,27 +10,16 @@ interface ShareCardModalProps {
   model: ModelItem
   isOpen: boolean
   onClose: () => void
+  // Dossier folio, derived server-side (see lib/registry modelFolio) so the
+  // canvas never bundles the dataset for two strings.
+  folio: string
+  folioId: string
 }
 
 type AspectRatio = "story" | "square" | "landscape"
 type ThemeMode = "dark" | "light"
 
-/**
- * Alpha-tinted accent without 8-digit hex.
- * `addColorStop()` THROWS a SyntaxError on colors it cannot parse (older
- * canvas backends), so never concatenate alpha onto the hex string.
- */
-function withAlpha(hex: string, alpha: number): string {
-  const m = /^#([0-9a-fA-F]{6})$/.exec(hex.trim())
-  if (!m) return hex
-  const n = parseInt(m[1], 16)
-  const r = (n >> 16) & 255
-  const g = (n >> 8) & 255
-  const b = n & 255
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`
-}
-
-function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
+function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCardModalProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [ratio, setRatio] = useState<AspectRatio>("square")
 
@@ -47,12 +36,19 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
   const [isZoomed, setIsZoomed] = useState(false)
   const [zoomSrc, setZoomSrc] = useState<string | null>(null)
 
+  // An explicit palette pick always wins over the site theme. The layout
+  // adds/removes a `ptr` class on <html> on every pointerdown/Tab key, so a
+  // naive MutationObserver sync would wipe the user's choice on the very
+  // next click (preview flips back, download/zoom capture the wrong theme).
+  const userPickedTheme = useRef(false)
+
   // Default card palette follows the viewer's site theme (light → Vellum
-  // Archival, dark → Obsidian Noir) and tracks live theme toggles while open.
+  // Archival, dark → Obsidian Noir) until the user picks explicitly.
   // Initial "dark" keeps server/client first render identical (no hydration
   // mismatch); the effect below corrects it on mount before first paint.
   useEffect(() => {
     const syncTheme = () => {
+      if (userPickedTheme.current) return
       setCardTheme(document.documentElement.classList.contains("dark") ? "dark" : "light")
     }
     syncTheme()
@@ -62,7 +58,6 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
   }, [])
 
   const company = companies[model.companyId]
-  const accentColor = company?.accentColor || "#ff5d2e"
 
   // Site type system - must match app/layout.tsx (next/font):
   // Display = Space Grotesk, Body/labels = Plus Jakarta Sans.
@@ -70,13 +65,10 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
   // by ensureCardFonts() (document.fonts.load + fonts.ready).
   const F_DISPLAY = '"Space Grotesk", "Plus Jakarta Sans", sans-serif'
   const F_SANS = '"Plus Jakarta Sans", system-ui, -apple-system, sans-serif'
-  const F_MONO = '"Plus Jakarta Sans", system-ui, -apple-system, sans-serif'
 
-  // next/font serves: Sans 300-700, Display 400-700.
-  // Tracking: card text felt congested - open letter/word spacing a touch.
-  const TRACK_LETTER = "0.02em"
-  const TRACK_WORD = "0.06em"
-  const TRACK_TITLE_LETTER = "-0.01em"
+    // next/font serves: Sans 300-700, Display 400-700.
+    // Tight display tracking for the model name and wordmark.
+    const TRACK_TITLE_LETTER = "-0.01em"
   async function ensureCardFonts() {
     // Older browsers / privacy modes may not expose the FontFaceSet API.
     if (typeof document === "undefined" || !("fonts" in document) || !document.fonts) return
@@ -125,45 +117,76 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
     ctx.imageSmoothingEnabled = true
     ctx.imageSmoothingQuality = "high"
 
+    // Model dossier system. Each ratio is its own art-directed composition
+    // sharing one voice: almost-black paper, warm off-white ink, muted gray
+    // support, a single coral accent. No gradients, glow, glass, shadows,
+    // boxes, pills, or decoration. Type carries the card.
     const isDark = cardTheme === "dark"
-    const bgColor = isDark ? "#07080a" : "#f7f7f4"
-    const cardSurface = isDark ? "#0d0f13" : "#ffffff"
-    const textColor = isDark ? "#f4f5f7" : "#111215"
-    const textMuted = isDark ? "rgba(244, 245, 247, 0.72)" : "rgba(17, 18, 21, 0.74)"
-    const textDim = isDark ? "rgba(244, 245, 247, 0.5)" : "rgba(17, 18, 21, 0.6)"
-    const borderColor = isDark ? "rgba(255, 255, 255, 0.16)" : "rgba(0, 0, 0, 0.15)"
+    const paper = isDark ? "#0C0D10" : "#F7F7F4"
+    const ink = isDark ? "#F5F2EB" : "#141310"
+    const muted = isDark ? "rgba(245, 242, 235, 0.64)" : "rgba(20, 19, 16, 0.64)"
+    const faint = isDark ? "rgba(245, 242, 235, 0.42)" : "rgba(20, 19, 16, 0.44)"
+    const hair = isDark ? "rgba(245, 242, 235, 0.16)" : "rgba(20, 19, 16, 0.16)"
+    const ACCENT = "#FF5D2E"
 
-    // 1. Clear & Background Fill
-    ctx.fillStyle = bgColor
+    // 1. Clear & Background Fill. Flat paper, nothing else.
+    ctx.fillStyle = paper
     ctx.fillRect(0, 0, width, height)
 
-    // 2. Premium print system: accent spine rule, ledger verticals, inset
-    // frame. Flat and architectural - no glows or gradients.
-    ctx.fillStyle = accentColor
-    ctx.fillRect(0, 0, width, 6)
-
-    const ledgerColor = isDark ? "rgba(255, 255, 255, 0.045)" : "rgba(0, 0, 0, 0.045)"
-
-    // Layout Padding
-    const padding = ratio === "landscape" ? 64 : 80
+    // Layout Padding per composition.
+    const padding = ratio === "landscape" ? 60 : ratio === "square" ? 72 : 80
     const contentWidth = width - padding * 2
 
-    ctx.strokeStyle = ledgerColor
-    ctx.lineWidth = 1
-    for (let i = 1; i <= 3; i++) {
-      const lx = padding + (contentWidth / 4) * i
-      ctx.beginPath()
-      ctx.moveTo(lx, 30)
-      ctx.lineTo(lx, height - 30)
-      ctx.stroke()
+    // Dossier record facts. Folio strings arrive via props (derived
+    // server-side); the class line uses only real record fields.
+    const labName = company ? company.name : model.companyName
+    const year = model.releaseDate.slice(0, 4)
+    const classLine = model.isCompanyFlagship
+      ? `${labName} / Flagship / ${year}`
+      : `${labName} / ${year}`
+
+    // The one featured signal: best benchmark by house priority, else a
+    // clean context figure, else the input price. Nothing invented.
+    const benchPretty = (k: string) =>
+      k === "terminalBench" ? "Terminal-Bench"
+      : k === "sweBench" ? "SWE-bench"
+      : k === "mmluPro" ? "MMLU-Pro"
+      : k === "aime2024" ? "AIME 2024"
+      : "GPQA"
+    const benchEntries = Object.entries(model.benchmarks) as [string, string][]
+    const benchPick =
+      ["terminalBench", "sweBench", "mmluPro", "aime2024", "gpqa"]
+        .map((k) => benchEntries.find(([key]) => key === k))
+        .find(Boolean) ?? benchEntries[0]
+    const ctxShort = model.contextWindow.replace(" tokens", "")
+    const ctxClean = !ctxShort.includes("(") && ctxShort.length <= 10
+    const priceFull = model.openWeights ? "Open weights" : formatPrice(model)
+    let sigBig: string
+    let sigSmall: string
+    let sigKind: "bench" | "context" | "price" = "bench"
+    // A benchmark value may carry its variant in parentheses
+    // ("77.9% (DeepSWE v1.1)"). The score leads the evidence unit; the
+    // variant sets as its own quiet metadata line, never beside the
+    // figure at headline scale.
+    const benchValue = benchPick ? String(benchPick[1]) : ""
+    const benchParen = benchValue.match(/^(.*?)\s*\(([^)]+)\)\s*$/)
+    const benchScore = benchParen ? benchParen[1].trim() : benchValue
+    const benchVariant = benchParen ? benchParen[2].trim() : null
+    if (benchPick) {
+      sigBig = benchScore
+      sigSmall = benchPretty(benchPick[0])
+    } else if (ctxClean) {
+      sigBig = ctxShort
+      sigSmall = "context"
+      sigKind = "context"
+    } else {
+      sigBig = `$${model.pricing.input}`
+      sigSmall = "API input"
+      sigKind = "price"
     }
 
-    // Inset hairline frame - the card reads as a printed certificate.
-    ctx.strokeStyle = borderColor
-    ctx.lineWidth = 1.5
-    ctx.strokeRect(22.5, 28.5, width - 45, height - 57)
-
-    // Helper: Rounded Rectangle
+    // Rounded-rect path used only by the brand mark (canvas has no native
+    // roundRect on older backends, and logo geometry needs exact radii).
     function roundRect(
       x: number,
       y: number,
@@ -212,6 +235,97 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
       roundRect(bx + block + gap, by + block + gap, block, block, r, "#ff5d2e")
     }
 
+    // Publication masthead: brand mark plus quiet wordmark left, folio
+    // right, one rule. Returns the rule's y so compositions can hang
+    // content from it. gapBoost opens the wordmark/desc/rule rhythm
+    // without touching callers that pass nothing.
+    function masthead(top: number, wordPx: number, folioPx: number, descPx: number, gapBoost = 0) {
+      const logoSize = Math.round(wordPx * 1.45)
+      const logoGap = Math.round(wordPx * 0.45)
+      drawLogoMark(padding, top - logoSize + Math.round(wordPx * 0.3), logoSize)
+      const wx = padding + logoSize + logoGap
+      setTracking(TRACK_TITLE_LETTER, "0px")
+      ctx!.font = `300 ${wordPx}px ${F_DISPLAY}`
+      ctx!.fillStyle = ink
+      ctx!.fillText("Model", wx, top)
+      const wW = ctx!.measureText("Model").width
+      ctx!.fillStyle = ACCENT
+      ctx!.fillText("Registry", wx + wW, top)
+      setTracking("0px", "0px")
+      ctx!.font = `500 ${folioPx}px ${F_SANS}`
+      ctx!.fillStyle = muted
+      const fw = ctx!.measureText(folio).width
+      ctx!.fillText(folio, width - padding - fw, top)
+      ctx!.font = `500 ${descPx}px ${F_SANS}`
+      ctx!.fillStyle = faint
+      ctx!.fillText("OPEN FRONTIER AI SPECIFICATION", padding, top + descPx + 14 + gapBoost)
+      const ruleY = top + descPx + 30 + gapBoost * 2
+      ctx!.strokeStyle = hair
+      ctx!.lineWidth = 1.5
+      ctx!.beginPath()
+      ctx!.moveTo(padding, ruleY)
+      ctx!.lineTo(width - padding, ruleY)
+      ctx!.stroke()
+      return ruleY
+    }
+
+    // Folio footer: domain left, record id right. Nothing else.
+    function folioFooter() {
+      const fy = height - padding
+      ctx!.strokeStyle = hair
+      ctx!.lineWidth = 1.5
+      ctx!.beginPath()
+      ctx!.moveTo(padding, fy - 44)
+      ctx!.lineTo(width - padding, fy - 44)
+      ctx!.stroke()
+      ctx!.font = `500 22px ${F_SANS}`
+      ctx!.fillStyle = muted
+      ctx!.fillText("modelregistry.tirup.in", padding, fy - 9)
+      const iw = ctx!.measureText(folioId).width
+      ctx!.fillText(folioId, width - padding - iw, fy - 9)
+    }
+
+    // Split the model name across at most two balanced lines.
+    function splitName(name: string, font: string, maxW: number): string[] {
+      ctx!.font = font
+      if (ctx!.measureText(name).width <= maxW) return [name]
+      const words = name.split(" ")
+      if (words.length < 2) return [name]
+      let best = 1
+      let bestScore = Infinity
+      for (let i = 1; i < words.length; i++) {
+        const a = words.slice(0, i).join(" ")
+        const b = words.slice(i).join(" ")
+        const score = Math.max(ctx!.measureText(a).width, ctx!.measureText(b).width)
+        if (score < bestScore) {
+          bestScore = score
+          best = i
+        }
+      }
+      return [words.slice(0, best).join(" "), words.slice(best).join(" ")]
+    }
+
+    // Set the model name large with tight tracking. Returns the bottom y
+    // plus the fitted size so sibling figures can key off the hero.
+    function drawName(basePx: number, minPx: number, x: number, yTop: number, maxW: number, lh: number) {
+      let px = basePx
+      let lines = splitName(model.name, `700 ${px}px ${F_DISPLAY}`, maxW)
+      const widest = () => {
+        ctx!.font = `700 ${px}px ${F_DISPLAY}`
+        return Math.max(...lines.map((l) => ctx!.measureText(l).width))
+      }
+      while (px > minPx && widest() > maxW) {
+        px -= 2
+        lines = splitName(model.name, `700 ${px}px ${F_DISPLAY}`, maxW)
+      }
+      setTracking(TRACK_TITLE_LETTER, "0px")
+      ctx!.font = `700 ${px}px ${F_DISPLAY}`
+      ctx!.fillStyle = ink
+      lines.forEach((l, i) => ctx!.fillText(l, x, yTop + px * 0.8 + i * px * lh))
+      setTracking("0px", "0px")
+      return { bottom: yTop + px * 0.8 + (lines.length - 1) * px * lh, px }
+    }
+
     // Helper: Text Wrapping
     function wrapText(text: string, x: number, y: number, maxWidth: number, lineHeight: number, maxLines = 4) {
       const words = text.split(" ")
@@ -251,14 +365,6 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
       return size
     }
 
-    // Truncate with ellipsis to fit maxWidth (uses currently-set font)
-    function ellipsis(text: string, maxWidth: number) {
-      if (ctx!.measureText(text).width <= maxWidth) return text
-      let t = text
-      while (t.length > 1 && ctx!.measureText(t + "…").width > maxWidth) t = t.slice(0, -1)
-      return t + "…"
-    }
-
     // Letter/word tracking (wordSpacing needs a guarded write for older canvas)
     function setTracking(letter: string, word: string) {
       try {
@@ -270,201 +376,208 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
       }
     }
 
-    setTracking(TRACK_LETTER, TRACK_WORD)
+    // LANDSCAPE 1200x675: two-column editorial. 60% model identity left,
+    // 40% specifications right. The right column centers on the left
+    // block; a 1px hairline floats between them, touching no frame rule.
+    function drawLandscape() {
+      const rule = masthead(112, 30, 22, 19)
+      const footRuleY = height - padding - 44
+      // 60/40 split of the 1080 content width, with a gutter the columns
+      // never enter: identity ends at 708, specifications start at 792.
+      const leftW = 648
+      const divX = 750
+      const rightX = 792
+      const rightW = width - padding - rightX
 
-    let curY = padding
+      // LEFT: provider/category, hero name, short description.
+      const kickSize = fitFont(500, F_SANS, 20, classLine, leftW, 16)
+      ctx!.font = `500 ${kickSize}px ${F_SANS}`
+      ctx!.fillStyle = muted
+      ctx!.fillText(classLine, padding, rule + 76)
+      const { bottom: nameBottom, px: titlePx } = drawName(96, 56, padding, rule + 106, leftW, 1.04)
+      ctx!.font = `400 25px ${F_SANS}`
+      ctx!.fillStyle = muted
+      const descEnd = wrapText(model.highlight, padding, nameBottom + 50, leftW, 36, 2)
+      const leftTop = rule + 60
+      const leftCenter = (leftTop + descEnd) / 2
 
-    // 3. Top Header / Brand mark + wordmark (seated close to the divider)
-    const brandSize = ratio === "landscape" ? 26 : 28
-    const brandBaseline = curY + (ratio === "landscape" ? 32 : 42)
-    const logoSize = ratio === "landscape" ? 38 : 44
-    const logoGap = 14
-    const logoY = brandBaseline - logoSize + 8
-    drawLogoMark(padding, logoY, logoSize)
-    const brandX = padding + logoSize + logoGap
-    ctx.font = `700 ${brandSize}px ${F_DISPLAY}`
-    ctx.fillStyle = textColor
-    ctx.fillText("Model", brandX, brandBaseline)
-    const brandWidth = ctx.measureText("Model").width
-    ctx.fillStyle = "#ff5d2e"
-    ctx.fillText("Registry", brandX + brandWidth, brandBaseline)
+      // RIGHT: benchmark hero at 55% of the fitted title, then the
+      // specification rows. Measured first so the block can center on
+      // the left column instead of hanging from the top.
+      const benchPx = fitFont(700, F_DISPLAY, Math.round(titlePx * 0.55), sigBig, rightW, 32)
+      const rSpecs: string[] = []
+      if (sigKind !== "context") rSpecs.push(`${ctxShort} context`)
+      if (sigKind !== "price") rSpecs.push(priceFull)
+      rSpecs.push(model.license)
+      rSpecs.push(model.modalities.join(" · "))
+      const specLines = rSpecs.slice(0, 4).map((line) => ({
+        line,
+        px: fitFont(500, F_SANS, 22, line, rightW, 16),
+      }))
+      const specsSpan = specLines.reduce((acc, s) => acc + s.px + 14, 0) - 14
+      // Evidence unit: figure, label, optional variant line. Specs start
+      // off the unit's last line so one break separates evidence from data.
+      const unitExtra = benchVariant ? 32 : 0
+      const blockH = benchPx * 0.8 + 40 + unitExtra + 40 + specsSpan + 6
+      let blockTop = leftCenter - blockH / 2
+      if (blockTop < rule + 32) blockTop = rule + 32
+      if (blockTop + blockH > footRuleY - 32) blockTop = footRuleY - 32 - blockH
+      const benchBase = blockTop + benchPx * 0.8
+      ctx!.font = `700 ${benchPx}px ${F_DISPLAY}`
+      ctx!.fillStyle = ink
+      ctx!.fillText(sigBig, rightX, benchBase)
+      ctx!.font = `500 22px ${F_SANS}`
+      ctx!.fillStyle = muted
+      ctx!.fillText(sigSmall, rightX, benchBase + 40)
+      let ry = benchBase + 40 + unitExtra + 40
+      if (benchVariant) {
+        ctx!.font = `500 18px ${F_SANS}`
+        ctx!.fillStyle = faint
+        ctx!.fillText(benchVariant, rightX, benchBase + 40 + 32)
+      }
+      for (const { line, px } of specLines) {
+        ctx!.font = `500 ${px}px ${F_SANS}`
+        ctx!.fillStyle = ink
+        ctx!.fillText(line, rightX, ry)
+        ry += px + 14
+      }
 
-    // Top Sub-tag
-    const tagSize = ratio === "landscape" ? 14 : 15
-    ctx.font = `500 ${tagSize}px ${F_MONO}`
-    ctx.fillStyle = textMuted
-    const tagText = "OPEN FRONTIER AI SPECIFICATION"
-    const tagWidth = ctx.measureText(tagText).width
-    ctx.fillText(tagText, width - padding - tagWidth, brandBaseline - 2)
-
-    curY += ratio === "landscape" ? 54 : 74
-
-    // Hairline Divider
-    ctx.strokeStyle = borderColor
-    ctx.lineWidth = 2
-    ctx.beginPath()
-    ctx.moveTo(padding, curY)
-    ctx.lineTo(width - padding, curY)
-    ctx.stroke()
-
-    curY += ratio === "landscape" ? 38 : 60
-
-    // 4. Laboratory Tag & Status Badge
-    // Lab mark - sharp square, never a glowing dot.
-    ctx.fillStyle = accentColor
-    ctx.fillRect(padding, curY + 1, 12, 12)
-
-    ctx.font = `600 16px ${F_MONO}`
-    ctx.fillStyle = textMuted
-    ctx.fillText(company ? company.name.toUpperCase() : model.companyName.toUpperCase(), padding + 24, curY + 13)
-
-    // Status Pill
-    const badgeText = model.statusBadge
-    ctx.font = `600 12px ${F_MONO}`
-    const badgeMetrics = ctx.measureText(badgeText)
-    const pillW = badgeMetrics.width + 20
-    const pillX = width - padding - pillW
-    roundRect(pillX, curY - 5, pillW, 26, 4, withAlpha(accentColor, 0.09), withAlpha(accentColor, 0.38))
-    ctx.fillStyle = accentColor
-    ctx.fillText(badgeText, pillX + 10, curY + 12)
-
-    curY += ratio === "landscape" ? 44 : 54
-
-    // 5. Model Name (auto-fit: long names shrink instead of overflowing)
-    const titleBase = ratio === "story" ? 76 : ratio === "square" ? 54 : 46
-    const titleSize = fitFont(700, F_DISPLAY, titleBase, model.name, contentWidth)
-    ctx.font = `700 ${titleSize}px ${F_DISPLAY}`
-    ctx.fillStyle = textColor
-    setTracking(TRACK_TITLE_LETTER, TRACK_WORD)
-    ctx.fillText(model.name, padding, curY + titleSize * 0.8)
-    setTracking(TRACK_LETTER, TRACK_WORD)
-
-    curY += titleSize + (ratio === "story" ? 40 : ratio === "square" ? 28 : 18)
-
-    // 6. Highlight / Description
-    const descSize = ratio === "story" ? 26 : ratio === "square" ? 21 : 17
-    ctx.font = `400 ${descSize}px ${F_SANS}`
-    ctx.fillStyle = textMuted
-    curY = wrapText(
-      model.highlight,
-      padding,
-      curY,
-      contentWidth,
-      descSize * 1.5,
-      ratio === "landscape" ? 2 : 4
-    )
-
-    curY += ratio === "story" ? 54 : ratio === "square" ? 36 : 20
-
-    // 7. Hardware Specs Cards Grid
-    const specCols = 3
-    const specGap = ratio === "story" ? 20 : 16
-    const specCardW = (contentWidth - specGap * (specCols - 1)) / specCols
-    const specCardH = ratio === "story" ? 130 : ratio === "square" ? 96 : 78
-
-    const specs = [
-      { label: "CONTEXT WINDOW", value: model.contextWindow.replace(" tokens", "") },
-      { label: "ARCHITECTURE", value: model.parameters },
-      {
-        label: model.pricingUnit ? "OFFICIAL API" : "OFFICIAL API / 1M",
-        value: formatPrice(model),
-      },
-    ]
-
-    specs.forEach((s, idx) => {
-      const sx = padding + idx * (specCardW + specGap)
-      roundRect(sx, curY, specCardW, specCardH, 6, cardSurface, borderColor)
-
-      ctx.font = `600 ${ratio === "story" ? 13 : 11}px ${F_MONO}`
-      ctx.fillStyle = textDim
-      ctx.fillText(s.label, sx + 20, curY + (ratio === "story" ? 36 : 28))
-
-      ctx.font = `700 ${ratio === "story" ? 22 : 16}px ${F_SANS}`
-      ctx.fillStyle = textColor
-      ctx.fillText(ellipsis(s.value, specCardW - 40), sx + 20, curY + (ratio === "story" ? 82 : ratio === "square" ? 64 : 54))
-    })
-
-    curY += specCardH + (ratio === "story" ? 54 : ratio === "square" ? 36 : 20)
-
-    // 8. Verified Benchmarks (if available)
-    const benchmarkKeys = Object.entries(model.benchmarks)
-    if (benchmarkKeys.length > 0 && ratio !== "landscape") {
-      ctx.fillStyle = accentColor
-      ctx.fillRect(padding, curY + 1, 10, 10)
-      ctx.font = `600 ${ratio === "story" ? 15 : 12}px ${F_MONO}`
-      ctx.fillStyle = textDim
-      ctx.fillText("VERIFIED RESEARCH BENCHMARKS", padding + 20, curY + 10)
-      curY += ratio === "story" ? 34 : 24
-
-      const bCols = Math.min(4, benchmarkKeys.length)
-      const bCardW = (contentWidth - specGap * (bCols - 1)) / bCols
-      const bCardH = ratio === "story" ? 110 : 74
-
-      benchmarkKeys.slice(0, 4).forEach(([bKey, bVal], idx) => {
-        const bx = padding + idx * (bCardW + specGap)
-        roundRect(bx, curY, bCardW, bCardH, 4, cardSurface, borderColor)
-
-        const label = bKey === "sweBench" ? "SWE-bench" : bKey === "aime2024" ? "AIME 2024" : bKey === "mmluPro" ? "MMLU-Pro" : bKey === "terminalBench" ? "Terminal-Bench" : "GPQA"
-        ctx.font = `500 ${ratio === "story" ? 13 : 11}px ${F_MONO}`
-        ctx.fillStyle = textDim
-        ctx.fillText(label, bx + 16, curY + (ratio === "story" ? 34 : 24))
-
-        ctx.font = `600 ${ratio === "story" ? 26 : 18}px ${F_MONO}`
-        ctx.fillStyle = textColor
-        ctx.fillText(String(bVal), bx + 16, curY + (ratio === "story" ? 78 : 54))
-      })
-
-      curY += bCardH + (ratio === "story" ? 54 : 36)
+      // Divider spans the union of both columns plus a little air, clamped
+      // off both frame rules so it separates without gridding.
+      const divTop = Math.max(Math.min(leftTop, blockTop) - 12, rule + 24)
+      const divBottom = Math.min(Math.max(descEnd, blockTop + blockH) + 12, footRuleY - 24)
+      ctx!.strokeStyle = hair
+      ctx!.lineWidth = 1
+      ctx!.beginPath()
+      ctx!.moveTo(divX, divTop)
+      ctx!.lineTo(divX, divBottom)
+      ctx!.stroke()
+      folioFooter()
     }
 
-    // 9. Modalities & Architecture Certificate Box (in Story mode)
-    if (ratio === "story") {
-      roundRect(padding, curY, contentWidth, 140, 8, cardSurface, borderColor)
-
-      ctx.font = `600 13px ${F_MONO}`
-      ctx.fillStyle = textDim
-      ctx.fillText("DEPLOYMENT STANDARD", padding + 24, curY + 38)
-      ctx.fillText("LICENSING & WEIGHTS", padding + contentWidth / 2 + 12, curY + 38)
-
-      const halfW = contentWidth / 2 - 48
-      ctx.font = `700 18px ${F_SANS}`
-      ctx.fillStyle = textColor
-      ctx.fillText(ellipsis(model.modalities.join(" • "), halfW), padding + 24, curY + 80)
-      ctx.fillText(ellipsis(model.license, halfW), padding + contentWidth / 2 + 12, curY + 80)
-
-      ctx.font = `500 12px ${F_MONO}`
-      ctx.fillStyle = accentColor
-      ctx.fillText(`Category: ${model.categoryLabel.toUpperCase()}`, padding + 24, curY + 112)
+    // SQUARE 1080x1080: vertical dossier. Masthead, provider, name,
+    // one standout figure, compact strip, folio.
+    function drawSquare() {
+      const rule = masthead(140, 30, 22, 19)
+      const kickSize = fitFont(500, F_SANS, 20, classLine, contentWidth, 16)
+      ctx!.font = `500 ${kickSize}px ${F_SANS}`
+      ctx!.fillStyle = muted
+      // The identity block sits slightly high; everything below anchors to
+      // its unshifted position so no other element moves.
+      const shiftUp = 20
+      ctx!.fillText(classLine, padding, rule + 106 - shiftUp)
+      const { bottom: shiftedBottom, px: titlePx } = drawName(124, 64, padding, rule + 141 - shiftUp, contentWidth, 1.04)
+      const nameBottom = shiftedBottom + shiftUp
+      // Evidence figure at 55% of the fitted hero: supporting evidence,
+      // never a second headline.
+      const sigPx = fitFont(700, F_DISPLAY, Math.round(titlePx * 0.55), sigBig, contentWidth, 40)
+      ctx!.font = `700 ${sigPx}px ${F_DISPLAY}`
+      ctx!.fillStyle = ink
+      // Cap-top gap holds at 36 whatever the fitted figure size is.
+      const sigY = nameBottom + Math.round(sigPx * 0.8) + 36
+      ctx!.fillText(sigBig, padding, sigY)
+      ctx!.font = `500 28px ${F_SANS}`
+      ctx!.fillStyle = muted
+      ctx!.fillText(sigSmall, padding, sigY + 44)
+      let unitBottom = sigY + 44
+      if (benchVariant) {
+        ctx!.font = `500 24px ${F_SANS}`
+        ctx!.fillStyle = faint
+        ctx!.fillText(benchVariant, padding, sigY + 44 + 32)
+        unitBottom = sigY + 44 + 32
+      }
+      const specBits: string[] = []
+      if (sigKind !== "context") specBits.push(`${ctxShort} context`)
+      if (sigKind !== "price") specBits.push(priceFull)
+      specBits.push(model.license)
+      const specLine = specBits.join("  ·  ")
+      const modeLine = model.modalities.join("  ·  ")
+      const s1 = fitFont(600, F_SANS, 28, specLine, contentWidth, 18)
+      ctx!.font = `600 ${s1}px ${F_SANS}`
+      ctx!.fillStyle = ink
+      const stripY = unitBottom + 60
+      ctx!.fillText(specLine, padding, stripY)
+      const s2 = fitFont(500, F_SANS, 28, modeLine, contentWidth, 18)
+      ctx!.font = `500 ${s2}px ${F_SANS}`
+      ctx!.fillStyle = muted
+      ctx!.fillText(modeLine, padding, stripY + s1 + 12)
+      folioFooter()
     }
 
-    // 9. Bottom Footer / Watermark Verification (lifted, slightly larger)
-    const footerY = height - padding
-    ctx.strokeStyle = borderColor
-    ctx.lineWidth = 2
-    ctx.beginPath()
-    ctx.moveTo(padding, footerY - 44)
-    ctx.lineTo(width - padding, footerY - 44)
-    ctx.stroke()
+    // PORTRAIT 1080x1920: magazine cover. Big identity up top with air
+    // around it, structured specification in the lower third.
+    function drawStory() {
+      const rule = masthead(150, 34, 24, 20, 8)
+      // The whole content group sits slightly high; everything below the
+      // name derives from nameBottom, so internal spacing is untouched.
+      const liftGroup = 56
+      const kickSize = fitFont(500, F_SANS, 20, classLine, contentWidth, 16)
+      ctx!.font = `500 ${kickSize}px ${F_SANS}`
+      ctx!.fillStyle = muted
+      ctx!.fillText(classLine, padding, rule + 132 - liftGroup)
+      const { bottom: nameBottom, px: titlePx } = drawName(150, 72, padding, rule + 176 - liftGroup, contentWidth, 1.04)
+      // Evidence figure at 55% of the fitted hero: supporting evidence,
+      // never a second headline.
+      const sigPx = fitFont(700, F_DISPLAY, Math.round(titlePx * 0.55), sigBig, contentWidth, 40)
+      ctx!.font = `700 ${sigPx}px ${F_DISPLAY}`
+      ctx!.fillStyle = ink
+      // Cap-top gap holds at 64 whatever the fitted figure size is, so the
+      // benchmark reads as its own piece of information, never as a
+      // second line of the title.
+      // Description follows the title directly; the evidence unit sits
+      // below the description so the title owns the top of the card.
+      ctx!.font = `400 28px ${F_SANS}`
+      ctx!.fillStyle = muted
+      const descEnd = wrapText(model.highlight, padding, nameBottom + 64, contentWidth, 40, 3)
+      const sigY = descEnd + 48 + Math.round(sigPx * 0.8)
+      ctx!.font = `700 ${sigPx}px ${F_DISPLAY}`
+      ctx!.fillStyle = ink
+      ctx!.fillText(sigBig, padding, sigY)
+      ctx!.font = `500 28px ${F_SANS}`
+      ctx!.fillStyle = muted
+      ctx!.fillText(sigSmall, padding, sigY + 40)
+      let unitBottom = sigY + 40
+      if (benchVariant) {
+        ctx!.font = `500 24px ${F_SANS}`
+        ctx!.fillStyle = faint
+        ctx!.fillText(benchVariant, padding, sigY + 40 + 34)
+        unitBottom = sigY + 40 + 34
+      }
+      const rows: [string, string][] = [
+        ["CONTEXT", ctxShort],
+        model.openWeights ? ["WEIGHTS", "Open weights"] : ["API", priceFull],
+        ["LICENSE", model.license],
+        benchPick
+          ? ["BENCHMARK", `${benchPretty(benchPick[0])} ${benchScore}`]
+          : ["STATUS", model.statusBadge],
+      ]
+      let ry = unitBottom + 64
+      for (const [label, value] of rows) {
+        ctx!.font = `500 22px ${F_SANS}`
+        ctx!.fillStyle = faint
+        ctx!.fillText(label, padding, ry + 28)
+        const labelW = ctx!.measureText(label).width
+        const vSize = fitFont(600, F_SANS, 30, value, contentWidth - labelW - 40, 20)
+        ctx!.font = `600 ${vSize}px ${F_SANS}`
+        ctx!.fillStyle = ink
+        const vw = ctx!.measureText(value).width
+        ctx!.fillText(value, width - padding - vw, ry + 30)
+        ry += 66
+      }
+      folioFooter()
+    }
 
-    // Verified Stamp (darker green on light cards for contrast)
-    ctx.font = `600 15px ${F_MONO}`
-    ctx.fillStyle = isDark ? "#00e599" : "#00885c"
-    ctx.fillRect(padding, footerY - 21, 12, 12)
-    ctx.fillText("VERIFIED SOTA RECORD", padding + 20, footerY - 9)
-
-    // Official Registry URL
-    const urlText = `modelregistry.tirup.in/?model=${model.id}`
-    ctx.font = `500 15px ${F_MONO}`
-    ctx.fillStyle = textDim
-    const urlW = ctx.measureText(urlText).width
-    ctx.fillText(urlText, width - padding - urlW, footerY - 9)
+    // Dispatch to the art-directed composition for this format.
+    if (ratio === "landscape") drawLandscape()
+    else if (ratio === "square") drawSquare()
+    else drawStory()
     } catch {
       // Never let a canvas failure crash the page - surface a fallback instead.
       setRenderError("Preview failed to render on this device - export actions below remain available.")
     } finally {
       setIsRendering(false)
     }
-  }, [model, ratio, cardTheme, company, accentColor])
+  }, [model, ratio, cardTheme, company, folio, folioId])
 
   useEffect(() => {
     if (!isOpen) return
@@ -769,7 +882,10 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
               </label>
               <div className="grid grid-cols-2 gap-2">
                 <button
-                  onClick={() => setCardTheme("dark")}
+                  onClick={() => {
+                    userPickedTheme.current = true
+                    setCardTheme("dark")
+                  }}
                   className={`p-2.5 rounded-md border text-xs font-sans flex items-center justify-between cursor-pointer transition-colors ${
                     cardTheme === "dark"
                       ? "border-[#ff5d2e] bg-black/5 dark:bg-white/[0.06] text-black dark:text-white font-medium"
@@ -780,7 +896,10 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
                   <span className="w-3.5 h-3.5 rounded-full bg-[#07080a] border border-white/20 shrink-0" />
                 </button>
                 <button
-                  onClick={() => setCardTheme("light")}
+                  onClick={() => {
+                    userPickedTheme.current = true
+                    setCardTheme("light")
+                  }}
                   className={`p-2.5 rounded-md border text-xs font-sans flex items-center justify-between cursor-pointer transition-colors ${
                     cardTheme === "light"
                       ? "border-[#ff5d2e] bg-black/5 dark:bg-white/[0.06] text-black dark:text-white font-medium"

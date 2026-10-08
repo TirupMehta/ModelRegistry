@@ -75,3 +75,42 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
+
+  routes:
+    name: Live route contracts
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      # Self-contained: rebuilds here instead of sharing artifacts so this
+      # job tests exactly what it serves, with no cross-job plumbing.
+      - run: pnpm run build
+
+      - name: Start production server
+        run: |
+          pnpm exec next start -p 3100 > /tmp/next-start.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:3100/api/check-updates > /dev/null; then
+              echo "production server is up"
+              break
+            fi
+            sleep 2
+          done
+          curl -sf http://localhost:3100/api/check-updates > /dev/null || (tail -n 50 /tmp/next-start.log; exit 1)
+
+      # Route assertions derive from the live dataset (see EXPECTED in
+      # scripts/test-routes.js) - pages, API shapes, badge XSS guard,
+      # OG PNG bytes, and payload budget, all against real rendering.
+      - name: Run live route contract tests
+        run: BASE_URL=http://localhost:3100 pnpm test:routes

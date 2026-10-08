@@ -28,7 +28,36 @@ export async function GET(req: NextRequest) {
   }
 
   if (!model) {
-    model = modelsData[0]
+    const leftText = "MODELREGISTRY"
+    const rightText = "MODEL NOT FOUND"
+    const leftWidth = Math.max(70, leftText.length * 6.8 + 18)
+    const rightWidth = Math.max(60, rightText.length * 7.2 + 20)
+    const totalWidth = Math.round(leftWidth + rightWidth)
+
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="22" viewBox="0 0 ${totalWidth} 22" role="img" aria-label="${escapeXml(leftText)}: ${escapeXml(rightText)}">
+  <title>${escapeXml(leftText)}: ${escapeXml(rightText)}</title>
+  <clipPath id="badge-clip">
+    <rect width="${totalWidth}" height="22" rx="4" fill="#fff"/>
+  </clipPath>
+  <g clip-path="url(#badge-clip)">
+    <rect width="${leftWidth}" height="22" fill="#0d0f13"/>
+    <rect x="${leftWidth}" width="${rightWidth}" height="22" fill="#6b7280"/>
+    <rect width="${totalWidth}" height="22" rx="4" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="10" font-weight="600" letter-spacing="0.4px">
+    <text x="${Math.round(leftWidth / 2)}" y="15" fill="#000" opacity="0.4">${escapeXml(leftText)}</text>
+    <text x="${Math.round(leftWidth / 2)}" y="14" fill="#f4f5f7">${escapeXml(leftText)}</text>
+    <text x="${Math.round(leftWidth + rightWidth / 2)}" y="15" fill="#000" opacity="0.3">${escapeXml(rightText)}</text>
+    <text x="${Math.round(leftWidth + rightWidth / 2)}" y="14" fill="#ffffff">${escapeXml(rightText)}</text>
+  </g>
+</svg>`
+
+    return new Response(svg, {
+      headers: {
+        "Content-Type": "image/svg+xml; charset=utf-8",
+        "Cache-Control": "public, max-age=1800, s-maxage=86400, stale-while-revalidate=86400",
+      },
+    })
   }
 
   const company = companies[model.companyId]
