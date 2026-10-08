@@ -4,6 +4,63 @@ import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { formatPrice } from "@/lib/utils"
 
+// Editorial datasheet system shared with app/opengraph-image.tsx:
+// warm near-black paper, one accent, hairline ledger rules.
+// No glows, no pills, no gradients.
+const INK = "#0b0c0f"
+const PAPER = "#ffffff"
+const MUTED = "rgba(255, 255, 255, 0.6)"
+const FAINT = "rgba(255, 255, 255, 0.38)"
+const HAIRLINE = "rgba(255, 255, 255, 0.12)"
+const SANS = "system-ui, -apple-system, 'Segoe UI', sans-serif"
+
+function LogoMark({ size: s }: { size: number }) {
+  const block = Math.round(s * 0.27)
+  return (
+    <div
+      style={{
+        display: "flex",
+        width: `${s}px`,
+        height: `${s}px`,
+        borderRadius: `${Math.round(s * 0.24)}px`,
+        backgroundColor: "#090a0d",
+        border: "1px solid rgba(255, 255, 255, 0.16)",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+        <div style={{ display: "flex", gap: "2px" }}>
+          <div style={{ display: "flex", width: `${block}px`, height: `${block}px`, borderRadius: "3px", backgroundColor: PAPER }} />
+          <div style={{ display: "flex", width: `${block}px`, height: `${block}px`, borderRadius: "3px", backgroundColor: "rgba(255, 255, 255, 0.45)" }} />
+        </div>
+        <div style={{ display: "flex", gap: "2px" }}>
+          <div style={{ display: "flex", width: `${block}px`, height: `${block}px`, borderRadius: "3px", backgroundColor: "rgba(255, 255, 255, 0.45)" }} />
+          <div style={{ display: "flex", width: `${block}px`, height: `${block}px`, borderRadius: "3px", backgroundColor: "#ff5d2e" }} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Spec({ index, label, value }: { index: string; label: string; value: string }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", color: "#ff5d2e" }}>
+          {index}
+        </span>
+        <span style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.18em", color: FAINT }}>
+          {label}
+        </span>
+      </div>
+      <span style={{ fontSize: "19px", fontWeight: 600, letterSpacing: "-0.01em", color: PAPER }}>
+        {value}
+      </span>
+    </div>
+  )
+}
+
 
 export async function GET(req: NextRequest) {
   try {
@@ -27,6 +84,7 @@ export async function GET(req: NextRequest) {
 
     const title = model ? model.name : lab ? lab.name : "ModelRegistry"
     const labName = model && modelCompany ? modelCompany.name : lab ? "LABORATORY PROFILE" : "Open Frontier AI Index"
+    const docType = lab ? "Laboratory Profile" : "Frontier AI Spec"
     const highlight = model
       ? model.highlight
       : lab
@@ -45,6 +103,10 @@ export async function GET(req: NextRequest) {
           ? "SOURCE-LINKED RECORD"
           : model.verificationStatus.toUpperCase().replace(/_/g, " ") + " RECORD"
       : "SOURCE-LINKED INDEX"
+    const recordColor =
+      model && model.verificationStatus !== "verified" && model.verificationStatus !== "partially_verified"
+        ? "#f5a623"
+        : "#00e599"
 
     return new ImageResponse(
       (
@@ -55,143 +117,144 @@ export async function GET(req: NextRequest) {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            backgroundColor: "#07080a",
-            color: "#f4f5f7",
-            padding: "60px 70px",
-            fontFamily: "sans-serif",
+            backgroundColor: INK,
+            color: PAPER,
+            padding: "46px 72px 38px",
+            fontFamily: SANS,
             position: "relative",
+            overflow: "hidden",
           }}
         >
-          {/* Background Ambient Glow */}
+          {/* Accent spine rule - follows the record's lab color */}
           <div
             style={{
               position: "absolute",
-              top: "-150px",
-              left: "40%",
-              width: "500px",
-              height: "500px",
-              borderRadius: "50%",
+              top: "0",
+              left: "0",
+              width: "100%",
+              height: "4px",
+              display: "flex",
               backgroundColor: accentColor,
-              opacity: 0.12,
-              filter: "blur(90px)",
             }}
           />
-
-          {/* Top Header */}
+          {/* Ledger rules */}
           <div
             style={{
+              position: "absolute",
+              top: "0",
+              left: "72px",
+              right: "72px",
+              height: "100%",
               display: "flex",
-              alignItems: "center",
+              flexDirection: "row",
               justifyContent: "space-between",
-              borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-              paddingBottom: "24px",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-              {/* Brand logo mark - blocks grid, one flagship lit coral */}
+            {[0, 1, 2, 3, 4, 5].map((i) => (
               <div
-                style={{
-                  display: "flex",
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: "11px",
-                  backgroundColor: "#090a0d",
-                  border: "1px solid rgba(255, 255, 255, 0.14)",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                  <div style={{ display: "flex", gap: "2px" }}>
-                    <div style={{ display: "flex", width: "12px", height: "12px", borderRadius: "3px", backgroundColor: "#ffffff" }} />
-                    <div style={{ display: "flex", width: "12px", height: "12px", borderRadius: "3px", backgroundColor: "rgba(255, 255, 255, 0.45)" }} />
-                  </div>
-                  <div style={{ display: "flex", gap: "2px" }}>
-                    <div style={{ display: "flex", width: "12px", height: "12px", borderRadius: "3px", backgroundColor: "rgba(255, 255, 255, 0.45)" }} />
-                    <div style={{ display: "flex", width: "12px", height: "12px", borderRadius: "3px", backgroundColor: "#ff5d2e" }} />
-                  </div>
-                </div>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  fontSize: "24px",
-                  fontWeight: 300,
-                  letterSpacing: "-0.03em",
-                }}
-              >
-                <span>Model</span>
-                <span style={{ color: "#ff5d2e", fontWeight: 700 }}>Registry</span>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  fontSize: "12px",
-                  fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-                  padding: "4px 8px",
-                  borderRadius: "4px",
-                  border: "1px solid rgba(255, 255, 255, 0.15)",
-                  color: "rgba(255, 255, 255, 0.6)",
-                }}
-              >
-                {lab ? "LABORATORY PROFILE" : "FRONTIER AI SPEC"}
-              </div>
-            </div>
+                key={i}
+                style={{ display: "flex", width: "1px", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.035)" }}
+              />
+            ))}
+          </div>
 
+          {/* Masthead */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "8px",
-                fontSize: "13px",
-                fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-                color: "#00e599",
+                justifyContent: "space-between",
               }}
             >
+              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                <LogoMark size={44} />
+                <div
+                  style={{
+                    display: "flex",
+                    fontSize: "23px",
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  <span style={{ fontWeight: 300 }}>Model</span>
+                  <span style={{ color: "#ff5d2e", fontWeight: 700 }}>Registry</span>
+                </div>
+                <span style={{ fontSize: "13px", letterSpacing: "0.2em", color: FAINT }}>
+                  /
+                </span>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.22em",
+                    color: MUTED,
+                  }}
+                >
+                  {docType}
+                </span>
+              </div>
+
               <div
                 style={{
                   display: "flex",
-                  width: "8px",
-                  height: "8px",
-                  borderRadius: "50%",
-                  backgroundColor: "#00e599",
+                  alignItems: "center",
+                  gap: "10px",
                 }}
-              />
-              <span>{recordState}</span>
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    width: "8px",
+                    height: "8px",
+                    backgroundColor: recordColor,
+                  }}
+                />
+                <span
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.2em",
+                    color: MUTED,
+                  }}
+                >
+                  {recordState}
+                </span>
+              </div>
             </div>
+            <div style={{ display: "flex", height: "1px", backgroundColor: HAIRLINE }} />
           </div>
 
-          {/* Main Body */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginTop: "20px" }}>
+          {/* Record body */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
               <div
                 style={{
                   display: "flex",
-                  width: "12px",
-                  height: "12px",
-                  borderRadius: "3px",
+                  width: "10px",
+                  height: "10px",
                   backgroundColor: accentColor,
                 }}
               />
               <span
                 style={{
-                  fontSize: "16px",
-                  fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
+                  fontSize: "14px",
+                  fontWeight: 600,
                   textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  color: "rgba(255, 255, 255, 0.6)",
+                  letterSpacing: "0.24em",
+                  color: MUTED,
                 }}
               >
                 {labName}
               </span>
-              <span style={{ color: "rgba(255, 255, 255, 0.2)" }}>/</span>
+              <span style={{ fontSize: "13px", letterSpacing: "0.2em", color: FAINT }}>/</span>
               <span
                 style={{
                   fontSize: "12px",
-                  fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-                  padding: "3px 8px",
-                  borderRadius: "4px",
-                  border: `1px solid ${accentColor}60`,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.2em",
                   color: accentColor,
                 }}
               >
@@ -202,10 +265,10 @@ export async function GET(req: NextRequest) {
             <div
               style={{
                 display: "flex",
-                fontSize: "56px",
+                fontSize: "58px",
                 fontWeight: 700,
-                letterSpacing: "-0.04em",
-                lineHeight: 1.1,
+                letterSpacing: "-0.035em",
+                lineHeight: 1.04,
               }}
             >
               {title}
@@ -215,70 +278,54 @@ export async function GET(req: NextRequest) {
               style={{
                 display: "flex",
                 fontSize: "20px",
-                color: "rgba(255, 255, 255, 0.65)",
-                lineHeight: 1.4,
-                maxWidth: "950px",
+                fontWeight: 400,
+                color: MUTED,
+                lineHeight: 1.45,
+                maxWidth: "940px",
               }}
             >
               {highlight}
             </div>
           </div>
 
-          {/* Footer Specs Row */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              borderTop: "1px solid rgba(255, 255, 255, 0.1)",
-              paddingTop: "24px",
-            }}
-          >
-            <div style={{ display: "flex", gap: "32px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
-                  {lab ? "FLAGSHIP" : "CONTEXT WINDOW"}
-                </span>
-                <span style={{ fontSize: "18px", fontWeight: 600 }}>{context}</span>
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
-                  {lab ? "LATEST RELEASE" : "ARCHITECTURE"}
-                </span>
-                <span style={{ fontSize: "18px", fontWeight: 600 }}>{architecture}</span>
-              </div>
-
-              {model ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                  <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
-                    {model.pricingUnit ? "OFFICIAL API" : "PRICING / 1M"}
-                  </span>
-                  <span style={{ fontSize: "18px", fontWeight: 600 }}>
-                    {model.openWeights ? "Open Weights (Free)" : formatPrice(model)}
-                  </span>
-                </div>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                  <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
-                    {lab ? "HEADQUARTERS" : "COVERAGE"}
-                  </span>
-                  <span style={{ fontSize: "18px", fontWeight: 600 }}>
-                    {lab ? lab.headquarters : `${Object.keys(companies).length} Laboratories`}
-                  </span>
-                </div>
-              )}
-            </div>
-
+          {/* Ledger footer */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div style={{ display: "flex", height: "1px", backgroundColor: HAIRLINE }} />
             <div
               style={{
                 display: "flex",
-                fontSize: "14px",
-                fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-                color: "rgba(255, 255, 255, 0.4)",
+                alignItems: "flex-end",
+                justifyContent: "space-between",
               }}
             >
-              modelregistry.tirup.in
+              <div style={{ display: "flex", gap: "48px" }}>
+                <Spec index="01" label={lab ? "FLAGSHIP" : "CONTEXT WINDOW"} value={context} />
+                <Spec index="02" label={lab ? "LATEST RELEASE" : "ARCHITECTURE"} value={architecture} />
+                {model ? (
+                  <Spec
+                    index="03"
+                    label={model.pricingUnit ? "OFFICIAL API" : "PRICING / 1M"}
+                    value={model.openWeights ? "Open Weights (Free)" : formatPrice(model)}
+                  />
+                ) : (
+                  <Spec
+                    index="03"
+                    label={lab ? "HEADQUARTERS" : "COVERAGE"}
+                    value={lab ? lab.headquarters : `${Object.keys(companies).length} Laboratories`}
+                  />
+                )}
+              </div>
+
+              <span
+                style={{
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  letterSpacing: "0.04em",
+                  color: FAINT,
+                }}
+              >
+                modelregistry.tirup.in
+              </span>
             </div>
           </div>
         </div>

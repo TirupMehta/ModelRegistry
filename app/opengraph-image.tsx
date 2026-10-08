@@ -9,17 +9,75 @@ export const size = {
 }
 export const contentType = "image/png"
 
+// Editorial datasheet system: warm near-black paper, one coral accent,
+// hairline ledger rules. No glows, no pills, no gradients.
+const INK = "#0b0c0f"
+const PAPER = "#ffffff"
+const MUTED = "rgba(255, 255, 255, 0.6)"
+const FAINT = "rgba(255, 255, 255, 0.38)"
+const HAIRLINE = "rgba(255, 255, 255, 0.12)"
+const ACCENT = "#ff5d2e"
+const SANS = "system-ui, -apple-system, 'Segoe UI', sans-serif"
+
+function LogoMark({ size: s }: { size: number }) {
+  const block = Math.round(s * 0.27)
+  return (
+    <div
+      style={{
+        width: `${s}px`,
+        height: `${s}px`,
+        borderRadius: `${Math.round(s * 0.24)}px`,
+        backgroundColor: "#090a0d",
+        border: "1px solid rgba(255, 255, 255, 0.16)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+        <div style={{ display: "flex", gap: "2px" }}>
+          <div style={{ width: `${block}px`, height: `${block}px`, borderRadius: "3px", backgroundColor: PAPER }} />
+          <div style={{ width: `${block}px`, height: `${block}px`, borderRadius: "3px", backgroundColor: "rgba(255, 255, 255, 0.45)" }} />
+        </div>
+        <div style={{ display: "flex", gap: "2px" }}>
+          <div style={{ width: `${block}px`, height: `${block}px`, borderRadius: "3px", backgroundColor: "rgba(255, 255, 255, 0.45)" }} />
+          <div style={{ width: `${block}px`, height: `${block}px`, borderRadius: "3px", backgroundColor: ACCENT }} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Stat({ index, label, value }: { index: string; label: string; value: string }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", color: ACCENT }}>
+          {index}
+        </span>
+        <span style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.18em", color: FAINT }}>
+          {label}
+        </span>
+      </div>
+      <span style={{ fontSize: "23px", fontWeight: 600, letterSpacing: "-0.01em", color: PAPER }}>
+        {value}
+      </span>
+    </div>
+  )
+}
+
 export default async function Image() {
   const flagships = modelsData.filter((m) => m.isCompanyFlagship)
   const peakContext = modelsData.reduce((max, m) => Math.max(max, m.contextWindowTokens), 0)
-  const peakContextLabel = peakContext > 0 ? `${peakContext.toLocaleString("en-US")} Tokens` : "-"
+  const peakContextLabel = peakContext > 0 ? `${peakContext.toLocaleString("en-US")} TOKENS` : "-"
   // Content-based month of the newest tracked release - never hard-coded.
   const newestRelease = [...modelsData].sort((a, b) =>
     b.releaseDate.localeCompare(a.releaseDate)
   )[0]
   const radarLabel = newestRelease
-    ? `Frontier Radar • ${new Date(`${newestRelease.releaseDate.slice(0, 7)}-02`).toLocaleDateString("en-US", { month: "long", year: "numeric" })}`
+    ? `Frontier Radar — ${new Date(`${newestRelease.releaseDate.slice(0, 7)}-02`).toLocaleDateString("en-US", { month: "long", year: "numeric" })}`
     : "Frontier Radar"
+  const eyebrow = `${modelsData.length} Records · ${flagships.length} Frontier Labs · Updated ${newestRelease ? new Date(`${newestRelease.releaseDate.slice(0, 7)}-02`).toLocaleDateString("en-US", { month: "long", year: "numeric" }) : "Live"}`
   return new ImageResponse(
     (
       <div
@@ -29,143 +87,128 @@ export default async function Image() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          backgroundColor: "#090a0d",
-          color: "#ffffff",
-          padding: "60px 80px",
-          fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
-          border: "1px solid rgba(255, 255, 255, 0.08)",
+          backgroundColor: INK,
+          color: PAPER,
+          padding: "46px 72px 38px",
+          fontFamily: SANS,
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        {/* Top Tag & Status */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-            {/* Brand logo mark - blocks grid, one flagship lit coral */}
+        {/* Coral spine rule */}
+        <div
+          style={{
+            position: "absolute",
+            top: "0",
+            left: "0",
+            width: "100%",
+            height: "4px",
+            display: "flex",
+            backgroundColor: ACCENT,
+          }}
+        />
+        {/* Ledger rules */}
+        <div
+          style={{
+            position: "absolute",
+            top: "0",
+            left: "72px",
+            right: "72px",
+            height: "100%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          {[0, 1, 2, 3, 4, 5].map((i) => (
             <div
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "10px",
-                backgroundColor: "#090a0d",
-                border: "1px solid rgba(255, 255, 255, 0.14)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                <div style={{ display: "flex", gap: "2px" }}>
-                  <div style={{ width: "11px", height: "11px", borderRadius: "3px", backgroundColor: "#ffffff" }} />
-                  <div style={{ width: "11px", height: "11px", borderRadius: "3px", backgroundColor: "rgba(255, 255, 255, 0.45)" }} />
-                </div>
-                <div style={{ display: "flex", gap: "2px" }}>
-                  <div style={{ width: "11px", height: "11px", borderRadius: "3px", backgroundColor: "rgba(255, 255, 255, 0.45)" }} />
-                  <div style={{ width: "11px", height: "11px", borderRadius: "3px", backgroundColor: "#ff5d2e" }} />
-                </div>
-              </div>
-            </div>
-            <span
-              style={{
-                fontSize: "18px",
-                fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-                textTransform: "uppercase",
-                letterSpacing: "0.2em",
-                color: "#818cf8",
-                fontWeight: 600,
-              }}
-            >
-              ModelRegistry
-            </span>
-          </div>
-
-          <div
-            style={{
-              padding: "6px 16px",
-              borderRadius: "9999px",
-              backgroundColor: "rgba(255, 255, 255, 0.05)",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              fontSize: "14px",
-              fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-              color: "rgba(255, 255, 255, 0.6)",
-            }}
-          >
-            {radarLabel}
-          </div>
+              key={i}
+              style={{ display: "flex", width: "1px", height: "100%", backgroundColor: "rgba(255, 255, 255, 0.035)" }}
+            />
+          ))}
         </div>
 
-        {/* Center Title & Value Proposition */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <h1
+        {/* Masthead */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <LogoMark size={44} />
+              <div style={{ display: "flex", fontSize: "24px", letterSpacing: "-0.02em" }}>
+                <span style={{ fontWeight: 300 }}>Model</span>
+                <span style={{ color: ACCENT, fontWeight: 700 }}>Registry</span>
+              </div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div style={{ display: "flex", width: "8px", height: "8px", backgroundColor: ACCENT }} />
+              <span
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.22em",
+                  color: MUTED,
+                }}
+              >
+                {radarLabel}
+              </span>
+            </div>
+          </div>
+          <div style={{ display: "flex", height: "1px", backgroundColor: HAIRLINE }} />
+        </div>
+
+        {/* Headline block */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+          <span
             style={{
-              fontSize: "64px",
-              fontWeight: 300,
-              letterSpacing: "-0.03em",
-              margin: 0,
-              lineHeight: 1.1,
-              color: "#ffffff",
+              fontSize: "14px",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.3em",
+              color: ACCENT,
+            }}
+          >
+            {eyebrow}
+          </span>
+          <div
+            style={{
+              display: "flex",
+              fontSize: "66px",
+              fontWeight: 700,
+              letterSpacing: "-0.035em",
+              lineHeight: 1.02,
+              color: PAPER,
             }}
           >
             The Open Frontier AI Model Registry.
-          </h1>
-          <p
+          </div>
+          <div
             style={{
-              fontSize: "24px",
-              fontWeight: 300,
-              color: "rgba(255, 255, 255, 0.65)",
-              margin: 0,
-              lineHeight: 1.4,
-              maxWidth: "900px",
+              display: "flex",
+              fontSize: "21px",
+              fontWeight: 400,
+              color: MUTED,
+              lineHeight: 1.45,
+              maxWidth: "880px",
             }}
           >
-            Tracking primary foundation flagships and research checkpoints across OpenAI, Anthropic, Google DeepMind, DeepSeek, Meta, and xAI.
-          </p>
+            Primary foundation flagships and research checkpoints across OpenAI, Anthropic, Google DeepMind,
+            DeepSeek, Meta, and xAI — each record source-linked and dated.
+          </div>
         </div>
 
-        {/* Bottom Metric Badges */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-            paddingTop: "24px",
-          }}
-        >
-          <div style={{ display: "flex", gap: "32px" }}>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
-                PRIMARY FLAGSHIPS
-              </span>
-              <span style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>
-                {flagships.length} Frontier Labs
-              </span>
+        {/* Ledger footer */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div style={{ display: "flex", height: "1px", backgroundColor: HAIRLINE }} />
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", gap: "56px" }}>
+              <Stat index="01" label="PRIMARY FLAGSHIPS" value={`${flagships.length} Frontier Labs`} />
+              <Stat index="02" label="PEAK CONTEXT" value={peakContextLabel} />
+              <Stat index="03" label="MODELS INDEXED" value={`${modelsData.length} Records`} />
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
-                PEAK CONTEXT
-              </span>
-              <span style={{ fontSize: "20px", fontWeight: 500, color: "#ffffff" }}>
-                {peakContextLabel}
-              </span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span style={{ fontSize: "12px", fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", color: "rgba(255, 255, 255, 0.4)" }}>
-                SOURCES CHECKED
-              </span>
-              <span style={{ fontSize: "20px", fontWeight: 500, color: "#10b981" }}>
-                {modelsData.length} Models Indexed
-              </span>
-            </div>
+            <span style={{ fontSize: "15px", fontWeight: 500, letterSpacing: "0.04em", color: FAINT }}>
+              modelregistry.tirup.in
+            </span>
           </div>
-
-          <span
-            style={{
-              fontSize: "18px",
-              fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-              color: "rgba(255, 255, 255, 0.5)",
-            }}
-          >
-            modelregistry.tirup.in
-          </span>
         </div>
       </div>
     ),

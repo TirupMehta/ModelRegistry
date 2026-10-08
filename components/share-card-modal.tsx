@@ -137,23 +137,31 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
     ctx.fillStyle = bgColor
     ctx.fillRect(0, 0, width, height)
 
-    // 2. Subtle Ambient Glow
-    const gradient = ctx.createRadialGradient(
-      width * 0.5,
-      height * 0.18,
-      20,
-      width * 0.5,
-      height * 0.18,
-      width * 0.55
-    )
-    gradient.addColorStop(0, withAlpha(accentColor, isDark ? 0.13 : 0.08))
-    gradient.addColorStop(1, "transparent")
-    ctx.fillStyle = gradient
-    ctx.fillRect(0, 0, width, height)
+    // 2. Premium print system: accent spine rule, ledger verticals, inset
+    // frame. Flat and architectural - no glows or gradients.
+    ctx.fillStyle = accentColor
+    ctx.fillRect(0, 0, width, 6)
+
+    const ledgerColor = isDark ? "rgba(255, 255, 255, 0.045)" : "rgba(0, 0, 0, 0.045)"
 
     // Layout Padding
     const padding = ratio === "landscape" ? 64 : 80
     const contentWidth = width - padding * 2
+
+    ctx.strokeStyle = ledgerColor
+    ctx.lineWidth = 1
+    for (let i = 1; i <= 3; i++) {
+      const lx = padding + (contentWidth / 4) * i
+      ctx.beginPath()
+      ctx.moveTo(lx, 30)
+      ctx.lineTo(lx, height - 30)
+      ctx.stroke()
+    }
+
+    // Inset hairline frame - the card reads as a printed certificate.
+    ctx.strokeStyle = borderColor
+    ctx.lineWidth = 1.5
+    ctx.strokeRect(22.5, 28.5, width - 45, height - 57)
 
     // Helper: Rounded Rectangle
     function roundRect(
@@ -302,11 +310,9 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
     curY += ratio === "landscape" ? 38 : 60
 
     // 4. Laboratory Tag & Status Badge
-    // Lab Dot
+    // Lab mark - sharp square, never a glowing dot.
     ctx.fillStyle = accentColor
-    ctx.beginPath()
-    ctx.arc(padding + 7, curY + 7, 7, 0, Math.PI * 2)
-    ctx.fill()
+    ctx.fillRect(padding, curY + 1, 12, 12)
 
     ctx.font = `600 16px ${F_MONO}`
     ctx.fillStyle = textMuted
@@ -367,7 +373,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
 
     specs.forEach((s, idx) => {
       const sx = padding + idx * (specCardW + specGap)
-      roundRect(sx, curY, specCardW, specCardH, 8, cardSurface, borderColor)
+      roundRect(sx, curY, specCardW, specCardH, 6, cardSurface, borderColor)
 
       ctx.font = `600 ${ratio === "story" ? 13 : 11}px ${F_MONO}`
       ctx.fillStyle = textDim
@@ -383,9 +389,11 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
     // 8. Verified Benchmarks (if available)
     const benchmarkKeys = Object.entries(model.benchmarks)
     if (benchmarkKeys.length > 0 && ratio !== "landscape") {
+      ctx.fillStyle = accentColor
+      ctx.fillRect(padding, curY + 1, 10, 10)
       ctx.font = `600 ${ratio === "story" ? 15 : 12}px ${F_MONO}`
       ctx.fillStyle = textDim
-      ctx.fillText("VERIFIED RESEARCH BENCHMARKS", padding, curY + 10)
+      ctx.fillText("VERIFIED RESEARCH BENCHMARKS", padding + 20, curY + 10)
       curY += ratio === "story" ? 34 : 24
 
       const bCols = Math.min(4, benchmarkKeys.length)
@@ -394,7 +402,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
 
       benchmarkKeys.slice(0, 4).forEach(([bKey, bVal], idx) => {
         const bx = padding + idx * (bCardW + specGap)
-        roundRect(bx, curY, bCardW, bCardH, 6, cardSurface, borderColor)
+        roundRect(bx, curY, bCardW, bCardH, 4, cardSurface, borderColor)
 
         const label = bKey === "sweBench" ? "SWE-bench" : bKey === "aime2024" ? "AIME 2024" : bKey === "mmluPro" ? "MMLU-Pro" : bKey === "terminalBench" ? "Terminal-Bench" : "GPQA"
         ctx.font = `500 ${ratio === "story" ? 13 : 11}px ${F_MONO}`
@@ -441,9 +449,7 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
     // Verified Stamp (darker green on light cards for contrast)
     ctx.font = `600 15px ${F_MONO}`
     ctx.fillStyle = isDark ? "#00e599" : "#00885c"
-    ctx.beginPath()
-    ctx.arc(padding + 6, footerY - 14, 6, 0, Math.PI * 2)
-    ctx.fill()
+    ctx.fillRect(padding, footerY - 21, 12, 12)
     ctx.fillText("VERIFIED SOTA RECORD", padding + 20, footerY - 9)
 
     // Official Registry URL
