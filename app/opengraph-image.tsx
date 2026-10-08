@@ -75,7 +75,7 @@ export default async function Image() {
     b.releaseDate.localeCompare(a.releaseDate)
   )[0]
   const radarLabel = newestRelease
-    ? `Frontier Radar — ${new Date(`${newestRelease.releaseDate.slice(0, 7)}-02`).toLocaleDateString("en-US", { month: "long", year: "numeric" })}`
+    ? `Frontier Radar • ${new Date(`${newestRelease.releaseDate.slice(0, 7)}-02`).toLocaleDateString("en-US", { month: "long", year: "numeric" })}`
     : "Frontier Radar"
   const eyebrow = `${modelsData.length} Records · ${flagships.length} Frontier Labs · Updated ${newestRelease ? new Date(`${newestRelease.releaseDate.slice(0, 7)}-02`).toLocaleDateString("en-US", { month: "long", year: "numeric" }) : "Live"}`
   return new ImageResponse(
@@ -192,7 +192,7 @@ export default async function Image() {
             }}
           >
             Primary foundation flagships and research checkpoints across OpenAI, Anthropic, Google DeepMind,
-            DeepSeek, Meta, and xAI — each record source-linked and dated.
+            DeepSeek, Meta, and xAI, each record source-linked and dated.
           </div>
         </div>
 
