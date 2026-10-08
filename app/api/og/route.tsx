@@ -87,7 +87,31 @@ export async function GET(req: NextRequest) {
               paddingBottom: "24px",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+              {/* Brand logo mark - blocks grid, one flagship lit coral */}
+              <div
+                style={{
+                  display: "flex",
+                  width: "44px",
+                  height: "44px",
+                  borderRadius: "11px",
+                  backgroundColor: "#090a0d",
+                  border: "1px solid rgba(255, 255, 255, 0.14)",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                  <div style={{ display: "flex", gap: "2px" }}>
+                    <div style={{ display: "flex", width: "12px", height: "12px", borderRadius: "3px", backgroundColor: "#ffffff" }} />
+                    <div style={{ display: "flex", width: "12px", height: "12px", borderRadius: "3px", backgroundColor: "rgba(255, 255, 255, 0.45)" }} />
+                  </div>
+                  <div style={{ display: "flex", gap: "2px" }}>
+                    <div style={{ display: "flex", width: "12px", height: "12px", borderRadius: "3px", backgroundColor: "rgba(255, 255, 255, 0.45)" }} />
+                    <div style={{ display: "flex", width: "12px", height: "12px", borderRadius: "3px", backgroundColor: "#ff5d2e" }} />
+                  </div>
+                </div>
+              </div>
               <div
                 style={{
                   display: "flex",

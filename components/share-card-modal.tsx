@@ -187,6 +187,23 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
       }
     }
 
+    // Brand logo mark - blocks grid with one flagship lit coral.
+    // Matches public/logo-blocks.svg proportions (32-unit grid).
+    function drawLogoMark(x: number, y: number, size: number) {
+      const logoBorder = isDark ? "rgba(255, 255, 255, 0.16)" : "rgba(0, 0, 0, 0.15)"
+      roundRect(x, y, size, size, size * 0.22, "#090a0d", logoBorder)
+      const pad = size * (7 / 32)
+      const block = size * (8.5 / 32)
+      const gap = size * (1 / 32)
+      const r = size * (2.2 / 32)
+      const bx = x + pad
+      const by = y + pad
+      roundRect(bx, by, block, block, r, "#ffffff")
+      roundRect(bx + block + gap, by, block, block, r, "rgba(255, 255, 255, 0.45)")
+      roundRect(bx, by + block + gap, block, block, r, "rgba(255, 255, 255, 0.45)")
+      roundRect(bx + block + gap, by + block + gap, block, block, r, "#ff5d2e")
+    }
+
     // Helper: Text Wrapping
     function wrapText(text: string, x: number, y: number, maxWidth: number, lineHeight: number, maxLines = 4) {
       const words = text.split(" ")
@@ -249,15 +266,20 @@ function ShareCardModalInner({ model, isOpen, onClose }: ShareCardModalProps) {
 
     let curY = padding
 
-    // 3. Top Header / Brand (seated close to the divider, slightly larger)
+    // 3. Top Header / Brand mark + wordmark (seated close to the divider)
     const brandSize = ratio === "landscape" ? 26 : 28
     const brandBaseline = curY + (ratio === "landscape" ? 32 : 42)
+    const logoSize = ratio === "landscape" ? 38 : 44
+    const logoGap = 14
+    const logoY = brandBaseline - logoSize + 8
+    drawLogoMark(padding, logoY, logoSize)
+    const brandX = padding + logoSize + logoGap
     ctx.font = `700 ${brandSize}px ${F_DISPLAY}`
     ctx.fillStyle = textColor
-    ctx.fillText("Model", padding, brandBaseline)
+    ctx.fillText("Model", brandX, brandBaseline)
     const brandWidth = ctx.measureText("Model").width
     ctx.fillStyle = "#ff5d2e"
-    ctx.fillText("Registry", padding + brandWidth, brandBaseline)
+    ctx.fillText("Registry", brandX + brandWidth, brandBaseline)
 
     // Top Sub-tag
     const tagSize = ratio === "landscape" ? 14 : 15

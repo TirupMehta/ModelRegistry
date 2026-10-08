@@ -38,16 +38,31 @@ export default async function Image() {
       >
         {/* Top Tag & Status */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+            {/* Brand logo mark - blocks grid, one flagship lit coral */}
             <div
               style={{
-                width: "12px",
-                height: "12px",
-                borderRadius: "50%",
-                backgroundColor: "#818cf8",
-                boxShadow: "0 0 16px #818cf8",
+                width: "40px",
+                height: "40px",
+                borderRadius: "10px",
+                backgroundColor: "#090a0d",
+                border: "1px solid rgba(255, 255, 255, 0.14)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
-            />
+            >
+              <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                <div style={{ display: "flex", gap: "2px" }}>
+                  <div style={{ width: "11px", height: "11px", borderRadius: "3px", backgroundColor: "#ffffff" }} />
+                  <div style={{ width: "11px", height: "11px", borderRadius: "3px", backgroundColor: "rgba(255, 255, 255, 0.45)" }} />
+                </div>
+                <div style={{ display: "flex", gap: "2px" }}>
+                  <div style={{ width: "11px", height: "11px", borderRadius: "3px", backgroundColor: "rgba(255, 255, 255, 0.45)" }} />
+                  <div style={{ width: "11px", height: "11px", borderRadius: "3px", backgroundColor: "#ff5d2e" }} />
+                </div>
+              </div>
+            </div>
             <span
               style={{
                 fontSize: "18px",
