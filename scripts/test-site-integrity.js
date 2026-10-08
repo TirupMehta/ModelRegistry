@@ -170,7 +170,12 @@ check(
 )
 const docsSrc = fs.readFileSync(path.resolve(__dirname, "../app/docs/page.tsx"), "utf8")
 check("docs-uses-prompt-source", docsSrc.includes("lib/agent-prompts"), true)
-const headerSrc = fs.readFileSync(path.resolve(__dirname, "../components/header.tsx"), "utf8")
+const headerSrc = [
+  "../components/header.tsx",
+  "../components/header-prompt.tsx",
+]
+  .map((f) => fs.readFileSync(path.resolve(__dirname, f), "utf8"))
+  .join("\n")
 check("header-fetches-prompt", headerSrc.includes("/api/agent-prompt"), true)
 const promptRouteSrc = fs.readFileSync(path.resolve(__dirname, "../app/api/agent-prompt/route.ts"), "utf8")
 check("prompt-route-single-sourced", promptRouteSrc.includes("lib/agent-prompts"), true)

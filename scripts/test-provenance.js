@@ -99,7 +99,9 @@ check(
 )
 
 // 4. Leaderboard is framed as editorial with methodology + dates.
-const lb = read("app/leaderboard/page.tsx")
+// The page is a server shell; copy lives in its client island, so both
+// sources are checked together.
+const lb = read("app/leaderboard/page.tsx") + "\n" + read("components/leaderboard-client.tsx")
 check("leaderboard avoids 'state of the art'", !/state of the art/i.test(lb))
 check("leaderboard avoids 'Domain SOTA'", !lb.includes("Domain SOTA"))
 check("leaderboard links methodology", lb.includes('href="/methodology"'))
