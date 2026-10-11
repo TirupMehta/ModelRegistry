@@ -68,12 +68,21 @@ export const metadata: Metadata = {
     description:
       "Real-time open community registry tracking the latest frontier AI flagships and research checkpoints across all premier AI labs.",
     siteName: "ModelRegistry",
+    images: [
+      {
+        url: "/api/og?theme=light",
+        width: 1200,
+        height: 630,
+        alt: "ModelRegistry - The Open Frontier AI Model Registry",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "ModelRegistry - The Open Frontier AI Model Registry",
     description:
       "Real-time open community registry tracking the latest frontier AI flagships and research checkpoints across all premier AI labs.",
+    images: ["/api/og?theme=light"],
   },
   alternates: {
     canonical: "https://modelregistry.tirup.in",
