@@ -2206,6 +2206,162 @@ export const modelsData: ModelItem[] = [
       },
     ],
   },
+  {
+    id: "grok-voice-3",
+    companyId: "xai",
+    companyName: "xAI",
+    name: "Grok Voice 3.0",
+    version: "3.0",
+    releaseDate: "2026-10-14",
+    isCompanyFlagship: false,
+    isLatestCheckpoint: true,
+    statusBadge: "NEW DROP",
+    category: "audio",
+    categoryLabel: "Speech-to-Speech",
+    contextWindow: "Realtime speech-to-speech session",
+    contextWindowTokens: 0,
+    maxOutputTokens: "Realtime audio responses",
+    parameters: "Undisclosed (xAI)",
+    openWeights: false,
+    license: "Proprietary API / Grok Voice Agent API",
+    pricing: { input: 0.001333, output: 0.001333 },
+    pricingUnit: "per second",
+    highlight:
+      "Released Oct 14, 2026; xAI's speech-to-speech 3.0 ranked #1 on Artificial Analysis Speech-to-Speech Index (86.9) with sub-second latency, at $0.08/min ($4.80/hr) - same price as Voice 2.0, now default via grok-voice-latest.",
+    modalities: ["Audio", "Text"],
+    benchmarks: {},
+    links: {
+      announcement: "https://x.ai/news/grok-voice-3",
+      apiDocs: "https://docs.x.ai/developers/model-capabilities/audio/voice",
+    },
+    sources: [
+    {
+      url: "https://x.ai/news/grok-voice-3",
+      publisher: "xAI",
+      title: "Grok Voice 3.0 announcement",
+      publishedAt: "2026-10-14",
+      accessedAt: "2026-10-15",
+      sourceType: "announcement",
+      live: true,
+    },
+    {
+      url: "https://docs.x.ai/developers/pricing",
+      publisher: "xAI",
+      title: "Grok Voice 3.0 API pricing",
+      accessedAt: "2026-10-15",
+      sourceType: "pricing",
+      live: true,
+    },
+    ],
+    fieldSources: {
+      releaseDate: [
+      {
+        url: "https://x.ai/news/grok-voice-3",
+        publisher: "xAI",
+        title: "Grok Voice 3.0 announcement",
+        publishedAt: "2026-10-14",
+        accessedAt: "2026-10-15",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      contextWindow: [
+      {
+        url: "https://docs.x.ai/developers/model-capabilities/audio/voice",
+        publisher: "xAI",
+        title: "Grok Voice 3.0 API reference",
+        accessedAt: "2026-10-15",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      maxOutputTokens: [
+      {
+        url: "https://docs.x.ai/developers/model-capabilities/audio/voice",
+        publisher: "xAI",
+        title: "Grok Voice 3.0 API reference",
+        accessedAt: "2026-10-15",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+      parameters: [
+      {
+        url: "https://x.ai/news/grok-voice-3",
+        publisher: "xAI",
+        title: "Grok Voice 3.0 announcement",
+        publishedAt: "2026-10-14",
+        accessedAt: "2026-10-15",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      license: [
+      {
+        url: "https://x.ai/news/grok-voice-3",
+        publisher: "xAI",
+        title: "Grok Voice 3.0 announcement",
+        publishedAt: "2026-10-14",
+        accessedAt: "2026-10-15",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      pricing: [
+      {
+        url: "https://docs.x.ai/developers/pricing",
+        publisher: "xAI",
+        title: "Grok Voice 3.0 API pricing",
+        accessedAt: "2026-10-15",
+        sourceType: "pricing",
+        live: true,
+      },
+      ],
+      modalities: [
+      {
+        url: "https://x.ai/news/grok-voice-3",
+        publisher: "xAI",
+        title: "Grok Voice 3.0 announcement",
+        publishedAt: "2026-10-14",
+        accessedAt: "2026-10-15",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isCompanyFlagship: [
+      {
+        url: "https://x.ai/news/grok-voice-3",
+        publisher: "xAI",
+        title: "Grok Voice 3.0 announcement",
+        publishedAt: "2026-10-14",
+        accessedAt: "2026-10-15",
+        sourceType: "announcement",
+        live: true,
+      },
+      ],
+      isLatestCheckpoint: [
+      {
+        url: "https://docs.x.ai/developers/release-notes",
+        publisher: "xAI",
+        title: "Grok Voice 3.0 release notes",
+        accessedAt: "2026-10-15",
+        sourceType: "api-docs",
+        live: true,
+      },
+      ],
+    },
+    lastVerifiedAt: "2026-10-15",
+    verificationStatus: "partially_verified",
+    changeLog: [
+      {
+        date: "2026-10-14",
+        summary: "Initial registry entry.",
+        sources: [
+          "https://x.ai/news/grok-voice-3",
+        ],
+      },
+    ],
+  },
 
   // ─── DEEPSEEK ────────────────────────────────────────────────────────────
   {
