@@ -146,7 +146,6 @@ export const modelsData: ModelItem[] = [
       gpqa: "74.8%",
     },
     links: {
-      announcement: "https://www.anthropic.com/news/claude-fable-5-1",
       playground: "https://claude.ai",
       apiDocs: "https://docs.anthropic.com/claude/reference",
     },
@@ -2839,7 +2838,6 @@ export const modelsData: ModelItem[] = [
       gpqa: "68.4%",
     },
     links: {
-      announcement: "https://ai.meta.com/blog/muse-spark-1-3/",
       weights: "https://huggingface.co/meta-llama",
     },
     sources: [
@@ -2952,7 +2950,6 @@ export const modelsData: ModelItem[] = [
       sweBench: "71.2%",
     },
     links: {
-      announcement: "https://ai.meta.com/blog/llama-4/",
       weights: "https://huggingface.co/meta-llama",
     },
     sources: [
@@ -3351,7 +3348,6 @@ export const modelsData: ModelItem[] = [
       sweBench: "74.1%",
     },
     links: {
-      announcement: "https://qwenlm.github.io/blog/qwen3.8-2.4t/",
       weights: "https://huggingface.co/Qwen",
     },
     sources: [
