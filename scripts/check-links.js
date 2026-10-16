@@ -102,8 +102,10 @@ async function probe(url) {
       return { state: "error", status: 0, detail: (e && (e.code || e.name)) || "fetch failed" }
     }
   }
-  // Some hosts answer HEAD with 403/405 yet serve GET fine.
-  if ([403, 405, 501].includes(status)) {
+  // Some hosts answer HEAD with 403/405 yet serve GET fine; some CDNs and
+  // edge runtimes even answer HEAD with 404 for a perfectly live page. Never
+  // trust a negative HEAD verdict - re-probe with GET before classifying.
+  if ([403, 405, 501, 404, 410].includes(status)) {
     try {
       status = await statusOnce(url, "GET")
     } catch {

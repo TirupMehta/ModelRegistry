@@ -647,6 +647,67 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
     return () => window.removeEventListener("keydown", onKey, true)
   }, [isZoomed])
 
+  const dialogRef = useRef<HTMLDivElement | null>(null)
+  const zoomRef = useRef<HTMLDivElement | null>(null)
+  const openerRef = useRef<HTMLElement | null>(null)
+
+  // Restore focus to whatever opened the studio once it fully closes.
+  useEffect(() => {
+    if (isOpen) {
+      openerRef.current = (document.activeElement as HTMLElement | null) ?? null
+      return
+    }
+    const opener = openerRef.current
+    openerRef.current = null
+    if (opener?.focus) {
+      try {
+        opener.focus()
+      } catch {
+        // The opener unmounted - nothing to restore.
+      }
+    }
+  }, [isOpen])
+
+  // Trap Tab within the active layer (the studio, or the zoom overlay when it
+  // is open) so keyboard focus cannot leak to the page behind the modal.
+  useEffect(() => {
+    if (!isOpen) return
+    const container = isZoomed ? zoomRef.current : dialogRef.current
+    if (!container) return
+    const FOCUSABLE =
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    const focusable = () =>
+      Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+        (el) => el.getClientRects().length > 0
+      )
+    const initial = focusable()[0] ?? container
+    try {
+      initial.focus()
+    } catch {
+      // Non-focusable fallback - leave focus where it is.
+    }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return
+      const items = focusable()
+      if (items.length === 0) {
+        e.preventDefault()
+        return
+      }
+      const firstEl = items[0]
+      const lastEl = items[items.length - 1]
+      const active = document.activeElement
+      if (e.shiftKey && (active === firstEl || !container.contains(active))) {
+        e.preventDefault()
+        lastEl.focus()
+      } else if (!e.shiftKey && active === lastEl) {
+        e.preventDefault()
+        firstEl.focus()
+      }
+    }
+    container.addEventListener("keydown", onKeyDown)
+    return () => container.removeEventListener("keydown", onKeyDown)
+  }, [isOpen, isZoomed])
+
   // Hooks must run unconditionally - render gating happens after them.
   if (!isOpen) return null
 
@@ -775,6 +836,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
 
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label="Social card studio"
@@ -987,8 +1049,10 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
       {/* Fullscreen zoom overlay (stops propagation so parent popup stays open) */}
       {isZoomed && zoomSrc && (
         <div
+          ref={zoomRef}
           role="dialog"
           aria-label="Expanded share card preview"
+          tabIndex={-1}
           className="fixed inset-0 z-[70] bg-black/90 backdrop-blur-sm overflow-auto overscroll-contain flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in duration-150"
           onClick={(e) => {
             e.stopPropagation()
@@ -1001,9 +1065,17 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
             alt={`${model.name} share card full-size preview`}
             className="max-h-[92vh] max-w-[94vw] object-contain rounded-lg shadow-2xl"
           />
-          <span className="fixed top-4 right-4 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white/10 text-white text-[11px] font-sans pointer-events-none">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              closeZoom()
+            }}
+            aria-label="Close expanded preview"
+            className="fixed top-4 right-4 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white/10 text-white text-[11px] font-sans cursor-pointer hover:bg-white/20 transition-colors"
+          >
             <X size={12} /> ESC / CLICK TO CLOSE
-          </span>
+          </button>
         </div>
       )}
     </div>

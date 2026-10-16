@@ -30,21 +30,22 @@ export function formatPrice(model: Pick<ModelItem, 'pricing' | 'pricingUnit' | '
   return model.openWeights ? `${base} (Open)` : base
 }
 
+const BENCHMARK_LABELS: Record<string, string> = {
+  terminalBench: "Terminal-Bench",
+  sweBench: "SWE-bench",
+  mmluPro: "MMLU-Pro",
+  aime2024: "AIME 2024",
+  gpqa: "GPQA",
+}
+
 /**
  * Pretty display name for a benchmark key, in the same priority language
  * used by the social-card studio and the OG image route. Single source of
  * truth - both surfaces previously carried their own copy of this mapping.
+ * Unknown keys fall back to the key itself, never to a mislabelled "GPQA".
  */
 export function benchPretty(key: string): string {
-  return key === "terminalBench"
-    ? "Terminal-Bench"
-    : key === "sweBench"
-      ? "SWE-bench"
-      : key === "mmluPro"
-        ? "MMLU-Pro"
-        : key === "aime2024"
-          ? "AIME 2024"
-          : "GPQA"
+  return BENCHMARK_LABELS[key] ?? key
 }
 
 /**
