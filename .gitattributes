@@ -1,0 +1,22 @@
+# Keep every text file LF in the repo and in the working tree.
+# Without this, Windows checkouts (core.autocrlf=true) produce CRLF files while
+# Linux CI produces LF, which made generated artifacts (dataset revision hash,
+# README table sync) drift by OS and fail the CI "generated files are in sync"
+# check. LF everywhere + line-ending-normalized hashing makes local and CI
+# byte-identical.
+* text=auto eol=lf
+
+# Explicit binary guard so archives, images and fonts are never converted.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.avif binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.pdf binary
+*.zip binary

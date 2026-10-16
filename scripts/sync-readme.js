@@ -102,7 +102,12 @@ function generateMarkdownTable() {
 
 function syncReadme(checkOnly = false) {
   const readmePath = path.resolve(__dirname, "../README.md")
-  const readmeContent = fs.readFileSync(readmePath, "utf8")
+  // Generators always emit LF: Windows checkouts carry CRLF, and splicing an
+  // LF table into CRLF content produced mixed-EOL files that kept showing up
+  // as dirty in git. Normalizing on read makes the output byte-identical on
+  // every OS (see .gitattributes).
+  const rawReadme = fs.readFileSync(readmePath, "utf8")
+  const readmeContent = rawReadme.replace(/\r\n/g, "\n")
 
   const startMarker = "<!-- REGISTRY_TABLE_START -->"
   const endMarker = "<!-- REGISTRY_TABLE_END -->"
@@ -130,7 +135,7 @@ function syncReadme(checkOnly = false) {
     }
   }
 
-  if (readmeContent !== updatedReadme) {
+  if (rawReadme !== updatedReadme) {
     fs.writeFileSync(readmePath, updatedReadme, "utf8")
     console.log("✔ Successfully synchronized README.md frontier models table.")
   } else {
@@ -155,7 +160,8 @@ function syncContributePrompt() {
   const { buildContributePrompt, CONTRIBUTE_PROMPT_VERSION } = loadTsModule("../lib/agent-prompts.ts", datasetRegistry)
 
   const readmePath = path.resolve(__dirname, "../README.md")
-  let readmeContent = fs.readFileSync(readmePath, "utf8")
+  const rawReadme = fs.readFileSync(readmePath, "utf8")
+  let readmeContent = rawReadme.replace(/\r\n/g, "\n")
 
   const startMarker = "<!-- CONTRIBUTE_PROMPT_START -->"
   const endMarker = "<!-- CONTRIBUTE_PROMPT_END -->"
@@ -176,7 +182,7 @@ function syncContributePrompt() {
 
   const updatedReadme = readmeContent.slice(0, startIndex) + newSection + readmeContent.slice(endIndex)
 
-  if (readmeContent !== updatedReadme) {
+  if (rawReadme !== updatedReadme) {
     fs.writeFileSync(readmePath, updatedReadme, "utf8")
     console.log("✔ Successfully synchronized README.md agent prompt.")
   } else {

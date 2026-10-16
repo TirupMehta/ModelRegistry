@@ -33,9 +33,15 @@ function readExisting() {
 }
 
 function main() {
+  // Hash the logical content, never the platform's line endings. Windows
+  // checkouts (core.autocrlf=true) read these files as CRLF while Linux CI
+  // reads LF; hashing raw bytes made every locally-generated revision differ
+  // from CI's regeneration, so the "generated files are in sync" check could
+  // never pass. Normalizing to LF here keeps the hash identical everywhere.
   const hash = crypto.createHash("sha256")
   for (const rel of DATA_FILES) {
-    hash.update(fs.readFileSync(path.resolve(__dirname, rel)))
+    const content = fs.readFileSync(path.resolve(__dirname, rel), "utf8").replace(/\r\n/g, "\n")
+    hash.update(content, "utf8")
   }
   const contentHash = hash.digest("hex").slice(0, 16)
   const existing = readExisting()
