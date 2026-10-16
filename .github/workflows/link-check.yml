@@ -1,0 +1,38 @@
+name: Link check
+
+# The registry's promise is that every citation is live. The manual source
+# audit (docs/audit-*.md) is a point in time; this keeps it honest between
+# audits. Report-only for bot-gated hosts; a 404/410 fails the run.
+on:
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: link-check
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Verify cited sources still resolve
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Check every cited URL
+        run: node scripts/check-links.js

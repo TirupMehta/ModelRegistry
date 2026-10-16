@@ -6,9 +6,8 @@ import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
 import { modelFolio } from "@/lib/registry"
-import { formatPrice } from "@/lib/utils"
+import { benchPretty, formatPrice } from "@/lib/utils"
 import {
-  benchPretty,
   Card,
   ColumnRule,
   Eyebrow,

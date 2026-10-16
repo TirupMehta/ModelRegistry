@@ -338,16 +338,3 @@ export function Card({
     </div>
   )
 }
-
-/** Pretty benchmark key, same priority language as the share studio. */
-export function benchPretty(k: string) {
-  return k === "terminalBench"
-    ? "Terminal-Bench"
-    : k === "sweBench"
-      ? "SWE-bench"
-      : k === "mmluPro"
-        ? "MMLU-Pro"
-        : k === "aime2024"
-          ? "AIME 2024"
-          : "GPQA"
-}

@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
-import { formatPrice } from "@/lib/utils"
+import { benchPretty, formatPrice } from "@/lib/utils"
 import { Download, Copy, Share2, Check, X, Sparkles, Code2, ZoomIn } from "lucide-react"
 
 interface ShareCardModalProps {
@@ -147,12 +147,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
 
     // The one featured signal: best benchmark by house priority, else a
     // clean context figure, else the input price. Nothing invented.
-    const benchPretty = (k: string) =>
-      k === "terminalBench" ? "Terminal-Bench"
-      : k === "sweBench" ? "SWE-bench"
-      : k === "mmluPro" ? "MMLU-Pro"
-      : k === "aime2024" ? "AIME 2024"
-      : "GPQA"
+    // `benchPretty` is shared with the OG card route (lib/utils.ts).
     const benchEntries = Object.entries(model.benchmarks) as [string, string][]
     const benchPick =
       ["terminalBench", "sweBench", "mmluPro", "aime2024", "gpqa"]
@@ -779,7 +774,12 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
   }
 
   return (
-    <div className="fixed inset-0 z-[60] overflow-y-auto overscroll-contain bg-black/60 backdrop-blur-md animate-in fade-in duration-150">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Social card studio"
+      className="fixed inset-0 z-[60] overflow-y-auto overscroll-contain bg-black/60 backdrop-blur-md animate-in fade-in duration-150"
+    >
       <div className="min-h-full flex justify-center p-2 sm:p-5">
       <div
         className="relative m-auto w-full max-w-4xl max-h-[95dvh] flex flex-col md:flex-row bg-[#f7f7f4] dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.09] rounded-xl shadow-2xl overflow-y-auto overscroll-contain md:overflow-hidden"
@@ -789,6 +789,15 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
         <div className="shrink-0 md:shrink flex flex-col items-center justify-center p-3 sm:p-6 bg-black/[0.02] dark:bg-[#07080a] border-b md:border-b-0 md:border-r border-black/10 dark:border-white/[0.08] min-h-[200px] md:min-h-[300px] md:flex-1 overflow-hidden">
           <div
             onClick={openZoom}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault()
+                openZoom()
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label="Expand share card preview"
             title="Click to view full size"
             className="relative w-full h-full flex items-center justify-center max-h-[32vh] sm:max-h-[48vh] md:max-h-[75vh] cursor-zoom-in group/preview"
           >
@@ -978,6 +987,8 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
       {/* Fullscreen zoom overlay (stops propagation so parent popup stays open) */}
       {isZoomed && zoomSrc && (
         <div
+          role="dialog"
+          aria-label="Expanded share card preview"
           className="fixed inset-0 z-[70] bg-black/90 backdrop-blur-sm overflow-auto overscroll-contain flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in duration-150"
           onClick={(e) => {
             e.stopPropagation()

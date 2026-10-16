@@ -34,9 +34,10 @@ jobs:
       # leaderboard refs) + scripts/test-fallback.js, and auto-syncs README table
       - run: pnpm test
 
-      # Fail if the contributor forgot to run `pnpm test` (README table out of sync)
-      - name: Check README table is in sync
-        run: git diff --exit-code README.md
+      # Fail if the contributor forgot to run `pnpm test` (README table and/or
+      # generated dataset revision out of sync with the committed data).
+      - name: Check generated files are in sync
+        run: git diff --exit-code README.md data/revision.ts
 
   lint:
     name: Lint & typecheck

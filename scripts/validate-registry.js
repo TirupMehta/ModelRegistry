@@ -167,7 +167,16 @@ modelsData.forEach((model, index) => {
 
   // 6. Links validation
   if (model.links) {
-    const urls = [model.links.announcement, model.links.playground, model.links.weights].filter(Boolean)
+    // Validate every outbound link the record can render or expose, not just
+    // the three that used to be spot-checked - a malformed apiDocs/paper URL
+    // would leak into the API payload, feeds, and llms-full.txt unchecked.
+    const urls = [
+      model.links.announcement,
+      model.links.playground,
+      model.links.apiDocs,
+      model.links.paper,
+      model.links.weights,
+    ].filter(Boolean)
     urls.forEach((u) => {
       try {
         new URL(u)
