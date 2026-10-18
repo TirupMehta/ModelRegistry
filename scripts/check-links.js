@@ -12,6 +12,9 @@
  *   dead  - 404/410 (page gone: fix or re-source)
  *   warn  - other 4xx
  *   error - network failure / timeout / 5xx
+ *   remote-dns - this machine cannot resolve the host, but an independent
+ *               public DoH resolver confirms it resolves elsewhere (regional
+ *               DNS filtering or a resolver outage - not a dead page)
  *
  * Only `dead` links fail the run. Bot-gated hosts (OpenAI, x.ai, claude.ai,
  * chat consoles) stay green so the check is never noise.
@@ -91,6 +94,51 @@ async function statusOnce(url, method) {
   return res.status
 }
 
+// Public DoH resolver for triage when this machine reaches nothing. A page can
+// be perfectly live elsewhere while a local resolver, ISP filter, or VPN
+// blackout makes DNS fail here - retry the name against an independent public
+// resolver before calling the link broken. Only NXDOMAIN means the name is gone.
+const DOH_ENDPOINT = "https://cloudflare-dns.com/dns-query"
+async function hostResolvesPublicly(hostname) {
+  try {
+    const res = await fetch(
+      `${DOH_ENDPOINT}?name=${encodeURIComponent(hostname)}&type=A`,
+      { headers: { accept: "application/dns-json" }, signal: AbortSignal.timeout(8000) }
+    )
+    if (!res.ok) return null
+    const body = await res.json()
+    if (body.Status === 3) return false // NXDOMAIN - the hostname does not exist
+    return Boolean(
+      body.Status === 0 &&
+        Array.isArray(body.Answer) &&
+        body.Answer.some((record) => record.type === 1)
+    )
+  } catch {
+    return null // DoH itself unreachable - cannot triage
+  }
+}
+
+async function classifyUnreachable(url) {
+  let hostname
+  try {
+    hostname = new URL(url).hostname
+  } catch {
+    return { state: "error", status: 0, detail: "invalid URL" }
+  }
+  const resolves = await hostResolvesPublicly(hostname)
+  if (resolves === true) {
+    return {
+      state: "remote-dns",
+      status: 0,
+      detail: "host resolves via public DoH; this machine's resolver cannot reach it (regional block, not a dead page)",
+    }
+  }
+  if (resolves === false) {
+    return { state: "dead", status: 0, detail: "NXDOMAIN - the hostname no longer exists" }
+  }
+  return { state: "error", status: 0, detail: "unreachable and DoH triage unavailable" }
+}
+
 async function probe(url) {
   let status
   try {
@@ -98,8 +146,8 @@ async function probe(url) {
   } catch {
     try {
       status = await statusOnce(url, "GET")
-    } catch (e) {
-      return { state: "error", status: 0, detail: (e && (e.code || e.name)) || "fetch failed" }
+    } catch {
+      return await classifyUnreachable(url)
     }
   }
   // Some hosts answer HEAD with 403/405 yet serve GET fine; some CDNs and
@@ -144,9 +192,13 @@ async function main() {
     Array.from({ length: Math.min(CONCURRENCY, entries.length) }, () => worker())
   )
 
-  const byState = { ok: [], gated: [], dead: [], warn: [], error: [] }
-  for (const r of results) byState[r.state].push(r)
+  const byState = { ok: [], gated: [], dead: [], warn: [], error: [], remoteDns: [] }
+  for (const r of results) {
+    // Result state stays "remote-dns"; the counter bucket is camelCase.
+    byState[r.state === "remote-dns" ? "remoteDns" : r.state].push(r)
+  }
 
+  const rd = byState.remoteDns
   if (JSON_OUT) {
     console.log(JSON.stringify({ total: results.length, counts: {
       ok: byState.ok.length,
@@ -154,16 +206,23 @@ async function main() {
       dead: byState.dead.length,
       warn: byState.warn.length,
       error: byState.error.length,
+      remoteDns: rd.length,
     }, results }, null, 2))
   } else {
     console.log(
       `\nSummary: ${results.length} URLs - ok=${byState.ok.length} gated=${byState.gated.length} ` +
-        `dead=${byState.dead.length} warn=${byState.warn.length} error=${byState.error.length}`
+        `dead=${byState.dead.length} warn=${byState.warn.length} error=${byState.error.length} remoteDns=${rd.length}`
     )
     if (byState.dead.length > 0) {
       console.error("\nDead links (HTTP 404/410) - fix or re-source:")
       for (const r of byState.dead) {
         console.error(`  ${r.url}  <- ${r.where.join(", ")}`)
+      }
+    }
+    if (rd.length > 0) {
+      console.log("\nUnresolvable from this network but live by public DoH (regional DNS artifact):")
+      for (const r of rd) {
+        console.log(`  ${r.url}  <- ${r.where.join(", ")}`)
       }
     }
   }
@@ -174,11 +233,20 @@ async function main() {
       "",
       `Checked **${results.length}** distinct cited URLs: ` +
         `${byState.ok.length} ok, ${byState.gated.length} gated, ` +
-        `${byState.dead.length} dead, ${byState.warn.length} warn, ${byState.error.length} error.`,
+        `${byState.dead.length} dead, ${byState.warn.length} warn, ${byState.error.length} error, ` +
+        `${rd.length} remoteDns.`,
     ]
     if (byState.dead.length > 0) {
       lines.push("", "### Dead links (404/410)", "")
       for (const r of byState.dead) lines.push(`- \`${r.url}\` <- ${r.where.join(", ")}`)
+    }
+    if (rd.length > 0) {
+      lines.push(
+        "",
+        "### Unresolvable here, live by public DoH (regional DNS artifact, not dead)",
+        ""
+      )
+      for (const r of rd) lines.push(`- \`${r.url}\` <- ${r.where.join(", ")}`)
     }
     fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join("\n") + "\n")
   }
