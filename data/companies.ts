@@ -79,7 +79,7 @@ export const companies: Record<string, Company> = {
     website: "https://ai.meta.com",
     headquarters: "Menlo Park, CA",
     accentColor: "#0668e1",
-    description: "Global AI foundation leader with the newly launched Muse Wonder frontier agentic models (Oct 12, 2026) with Active Memory and Active Focus, plus Muse Spark 1.3 and the Llama 4 family.",
+    description: "Global AI foundation leader with the newly launched Muse Wonder frontier agentic models (Oct 12, 2026) with Active Memory and Active Focus, the 816B open-weight Muse Spark Open (Oct 15, 2026), plus Muse Spark 1.3 and the Llama 4 family.",
     latestFlagship: "Muse Wonder",
     latestReasoning: "Llama 4 Maverick (128E) / Scout (16E)",
     openWeightsAdvocate: true,
