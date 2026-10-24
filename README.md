@@ -32,14 +32,17 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**Mistral AI**](https://mistral.ai) | [Mistral Large 4](https://modelregistry.tirup.in/models/mistral-large-4) | - | 1M | Open (Open Weights (27 Oct 2026)) | $1.36 in / $4.18 out *(Open)* |
 | [**Tencent Hunyuan**](https://hunyuan.tencent.com) | [Hy3](https://modelregistry.tirup.in/models/tencent-hy3) | [Hy4 Preview](https://modelregistry.tirup.in/models/tencent-hy4-preview) | 262k | Open (Tencent Hunyuan Community) | $0.13 in / $0.53 out *(Open)* |
 | [**Z.ai**](https://z.ai) | [GLM 5.3](https://modelregistry.tirup.in/models/glm-5-3) | [GLM 5.3 Flash](https://modelregistry.tirup.in/models/glm-5-3-flash) | 1M | Proprietary | $0.9 in / $2.7 out |
-| [**MiniMax**](https://www.minimaxi.com) | [MiniMax M3](https://modelregistry.tirup.in/models/minimax-m3) | - | 1M | Proprietary | $0.3 in / $1.2 out |
-| [**NVIDIA**](https://www.nvidia.com) | [Nemotron 3 Ultra 550B](https://modelregistry.tirup.in/models/nemotron-3-ultra) | - | 262k | Open (NVIDIA Open Model) | $0.6 in / $2.4 out *(Open)* |
+| [**MiniMax**](https://www.minimaxi.com) | [MiniMax M3](https://modelregistry.tirup.in/models/minimax-m3) | [MiniMax M3.1 Flash](https://modelregistry.tirup.in/models/minimax-m3-1-flash) | 1M | Proprietary | $0.3 in / $1.2 out |
+| [**NVIDIA**](https://www.nvidia.com) | [Nemotron 3 Ultra 550B](https://modelregistry.tirup.in/models/nemotron-3-ultra) | [Nemotron 3.5 Super VL](https://modelregistry.tirup.in/models/nemotron-3-5-super-vl) | 262k | Open (NVIDIA Open Model) | $0.6 in / $2.4 out *(Open)* |
 | [**Xiaomi MiMo**](https://www.mi.com) | [MiMo-V2.6 Pro](https://modelregistry.tirup.in/models/mimo-v2-6-pro) | [MiMo-V2.6 Flash](https://modelregistry.tirup.in/models/mimo-v2-6-flash) | 1M | Open (MIT) | $0.435 in / $0.87 out *(Open)* |
-| [**Moonshot AI**](https://www.moonshot.ai) | [Kimi K3](https://modelregistry.tirup.in/models/kimi-k3) | - | 262k | Proprietary | $3 in / $15 out |
+| [**Moonshot AI**](https://www.moonshot.ai) | [Kimi K3.1 Pro](https://modelregistry.tirup.in/models/kimi-k3-1-pro) | - | 1M | Proprietary | $2 in / $10 out |
 | [**Kuaishou Kling**](https://klingai.com) | [Kling 3.0](https://modelregistry.tirup.in/models/kling-3-0) | - | - | Proprietary | $0.084 per second |
 | [**Runway**](https://runwayml.com) | [Runway Gen-4.5](https://modelregistry.tirup.in/models/runway-gen-4-5) | - | - | Proprietary | $0.15 per second |
 | [**Sarvam AI**](https://www.sarvam.ai) | [Sarvam 105B](https://modelregistry.tirup.in/models/sarvam-105b) | - | 128k | Open (Apache 2.0) | $0.33 in / $0.83 out *(Open)* |
 | [**TypeSafe AI**](https://typesafe.ai) | [Jev](https://modelregistry.tirup.in/models/jev-1) | - | - | Proprietary | $0.042 in / $0 out |
+| [**Reflection AI**](https://reflection.ai) | [Beam](https://modelregistry.tirup.in/models/beam-1) | - | 1M | Open (Apache 2.0) | $0.25 in / $1 out *(Open)* |
+| [**Elorian**](https://elorian.ai) | [Glimpse](https://modelregistry.tirup.in/models/glimpse) | - | 262k | Proprietary | $0.6 in / $3 out |
+| [**Inception Labs**](https://inceptionlabs.ai) | [Mercury 3](https://modelregistry.tirup.in/models/mercury-3) | - | 1M | Proprietary | $0.1 in / $0.35 out |
 <!-- REGISTRY_TABLE_END -->
 
 ---
@@ -140,7 +143,7 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
 
 {
   id: "lab-model-name-0102",        // unique lowercase kebab-case id
-  companyId: "openai",              // one of: anthropic, openai, google, xai, deepseek, meta, qwen, mistral, tencent, z-ai, minimax, nvidia, xiaomi, moonshotai, kuaishou, runway, sarvam, typesafe
+  companyId: "openai",              // one of: anthropic, openai, google, xai, deepseek, meta, qwen, mistral, tencent, z-ai, minimax, nvidia, xiaomi, moonshotai, kuaishou, runway, sarvam, typesafe, reflection, elorian, inception
   companyName: "OpenAI",            // lab display name
   name: "Model Display Name",
   version: "1.0",                   // lab version string
