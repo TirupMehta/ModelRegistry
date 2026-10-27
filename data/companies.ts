@@ -31,7 +31,7 @@ export const companies: Record<string, Company> = {
     website: "https://openai.com",
     headquarters: "San Francisco, CA",
     accentColor: "#10a37f",
-    description: "Pioneered the AGI era with GPT-6 Astra, the GPT-6 Sol/Luna efficiency tiers and near-flagship GPT-6.1 Sol, and the Astra critical-capability cybersecurity model.",
+    description: "Pioneered the AGI era with GPT-6 Astra, near-flagship GPT-6.1 Sol, the half-price mid-tier GPT-6.1 Terra (visual reasoning + precise computer use), the GPT-6 Sol/Luna efficiency tiers, and the Astra critical-capability cybersecurity model.",
     latestFlagship: "GPT-6.1 Sol",
     latestReasoning: "GPT-6.1 Sol / GPT-6 Astra",
     openWeightsAdvocate: false,

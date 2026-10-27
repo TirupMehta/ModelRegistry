@@ -89,10 +89,11 @@ for (const [section, ids] of Object.entries(leaderboardSpotlights)) {
 // 5. Retired slugs must resolve to the lab FLAGSHIP, never to a newer
 //    sibling from another modality (regression guard for visual models).
 const openai = modelsData.filter((m) => m.companyId === "openai")
+const openaiFlagshipId = openai.find((m) => m.isCompanyFlagship)?.id
 const openaiNewest = [...openai].sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
 if (openaiNewest && !openaiNewest.isCompanyFlagship) {
   const resolved = resolveCompanyFallback("openai-astra", modelsData)
-  check("fallback-prefers-flagship-over-newest", resolved?.id, "gpt-6-astra")
+  check("fallback-prefers-flagship-over-newest", resolved?.id, openaiFlagshipId)
 } else {
   console.log("  skip: fallback-flagship guard (newest is flagship, covered by test-fallback.js)")
 }
