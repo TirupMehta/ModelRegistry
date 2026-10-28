@@ -9724,7 +9724,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "Proprietary API (staged rollout)",
     pricing: { input: 2.0, output: 10.0 },
-    highlight: "Announced Oct 28, 2026; Google DeepMind's next frontier model and strongest to date, #1 on Artificial Analysis Intelligence Index v5.0 at 59 (Claude Opus 5.5 58, GPT-6 Astra 57, Argon 50), ahead of Astra and Opus 5.5 on most rows of the official comparison table: Vals Index v2.2 70.4%, SWE-sweep 9.6%, FrontierSWE 2 61.2%, Terminal-Bench 4.0 (AA) 65.2%, and a state-of-the-art cybersecurity sweep across the defense lifecycle evaluated without guardrails - SEC-bench Pro 88.2% (finding real vulnerabilities), ExploitGym 54.8% (exploitation), CWE-bench 71.0% (root-cause patching); built for days-long agentic engineering runs, it eliminates Terminal-Bench 4.0 cheating (0.0% success rate), resists 100% of Gray Swan indirect prompt-injection attacks (0.0% vs Argon's 0.7%), cuts unsupported claims ~2x vs Argon, and reduced overreach 26% / under-service 29%; staged launch through the Fairwind program - cyber defenders first this week, developers, businesses, and consumers via product surfaces soon, and not yet listed on the Gemini API or OpenRouter; introductory $2/$10 per 1M tokens with cached input at 95% off (~$0.10), reverting to $4/$20 after the intro period.",
+    highlight: "Announced Oct 28, 2026; Google DeepMind's next frontier model and strongest to date - #1 on Artificial Analysis Intelligence Index v5.0 at 59, with state-of-the-art cybersecurity; staged launch (cyber defenders first), introductory $2/$10 per 1M tokens (cached 95% off), reverting to $4/$20.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {
       terminalBench: "65.2% (AA)",
@@ -9738,7 +9738,7 @@ export const modelsData: ModelItem[] = [
     {
       url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/",
       publisher: "Google DeepMind",
-      title: "Gemini 4 Carbon: our next frontier model (announcement)",
+      title: "Gemini 4 Carbon announcement",
       publishedAt: "2026-10-28",
       accessedAt: "2026-10-28",
       sourceType: "announcement",
@@ -9747,7 +9747,7 @@ export const modelsData: ModelItem[] = [
     {
       url: "https://deepmind.google/models/gemini/",
       publisher: "Google DeepMind",
-      title: "DeepMind Gemini models page: official Gemini 4 Carbon comparison table (AA Index v5.0, Vals Index, SWE-sweep, FrontierSWE 2, Terminal-Bench 4.0 (AA), CWE-bench, ExploitGym, SEC-bench Pro)",
+      title: "DeepMind Gemini models page (official comparison table)",
       accessedAt: "2026-10-28",
       sourceType: "benchmark",
       live: true,
@@ -9755,7 +9755,7 @@ export const modelsData: ModelItem[] = [
     {
       url: "https://9to5google.com/2026/10/28/gemini-4-carbon-announcement/",
       publisher: "9to5Google",
-      title: "9to5Google: Google announces Gemini 4 Carbon (quotes official WebDev Arena #4 at 1769 (+89 elo) and post-intro $4/$20 pricing)",
+      title: "9to5Google: Google announces Gemini 4 Carbon",
       publishedAt: "2026-10-28",
       accessedAt: "2026-10-28",
       sourceType: "announcement",
