@@ -121,6 +121,9 @@ export default function HomeClient() {
       return true
     })
 
+    if (activeTab === "flagships") {
+      filtered.sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
+    }
     if (activeTab === "latest-drops") {
       filtered.sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
     }

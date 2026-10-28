@@ -21,7 +21,9 @@ const STATUS_DOT: Record<string, string> = {
 }
 
 export default function FlagshipsPage() {
-  const flagships = modelsData.filter((m) => m.isCompanyFlagship)
+  const flagships = modelsData
+    .filter((m) => m.isCompanyFlagship)
+    .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
