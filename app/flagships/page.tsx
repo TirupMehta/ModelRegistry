@@ -3,6 +3,7 @@ import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { modelsData } from "@/data/models"
+import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 
@@ -23,7 +24,7 @@ const STATUS_DOT: Record<string, string> = {
 export default function FlagshipsPage() {
   const flagships = modelsData
     .filter((m) => m.isCompanyFlagship)
-    .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
+    .sort((a, b) => Object.keys(companies).indexOf(a.companyId) - Object.keys(companies).indexOf(b.companyId))
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",

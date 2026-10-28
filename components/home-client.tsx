@@ -122,7 +122,7 @@ export default function HomeClient() {
     })
 
     if (activeTab === "flagships") {
-      filtered.sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
+      filtered.sort((a, b) => Object.keys(companies).indexOf(a.companyId) - Object.keys(companies).indexOf(b.companyId))
     }
     if (activeTab === "latest-drops") {
       filtered.sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
