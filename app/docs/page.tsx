@@ -66,7 +66,7 @@ function FieldRow({ name, type, desc }: { name: string; type: string; desc: stri
 
 function Note({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-md border-l-2 border-[#ff5d2e] bg-black/[0.02] dark:bg-white/[0.02] px-5 py-3.5 text-xs sm:text-[13px] font-sans text-black/65 dark:text-zinc-300 leading-relaxed">
+    <div className="rounded-md border border-[#ff5d2e]/25 bg-black/[0.02] dark:bg-white/[0.02] px-5 py-3.5 text-xs sm:text-[13px] font-sans text-black/65 dark:text-zinc-300 leading-relaxed">
       {children}
     </div>
   )
@@ -131,15 +131,14 @@ export default function DocsPage() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
 
-      {/* Wide docs shell - sidebar docked outside the narrow site column */}
-      {/* Margin rail - fixed outside the site column, hugging the content
-          with a constant gap, so the content keeps the exact title edge. */}
-      <aside className="hidden min-[1440px]:block fixed z-30 w-52 top-24 bottom-8 left-[calc((100vw-56rem)/2-232px)]">
+      <div className="mx-auto w-full max-w-[78rem] min-[1440px]:grid min-[1440px]:grid-cols-[11rem_minmax(0,56rem)] min-[1440px]:gap-4">
+      {/* Fixed reference rail starts on the header divider and stays in the
+          reserved left lane while the document scrolls. */}
+      <aside className="hidden min-[1440px]:block fixed top-[10.5rem] left-[max(1.5rem,calc((100vw-56rem)/2-11rem))] z-30 w-44">
         <DocsSidebar />
       </aside>
 
-      {/* True site column - identical box to every other page */}
-      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20 min-w-0 min-[1440px]:col-start-2 min-[1440px]:mx-0">
         {/* Breadcrumb */}
         <TextWithBlur>
           <div className="flex items-center gap-2.5 mb-7 text-xs font-sans tracking-wider leading-relaxed text-black/50 dark:text-zinc-400 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
@@ -630,15 +629,8 @@ ${SITE_URL}/api/check-updates`}
           </div>
         </div>
 
-        <footer className="py-6 text-center border-t border-black/10 dark:border-white/[0.08] mt-4">
-          <p className="text-[11px] font-sans text-black/50 dark:text-zinc-400">
-            FREE · UNAUTHENTICATED · MIT OPEN DATA ·{" "}
-            <Link href="/api/v1/models" className="hover:text-[#ff5d2e] transition-colors">
-              LIVE ENDPOINT
-            </Link>
-          </p>
-        </footer>
       </section>
+      </div>
     </main>
   )
 }

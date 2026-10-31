@@ -204,6 +204,7 @@ export function BounceSidebar({
                 href={href}
                 data-slot="bounce-sidebar-item"
                 data-active={isActive}
+                aria-current={isActive ? "location" : undefined}
                 onClick={() => select(index)}
                 className={itemClassName}
               >
@@ -214,6 +215,7 @@ export function BounceSidebar({
                 type="button"
                 data-slot="bounce-sidebar-item"
                 data-active={isActive}
+                aria-current={isActive ? "location" : undefined}
                 onClick={() => select(index)}
                 className={itemClassName}
               >

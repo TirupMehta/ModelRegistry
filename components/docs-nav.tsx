@@ -19,6 +19,7 @@ const INDEX = [
   { id: "badges", label: "Badges & health" },
   { id: "versioning", label: "Versioning" },
   { id: "labs", label: "Laboratories" },
+  { id: "citing", label: "Citing this registry" },
   { id: "support", label: "Support" },
 ]
 
@@ -29,18 +30,19 @@ function scrollToSection(id: string) {
 
 export function DocsIndexChips() {
   return (
-    <div className="min-[1440px]:hidden flex gap-1.5 overflow-x-auto pb-4 mb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+    <nav aria-label="On this page" className="min-[1440px]:hidden flex gap-1.5 overflow-x-auto pb-4 mb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
       {INDEX.map((item) => (
         <button
           key={item.id}
           type="button"
           onClick={() => scrollToSection(item.id)}
-          className="shrink-0 px-3 py-1.5 rounded-full border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] text-xs font-sans text-black/65 dark:text-zinc-300 active:border-[#ff5d2e]/50 cursor-pointer"
+          aria-controls={item.id}
+          className="shrink-0 px-3 py-1.5 rounded-full border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] text-xs font-sans text-black/65 dark:text-zinc-300 hover:border-[#ff5d2e]/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff5d2e] cursor-pointer"
         >
           {item.label}
         </button>
       ))}
-    </div>
+    </nav>
   )
 }
 
@@ -50,7 +52,6 @@ export default function DocsSidebar() {
     0,
     INDEX.findIndex((item) => item.id === active),
   )
-  const navRef = useRef<HTMLElement>(null)
   // Briefly owned by clicks: the smooth scroll flies past intermediate
   // sections, so ignore scroll-spy until the page settles on target.
   const lockUntilRef = useRef(0)
@@ -120,27 +121,6 @@ export default function DocsSidebar() {
     }
   }, [])
 
-  // Keep the active link visible inside the rail without moving the page.
-  useEffect(() => {
-    const nav = navRef.current
-    if (!nav) return
-    const link = nav.querySelector<HTMLElement>("[data-active='true']")
-    if (!link) return
-    const navRect = nav.getBoundingClientRect()
-    const linkRect = link.getBoundingClientRect()
-    if (linkRect.top < navRect.top) {
-      nav.scrollTo({
-        top: nav.scrollTop + linkRect.top - navRect.top - 8,
-        behavior: "smooth",
-      })
-    } else if (linkRect.bottom > navRect.bottom) {
-      nav.scrollTo({
-        top: nav.scrollTop + linkRect.bottom - navRect.bottom + 8,
-        behavior: "smooth",
-      })
-    }
-  }, [active])
-
   const jump = useCallback((id: string) => {
     stickRef.current = id
     settleYRef.current = -1
@@ -150,19 +130,20 @@ export default function DocsSidebar() {
   }, [])
 
   return (
-    <div className="flex flex-col min-h-0 h-full">
-      <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-black/35 dark:text-zinc-500 mb-3 px-1 shrink-0">
+    <div className="flex flex-col">
+      <div className="text-[11px] font-mono font-semibold uppercase tracking-[0.12em] text-black/60 dark:text-zinc-300 mb-2 px-1">
         Reference
       </div>
       <nav
-        ref={navRef}
-        className="overflow-y-auto min-h-0 [scrollbar-width:thin]"
+        aria-label="Reference sections"
+        className="text-[14.5px] [&_button]:!text-[14.5px] [&_button]:!px-1 [&_button]:!py-0 [&_button]:!leading-[1.3] [&_button]:focus-visible:outline [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-[#ff5d2e]"
       >
         <BounceSidebar
           items={INDEX.map((item) => item.label)}
           value={activeIndex}
           onChange={(index) => jump(INDEX[index].id)}
           dotColor="#ff5d2e"
+          className="gap-1"
         />
       </nav>
     </div>
