@@ -20,7 +20,7 @@ export default function HeaderNav() {
   const pathname = usePathname()
 
   return (
-    <nav className="grid w-full grid-cols-4 items-center gap-0.5 p-1 rounded-xl bg-black/[0.03] dark:bg-[#101318] border border-black/10 dark:border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] overflow-visible sm:inline-flex sm:w-auto sm:max-w-full sm:overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+    <nav className="grid w-full grid-cols-[repeat(4,minmax(0,1fr))] items-center gap-0.5 p-1 rounded-xl bg-black/[0.03] dark:bg-[#101318] border border-black/10 dark:border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] overflow-hidden sm:inline-flex sm:w-auto sm:max-w-full sm:overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
       {NAV_ITEMS.map(({ label, short, href }) => {
         const active = isLinkActive(pathname, href)
         return (
