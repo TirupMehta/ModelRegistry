@@ -92,7 +92,7 @@ export const companies: Record<string, Company> = {
     headquarters: "Hangzhou, China",
     accentColor: "#8b5cf6",
     description: "Massive open and proprietary foundation ecosystem, leading global charts with the Qwen3.8 series and 2.4T open MoE models.",
-    latestFlagship: "Qwen3.8 Max / 2.4T A95B",
+    latestFlagship: "Qwen3.8 2.4T A95B",
     latestReasoning: "Qwen3.8 Flash (Multimodal Reasoning)",
     openWeightsAdvocate: true,
   },
@@ -152,7 +152,7 @@ export const companies: Record<string, Company> = {
     headquarters: "Santa Clara, CA",
     accentColor: "#76b900",
     description: "Builders of the open Nemotron family of high-throughput models - flagship Nemotron 3 Ultra plus the new hybrid-Mamba Nemotron 3.5 Super VL (120B MoE with image and video understanding).",
-    latestFlagship: "Nemotron 3 Ultra",
+    latestFlagship: "Nemotron 3 Ultra 550B",
     openWeightsAdvocate: true,
   },
   xiaomi: {

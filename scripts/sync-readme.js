@@ -70,10 +70,14 @@ function generateMarkdownTable() {
   const rows = companyKeys.map((companyId) => {
     const company = companies[companyId]
     const flagship = modelsData.find((m) => m.companyId === companyId && m.isCompanyFlagship)
-    const nonFlagships = modelsData.filter((m) => m.companyId === companyId && m.id !== flagship?.id)
-    // Only a genuine latest checkpoint earns this cell. No fallback: showing a
-    // non-latest model here would mislabel it (same honesty rule as /companies).
-    const latestDrop = nonFlagships.find((m) => m.isLatestCheckpoint)
+    // Only a genuine latest checkpoint earns this cell, and it is resolved by
+    // date - never by array order, which is what made this column drift when a
+    // lab briefly carried more than one flag. `isLatestCheckpoint` may coincide
+    // with the flagship (see /docs); when it does, the cell stays empty rather
+    // than repeating the flagship in the next column over.
+    const latestDrop = modelsData
+      .filter((m) => m.companyId === companyId && m.isLatestCheckpoint && m.id !== flagship?.id)
+      .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
 
     const flagshipCell = flagship
       ? `[${flagship.name}](https://modelregistry.tirup.in/models/${flagship.id})`
@@ -97,7 +101,12 @@ function generateMarkdownTable() {
     "|:---|:---|:---|:---|:---|:---|",
   ]
 
-  return [...header, ...rows].join("\n")
+  // One line of prose replaces what would otherwise read as ten empty cells.
+  // House style bans the em dash, so this stays ASCII.
+  const footnote =
+    "\nWhere Latest Checkpoint is empty, the lab's newest release *is* its flagship (already listed to the left).\n"
+
+  return [...header, ...rows].join("\n") + footnote
 }
 
 function syncReadme(checkOnly = false) {

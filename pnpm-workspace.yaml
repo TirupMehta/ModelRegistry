@@ -2,6 +2,9 @@
 packages:
   - .
 allowBuilds:
+  # drizzle-kit bundles esbuild; without its install script the CLI has no
+  # platform binary and `pnpm db:generate` fails on a clean checkout.
+  esbuild: true
   unrs-resolver: true
 # Stop modern pnpm from rewriting the lockfile with its own version metadata
 # (managed by CI's frozen install instead). Unknown to pnpm 9 (ignored).

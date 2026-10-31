@@ -78,6 +78,8 @@ const errors = []
 const seenIds = new Set()
 const validCompanyIds = new Set(Object.keys(companies))
 const companyFlagshipCounts = {}
+const companyCheckpointCounts = {}
+const companyModelNames = {}
 
 modelsData.forEach((model, index) => {
   const prefix = `Model #${index + 1} [${model.id || "MISSING_ID"}]`
@@ -108,6 +110,13 @@ modelsData.forEach((model, index) => {
   } else {
     if (model.isCompanyFlagship) {
       companyFlagshipCounts[model.companyId] = (companyFlagshipCounts[model.companyId] || 0) + 1
+    }
+    if (model.isLatestCheckpoint) {
+      companyCheckpointCounts[model.companyId] = (companyCheckpointCounts[model.companyId] || 0) + 1
+    }
+    if (model.name) {
+      companyModelNames[model.companyId] = companyModelNames[model.companyId] || new Set()
+      companyModelNames[model.companyId].add(model.name)
     }
   }
 
@@ -335,6 +344,35 @@ for (const companyId of validCompanyIds) {
     errors.push(`Company '${companyId}' has NO model designated with 'isCompanyFlagship: true'.`)
   } else if (count > 1) {
     errors.push(`Company '${companyId}' has ${count} models marked as 'isCompanyFlagship: true'. Only 1 allowed.`)
+  }
+}
+
+// `isLatestCheckpoint` is a single-lab claim, exactly like `isCompanyFlagship`.
+// Without this rule, several records can carry the flag and consumers that
+// resolve it (README, /companies, home) silently pick by array order instead
+// of by release date.
+for (const companyId of validCompanyIds) {
+  const count = companyCheckpointCounts[companyId] || 0
+  if (count > 1) {
+    errors.push(
+      `Company '${companyId}' has ${count} models marked as 'isLatestCheckpoint: true'. Only 1 allowed - the lab's newest release.`
+    )
+  }
+}
+
+// Every lab's published `latestFlagship` string is rendered verbatim on
+// /companies and the README. If it does not match a model name, the registry
+// advertises a model it does not contain.
+for (const [companyId, company] of Object.entries(companies)) {
+  if (!company.latestFlagship) {
+    errors.push(`Company '${companyId}' has no 'latestFlagship' label.`)
+    continue
+  }
+  const names = companyModelNames[companyId]
+  if (!names || !names.has(company.latestFlagship)) {
+    errors.push(
+      `Company '${companyId}': latestFlagship '${company.latestFlagship}' does not match any model name in that lab. Valid: ${names ? Array.from(names).join(", ") : "(none)"}`
+    )
   }
 }
 

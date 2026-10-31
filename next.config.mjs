@@ -14,11 +14,11 @@ const nextConfig = {
         ],
       },
       {
-        source: "/api/:path*",
+        source: "/api/alerts/:path*",
         headers: [
-          { key: "Access-Control-Allow-Origin", value: "*" },
-          { key: "Access-Control-Allow-Methods", value: "GET,OPTIONS" },
-          { key: "Access-Control-Allow-Headers", value: "Accept, Accept-Version, Content-Length, Content-Type, Date, X-Api-Version" },
+          { key: "Access-Control-Allow-Origin", value: "https://modelregistry.tirup.in" },
+          { key: "Access-Control-Allow-Methods", value: "POST,OPTIONS" },
+          { key: "Access-Control-Allow-Headers", value: "Content-Type" },
         ],
       },
     ]
