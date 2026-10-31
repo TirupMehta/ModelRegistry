@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Header from "@/components/header"
-import Footer from "@/components/footer"
 import { modelsData } from "@/data/models"
 import { safeJsonLd } from "@/lib/utils"
 
@@ -68,7 +67,6 @@ export default function ChangelogPage() {
           ))}
         </ol>
       </section>
-      <Footer />
     </main>
   )
 }

@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Header from "@/components/header"
-import Footer from "@/components/footer"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
@@ -80,7 +79,6 @@ export default function LicensesPage() {
           ))}
         </div>
       </section>
-      <Footer />
     </main>
   )
 }

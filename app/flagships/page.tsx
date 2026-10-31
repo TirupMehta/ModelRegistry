@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Header from "@/components/header"
-import Footer from "@/components/footer"
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
@@ -74,7 +73,6 @@ export default function FlagshipsPage() {
           ))}
         </div>
       </section>
-      <Footer />
     </main>
   )
 }

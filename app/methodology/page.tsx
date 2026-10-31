@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Header from "@/components/header"
-import Footer from "@/components/footer"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
@@ -142,7 +141,6 @@ export default function MethodologyPage() {
           <p><strong className="text-black dark:text-white">Every 90 days</strong> - full freshness rotation: any flagship/latest label older than 90 days fails validation until re-verified; leaderboard comparisons re-evaluated and re-dated; a new dated audit note is published.</p>
         </div>
       </section>
-      <Footer />
     </main>
   )
 }

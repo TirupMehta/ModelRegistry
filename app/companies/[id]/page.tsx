@@ -338,14 +338,6 @@ export default async function CompanyPage({ params }: Props) {
           ))}
         </div>
 
-        <footer className="py-6 text-center border-t border-black/10 dark:border-white/[0.08] mt-8">
-          <p className="text-[11px] font-sans text-black/50 dark:text-zinc-400">
-            VERIFIED SPECIFICATIONS · SOURCED FROM OFFICIAL LAB RELEASES ·{" "}
-            <Link href="/companies" className="hover:text-[#ff5d2e] transition-colors">
-              ALL LABORATORIES
-            </Link>
-          </p>
-        </footer>
       </section>
     </main>
   )

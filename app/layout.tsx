@@ -3,6 +3,7 @@ import { sans, display } from "./fonts"
 import "./globals.css"
 import AmbientShader from "@/components/ambient-shader"
 import FeedbackInit from "@/components/feedback-init"
+import Footer from "@/components/footer"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
@@ -168,7 +169,7 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="ModelRegistry RSS Feed" href="/rss.xml" />
       </head>
       <body
-        className={`${sans.variable} ${display.variable} font-sans antialiased bg-[#f7f7f4] dark:bg-[#07080a] text-[#111215] dark:text-[#f4f5f7] transition-colors duration-250 relative min-h-screen`}
+        className={`${sans.variable} ${display.variable} font-sans antialiased bg-[#f7f7f4] dark:bg-[#07080a] text-[#111215] dark:text-[#f4f5f7] transition-colors duration-250 relative min-h-screen flex flex-col`}
         suppressHydrationWarning
       >
         {/* Procedural Canvas Architectural Lighting Shader */}
@@ -202,7 +203,8 @@ export default function RootLayout({
         />
 
         <FeedbackInit />
-        {children}
+        <div className="flex-1 flex flex-col [&>main]:!min-h-0">{children}</div>
+        <Footer />
         <Analytics />
         <SpeedInsights />
       </body>

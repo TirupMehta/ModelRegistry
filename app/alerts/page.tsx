@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Bell, Clock, FlaskConical, RefreshCw } from "lucide-react"
 import Header from "@/components/header"
-import Footer from "@/components/footer"
 import AlertsWaitlistForm from "@/components/alerts-waitlist-form"
 import { safeJsonLd } from "@/lib/utils"
 import { modelsData } from "@/data/models"
@@ -140,7 +139,6 @@ export default function AlertsPage() {
         </p>
       </section>
 
-      <Footer />
     </main>
   )
 }

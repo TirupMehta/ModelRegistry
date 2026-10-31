@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Header from "@/components/header"
-import Footer from "@/components/footer"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
@@ -103,7 +102,6 @@ export default function EditorialPolicyPage() {
           objective “best model” verdicts.
         </P>
       </section>
-      <Footer />
     </main>
   )
 }
