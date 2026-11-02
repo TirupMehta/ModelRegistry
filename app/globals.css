@@ -75,6 +75,52 @@ html.dark {
   animation: draw-check 0.35s ease-out forwards;
 }
 
+/* Landing-page waitlist popup. The panel mirrors the dossier modal (flat
+   paper, hairline border, coral accent) and enters with the site's heavy
+   settle rather than a default fade. */
+@keyframes alerts-popup-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes alerts-popup-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.alerts-popup-backdrop {
+  animation: alerts-popup-backdrop-in 220ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+.alerts-popup-panel {
+  animation: alerts-popup-panel-in 420ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+/* The panel itself takes programmatic focus so the first Tab lands on the
+   close control. It is a container, not an interactive target, so the global
+   focus ring must not wrap the whole dialog. */
+.alerts-popup-panel:focus,
+.alerts-popup-panel:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alerts-popup-backdrop,
+  .alerts-popup-panel {
+    animation: none;
+  }
+}
+
 html {
   scroll-behavior: smooth;
   height: 100%;

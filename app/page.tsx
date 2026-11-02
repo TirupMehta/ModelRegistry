@@ -1,5 +1,6 @@
 import Header from "@/components/header"
 import HomeClient from "@/components/home-client"
+import AlertsPopup from "@/components/alerts-popup"
 
 // Server shell: header and metadata render on the server. All
 // homepage interactivity (tabs, search, modals) lives in the HomeClient
@@ -9,6 +10,7 @@ export default function Home() {
     <main className="relative min-h-screen">
       <Header />
       <HomeClient />
+      <AlertsPopup />
     </main>
   )
 }

@@ -8,8 +8,19 @@ import {
   waitlistProblemMessage,
   type WaitlistProblem,
 } from "@/lib/waitlist/validation"
+import { markWaitlistJoined } from "@/lib/waitlist/client-storage"
 
 type Status = "idle" | "submitting" | "success"
+
+type AlertsWaitlistFormProps = {
+  /**
+   * `card` is the standalone form used on /alerts. `embedded` drops the outer
+   * card so the same controls can sit inside the landing-page popup without
+   * stacking a card on a card.
+   */
+  variant?: "card" | "embedded"
+  onSuccess?: () => void
+}
 
 type ServerResponse = {
   ok?: boolean
@@ -25,7 +36,11 @@ type ServerResponse = {
  * A success state is shown only after the API route confirms the row exists in
  * Postgres; every failure path leaves the form intact with the input preserved.
  */
-export default function AlertsWaitlistForm() {
+export default function AlertsWaitlistForm({
+  variant = "card",
+  onSuccess,
+}: AlertsWaitlistFormProps = {}) {
+  const embedded = variant === "embedded"
   const emailId = useId()
   const consentId = useId()
   const errorId = useId()
@@ -39,6 +54,10 @@ export default function AlertsWaitlistForm() {
   const [honeypot, setHoneypot] = useState("")
 
   const submitting = status === "submitting"
+  const describedBy =
+    [embedded ? null : `${emailId}-hint`, fieldError ? errorId : null]
+      .filter(Boolean)
+      .join(" ") || undefined
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -70,7 +89,9 @@ export default function AlertsWaitlistForm() {
       const data = (await response.json().catch(() => ({}))) as ServerResponse
 
       if (response.ok && data.ok) {
+        markWaitlistJoined()
         setStatus("success")
+        onSuccess?.()
         return
       }
 
@@ -120,7 +141,15 @@ export default function AlertsWaitlistForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#111317] p-4 sm:p-6 shadow-sm">
+    <form
+      onSubmit={handleSubmit}
+      noValidate
+      className={
+        embedded
+          ? ""
+          : "rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#111317] p-4 sm:p-6 shadow-sm"
+      }
+    >
       <div className="flex flex-col gap-1.5">
         <label htmlFor={emailId} className="text-xs font-sans font-medium text-black/70 dark:text-zinc-300">
           Email address
@@ -140,15 +169,17 @@ export default function AlertsWaitlistForm() {
             if (fieldError) setFieldError(null)
           }}
           aria-invalid={fieldError ? true : undefined}
-          aria-describedby={fieldError ? `${errorId} ${emailId}-hint` : `${emailId}-hint`}
+          aria-describedby={describedBy}
           placeholder="name@example.com"
           disabled={submitting}
           style={{ outline: "none" }}
           className="w-full px-3 py-2.5 text-sm font-sans bg-white dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.08] rounded-lg shadow-sm focus:outline-none focus:border-[#ff5d2e]/60 focus:ring-2 focus:ring-[#ff5d2e]/15 text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-zinc-500 transition-colors duration-150 disabled:opacity-60 disabled:cursor-not-allowed"
         />
-        <p id={`${emailId}-hint`} className="text-[11px] font-sans text-black/45 dark:text-zinc-500">
-          Stored so we can send the launch email. Not shared, not sold.
-        </p>
+        {!embedded && (
+          <p id={`${emailId}-hint`} className="text-[11px] font-sans text-black/45 dark:text-zinc-500">
+            Stored so we can send the launch email. Not shared, not sold.
+          </p>
+        )}
       </div>
 
       <div className="mt-4 flex items-center gap-2.5">
@@ -170,14 +201,16 @@ export default function AlertsWaitlistForm() {
           htmlFor={consentId}
           className="text-[13px] font-sans leading-5 text-black/70 dark:text-zinc-300 cursor-pointer select-none"
         >
-          Email me once when Model Alerts becomes available.
+          Email me once when Model Alerts launches.
         </label>
       </div>
 
-      <p className="mt-3 text-[11px] font-sans leading-5 text-black/45 dark:text-zinc-500">
-        This is a one-time launch announcement, not a subscription. Joining the waitlist does not turn on model
-        notifications, and you are not added to any mailing list beyond that single message.
-      </p>
+      {!embedded && (
+        <p className="mt-3 text-[11px] font-sans leading-5 text-black/45 dark:text-zinc-500">
+          This is a one-time launch announcement, not a subscription. Joining the waitlist does not turn on model
+          notifications, and you are not added to any mailing list beyond that single message.
+        </p>
+      )}
 
       {fieldError && (
         <p id={errorId} role="alert" className="mt-3 text-[11px] font-sans text-red-600 dark:text-red-400">
@@ -207,7 +240,9 @@ export default function AlertsWaitlistForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="mt-5 inline-flex w-full sm:w-auto items-center justify-center gap-1.5 h-9 px-4 text-xs font-sans font-medium tracking-wide bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white border border-black dark:border-white hover:border-[#ff5d2e] rounded-lg shadow-sm hover:shadow-md hover:shadow-[#ff5d2e]/20 active:scale-[0.97] transition-all duration-150 select-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-black dark:disabled:hover:bg-white disabled:active:scale-100"
+        className={`mt-5 inline-flex ${
+          embedded ? "w-full" : "w-full sm:w-auto"
+        } items-center justify-center gap-1.5 h-9 px-4 text-xs font-sans font-medium tracking-wide bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white border border-black dark:border-white hover:border-[#ff5d2e] rounded-lg shadow-sm hover:shadow-md hover:shadow-[#ff5d2e]/20 active:scale-[0.97] transition-all duration-150 select-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-black dark:disabled:hover:bg-white disabled:active:scale-100`}
       >
         {submitting ? (
           <>
