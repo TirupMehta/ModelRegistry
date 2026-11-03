@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { label: "Overview", short: "Overview", href: "/" },
   { label: "Laboratories", short: "Labs", href: "/companies" },
   { label: "Comparison", short: "Compare", href: "/leaderboard" },
-  { label: "Changelog", short: "Changes", href: "/timeline" },
+  { label: "Release timeline", short: "Timeline", href: "/timeline" },
 ] as const
 
 function isLinkActive(pathname: string, href: string) {

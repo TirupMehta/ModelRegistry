@@ -10,6 +10,8 @@ import { formatDate } from "@/lib/utils"
 import { folioFor, newestReleaseMonth } from "@/lib/registry"
 import { selectFeedback, tapFeedback, successFeedback } from "@/lib/feedback"
 import { ArrowUpRight, Terminal, Copy, Check, X, SearchX } from "lucide-react"
+import ModelFilterControls from "@/components/model-filter-controls"
+import { DEFAULT_MODEL_FILTERS, filterModels, type ModelFilters } from "@/lib/model-filters"
 
 type ViewTab = "flagships" | "latest-drops" | "open-weights" | "visual" | "all"
 
@@ -27,6 +29,7 @@ function isNewDrop(releaseDate: string, now: number = Date.now()): boolean {
 export default function HomeClient() {
   const [activeTab, setActiveTab] = useState<ViewTab>("flagships")
   const [searchQuery, setSearchQuery] = useState("")
+  const [filters, setFilters] = useState<ModelFilters>(DEFAULT_MODEL_FILTERS)
   const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
   const modalFolio = folioFor(activeModalModel, modelsData)
   const [curlCopied, setCurlCopied] = useState(false)
@@ -115,21 +118,23 @@ export default function HomeClient() {
         const matchCompany = model.companyName.toLowerCase().includes(q)
         const matchHighlight = model.highlight.toLowerCase().includes(q)
         const matchCategory = model.categoryLabel.toLowerCase().includes(q)
-        return matchName || matchCompany || matchHighlight || matchCategory
+        const matchModality = model.modalities.some((modality) => modality.toLowerCase().includes(q))
+        return matchName || matchCompany || matchHighlight || matchCategory || matchModality
       }
 
       return true
     })
 
-    if (activeTab === "flagships") {
-      filtered.sort((a, b) => Object.keys(companies).indexOf(a.companyId) - Object.keys(companies).indexOf(b.companyId))
+    const refined = filterModels(filtered, filters)
+    if (filters.sort === "default" && activeTab === "flagships") {
+      refined.sort((a, b) => Object.keys(companies).indexOf(a.companyId) - Object.keys(companies).indexOf(b.companyId))
     }
-    if (activeTab === "latest-drops") {
-      filtered.sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
+    if (filters.sort === "default" && activeTab === "latest-drops") {
+      refined.sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
     }
 
-    return filtered
-  }, [activeTab, searchQuery])
+    return refined
+  }, [activeTab, searchQuery, filters])
 
   // Filter counters
   const counts = useMemo(() => {
@@ -213,12 +218,12 @@ export default function HomeClient() {
             </button>
 
             <a
-              href="https://github.com/TirupMehta/ModelRegistry/blob/main/CONTRIBUTING.md"
+            href="/suggest"
               target="_blank"
               rel="noopener noreferrer"
               className="ml-auto hover:text-[#ff5d2e] transition-colors inline-flex items-center gap-1 font-medium text-[#ff5d2e] text-[11px] sm:text-xs shrink-0"
             >
-              <span>+ Add Model (60s)</span>
+              <span>+ Suggest a model</span>
               <ArrowUpRight size={10} />
             </a>
           </div>
@@ -304,7 +309,12 @@ export default function HomeClient() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="filter index..."
-                className="w-full pl-6 pr-12 py-2 text-xs font-sans bg-white dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.08] rounded-lg shadow-sm focus:outline-none focus:border-[#ff5d2e]/60 focus:ring-2 focus:ring-[#ff5d2e]/15 text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-zinc-500 transition-all duration-150"
+                className="h-[42px] w-full pl-6 pr-16 text-xs font-sans bg-white dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.08] rounded-lg shadow-sm focus:outline-none focus:border-[#ff5d2e]/60 focus:ring-2 focus:ring-[#ff5d2e]/15 text-black dark:text-white placeholder:text-black/55 dark:placeholder:text-zinc-400 transition-all duration-150"
+              />
+              <ModelFilterControls
+                filters={filters}
+                onChange={setFilters}
+                className="absolute right-1 top-1/2 z-30 -translate-y-1/2"
               />
               {searchQuery ? (
                 <button
@@ -313,19 +323,19 @@ export default function HomeClient() {
                     setSearchQuery("")
                   }}
                   aria-label="Clear search"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-5 h-5 rounded-md text-black/40 hover:text-black dark:text-zinc-500 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
+                  className="absolute right-7 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-5 h-5 rounded-md text-black/40 hover:text-black dark:text-zinc-500 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
                 >
                   <X size={12} />
                 </button>
               ) : (
-                <kbd className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center min-w-5 px-1.5 py-0.5 text-[11px] font-sans text-black/35 dark:text-zinc-400 bg-black/5 dark:bg-white/[0.06] border border-black/10 dark:border-white/[0.08] rounded-md pointer-events-none select-none">
+                <kbd className="absolute right-7 top-1/2 -translate-y-1/2 hidden sm:inline-flex items-center justify-center min-w-5 px-1.5 py-0.5 text-[11px] font-sans text-black/55 dark:text-zinc-400 bg-black/5 dark:bg-white/[0.06] border border-black/10 dark:border-white/[0.08] rounded-md pointer-events-none select-none">
                   /
                 </kbd>
               )}
             </div>
           </div>
           <div className="mb-5 flex items-center justify-between border-b border-black/10 dark:border-white/[0.08] pb-3 pt-1">
-            <p className="text-[11px] font-sans tabular-nums tracking-wide text-black/40 dark:text-zinc-500">
+            <p className="text-[11px] font-sans tabular-nums tracking-wide text-black/55 dark:text-zinc-400">
               {filteredModels.length} {filteredModels.length === 1 ? "model" : "models"} shown
               {searchQuery.trim() && (
                 <span> for &ldquo;{searchQuery.trim()}&rdquo;</span>
@@ -354,11 +364,12 @@ export default function HomeClient() {
                   ? `Nothing found for "${searchQuery.trim()}". Try a lab, model, or capability.`
                   : "Try a different tab - the full index is one click away."}
               </p>
-              {(searchQuery.trim() || activeTab !== "all") && (
+              {(searchQuery.trim() || activeTab !== "all" || Object.values(filters).some((value) => value !== "all" && value !== "" && value !== "default")) && (
                 <button
                   onClick={() => {
                     tapFeedback()
                     setSearchQuery("")
+                    setFilters(DEFAULT_MODEL_FILTERS)
                     setActiveTab("all")
                   }}
                   className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-black dark:text-white hover:border-[#ff5d2e]/50 hover:text-[#ff5d2e] active:scale-[0.98] transition-all cursor-pointer"

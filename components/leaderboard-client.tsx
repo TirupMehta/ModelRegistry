@@ -5,65 +5,44 @@ import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, ModelItem } from "@/data/models"
 import { leaderboardSpotlights, leaderboardMethodology } from "@/data/leaderboard"
+import { datasetRevision } from "@/data/revision"
 import { folioFor } from "@/lib/registry"
 import Link from "next/link"
-import { formatPrice } from "@/lib/utils"
+import { formatDate, formatPrice } from "@/lib/utils"
 import { tapFeedback } from "@/lib/feedback"
 import { Code, Brain, Maximize, Coins, Layers, ArrowUpRight } from "lucide-react"
+import ModelFilterControls from "@/components/model-filter-controls"
+import { DEFAULT_MODEL_FILTERS, filterModels, type ModelFilters } from "@/lib/model-filters"
 
 interface ComparisonCategory {
   title: string
   icon: any
   description: string
-  leader: string
   models: ModelItem[]
-  // Key into leaderboardMethodology for curated sections; omitted for
-  // sections ranked live from current registry figures.
+  // Only metric-sorted sections get ordinal positions.
+  ordered: boolean
+  // Key into leaderboardMethodology for editorial comparison sets.
   methodKey?: "reasoning" | "coding" | "value"
 }
 
 export default function LeaderboardClient() {
   const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
+  const [filters, setFilters] = useState<ModelFilters>(DEFAULT_MODEL_FILTERS)
   const modalFolio = folioFor(activeModalModel, modelsData)
 
-  // Freshness stamp for the intro copy: month of the newest tracked release.
-  const newestMonth = [...modelsData]
-    .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
-    ?.releaseDate.slice(0, 7)
-  const newestMonthLabel = newestMonth
-    ? new Date(`${newestMonth}-02`).toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric",
-      })
-    : ""
+  const datasetRevisedLabel = formatDate(datasetRevision.revisedAt)
 
   const openModel = (model: ModelItem) => {
     tapFeedback()
     setActiveModalModel(model)
   }
 
-  // Computable leaders stay accurate as registry pricing and context data
-  // change - no hardcoded figures to go stale.
-  const cheapestThree = [...modelsData]
-    .filter((m) => !m.pricingUnit)
-    .sort((a, b) => a.pricing.input - b.pricing.input)
-    .slice(0, 3)
-  const cheapestLeader = cheapestThree
-    .map((m) => `${m.name} ($${m.pricing.input}/M)`)
-    .join(" / ")
-  const contextThree = [...modelsData]
-    .sort((a, b) => b.contextWindowTokens - a.contextWindowTokens)
-    .slice(0, 3)
-  const contextLeader = contextThree
-    .map((m) => `${m.name} (${(m.contextWindowTokens / 1e6).toFixed(2)}M)`)
-    .join(" / ")
-
   const categories: ComparisonCategory[] = [
     {
       title: "Reasoning & STEM Intelligence",
       icon: Brain,
-      description: "Models with adaptive test-time compute, deep chain-of-thought, and autonomous multi-turn reasoning.",
-      leader: "Claude Fable 5.1 / GPT-6 Astra / Grok 4.6",
+      description: "A reviewed set of models with published reasoning and STEM results. Scores and test conditions vary by lab.",
+      ordered: false,
       methodKey: "reasoning",
       models: modelsData.filter((m) =>
         leaderboardSpotlights.reasoning.includes(m.id)
@@ -72,8 +51,8 @@ export default function LeaderboardClient() {
     {
       title: "Agentic Software Engineering & Coding",
       icon: Code,
-      description: "Frontier performance on long-horizon code refactoring, Terminal-Bench execution, and tool orchestration.",
-      leader: "Claude Fable 5.1 (Terminal-Bench 52.6%, lab-reported) / Gemini 3.8 Flash",
+      description: "A reviewed set of models with published software-engineering results. Compare only matching benchmarks and versions.",
+      ordered: false,
       methodKey: "coding",
       models: modelsData.filter((m) =>
         leaderboardSpotlights.coding.includes(m.id)
@@ -82,8 +61,8 @@ export default function LeaderboardClient() {
     {
       title: "High-Volume Value",
       icon: Layers,
-      description: "Models developers actually route at massive scale on OpenRouter - observed usage share in production, not benchmark scores.",
-      leader: "DeepSeek V4 Flash 0731 (49.9T tokens/30d observed) / MiMo-V2.5 (leading coding share)",
+      description: "Models in a reviewed OpenRouter usage snapshot. Routing share reflects observed traffic, not model quality.",
+      ordered: false,
       methodKey: "value",
       models: modelsData.filter((m) =>
         leaderboardSpotlights.value.includes(m.id)
@@ -92,22 +71,22 @@ export default function LeaderboardClient() {
     {
       title: "Open Weights & Self-Hosting",
       icon: Maximize,
-      description: "Publicly downloadable weights under open and community licenses for enterprise sovereignty and private clusters.",
-      leader: "Qwen3.8 2.4T A95B (2.4T MoE) / Llama 4 Maverick (128E MoE)",
+      description: "Models with published downloadable weights. License terms and hosting requirements vary by model.",
+      ordered: false,
       models: modelsData.filter((m) => m.openWeights).slice(0, 5),
     },
     {
       title: "Context Window Capacity",
       icon: Maximize,
-      description: "Maximum tokens accommodated in a single inference session without losing retrieval precision or needle recall.",
-      leader: contextLeader,
+      description: "Largest stated context limits in this dataset. A larger limit does not guarantee accurate recall across the full context.",
+      ordered: true,
       models: [...modelsData].sort((a, b) => b.contextWindowTokens - a.contextWindowTokens).slice(0, 5),
     },
     {
       title: "Inference Cost & Value",
       icon: Coins,
-      description: "Lowest input/output pricing per 1M tokens combined with near-frontier intelligence for production applications.",
-      leader: cheapestLeader,
+      description: "Lowest listed input prices per 1M tokens among token-priced models. Output, caching, and provider fees affect total cost.",
+      ordered: true,
       models: [...modelsData].filter((m) => !m.pricingUnit).sort((a, b) => a.pricing.input - b.pricing.input).slice(0, 5),
     },
   ]
@@ -123,17 +102,26 @@ export default function LeaderboardClient() {
             </h1>
             <p>
               Editorial snapshots comparing foundation models domain by domain
-              {newestMonthLabel ? `, reviewed ${newestMonthLabel}` : ""}. Leaders hold the
+              {datasetRevisedLabel ? `, using the dataset revised ${datasetRevisedLabel}` : ""}. Leaders hold the
               highest <em>published</em> score in each comparison - not a universal “best model”
               title. <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">Methodology</Link>
             </p>
           </TextWithBlur>
         </div>
 
+        <ModelFilterControls
+          filters={filters}
+          onChange={setFilters}
+          alwaysOpen
+          className="relative z-10 mb-6 h-[392px] w-full min-[390px]:h-[366px] sm:h-[292px] md:h-[276px]"
+        />
         {/* Categories Stack with Sibling Dimming */}
         <div className="flex flex-col list-hover-group space-y-6">
           {categories.map((category, index) => {
             const Icon = category.icon
+            // Each category has a metric-defined rank; shared filters must not
+            // replace that order with a global sort unrelated to its heading.
+            const visibleModels = filterModels(category.models, filters, true)
             const anchorId = category.title
               .toLowerCase()
               .replace(/[^a-z0-9]+/g, "-")
@@ -162,20 +150,9 @@ export default function LeaderboardClient() {
                     </div>
                   </div>
 
-                  {/* Leader Banner */}
-                  <div className="mb-4 py-2 px-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/10 dark:border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 text-xs font-sans">
-                    <span className="inline-flex items-center gap-1.5 text-[#ff5d2e] font-semibold uppercase tracking-[0.12em] text-[10px] shrink-0">
-                      <span className="w-1 h-1 rounded-full bg-[#ff5d2e]" />
-                      Comparison leader
-                    </span>
-                    <span className="font-medium tabular-nums text-black/70 dark:text-zinc-200 text-[11px] sm:text-xs break-words sm:text-right">
-                      {category.leader}
-                    </span>
-                  </div>
-
-                  {/* Contenders Table */}
+                  {/* Model set; ordinals appear only where rows use a stated metric sort. */}
                   <div className="space-y-2">
-                    {category.models.map((model, mIndex) => (
+                    {visibleModels.map((model, mIndex) => (
                       <div
                         key={model.id}
                         onClick={() => openModel(model)}
@@ -191,9 +168,13 @@ export default function LeaderboardClient() {
                         className="group cursor-pointer p-2.5 sm:p-3 rounded-xl border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.995] transition-all duration-150 flex items-center justify-between gap-2.5 sm:gap-3 text-xs"
                       >
                         <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-                          <span className="font-mono text-[11px] text-black/30 dark:text-zinc-600 w-5 shrink-0 tabular-nums transition-colors group-hover:text-[#ff5d2e]">
-                            {String(mIndex + 1).padStart(2, "0")}
-                          </span>
+                          {category.ordered ? (
+                            <span className="font-mono text-[11px] text-black/30 dark:text-zinc-600 w-5 shrink-0 tabular-nums transition-colors group-hover:text-[#ff5d2e]">
+                              {String(mIndex + 1).padStart(2, "0")}
+                            </span>
+                          ) : (
+                            <span className="w-1 h-1 rounded-full bg-black/25 dark:bg-white/25 shrink-0" aria-hidden="true" />
+                          )}
                           <span className="font-medium text-black dark:text-zinc-100 truncate group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
                             {model.name}
                           </span>
@@ -217,6 +198,7 @@ export default function LeaderboardClient() {
                         </div>
                       </div>
                     ))}
+                    {visibleModels.length === 0 && <p className="py-4 text-center text-xs text-black/50 dark:text-zinc-400">No models in this section match these filters.</p>}
                   </div>
 
                   {/* Section methodology + evaluation date */}
@@ -235,7 +217,7 @@ export default function LeaderboardClient() {
                     ) : (
                       <p>
                         <span className="font-medium text-black/60 dark:text-zinc-400">How this is judged: </span>
-                        Ranked live from current registry figures - no editorial shortlist, no fixed evaluation date.
+                        Calculated from this registry snapshot. Values were last revised {datasetRevisedLabel}; provider data is not fetched on each visit.
                       </p>
                     )}
                   </div>

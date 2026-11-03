@@ -3,6 +3,7 @@ import Link from "next/link"
 import Header from "@/components/header"
 import { modelsData } from "@/data/models"
 import { safeJsonLd } from "@/lib/utils"
+import ChangelogClient from "@/components/changelog-client"
 
 export const metadata: Metadata = {
   title: "Changelog - ModelRegistry record history",
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 export default function ChangelogPage() {
   const entries = modelsData
     .flatMap((m) =>
-      m.changeLog.map((e) => ({ ...e, modelId: m.id, modelName: m.name }))
+      m.changeLog.map((e) => ({ ...e, modelId: m.id, modelName: m.name, companyId: m.companyId, companyName: m.companyName }))
     )
     .sort((a, b) => b.date.localeCompare(a.date) || a.modelName.localeCompare(b.modelName))
 
@@ -43,29 +44,7 @@ export default function ChangelogPage() {
             /methodology
           </Link>
         </p>
-        <ol className="border-t border-black/10 dark:border-white/[0.08]">
-          {entries.map((e, i) => (
-            <li
-              key={`${e.date}-${e.modelId}-${i}`}
-              className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 py-3 border-b border-black/10 dark:border-white/[0.08] text-sm"
-            >
-              <span className="tabular-nums text-xs font-sans text-black/45 dark:text-zinc-500 shrink-0 sm:w-24">
-                {e.date}
-              </span>
-              <div className="min-w-0">
-                <Link
-                  href={`/models/${e.modelId}`}
-                  className="font-medium tracking-tight text-black dark:text-white hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors"
-                >
-                  {e.modelName}
-                </Link>
-                <p className="text-[13px] font-sans text-black/60 dark:text-zinc-400 leading-relaxed">
-                  {e.summary}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <ChangelogClient entries={entries} />
       </section>
     </main>
   )

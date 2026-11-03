@@ -6,19 +6,12 @@ import HeaderPrompt from "@/components/header-prompt"
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
 import { Rss, Code2, File, GitPullRequest, ArrowUpRight } from "lucide-react"
 import { modelsData } from "@/data/models"
-import { newestReleaseMonth } from "@/lib/registry"
+import { datasetRevision } from "@/data/revision"
+import { formatDate } from "@/lib/utils"
 
-// Server component: telemetry and layout render from the server-side
-// dataset (never shipped to the browser). All interactivity lives in the
-// header-*/ islands below. Freshness stamp derives from the newest tracked
-// release - stays accurate as the registry grows, with no manual edits.
-const newestMonth = newestReleaseMonth(modelsData)
-const newestReleaseLabel = newestMonth
-  ? new Date(`${newestMonth}-02`).toLocaleDateString("en-US", {
-      month: "short",
-      year: "numeric",
-    })
-  : ""
+// The revision date is the last actual change to registry data, not the
+// newest model release date or a claim that model facts update in real time.
+const revisedLabel = formatDate(datasetRevision.revisedAt)
 
 export default function Header() {
   return (
@@ -32,8 +25,8 @@ export default function Header() {
               <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-[#00e599]" />
             </span>
             <span className="truncate tracking-wide">
-              <span className="font-medium text-black/70 dark:text-zinc-200">Live index</span>
-              <span className="text-black/30 dark:text-zinc-500"> · {modelsData.length} models · Updated {newestReleaseLabel}</span>
+              <span className="font-medium text-black/70 dark:text-zinc-200">Curated dataset</span>
+              <span className="text-black/30 dark:text-zinc-500"> · {modelsData.length} models · Revised {revisedLabel}</span>
             </span>
           </div>
 
@@ -76,10 +69,8 @@ export default function Header() {
             {/* Contribute Action & Theme Toggle */}
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
               <a
-                href="https://github.com/TirupMehta/ModelRegistry"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Contribute a newly released model on GitHub"
+                href="/suggest"
+                title="Suggest a model for review"
                 className="group inline-flex items-center justify-center gap-1 sm:gap-1.5 h-7 px-2.5 sm:px-3 text-[11px] sm:text-xs font-sans font-medium tracking-wide bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white border border-black dark:border-white hover:border-[#ff5d2e] rounded-lg shadow-sm hover:shadow-md hover:shadow-[#ff5d2e]/20 active:scale-[0.97] transition-all duration-150 select-none cursor-pointer"
               >
                 <GitPullRequest

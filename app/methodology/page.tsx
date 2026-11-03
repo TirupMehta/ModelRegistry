@@ -32,7 +32,7 @@ export default function MethodologyPage() {
     "@type": "WebPage",
     name: "ModelRegistry methodology",
     url: "https://modelregistry.tirup.in/methodology",
-    dateModified: "2026-10-07",
+    dateModified: "2026-11-03",
     about: {
       "@type": "Dataset",
       name: "Frontier AI Models Specification Registry",
@@ -61,7 +61,7 @@ export default function MethodologyPage() {
           Methodology
         </h1>
         <p className="text-xs font-sans text-black/45 dark:text-zinc-500 mb-8">
-          Last updated 2026-10-07 · Full source audit:{" "}
+          Last updated 2026-11-03 · Full source audit:{" "}
           <Link href="https://github.com/TirupMehta/ModelRegistry/blob/main/docs/audit-2026-10-07.md" className="text-[#ff5d2e] hover:underline underline-offset-2">
             docs/audit-2026-10-07.md
           </Link>
@@ -92,7 +92,7 @@ export default function MethodologyPage() {
           <p><strong className="text-black dark:text-white">Verified</strong> - every core field (release date, context, output limit, parameters, license, pricing, modalities, benchmarks where published, flagship/latest status) was read and confirmed against live primary sources.</p>
           <p><strong className="text-black dark:text-white">Partially verified</strong> - one or more live official sources are cited, but full per-field rechecking is still pending. Figures are transcribed from the cited pages.</p>
           <p><strong className="text-black dark:text-white">Unverified</strong> - no working official source. Figures must be treated as unconfirmed; such records can never carry flagship or latest labels.</p>
-          <p><strong className="text-black dark:text-white">Retired</strong> - superseded and kept for reference only, with a pointer to its replacement.</p>
+          <p><strong className="text-black dark:text-white">Retired</strong> - explicitly marked as retired by the registry and kept for historical reference. This label alone does not confirm provider availability.</p>
         </div>
 
         <H2>What “flagship”, “latest”, and leaderboard places mean</H2>
@@ -117,9 +117,11 @@ export default function MethodologyPage() {
 
         <H2>Downgrade, correction, retirement, removal</H2>
         <P>
-          A record is downgraded (e.g. flagship → previous generation, or a label removed) when its
-          evidence lapses; corrected when a primary source contradicts a field; retired when superseded
-          (with a pointer); removed only for duplicates, hoaxes, or records that never had a verifiable
+          A newer release does not make an older model retired or unavailable. Older releases stay in
+          the registry with their release date and sources. We mark a model retired only when a primary
+          source says it was deprecated or discontinued; a replacement link is recorded separately.
+          A record is downgraded when its evidence lapses, corrected when a primary source contradicts
+          a field, and removed only for duplicates, hoaxes, or records that never had a verifiable
           official source. Every change is recorded in the model&apos;s changelog and the{" "}
           <Link href="/changelog" className="text-[#ff5d2e] hover:underline underline-offset-2">public changelog</Link>.
         </P>

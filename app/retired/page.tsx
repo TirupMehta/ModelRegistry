@@ -8,7 +8,7 @@ import { safeJsonLd } from "@/lib/utils"
 export const metadata: Metadata = {
   title: "Retired & archived AI models - ModelRegistry",
   description:
-    "Superseded registry records kept for reference, with their replacements. Nothing is currently retired.",
+    "Historical model records explicitly marked retired by the registry. A newer release alone does not mean an older model is discontinued.",
   alternates: { canonical: "https://modelregistry.tirup.in/retired" },
 }
 
@@ -34,14 +34,15 @@ export default function RetiredPage() {
           Retired &amp; archived
         </h1>
         <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-8 max-w-3xl">
-          Superseded records are kept here for reference - never silently deleted - with a pointer
-          to their replacement. Removal happens only for duplicates, hoaxes, or records that never
-          had a verifiable official source (see{" "}
+          Models explicitly marked retired stay available here as historical records. A replacement
+          is linked when known; a newer release alone does not mean an older model was discontinued.
+          Records are removed only for duplicates, hoaxes, or claims that never had a verifiable
+          official source (see{" "}
           <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">methodology</Link>).
         </p>
         {retired.length === 0 ? (
           <div className="rounded-xl border border-black/10 dark:border-white/[0.08] p-6 text-sm font-sans text-black/60 dark:text-zinc-400">
-            No retired records. Every tracked model currently has a live official source.
+            No models are currently marked retired in the registry. Older releases remain in the main index; this page does not report provider availability.
           </div>
         ) : (
           <div className="border-t border-black/10 dark:border-white/[0.08]">

@@ -297,6 +297,14 @@ export default function DocsPage() {
                 code={`curl -s ${SITE_URL}/api/v1/models/gpt-6-astra | head -c 300
 # 404 shape: {"status":"error","error":"Model 'xyz' not found.","suggestion":"...","suggestionPage":"/models/..."}`}
               />
+              <div className="mt-5 border-t border-black/10 pt-4 dark:border-white/[0.08]">
+                <div className="mb-2 flex flex-wrap items-center gap-2.5">
+                  <span className="inline-flex shrink-0 rounded border border-emerald-500/25 bg-emerald-500/10 px-2 py-0.5 font-mono text-[11px] font-bold tracking-wider text-emerald-600 dark:text-emerald-400">GET</span>
+                  <code className="break-all font-mono text-sm font-medium text-black dark:text-white">/api/v1/models/{"{id}"}/providers</code>
+                </div>
+                <p className="text-sm leading-relaxed text-black/60 dark:text-zinc-400">Returns current OpenRouter endpoint listings, provider-specific prices, and limits where an exact model mapping exists. This provider snapshot does not update or verify the lab-sourced facts in the registry. An unmapped record may still be available through other providers.</p>
+                <CodeBlock code={`curl -s ${SITE_URL}/api/v1/models/gpt-6-astra/providers`} />
+              </div>
             </TextWithBlur>
           </div>
 

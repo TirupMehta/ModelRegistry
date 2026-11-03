@@ -141,6 +141,9 @@ const openapi = JSON.parse(read("public/openapi.json"))
 check("openapi documents SourceRef", !!openapi.components?.schemas?.SourceRef)
 check("openapi documents ModelItem provenance", !!openapi.components?.schemas?.ModelItem?.properties?.fieldSources)
 check("openapi documents check-updates honesty fields", !!openapi.paths?.["/api/check-updates"]?.get?.responses?.["200"]?.content?.["application/json"]?.schema?.properties?.oldestVerificationDate)
+check("provider listing route is documented", !!openapi.paths?.["/api/v1/models/{id}/providers"]?.get)
+check("provider mapping stays explicit and separate", exists("data/provider-catalog.ts") && read("data/provider-catalog.ts").includes("openRouterModelIds"))
+check("provider listing route exists", exists("app/api/v1/models/[id]/providers/route.ts"))
 function routeFileFor(urlPath) {
   // /api/v1/models -> app/api/v1/models/route.ts ; /feed.json -> app/feed.json/route.ts ...
   const clean = urlPath.replace(/\{[^}]+\}/g, "__dyn__")

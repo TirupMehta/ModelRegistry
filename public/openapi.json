@@ -172,6 +172,42 @@
         }
       }
     },
+    "/api/v1/models/{id}/providers": {
+      "get": {
+        "summary": "Get current OpenRouter listings for a tracked model",
+        "description": "Returns current provider endpoints, provider-specific prices, and limits for an explicitly mapped OpenRouter model. This live provider snapshot is separate from lab-sourced registry facts and does not change their verification status. An unmapped model may still be available through other providers.",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" }, "description": "Stable ModelRegistry record id." }
+        ],
+        "responses": {
+          "200": {
+            "description": "Provider snapshot; status is listed, unmapped, no_endpoints, or lookup_failed. Listed endpoints do not guarantee serving availability.",
+            "headers": { "Cache-Control": { "schema": { "type": "string" }, "description": "Shared cache may serve provider data for five minutes and stale data while refreshing." } },
+            "content": { "application/json": { "schema": {
+              "type": "object",
+              "required": ["status", "modelId", "provider", "endpoints"],
+              "properties": {
+                "status": { "type": "string", "enum": ["listed", "unmapped", "no_endpoints", "lookup_failed"] },
+                "modelId": { "type": "string" },
+                "provider": { "type": "string", "example": "OpenRouter" },
+                "providerModelId": { "type": "string" },
+                "checkedAt": { "type": "string", "format": "date-time" },
+                "endpointCount": { "type": "integer" },
+                "endpoints": { "type": "array", "items": { "type": "object", "required": ["provider", "tier", "contextTokens", "maxOutputTokens", "inputUsdPerMillion", "outputUsdPerMillion"], "properties": {
+                  "provider": { "type": "string" },
+                  "tier": { "type": ["string", "null"] },
+                  "contextTokens": { "type": ["integer", "null"] },
+                  "maxOutputTokens": { "type": ["integer", "null"] },
+                  "inputUsdPerMillion": { "type": ["number", "null"] },
+                  "outputUsdPerMillion": { "type": ["number", "null"] }
+                } } }
+              }
+            } } }
+          },
+          "404": { "description": "No ModelRegistry record exists for this id." }
+        }
+      }
+    },
     "/api/v1/changes": {
       "get": {
         "summary": "List registry changelog entries (incremental sync)",

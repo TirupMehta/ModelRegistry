@@ -7,17 +7,17 @@ import Footer from "@/components/footer"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/site"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://modelregistry.tirup.in"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "ModelRegistry - The Open Frontier AI Model Registry",
+    default: SITE_TITLE,
     template: "%s | ModelRegistry",
   },
-  description:
-    "The open community registry tracking primary foundation flagships and research checkpoints across OpenAI, Anthropic, Google DeepMind, DeepSeek, Meta AI, xAI, Qwen, Mistral, Tencent, Z.ai, TypeSafe AI, and more.",
+  description: SITE_DESCRIPTION,
   keywords: [
     "ModelRegistry",
     "Model Registry",
@@ -64,29 +64,27 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://modelregistry.tirup.in",
-    title: "ModelRegistry - The Open Frontier AI Model Registry",
-    description:
-      "Real-time open community registry tracking the latest frontier AI flagships and research checkpoints across all premier AI labs.",
-    siteName: "ModelRegistry",
+    url: SITE_URL,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    siteName: SITE_NAME,
     images: [
       {
         url: "/api/og?theme=light",
         width: 1200,
         height: 630,
-        alt: "ModelRegistry - The Open Frontier AI Model Registry",
+        alt: SITE_TITLE,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ModelRegistry - The Open Frontier AI Model Registry",
-    description:
-      "Real-time open community registry tracking the latest frontier AI flagships and research checkpoints across all premier AI labs.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: ["/api/og?theme=light"],
   },
   alternates: {
-    canonical: "https://modelregistry.tirup.in",
+    canonical: SITE_URL,
     types: {
       "application/rss+xml": "/rss.xml",
     },
@@ -101,13 +99,12 @@ export default function RootLayout({
   const jsonLdWebSite = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "ModelRegistry",
-    url: "https://modelregistry.tirup.in",
-    description:
-      "Open public registry tracking primary foundation flagships and cutting-edge research checkpoints across all premier AI research laboratories.",
+    name: SITE_NAME,
+    url: SITE_URL,
+    description: SITE_DESCRIPTION,
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://modelregistry.tirup.in/?q={search_term_string}",
+      target: `${SITE_URL}/?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
   }
@@ -120,14 +117,14 @@ export default function RootLayout({
   const jsonLdDataset = {
     "@context": "https://schema.org",
     "@type": "Dataset",
-    "@id": "https://modelregistry.tirup.in/api/v1/models",
-    identifier: "https://modelregistry.tirup.in/api/v1/models",
+    "@id": `${SITE_URL}/api/v1/models`,
+    identifier: `${SITE_URL}/api/v1/models`,
     name: "Frontier AI Models Specification Registry",
     version: datasetRevision.datasetVersion,
     dateModified: datasetRevision.revisedAt,
     description:
       "Source-linked specifications, context limits, pricing, release dates, and lab-published benchmark metrics for active frontier AI foundation models and research checkpoints.",
-    url: "https://modelregistry.tirup.in",
+    url: SITE_URL,
     creator: {
       "@type": "Organization",
       name: "ModelRegistry Open Source Contributors",
@@ -140,22 +137,22 @@ export default function RootLayout({
       {
         "@type": "DataDownload",
         encodingFormat: "application/json",
-        contentUrl: "https://modelregistry.tirup.in/api/v1/models",
+        contentUrl: `${SITE_URL}/api/v1/models`,
       },
       {
         "@type": "DataDownload",
         encodingFormat: "application/rss+xml",
-        contentUrl: "https://modelregistry.tirup.in/rss.xml",
+        contentUrl: `${SITE_URL}/rss.xml`,
       },
       {
         "@type": "DataDownload",
         encodingFormat: "text/plain",
-        contentUrl: "https://modelregistry.tirup.in/llms.txt",
+        contentUrl: `${SITE_URL}/llms.txt`,
       },
       {
         "@type": "DataDownload",
         encodingFormat: "application/feed+json",
-        contentUrl: "https://modelregistry.tirup.in/feed.json",
+        contentUrl: `${SITE_URL}/feed.json`,
       },
     ],
   }

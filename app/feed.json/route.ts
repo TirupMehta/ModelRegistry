@@ -1,23 +1,23 @@
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site"
 
 export const dynamic = "force-dynamic"
 
 // JSON Feed 1.1 (https://www.jsonfeed.org/version/1.1/) generated from the
 // same dataset as /rss.xml - same items, same ordering, same revision stamp.
 export async function GET() {
-  const siteUrl = "https://modelregistry.tirup.in"
+  const siteUrl = SITE_URL
   const sorted = [...modelsData].sort(
     (a, b) => new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime()
   )
 
   const feed = {
     version: "https://jsonfeed.org/version/1.1",
-    title: "ModelRegistry - Frontier AI Models & Releases",
+    title: `${SITE_NAME} - Frontier AI Models & Releases`,
     home_page_url: siteUrl,
     feed_url: `${siteUrl}/feed.json`,
-    description:
-      "Source-linked registry of frontier AI model releases across all premier labs. Benchmark figures are lab-reported.",
+    description: SITE_DESCRIPTION,
     _dataset_version: datasetRevision.datasetVersion,
     _dataset_revised: datasetRevision.revisedAt,
     items: sorted.map((model) => ({

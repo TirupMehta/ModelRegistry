@@ -1,19 +1,13 @@
 import Link from "next/link"
 import { modelsData } from "@/data/models"
+import { datasetRevision } from "@/data/revision"
+import { formatDate } from "@/lib/utils"
 import FeedbackToggle from "@/components/feedback-toggle"
 import { ArrowUpRight } from "lucide-react"
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
-  const newest = [...modelsData].sort((a, b) =>
-    b.releaseDate.localeCompare(a.releaseDate)
-  )[0]
-  const updatedLabel = newest
-    ? new Date(`${newest.releaseDate.slice(0, 7)}-02`).toLocaleDateString(
-        "en-US",
-        { month: "short", year: "numeric" }
-      )
-    : ""
+  const revisedLabel = formatDate(datasetRevision.revisedAt)
 
   const linkClass = "text-black/55 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
 
@@ -38,6 +32,8 @@ export default function Footer() {
               <Link href="/leaderboard" className={linkClass}>Leaderboard</Link>
               <Link href="/companies" className={linkClass}>Labs</Link>
               <Link href="/timeline" className={linkClass}>Release timeline</Link>
+              <Link href="/alerts" className={linkClass}>Model Alerts</Link>
+              <Link href="/suggest" className={linkClass}>Suggest a model</Link>
             </nav>
 
             <nav aria-label="Registry resources" className="flex flex-col items-start gap-2 text-xs">
@@ -46,6 +42,7 @@ export default function Footer() {
               <Link href="/context" className={linkClass}>Context windows</Link>
               <Link href="/licenses" className={linkClass}>Licenses</Link>
               <Link href="/modalities" className={linkClass}>Modalities</Link>
+              <Link href="/retired" className={linkClass}>Retired models</Link>
             </nav>
 
             <nav aria-label="About and developer resources" className="flex flex-col items-start gap-2 text-xs">
@@ -73,7 +70,7 @@ export default function Footer() {
 
         <div className="flex flex-row items-center justify-between gap-3 border-t border-black/[0.07] dark:border-white/[0.07] pt-4 text-left">
           <p className="text-[11px] font-sans tabular-nums text-black/45 dark:text-zinc-500">
-            © {currentYear} ModelRegistry <span className="mx-1.5 opacity-40">·</span> {modelsData.length} models{updatedLabel && <> <span className="mx-1.5 opacity-40">·</span> Updated {updatedLabel}</>}
+            © {currentYear} ModelRegistry <span className="mx-1.5 opacity-40">·</span> {modelsData.length} models <span className="mx-1.5 opacity-40">·</span> Dataset revised {revisedLabel}
           </p>
           <div className="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-2 text-[11px] font-medium sm:gap-x-4">
             <Link href="/api/v1/models" className={`hidden sm:inline ${linkClass}`}>JSON API</Link>
