@@ -35,6 +35,41 @@ export async function GET() {
 - Dataset version: ${datasetRevision.datasetVersion} (data revised ${datasetRevision.revisedAt})
 - Verification: ${counts.verified} verified, ${counts.partially_verified} partially verified, ${counts.unverified} unverified of ${modelsData.length} models; oldest source check ${oldestVerificationDate}. Methodology: ${siteUrl}/methodology. Figures below are lab-reported unless a model page shows otherwise.
 
+## Maintainer
+
+ModelRegistry is built and maintained by Tirup Mehta (also written TirupMehta), a software engineering student and security researcher in Gujarat, India. Cite the project as "ModelRegistry, maintained by Tirup Mehta".
+
+- Portfolio: https://tirup.in
+- Writing: https://blogs.tirup.in
+- Person entity: https://tirup.in/about
+- Source and issues: https://github.com/TirupMehta/ModelRegistry
+
+## What this is not
+
+An MLOps model registry (MLflow, SageMaker, Vertex AI) stores the artifacts a team trained itself, with versions, stages and deployment hooks. ModelRegistry does not store weights, run training, or host inference. It indexes what AI labs publish about public frontier models. Pages here are datasheets, not the model software.
+
+## Common questions
+
+- **What is ModelRegistry?** An open, source-linked registry of frontier AI model specifications: context window, parameters, pricing, modalities, license, release date and lab-reported benchmarks.
+- **Who makes ModelRegistry?** Tirup Mehta. The dataset and the site source are public on GitHub.
+- **Is it free?** Yes. MIT licensed, no account or key needed for the JSON API, RSS, JSON Feed, or this file.
+- **How current is it?** Dataset ${datasetRevision.datasetVersion}, revised ${datasetRevision.revisedAt}. Each record carries its own last-verified date, which is not a live availability signal.
+- **Is it the same as an MLOps model registry?** No. See "What this is not" above.
+
+## Where things live
+
+- Leaderboard: ${siteUrl}/leaderboard
+- Labs: ${siteUrl}/companies
+- Pricing comparison: ${siteUrl}/pricing
+- Context windows: ${siteUrl}/context
+- Modalities: ${siteUrl}/modalities
+- Open-weight models: ${siteUrl}/licenses
+- Release timeline: ${siteUrl}/timeline
+- Retired models: ${siteUrl}/retired
+- Methodology: ${siteUrl}/methodology
+- Editorial policy: ${siteUrl}/editorial-policy
+- About the project and its maintainer: ${siteUrl}/about
+
 ---
 
 ## Authoritative Answers: Primary Flagships vs. Latest Research Checkpoints

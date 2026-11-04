@@ -8,6 +8,15 @@ import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/site"
+import {
+  CORE_KEYWORDS,
+  DATASET_ID,
+  ORGANIZATION_ID,
+  PERSON_ID,
+  organizationNode,
+  personNode,
+  websiteNode,
+} from "@/lib/entities"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
@@ -18,38 +27,12 @@ export const metadata: Metadata = {
     template: "%s | ModelRegistry",
   },
   description: SITE_DESCRIPTION,
-  keywords: [
-    "ModelRegistry",
-    "Model Registry",
-    "Open Frontier AI Models",
-    "Latest AI Models",
-    "Newest AI Model",
-    "AI Model Leaderboard",
-    "AI Model Pricing Comparison",
-    "Open Weights AI Models",
-    "OpenAI latest model",
-    "Anthropic latest model",
-    "Google latest model",
-    "Meta latest model",
-    "xAI latest model",
-    "GPT-6.1 Sol",
-    "GPT-6 Astra",
-    "Claude Opus 5.5",
-    "Claude Fable 5.1",
-    "Gemini 4 Argon",
-    "Muse Spark 1.3",
-    "DeepSeek V4.1 Flash",
-    "Grok 4.7",
-    "Qwen3.8",
-    "Kimi K3",
-    "GLM 5.3",
-    "Jev TypeSafe",
-    "AI Models List",
-    "Frontier LLMs",
-    "Public Model Registry",
-  ],
-  authors: [{ name: "ModelRegistry Contributors" }],
-  creator: "ModelRegistry",
+  keywords: CORE_KEYWORDS,
+  authors: [{ name: "Tirup Mehta", url: "https://tirup.in" }],
+  creator: "Tirup Mehta",
+  publisher: "ModelRegistry",
+  category: "Technology",
+  classification: "AI model registry, frontier model specifications, benchmark provenance",
   robots: {
     index: true,
     follow: true,
@@ -87,7 +70,20 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
     types: {
       "application/rss+xml": "/rss.xml",
+      "application/feed+json": "/feed.json",
     },
+  },
+  other: {
+    // Discovery hints some engines still read; mirrors what the sibling sites publish.
+    "ICBM": "23.0225, 72.5714",
+    "geo.position": "23.0225;72.5714",
+    "geo.region": "IN-GJ",
+    "geo.placename": "Gujarat, India",
+    "DC.title": SITE_TITLE,
+    "DC.creator": "Tirup Mehta",
+    "DC.subject": "AI model registry, frontier LLMs, model specifications, benchmarks",
+    "DC.description": SITE_DESCRIPTION,
+    "DC.language": "en",
   },
 }
 
@@ -96,19 +92,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const jsonLdWebSite = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: SITE_NAME,
-    url: SITE_URL,
-    description: SITE_DESCRIPTION,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${SITE_URL}/?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
-  }
-
   const sortedDates = modelsData.map((m) => m.releaseDate).sort()
   const temporalCoverage = sortedDates.length > 0
     ? `${sortedDates[0].slice(0, 7)}/${sortedDates[sortedDates.length - 1].slice(0, 7)}`
@@ -117,20 +100,25 @@ export default function RootLayout({
   const jsonLdDataset = {
     "@context": "https://schema.org",
     "@type": "Dataset",
-    "@id": `${SITE_URL}/api/v1/models`,
-    identifier: `${SITE_URL}/api/v1/models`,
+    "@id": DATASET_ID,
+    identifier: DATASET_ID,
     name: "Frontier AI Models Specification Registry",
     version: datasetRevision.datasetVersion,
     dateModified: datasetRevision.revisedAt,
     description:
       "Source-linked specifications, context limits, pricing, release dates, and lab-published benchmark metrics for active frontier AI foundation models and research checkpoints.",
     url: SITE_URL,
-    creator: {
-      "@type": "Organization",
-      name: "ModelRegistry Open Source Contributors",
-      url: "https://github.com/TirupMehta/ModelRegistry",
-      sameAs: ["https://github.com/TirupMehta/ModelRegistry"],
-    },
+    creator: { "@id": ORGANIZATION_ID },
+    maintainer: { "@id": PERSON_ID },
+    isAccessibleForFree: true,
+    keywords: [
+      "AI model registry",
+      "frontier models",
+      "model specifications",
+      "context window",
+      "model pricing",
+      "benchmarks",
+    ],
     license: "https://opensource.org/licenses/MIT",
     temporalCoverage,
     distribution: [
@@ -157,8 +145,17 @@ export default function RootLayout({
     ],
   }
 
+  // One graph rather than parallel scripts: the Person, Organization, WebSite
+  // and Dataset nodes reference each other by @id, which is what lets an
+  // indexer connect "who made this" to "what this is".
+  const jsonLdGraph = {
+    "@context": "https://schema.org",
+    "@graph": [personNode, organizationNode, websiteNode, jsonLdDataset],
+  }
+
   // NOTE: no sitewide FAQPage schema - structured Q&A is emitted only on
-  // pages that render the questions visibly (see app/companies/[id]/page.tsx).
+  // pages that render the questions visibly (see app/about and
+  // app/companies/[id]/page.tsx).
 
   return (
     <html lang="en" className="scroll-smooth no-transitions" suppressHydrationWarning>
@@ -175,11 +172,7 @@ export default function RootLayout({
         {/* Rich SEO & GEO Structured Data Matrix */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdWebSite) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdDataset) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdGraph) }}
         />
 
         {/* Inline script to set default light theme unless explicitly dark */}

@@ -1,8 +1,10 @@
 import { notFound, redirect } from "next/navigation"
 import { Metadata } from "next"
 import { modelsData } from "@/data/models"
+import { companies } from "@/data/companies"
 import { resolveCompanyFallback } from "@/lib/model-fallback"
 import { modelSiblings, modelFolio } from "@/lib/registry"
+import { ORGANIZATION_ID, PERSON_ID, WEBSITE_ID } from "@/lib/entities"
 import { safeJsonLd } from "@/lib/utils"
 import Header from "@/components/header"
 import ModelPageView from "@/components/model-page-view"
@@ -74,23 +76,41 @@ export default async function ModelPage({ params }: Props) {
   // JSON-LD: this page is a registry datasheet about the model (a
   // TechArticle), not the model software itself - so no Software-Application
   // type is emitted. Citations point at the primary sources behind the record.
+  // The publisher/maintainer refs connect the datasheet to the site and to the
+  // person who keeps it, so "who says this" resolves to a real entity instead
+  // of an anonymous page.
+  const company = companies[model.companyId]
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
+    "@id": `https://modelregistry.tirup.in/models/${model.id}#datasheet`,
     headline: `${model.name} - specs, context and benchmarks`,
     description: model.highlight,
     datePublished: model.releaseDate,
     dateModified: model.lastVerifiedAt,
-    author: {
-      "@type": "Organization",
-      name: "ModelRegistry",
-      url: "https://modelregistry.tirup.in",
-    },
+    author: { "@id": ORGANIZATION_ID },
+    publisher: { "@id": ORGANIZATION_ID },
+    maintainer: { "@id": PERSON_ID },
+    isPartOf: { "@id": WEBSITE_ID },
+    mainEntityOfPage: `https://modelregistry.tirup.in/models/${model.id}`,
     about: {
       "@type": "Organization",
       name: model.companyName,
+      ...(company?.website ? { url: company.website } : {}),
     },
     citation: model.sources.map((s) => s.url),
+    keywords: [
+      model.name,
+      `${model.name} specs`,
+      `${model.name} context window`,
+      `${model.name} pricing`,
+      model.companyName,
+      model.categoryLabel,
+      "AI model specifications",
+      "model datasheet",
+    ],
+    inLanguage: "en",
+    isAccessibleForFree: true,
     url: `https://modelregistry.tirup.in/models/${model.id}`,
   }
 

@@ -48,6 +48,7 @@ export default function Footer() {
             <nav aria-label="About and developer resources" className="flex flex-col items-start gap-2 text-xs">
               <h2 className="mb-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-black/35 dark:text-zinc-600">About &amp; data</h2>
               <Link href="/methodology" className={linkClass}>Methodology</Link>
+              <Link href="/about" className={linkClass}>About</Link>
               <Link href="/editorial-policy" className={linkClass}>Editorial policy</Link>
               <Link href="/changelog" className={linkClass}>Changelog</Link>
               <Link href="/docs" className={linkClass}>API &amp; docs</Link>
