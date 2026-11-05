@@ -31,7 +31,7 @@ export const companies: Record<string, Company> = {
     website: "https://openai.com",
     headquarters: "San Francisco, CA",
     accentColor: "#10a37f",
-    description: "Pioneered the AGI era with GPT-6 Astra, near-flagship GPT-6.1 Sol, the half-price mid-tier GPT-6.1 Terra (visual reasoning + precise computer use), the GPT-6 Sol/Luna efficiency tiers, and the Astra critical-capability cybersecurity model.",
+    description: "Pioneered the AGI era with GPT-6 Astra, near-flagship GPT-6.1 Sol, the half-price mid-tier GPT-6.1 Terra (visual reasoning + precise computer use), the GPT-6 Sol/Luna efficiency tiers, the Astra critical-capability cybersecurity model, and ChatGPT Images 2.6 (Flare + Sunburst) with one-step GIFs and SVG export.",
     latestFlagship: "GPT-6.1 Sol",
     latestReasoning: "GPT-6.1 Sol / GPT-6 Astra",
     openWeightsAdvocate: false,
@@ -116,9 +116,10 @@ export const companies: Record<string, Company> = {
     website: "https://hunyuan.tencent.com",
     headquarters: "Shenzhen, China",
     accentColor: "#00a9e0",
-    description: "Creator of the Hunyuan Hy3 and Hy4 series; current OpenRouter volume leader with efficient open MoE models for reasoning and agentic workflows.",
-    latestFlagship: "Hy3",
-    latestReasoning: "Hy4 Preview",
+    description:
+      "Creator of the Hunyuan Hy4 series: a 770B total / ~49B active MoE with native vision, 1M context, and CLI + GUI computer-use trained on Blender, CAD, and multi-app long-horizon tasks, at $0.83/$2.50 per 1M tokens.",
+    latestFlagship: "Hy4",
+    latestReasoning: "Hy4",
     openWeightsAdvocate: true,
   },
   "z-ai": {
@@ -174,9 +175,10 @@ export const companies: Record<string, Company> = {
     website: "https://www.moonshot.ai",
     headquarters: "Beijing, China",
     accentColor: "#facc15",
-    description: "Builders of the Kimi family - flagship Kimi K3.1 Pro (3T-class, 1M context, always-on thinking; full open weights pledged by Nov 4, 2026) - widely used for agent orchestration and long-context production workloads.",
+    description:
+      "Builders of the Kimi family - flagship Kimi K3.1 Pro (2.8T total / 104B active MoE, 1M context, always-on thinking, full weights published Nov 4, 2026 under a custom open-weight license) - widely used for agent orchestration and long-context production workloads.",
     latestFlagship: "Kimi K3.1 Pro",
-    openWeightsAdvocate: false,
+    openWeightsAdvocate: true,
   },
   kuaishou: {
     id: "kuaishou",
@@ -255,5 +257,17 @@ export const companies: Record<string, Company> = {
     description: "Diffusion-LLM specialists backed by Eric Schmidt, the Collisons, Karpathy, Nat Friedman, and Andrew Ng; Mercury 3 generates tokens in parallel at 1,000+ tok/s to outpace speed-optimized frontier models.",
     latestFlagship: "Mercury 3",
     openWeightsAdvocate: false,
+  },
+  ricursive: {
+    id: "ricursive",
+    name: "Ricursive Intelligence",
+    shortName: "Ricursive",
+    website: "https://ricursive.ai",
+    headquarters: "United States",
+    accentColor: "#a855f7",
+    description:
+      "Lab behind Ripple-65B Preview, a dense 65B Apache 2.0 model pretrained on 12T tokens with up to 1M context, self-reported 80.5 on Terminal-Bench 2.1, and day-one Together hosting at $0.20/$0.60 per 1M tokens.",
+    latestFlagship: "Ripple-65B Preview",
+    openWeightsAdvocate: true,
   },
 }
