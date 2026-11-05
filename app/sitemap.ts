@@ -104,15 +104,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   // 2. Canonical Dedicated Model Specification Pages (every tracked model)
+  //    lastModified is the LATER of release and last source verification, not
+  //    the release date alone. 64 of 65 records were re-verified after release;
+  //    reporting the release date told Google "unchanged since launch" and cost
+  //    these pages recrawl priority.
   const modelRoutes: MetadataRoute.Sitemap = modelsData.map((model) => {
     const isSotaOrFlagship =
       model.statusBadge.includes("FLAGSHIP") ||
       model.statusBadge.includes("SOTA") ||
       model.statusBadge.includes("NEWEST")
 
+    const released = new Date(model.releaseDate)
+    const verified = new Date(model.lastVerifiedAt)
+    const lastModified =
+      !isNaN(verified.getTime()) && verified > released ? verified : released
+
     return {
       url: `${baseUrl}/models/${model.id}`,
-      lastModified: new Date(model.releaseDate),
+      lastModified,
       changeFrequency: "weekly",
       priority: isSotaOrFlagship ? 0.9 : 0.8,
     }
@@ -120,46 +129,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // 3. Laboratory Profile Pages (one per tracked lab)
   const labRoutes: MetadataRoute.Sitemap = Object.keys(companies).map((companyId) => {
-    const newest = modelsData
-      .filter((m) => m.companyId === companyId)
+    const owned = modelsData.filter((m) => m.companyId === companyId)
+    const newest = owned
+      .slice()
       .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
+    // Same rule as model pages: a lab profile changes when any of its records
+    // was last verified, which is usually later than the newest release.
+    const newestVerified = owned.reduce((latest, m) => {
+      const d = new Date(m.lastVerifiedAt)
+      return !isNaN(d.getTime()) && d > latest ? d : latest
+    }, new Date(0))
+    const released = newest ? new Date(newest.releaseDate) : now
+    const lastModified =
+      newestVerified.getTime() > 0 && newestVerified > released ? newestVerified : released
+
     return {
       url: `${baseUrl}/companies/${companyId}`,
-      lastModified: newest ? new Date(newest.releaseDate) : now,
+      lastModified,
       changeFrequency: "weekly",
       priority: 0.8,
     }
   })
 
-  // 4. Machine-Readable & Agent Discovery Feeds (crawlable text content only -
-  // JSON APIs and CLI text endpoints are intentionally excluded to conserve
-  // crawl budget for indexable pages)
-  const feedRoutes: MetadataRoute.Sitemap = [
-    {
-      url: `${baseUrl}/llms.txt`,
-      lastModified: revisedAt,
-      changeFrequency: "daily",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/llms-full.txt`,
-      lastModified: revisedAt,
-      changeFrequency: "daily",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/rss.xml`,
-      lastModified: revisedAt,
-      changeFrequency: "hourly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/feed.json`,
-      lastModified: revisedAt,
-      changeFrequency: "hourly",
-      priority: 0.7,
-    },
-  ]
+  // 4. Machine-readable & agent discovery feeds (/llms.txt, /llms-full.txt,
+  // /rss.xml, /feed.json) are intentionally NOT listed here. A sitemap must
+  // advertise canonical HTML pages you want indexed; feeding plain-text and
+  // JSON endpoints into it spends this subdomain's crawl budget on documents
+  // Google will never rank, which is a direct cause of "Discovered - currently
+  // not indexed" on the pages that do matter. They stay discoverable through
+  // robots.txt, llms.txt, and the page footers.
 
-  return [...coreRoutes, ...labRoutes, ...modelRoutes, ...feedRoutes]
+  return [...coreRoutes, ...labRoutes, ...modelRoutes]
 }
