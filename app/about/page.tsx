@@ -50,8 +50,6 @@ function A({ href, children }: { href: string; children: React.ReactNode }) {
 }
 
 export default function AboutPage() {
-  const verified = modelsData.filter((m) => m.verificationStatus === "verified").length
-  const partially = modelsData.filter((m) => m.verificationStatus === "partially_verified").length
   const labs = new Set(modelsData.map((m) => m.companyId)).size
 
   // Questions below are rendered visibly, which is the only condition under
@@ -68,7 +66,7 @@ export default function AboutPage() {
     },
     {
       q: "Where does the data come from?",
-      a: "Lab announcements, model cards, and provider pricing pages. Every record carries its sources, a verification status, and a last-verified date. The methodology page defines each verification level and the inclusion rules.",
+      a: "Lab announcements, model cards, and provider pricing pages. Every record carries its sources, per-field citations, and a last-verified date. The methodology page explains how sources are chosen and how to report an error.",
     },
     {
       q: "Is ModelRegistry free and open source?",
@@ -76,7 +74,7 @@ export default function AboutPage() {
     },
     {
       q: "How current is the dataset?",
-      a: `The current dataset revision is ${datasetRevision.datasetVersion}, last updated ${datasetRevision.revisedAt}, covering ${String(modelsData.length)} models across ${String(labs)} labs. ${String(verified)} records are fully verified and ${String(partially)} are partially verified.`,
+      a: `The current dataset revision is ${datasetRevision.datasetVersion}, last updated ${datasetRevision.revisedAt}, covering ${String(modelsData.length)} models across ${String(labs)} labs. Every record cites primary sources with per-field citations and a last-verified date.`,
     },
   ]
 
@@ -181,9 +179,9 @@ export default function AboutPage() {
         <H2>{faqs[2].q}</H2>
         <P>
           Lab announcements, model cards and provider pricing pages, each linked on the model page
-          itself. Records carry a verification status and a last-verified date rather than an
-          implied &ldquo;live&rdquo; badge. The <A href="/methodology">methodology</A> defines the
-          inclusion standard and each level, and the{" "}
+          itself. Records carry per-field citations and a last-verified date rather than an
+          implied &ldquo;live&rdquo; badge. The <A href="/methodology">methodology</A> explains the
+          inclusion standard, and the{" "}
           <A href="/editorial-policy">editorial policy</A> covers corrections and conflicts.
         </P>
 
@@ -199,8 +197,8 @@ export default function AboutPage() {
         <H2>{faqs[4].q}</H2>
         <P>
           The current revision is {datasetRevision.datasetVersion}, last updated{" "}
-          {datasetRevision.revisedAt}. It covers {modelsData.length} models across {labs} labs, of
-          which {verified} are fully verified and {partially} partially verified. The{" "}
+          {datasetRevision.revisedAt}. It covers {modelsData.length} models across {labs} labs, each
+          with primary sources and per-field citations. The{" "}
           <A href="/changelog">changelog</A> records every revision, and the{" "}
           <A href="/timeline">release timeline</A> shows when each model entered the registry.
         </P>

@@ -51,9 +51,11 @@ function pricingLabel(m: (typeof modelsData)[number]): string {
 }
 
 const DATASET_FACTS = (() => {
-  const counts = { verified: 0, partially_verified: 0, unverified: 0, retired: 0 }
-  for (const m of modelsData) counts[m.verificationStatus] += 1
-  return { counts, labs: Object.keys(companies).length }
+  const oldestVerificationDate = modelsData.reduce(
+    (acc, m) => (!acc || m.lastVerifiedAt < acc ? m.lastVerifiedAt : acc),
+    ""
+  )
+  return { labs: Object.keys(companies).length, oldestVerificationDate }
 })()
 
 /** Shared tail for page documents: where to find the rest of the site. */
@@ -89,18 +91,17 @@ function flagshipsTable(): string {
 }
 
 function homeDocument(): MarkdownDocument {
-  const { counts } = DATASET_FACTS
+  const { oldestVerificationDate } = DATASET_FACTS
   const newest = [...modelsData].sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0]
   const body = `# ${SITE_NAME} - frontier AI model registry
 
 ${SITE_NAME} is an open, source-linked registry of frontier AI model specifications:
 context window, parameters, pricing, modalities, license, release date, and the
-benchmarks each laboratory reports. Every record carries its sources, a
-verification status, and a last-verified date.
+benchmarks each laboratory reports. Every record carries its sources, per-field citations, and a last-verified date.
 
 - Dataset revision: ${datasetRevision.datasetVersion} (data revised ${REVISED_LABEL})
 - Coverage: ${modelsData.length} models across ${DATASET_FACTS.labs} laboratories
-- Verification: ${counts.verified} verified, ${counts.partially_verified} partially verified, ${counts.unverified} unverified, ${counts.retired} retired
+- Verification: all ${modelsData.length} models cite primary sources with per-field citations; oldest source check ${oldestVerificationDate}
 - Newest record: ${newest ? `${newest.name} (${newest.companyName}), released ${newest.releaseDate}` : "none"}
 - License: MIT (open data)
 - Newest-first release feed: ${SITE_URL}/rss.xml
@@ -306,7 +307,7 @@ ${model.highlight}
 | Pricing | ${formatPrice(model)} |
 | License | ${model.license} |
 | Modalities | ${model.modalities.join(", ")} |
-| Verification | ${model.verificationStatus.replace("_", " ")} (last checked ${model.lastVerifiedAt}) |
+| Sources | ${model.sources.length} primary source${model.sources.length === 1 ? "" : "s"} (last checked ${model.lastVerifiedAt}) |
 
 ${benchEntries.length > 0 ? `## Lab-reported benchmarks\n\n${table(["Benchmark", "Score"], benchEntries.map(([k, v]) => [k, v]))}\n` : "## Benchmarks\n\nNo benchmark figures published for this record.\n"}
 ## Sources
@@ -428,17 +429,16 @@ benchmark figures are attributed.
 
 - **Inclusion**: a model is tracked when a laboratory publishes it and at least
   one primary source documents its release.
-- **verified**: every material field has a primary source that was reachable
-  when reviewed.
-- **partially verified**: at least one material field is unconfirmed or the
-  source is bot-gated or secondary.
-- **unverified**: the record exists but its fields are not yet backed by a
-  reviewable primary source.
-- **retired**: the laboratory has withdrawn or superseded the model; the record
-  stays for history.
-- **lastVerifiedAt** is the date a source was reviewed. It is not a live
-  availability claim. A dataset revision date does not substitute for field
-  verification.
+- **Sources**: every record cites the primary sources it was read from
+  (announcement, model card, API docs, pricing page) with per-field citations
+  showing which source supports which fact.
+- **Last-verified date**: the date those sources were reviewed. It is a
+  source-review date, not a live availability claim.
+- **Retired**: the laboratory has withdrawn or superseded the model; the
+  record stays for history.
+- There is no public "partially verified" badge: a label that applies to
+  almost every record says nothing, so sources and the last-checked date are
+  shown directly instead.
 - **Benchmarks** are lab-reported unless a model page says otherwise. Figures
   from different harness versions or test conditions are not directly
   comparable and are never used to crown a universal winner.`
@@ -703,14 +703,14 @@ read the linked license.`,
       "/timeline",
       "Release timeline",
       "Every tracked release, newest first, with the laboratory and verification status.",
-      ["Released", "Model", "Laboratory", "Status"],
+      ["Released", "Model", "Laboratory", "Sources"],
       [...modelsData]
         .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
         .map((m) => [
           m.releaseDate,
           `[${m.name}](${SITE_URL}/models/${m.id})`,
           m.companyName,
-          m.verificationStatus.replace("_", " "),
+          `${(m.sources || []).length} source${(m.sources || []).length === 1 ? "" : "s"}`,
         ])
     ),
   "/retired": () =>

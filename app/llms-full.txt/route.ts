@@ -61,8 +61,8 @@ EXECUTIVE KNOWLEDGE SUMMARY (GEO GROUNDING)
     text += `  Pricing: ${formatPrice(model)}${model.pricingUnit ? "" : " per 1M tokens"}\n`
     text += `  Primary Flagship: ${model.isCompanyFlagship ? "YES" : "NO"}\n`
     text += `  Latest Checkpoint: ${model.isLatestCheckpoint ? "YES" : "NO"}\n`
-    text += `  Verification: ${model.verificationStatus} (last checked ${model.lastVerifiedAt})\n`
-    text += `  Sources: ${model.sources.map((s) => `${s.title} <${s.url}>`).join(" | ")}\n`
+    text += `  Sources: ${model.sources.length} primary source${model.sources.length === 1 ? "" : "s"} (last checked ${model.lastVerifiedAt})\n`
+    text += `  Source URLs: ${model.sources.map((s) => `${s.title} <${s.url}>`).join(" | ")}\n`
     text += `  Highlight: ${model.highlight}\n`
     if (Object.keys(model.benchmarks).length > 0) {
       text += `  Benchmarks (lab-reported): ${JSON.stringify(model.benchmarks)}\n`

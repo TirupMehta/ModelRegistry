@@ -2,25 +2,6 @@ import { ExternalLink } from "lucide-react"
 import type { ModelItem, SourcedField } from "@/data/models"
 import { formatDate } from "@/lib/utils"
 
-const verificationCopy: Record<ModelItem["verificationStatus"], { label: string; detail: string }> = {
-  verified: {
-    label: "Verified",
-    detail: "Core details were checked against primary sources.",
-  },
-  partially_verified: {
-    label: "Partially verified",
-    detail: "Some details still need a full source recheck.",
-  },
-  unverified: {
-    label: "Unverified",
-    detail: "Treat these details as unconfirmed until sources are checked.",
-  },
-  retired: {
-    label: "Retired record",
-    detail: "Kept for release history; provider availability may have changed.",
-  },
-}
-
 const fieldLabels: Record<SourcedField, string> = {
   releaseDate: "Release date",
   contextWindow: "Context window",
@@ -40,11 +21,11 @@ export function reportIssueUrl(modelId: string) {
 }
 
 export default function VerificationSection({ model }: { model: ModelItem }) {
-  const verification = verificationCopy[model.verificationStatus]
   const fieldSources = Object.entries(model.fieldSources ?? {}).flatMap(([field, refs]) =>
     (refs ?? []).map((source) => ({ field: field as SourcedField, source }))
   )
   const sourcedFieldCount = new Set(fieldSources.map(({ field }) => field)).size
+  const isRetired = model.verificationStatus === "retired"
 
   return (
     <section
@@ -55,8 +36,15 @@ export default function VerificationSection({ model }: { model: ModelItem }) {
         Sources &amp; verification
       </h3>
       <p className="text-xs font-sans text-black/70 dark:text-zinc-300 leading-5 mb-3">
-        <strong className="font-semibold text-black dark:text-white">{verification.label}</strong>
-        <span> · {verification.detail}</span>
+        <strong className="font-semibold text-black dark:text-white">
+          {isRetired ? "Retired record" : `${model.sources.length} primary source${model.sources.length === 1 ? "" : "s"} cited`}
+        </strong>
+        <span className="text-black/50 dark:text-zinc-400">
+          {" "}
+          {isRetired
+            ? "Kept for release history; provider availability may have changed."
+            : "Per-field citations below; figures are lab-reported unless a cited source states otherwise."}
+        </span>
         <span className="block text-black/50 dark:text-zinc-400">
           Last checked {formatDate(model.lastVerifiedAt)}. This is a source review date, not a live availability check.
         </span>
@@ -64,7 +52,7 @@ export default function VerificationSection({ model }: { model: ModelItem }) {
       {fieldSources.length > 0 && (
         <details className="mb-3 text-xs font-sans">
           <summary className="w-fit cursor-pointer text-black/60 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347]">
-            Sources by detail · {sourcedFieldCount} fields
+            Sources by detail ·             Sources by detail - {sourcedFieldCount} fields
           </summary>
           <ul className="mt-2 space-y-1.5">
             {fieldSources.map(({ field, source }) => (
@@ -96,7 +84,7 @@ export default function VerificationSection({ model }: { model: ModelItem }) {
               <span className="font-medium">{s.title}</span>
               <ExternalLink size={11} className="shrink-0 opacity-50" />
             </a>
-            <span className="text-black/45 dark:text-zinc-500"> · {s.publisher} · checked {formatDate(s.accessedAt)}</span>
+            <span className="text-black/45 dark:text-zinc-500"> - {s.publisher} - checked {formatDate(s.accessedAt)}</span>
           </li>
         ))}
       </ul>

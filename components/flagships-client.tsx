@@ -7,11 +7,6 @@ import { companies } from "@/data/companies"
 import ModelFilterControls from "@/components/model-filter-controls"
 import { DEFAULT_MODEL_FILTERS, filterModels, type ModelFilters } from "@/lib/model-filters"
 
-const STATUS_DOT: Record<string, string> = {
-  verified: "bg-emerald-500", partially_verified: "bg-amber-500",
-  unverified: "bg-zinc-400", retired: "bg-black/30",
-}
-
 export default function FlagshipsClient() {
   const [filters, setFilters] = useState<ModelFilters>(DEFAULT_MODEL_FILTERS)
   const flagships = useMemo(() => {
@@ -27,7 +22,6 @@ export default function FlagshipsClient() {
     <div className="border-t border-black/10 dark:border-white/[0.08]">
       {flagships.map((model) => <div key={model.id} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 py-3 border-b border-black/10 dark:border-white/[0.08] text-sm">
         <span className="flex items-center gap-2 min-w-0 sm:w-64 shrink-0">
-          <span title={model.verificationStatus.replace(/_/g, " ")} className={`w-1.5 h-1.5 rounded-full shrink-0 ${STATUS_DOT[model.verificationStatus]}`} />
           <Link href={`/models/${model.id}`} className="font-medium tracking-tight text-black dark:text-white hover:text-[#ff5d2e] truncate">{model.name}</Link>
         </span>
         <Link href={`/companies/${model.companyId}`} className="text-xs font-sans text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] shrink-0">{model.companyName}</Link>

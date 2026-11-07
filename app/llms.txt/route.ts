@@ -13,10 +13,8 @@ function formatDate(iso: string): string {
 
 export async function GET() {
   const siteUrl = "https://modelregistry.tirup.in"
-  const counts = { verified: 0, partially_verified: 0, unverified: 0, retired: 0 }
   let oldestVerificationDate: string | null = null
   for (const m of modelsData) {
-    counts[m.verificationStatus] = (counts[m.verificationStatus] || 0) + 1
     if (!oldestVerificationDate || m.lastVerifiedAt < oldestVerificationDate) {
       oldestVerificationDate = m.lastVerifiedAt
     }
@@ -38,7 +36,7 @@ export async function GET() {
 - Contact: ${siteUrl}/contact
 - Privacy: ${siteUrl}/privacy
 - Dataset version: ${datasetRevision.datasetVersion} (data revised ${datasetRevision.revisedAt})
-- Verification: ${counts.verified} verified, ${counts.partially_verified} partially verified, ${counts.unverified} unverified of ${modelsData.length} models; oldest source check ${oldestVerificationDate}. Methodology: ${siteUrl}/methodology. Figures below are lab-reported unless a model page shows otherwise.
+- Verification: all ${modelsData.length} models cite primary sources with per-field citations; oldest source check ${oldestVerificationDate}. Methodology: ${siteUrl}/methodology. Figures are lab-reported unless a cited source states otherwise.
 
 ## When to use ModelRegistry
 

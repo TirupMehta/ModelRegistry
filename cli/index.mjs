@@ -223,10 +223,6 @@ function formatPrice(model) {
   return `$${input}/$${output} per 1M`
 }
 
-function verificationLabel(status) {
-  return String(status ?? "").replace(/_/g, " ")
-}
-
 /* ---------------------------------------------------------------- commands */
 
 async function commandModels(options, context) {
@@ -253,14 +249,14 @@ async function commandModels(options, context) {
   console.log("")
   console.log(
     table(
-      ["LAB", "MODEL", "RELEASED", "CONTEXT", "PRICE", "VERIFICATION"],
+      ["LAB", "MODEL", "RELEASED", "CONTEXT", "PRICE", "SOURCES"],
       models.map((model) => [
         model.companyName ?? model.companyId,
         model.name,
         model.releaseDate,
         model.contextWindowTokens ? model.contextWindow : "n/a",
         formatPrice(model),
-        verificationLabel(model.verificationStatus),
+        `${(model.sources || []).length} source${(model.sources || []).length === 1 ? "" : "s"}`,
       ])
     )
   )
@@ -292,7 +288,7 @@ async function commandModel(options, context) {
     ["Pricing", formatPrice(model)],
     ["License", model.license],
     ["Modalities", (model.modalities ?? []).join(", ")],
-    ["Verification", `${verificationLabel(model.verificationStatus)} (last checked ${model.lastVerifiedAt})`],
+    ["Sources", `${(model.sources || []).length} primary source${(model.sources || []).length === 1 ? "" : "s"} (last checked ${model.lastVerifiedAt})`],
   ]
 
   console.log(`${model.name} - ${model.companyName ?? model.companyId}`)
@@ -352,9 +348,7 @@ async function commandHealth(options, context) {
   console.log(`Status              ${data.status}`)
   console.log(`Dataset             ${data.datasetVersion} (revised ${data.datasetLastChangedAt ?? "unknown"})`)
   console.log(`Coverage            ${data.trackedModelsCount} models / ${data.trackedLabsCount} laboratories`)
-  console.log(`Verified            ${data.verifiedModelCount}`)
-  console.log(`Partially verified  ${data.partiallyVerifiedModelCount}`)
-  console.log(`Unverified          ${data.unverifiedModelCount}`)
+  console.log(`Sources             ${data.trackedModelsCount} models cite primary sources (oldest check ${data.oldestVerificationDate ?? "unknown"})`)
   console.log(`Retired             ${data.retiredModelCount}`)
   console.log(`Oldest source check ${data.oldestVerificationDate ?? "unknown"}`)
   console.log(

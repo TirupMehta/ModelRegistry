@@ -103,7 +103,7 @@ const flagship = modelsData.find((m) => m.isCompanyFlagship)
 const modelDoc = renderMarkdown(`/models/${flagship.id}`)
 check("md-model-status", modelDoc.status, 200)
 checkTrue("md-model-name", modelDoc.body.includes(flagship.name))
-checkTrue("md-model-verification", modelDoc.body.includes(flagship.verificationStatus.replace("_", " ")))
+checkTrue("md-model-verification", modelDoc.body.includes(`${flagship.sources.length} primary source`))
 
 const labId = Object.keys(companies)[0]
 const labDoc = renderMarkdown(`/companies/${labId}`)

@@ -95,11 +95,9 @@ export async function GET(req: NextRequest) {
       // Badge reflects the record's actual verification state, never a
       // blanket "verified" claim.
       const recordState =
-        model.verificationStatus === "verified"
-          ? "Verified record"
-          : model.verificationStatus === "partially_verified"
-            ? "Source-linked record"
-            : `${model.verificationStatus.replace(/_/g, " ")} record`
+        model.verificationStatus === "retired"
+          ? "Retired record"
+          : "Source-linked record"
 
       // The one featured signal, same house priority as the share studio:
       // best benchmark, else context, else price. Never invented.

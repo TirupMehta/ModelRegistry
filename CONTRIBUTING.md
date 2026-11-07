@@ -64,12 +64,12 @@ Open `data/models.ts` and add your model to the `modelsData` array:
     pricing: [{ url: "https://...", publisher: "Meta", title: "Model API pricing", accessedAt: "2026-10-07", sourceType: "pricing", live: true }],
   },
   lastVerifiedAt: "2026-10-07",                  // date of your source check
-  verificationStatus: "partially_verified",      // verified ONLY if you read every core field against live sources
+  verificationStatus: "partially_verified",      // retained for data integrity/audit; not shown as a public badge
   changeLog: [{ date: "2026-09-03", summary: "Initial registry entry.", sources: ["https://ai.meta.com/blog/..."] }],
 }
 ```
 
-> **📎 The Provenance Rule (STRICT)**: every record must cite live official sources (`sources`), carry per-field citations for the facts you personally confirmed (`fieldSources`), a `lastVerifiedAt` date, a `verificationStatus`, and a `changeLog`. Never cite a page you did not open. Never mark `verified` unless every core field (release date, context, output limit, parameters, license, pricing, modalities, benchmarks, flagship/latest status) was read against a live primary source. Dead links are never cited - find the canonical URL or leave the record `unverified`. Figures without a citable source are omitted or explicitly marked, never guessed. Full definitions: [/methodology](https://modelregistry.tirup.in/methodology).
+> **📎 The Provenance Rule (STRICT)**: every record must cite live official sources (`sources`), carry per-field citations for the facts you personally confirmed (`fieldSources`), a `lastVerifiedAt` date, a `verificationStatus`, and a `changeLog`. Never cite a page you did not open. Never mark `verified` unless every core field (release date, context, output limit, parameters, license, pricing, modalities, benchmarks, flagship/latest status) was read against a live primary source. Dead links are never cited - find the canonical URL or leave the record `unverified`. Figures without a citable source are omitted or explicitly marked, never guessed. Full definitions: [/methodology](https://modelregistry.tirup.in/methodology). Note: the public site no longer renders a verification-tier badge ("verified / partially verified / unverified"); it shows the cited sources and the last-checked date directly, so the `verificationStatus` field is retained for data integrity and the roadmap audit (see AGENTS.md item 2) rather than as user-facing copy.
 
 > **💡 The Flagship Rule**: Each company has exactly **1 active flagship** (`isCompanyFlagship: true`). If your new model is the lab's primary flagship, set `isCompanyFlagship: true` on it and set `isCompanyFlagship: false` on the lab's previous flagship.
 

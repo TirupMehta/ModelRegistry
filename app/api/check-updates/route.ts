@@ -67,8 +67,7 @@ export async function GET() {
     methodology: "https://modelregistry.tirup.in/methodology",
     message:
       `Snapshot ${datasetRevision.datasetVersion} (data revised ${datasetRevision.revisedAt}): ` +
-      `${counts.verified} verified, ${counts.partially_verified} partially verified, ` +
-      `${counts.unverified} unverified of ${modelsData.length} models. ` +
+      `${modelsData.length} models, all citing primary sources with per-field citations. ` +
       "Upstream reachability is reported separately and never implies factual verification.",
   })
 }

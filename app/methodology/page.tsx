@@ -87,12 +87,12 @@ export default function MethodologyPage() {
           are never inferred when a source is silent.
         </P>
 
-        <H2>Verification levels</H2>
+        <H2>Verification and sources</H2>
         <div className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3 space-y-2">
-          <p><strong className="text-black dark:text-white">Verified</strong> - every core field (release date, context, output limit, parameters, license, pricing, modalities, benchmarks where published, flagship/latest status) was read and confirmed against live primary sources.</p>
-          <p><strong className="text-black dark:text-white">Partially verified</strong> - one or more live official sources are cited, but full per-field rechecking is still pending. Figures are transcribed from the cited pages.</p>
-          <p><strong className="text-black dark:text-white">Unverified</strong> - no working official source. Figures must be treated as unconfirmed; such records can never carry flagship or latest labels.</p>
-          <p><strong className="text-black dark:text-white">Retired</strong> - explicitly marked as retired by the registry and kept for historical reference. This label alone does not confirm provider availability.</p>
+          <p>Every record cites the primary sources it was read from (announcement, model card, API docs, pricing page), with per-field citations showing which source supports which fact. Each record also carries a <strong className="text-black dark:text-white">last-verified date</strong> - the date those sources were reviewed. That date is a source-review date, not a live availability check.</p>
+          <p>There is no &ldquo;partially verified&rdquo; badge on the site: a label that applies to almost every record says nothing. Instead, the sources and the last-checked date are shown directly, and every record has a &ldquo;Report an error&rdquo; link so readers can flag anything stale.</p>
+          <p><strong className="text-black dark:text-white">Retired</strong> - explicitly marked as retired by the registry and kept for historical reference. This label describes availability, not verification depth, and it alone does not confirm provider availability.</p>
+          <p><strong className="text-black dark:text-white">Unverified records</strong> can never carry flagship or latest labels and must be treated as unconfirmed until sources are cited.</p>
         </div>
 
         <H2>What “flagship”, “latest”, and leaderboard places mean</H2>
