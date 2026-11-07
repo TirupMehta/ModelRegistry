@@ -14,7 +14,7 @@
     "db:migrate": "node scripts/db-migrate.mjs",
     "db:verify": "node scripts/verify-db.mjs",
     "db:studio": "drizzle-kit studio",
-    "test": "node scripts/validate-registry.js && node scripts/test-fallback.js && node scripts/test-site-integrity.js && node scripts/test-provenance.js",
+    "test": "node scripts/validate-registry.js && node scripts/test-fallback.js && node scripts/test-site-integrity.js && node scripts/test-provenance.js && node scripts/test-agent-readiness.js && node scripts/test-cli.js",
     "test:routes": "node scripts/test-routes.js"
   },
   "dependencies": {

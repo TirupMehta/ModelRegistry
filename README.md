@@ -72,6 +72,19 @@ Query the registry directly from your terminal without installing anything:
 curl -s https://modelregistry.tirup.in
 ```
 
+For filters, tables, and `--json` output there is also a packaged CLI
+([`cli/`](cli/)). It has zero dependencies and needs Node 18+ - a checkout is the
+whole install:
+
+```bash
+node cli/index.mjs models --flagship-only
+node cli/index.mjs model gpt-6-1-sol --json
+node cli/index.mjs changes --since 2026-11-01
+```
+
+Command list, flags, and the honest limits: [`cli/README.md`](cli/README.md).
+The npm package metadata is prepared but the package is not published to npm yet.
+
 ---
 
 ## 🏷️ Embeddable GitHub Badges

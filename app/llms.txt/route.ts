@@ -29,11 +29,54 @@ export async function GET() {
 - Website: ${siteUrl}
 - JSON API: ${siteUrl}/api/v1/models
 - API & Feeds Reference: ${siteUrl}/docs
+- OpenAPI 3.1 description: ${siteUrl}/openapi.json
 - RSS Feed: ${siteUrl}/rss.xml
+- JSON Feed: ${siteUrl}/feed.json
 - Full LLM Matrix: ${siteUrl}/llms-full.txt
+- Sitemap: ${siteUrl}/sitemap.xml
 - GitHub: https://github.com/TirupMehta/ModelRegistry
+- Contact: ${siteUrl}/contact
+- Privacy: ${siteUrl}/privacy
 - Dataset version: ${datasetRevision.datasetVersion} (data revised ${datasetRevision.revisedAt})
 - Verification: ${counts.verified} verified, ${counts.partially_verified} partially verified, ${counts.unverified} unverified of ${modelsData.length} models; oldest source check ${oldestVerificationDate}. Methodology: ${siteUrl}/methodology. Figures below are lab-reported unless a model page shows otherwise.
+
+## When to use ModelRegistry
+
+Reach for this registry when the job is factual lookup or comparison:
+
+- **Compare frontier models** on context window, price, modalities, license, or release date across laboratories.
+- **Resolve a laboratory's current flagship** (\`?flagshipOnly=true\`) or its newest shipped checkpoint (\`?latestOnly=true\`).
+- **Fetch one model record** by stable kebab-case id instead of downloading the full registry.
+- **Sync incrementally**: poll \`/api/v1/changes?since=YYYY-MM-DD\`, then fetch only the changed records.
+- **Cite a specification** with its primary source, verification status, and last-verified date.
+
+Do not use it for model weights, training, inference, deployment hooks, or artifact
+versioning. It is a registry of published specifications, not an MLOps model
+registry, and it does not host models.
+
+## How an agent should call it
+
+1. Read \`/llms.txt\` (this file) for orientation, or \`/docs\` for the full contract.
+2. Prefer one of: \`/api/v1/models\`, \`/api/v1/models/{id}\`, \`/api/v1/changes\`.
+3. Send \`Accept: text/markdown\` to any HTML route for a Markdown rendering; send
+   \`Accept: text/html\` for the page. Markdown responses carry \`Vary: Accept\` and a
+   real status code.
+4. Send \`If-None-Match\` with a previous \`ETag\`; a 304 means nothing changed.
+5. Branch on the JSON \`code\` field for errors (\`model_not_found\`,
+   \`invalid_date\`, \`route_not_found\`, \`method_not_allowed\`, \`rate_limited\`).
+6. Honour \`RateLimit\` headers (600 requests/minute advisory) and
+   \`Retry-After\` on a 429. Cache for the \`s-maxage\` the response advertises.
+
+Machine-readable discovery:
+
+- Agent Skills index: ${siteUrl}/.well-known/agent-skills/index.json
+- Skill file: ${siteUrl}/skills/query-modelregistry/SKILL.md
+- Markdown view of any page: \`Accept: text/markdown\` (or ${siteUrl}/api/markdown?path=/)
+- Official CLI: https://github.com/TirupMehta/ModelRegistry/tree/main/cli - a zero-dependency
+  Node 18+ package (\`node cli/index.mjs models --flagship-only\`). No install is needed for a
+  one-off read: \`curl ${siteUrl}/api/v1/cli\` prints the table, and \`curl ${siteUrl}\` is
+  rewritten to it for curl user agents. CLI page: ${siteUrl}/cli
+
 
 ## Maintainer
 
@@ -69,6 +112,10 @@ An MLOps model registry (MLflow, SageMaker, Vertex AI) stores the artifacts a te
 - Methodology: ${siteUrl}/methodology
 - Editorial policy: ${siteUrl}/editorial-policy
 - About the project and its maintainer: ${siteUrl}/about
+- Contact channels: ${siteUrl}/contact
+- Privacy policy: ${siteUrl}/privacy
+- Versioned dataset snapshot: ${siteUrl}/api/v1/snapshot
+- Terminal table: ${siteUrl}/api/v1/cli
 
 ---
 

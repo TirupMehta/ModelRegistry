@@ -68,6 +68,46 @@ export const organizationNode = {
   description:
     "Open, source-linked registry of frontier AI model specifications: context windows, parameters, pricing, release dates, and lab-published benchmarks.",
   founder: { "@id": PERSON_ID },
+  // Trust anchors agents check before recommending a site. The contact channel
+  // is the issue tracker and the /contact page: no mailbox or phone number is
+  // published, so none is claimed here.
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      contactType: "technical support",
+      url: `${SITE_URL}/contact`,
+      availableLanguage: ["English"],
+      areaServed: "Worldwide",
+    },
+  ],
+  address: {
+    "@type": "PostalAddress",
+    addressRegion: "Gujarat",
+    addressCountry: "IN",
+  },
+  // Product terms an answer engine can resolve the brand against. These match
+  // the visible copy, the page title, and CORE_KEYWORDS - not extra claims.
+  knowsAbout: [
+    "AI model registry",
+    "Frontier AI models",
+    "LLM specifications",
+    "Context window comparison",
+    "AI model pricing",
+    "Open-weight models",
+    "Benchmark provenance",
+    "Model release history",
+  ],
+  keywords: [
+    "ModelRegistry",
+    "AI model registry",
+    "frontier models",
+    "LLM registry",
+    "model specifications",
+    "context window comparison",
+    "AI model pricing",
+    "OpenAPI",
+    "JSON API",
+  ],
   sameAs: [AUTHOR_GITHUB + "/ModelRegistry"],
 }
 

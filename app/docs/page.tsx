@@ -14,9 +14,9 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react"
 const SITE_URL = "https://modelregistry.tirup.in"
 
 export const metadata: Metadata = {
-  title: "API & Feeds Reference - Endpoints, Parameters, Examples",
+  title: "ModelRegistry API Reference - endpoints, parameters, examples",
   description:
-    "Free unauthenticated REST API, RSS, llms.txt, CLI, badges and health endpoints for the open frontier AI model registry. Authentication, rate limits, errors, full field reference, and copy-paste examples.",
+    "ModelRegistry API reference: free unauthenticated REST API, OpenAPI 3.1 description, RSS, llms.txt, CLI, badges and health endpoints for the open frontier AI model registry. Authentication, rate limits, error codes, full field reference, and copy-paste examples.",
   alternates: {
     canonical: `${SITE_URL}/docs`,
   },
@@ -162,7 +162,7 @@ export default function DocsPage() {
           <div id="overview" className="scroll-mt-24 mb-12">
             <TextWithBlur>
               <h1 className="text-3xl sm:text-4xl font-display font-medium tracking-tight text-black dark:text-white mb-4">
-                API Reference
+                ModelRegistry API Reference
               </h1>
               <div className="space-y-4 text-[15px] md:text-base font-normal text-black/65 dark:text-zinc-300 leading-relaxed">
                 <p>
@@ -179,6 +179,11 @@ export default function DocsPage() {
                   . Conventions used throughout this reference:{" "}
                   GET only - the registry is
                   read-only, so there are no write, update, or delete operations.
+                  A machine-readable OpenAPI 3.1 description lives at{" "}
+                  <Link href="/openapi.json" target="_blank" rel="noopener noreferrer" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                    /openapi.json
+                  </Link>
+                  ; every operation there has a unique operationId.
                 </p>
               </div>
             </TextWithBlur>
@@ -210,11 +215,14 @@ export default function DocsPage() {
                 Rate limits & caching
               </h2>
               <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
-                No published per-client rate limit is enforced today. Abuse protection is
-                handled at the edge. Responses carry explicit cache directives - honor them
-                instead of re-requesting:
+                No per-client limit is enforced on reads today. Every API
+                response advertises the advisory budget so an agent can
+                self-throttle instead of discovering it through a 429:
               </p>
               <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] mb-4">
+                <ParamRow name="RateLimit" type="header" desc={'"default";r=600;t=60 - 600 requests per 60-second window.'} />
+                <ParamRow name="X-RateLimit-Limit · X-RateLimit-Window" type="header" desc="600 and 60, for clients that only read the X-RateLimit-* family." />
+                <ParamRow name="Retry-After" type="header" desc="Seconds to wait, sent with any 429. The waitlist form returns a real 429 with this header when its throttler trips." />
                 <ParamRow name="REST · feeds · badges" type="edge cache" desc="public, s-maxage=3600, stale-while-revalidate=86400. Freshness of up to one hour; stale copies served while revalidating." />
                 <ParamRow name="/api/check-updates" type="dynamic" desc="Evaluated per request. Its upstream heartbeat is cached for 5 minutes; the counts always reflect the live dataset." />
               </div>
@@ -239,11 +247,25 @@ export default function DocsPage() {
                 The API prefers empty results over failed requests. Unknown filter values
                 return HTTP 200 with an empty collection - parse defensively and key off{" "}
                 <code className="font-mono text-xs">status</code> and{" "}
-                <code className="font-mono text-xs">total</code>.
+                <code className="font-mono text-xs">total</code>. Real errors are always
+                JSON, never an HTML error page, and always carry a machine-readable code:
               </p>
-              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014]">
+              <CodeBlock
+                code={`{
+  "status": "error",
+  "error": "Model 'xyz' not found.",
+  "code": "model_not_found",
+  "hint": "List known ids via GET /api/v1/models.",
+  "docs": "${SITE_URL}/docs#errors"
+}`}
+              />
+              <div className="mt-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014]">
                 <ParamRow name="200 + empty list" type="filters" desc="?company=unknownlab or a category with no matches. status stays “success”, total is 0." />
-                <ParamRow name="404" type="pages" desc="Unknown site routes and retired model slugs with no resolvable lab successor." />
+                <ParamRow name="bad_request" type="400 · 422" desc="Missing or malformed input. The error field says what to fix." />
+                <ParamRow name="invalid_date · invalid_limit" type="400" desc="/api/v1/changes rejects malformed dates and limits with these codes." />
+                <ParamRow name="model_not_found · route_not_found" type="404" desc="Unknown record id or unknown API path. 404s list valid endpoints and, where resolvable, a suggested record." />
+                <ParamRow name="method_not_allowed" type="405" desc="Anything other than GET or HEAD on /api/v1/*. An Allow header lists the supported methods." />
+                <ParamRow name="rate_limited" type="429" desc="Throttled request. Retry-After gives the wait in seconds." />
                 <ParamRow name="500" type="og images" desc="/api/og returns a plain-text error body if card rendering fails. Retry once before reporting." />
               </div>
             </TextWithBlur>
@@ -448,14 +470,57 @@ const { total, models } = await (
               </TextWithBlur>
             </div>
 
+            <div id="agent-access" className="scroll-mt-24 mb-12">
+              <TextWithBlur>
+                <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-2">
+                  Agent access
+                </h2>
+                <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+                  The same site serves agents without a separate API. Ask for Markdown
+                  with content negotiation, discover it through{" "}
+                  <Link href="/llms.txt" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                    llms.txt
+                  </Link>
+                  , and read the machine description from{" "}
+                  <Link href="/openapi.json" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                    OpenAPI 3.1
+                  </Link>
+                  .
+                </p>
+                <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] mb-3">
+                  <ParamRow name="Accept: text/markdown" type="header" desc="Any HTML page, including /, returns Markdown with Content-Type: text/markdown and Vary: Accept. HTML is unchanged for text/html." />
+                  <ParamRow name="GET /api/markdown?path=/…" type="endpoint" desc="Direct Markdown view without relying on negotiation. Unknown paths return a Markdown 404 with a recovery block." />
+                  <ParamRow name="GET /llms.txt · /llms-full.txt" type="text" desc="Compact site guide, then the exhaustive field matrix." />
+                  <ParamRow name="GET /.well-known/agent-skills/index.json" type="JSON" desc="Agent Skills discovery index with a digest computed from the served SKILL.md." />
+                  <ParamRow name="GET /sitemap.xml" type="XML" desc="Every indexable HTML URL, with content-based lastModified dates." />
+                </div>
+                <CodeBlock
+                  code={`# Markdown version of the homepage
+curl -sS -H 'Accept: text/markdown' ${SITE_URL}/ 
+
+# Markdown 404: same status, parseable body
+curl -sS -i -H 'Accept: text/markdown' ${SITE_URL}/no-such-page
+
+# Machine description with operationIds and error schemas
+curl -s ${SITE_URL}/openapi.json | head -c 400`}
+                />
+              </TextWithBlur>
+            </div>
+
             <div id="cli" className="scroll-mt-24 mb-12">
             <TextWithBlur>
               <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-2">
                 CLI & plain text
               </h2>
               <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
-                Three terminal-native routes. The root URL sniffs curl and answers in
-                plain text - nothing to install, no keys.
+                Three terminal-native routes need no install at all - the root URL sniffs curl and
+                answers in plain text. For filters, tables, and `--json` output there is also an
+                official CLI (<code className="font-mono text-xs">cli/</code> in the repository:
+                zero dependencies, Node 18+). See the{" "}
+                <Link href="/cli" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                  CLI page
+                </Link>{" "}
+                for install and commands.
               </p>
               <div className="grid grid-cols-1 gap-3">
                 <div>
@@ -490,6 +555,29 @@ const { total, models } = await (
                     </code>
                   </div>
                   <CodeBlock code={`curl -s ${SITE_URL}/api/v1/cli   # flagships + checkpoints table`} />
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2.5 mb-2">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold tracking-wider bg-black/[0.06] dark:bg-white/[0.08] text-black/70 dark:text-zinc-300 border border-black/15 dark:border-white/15 shrink-0">
+                      CLI
+                    </span>
+                    <code className="font-mono text-sm font-medium text-black dark:text-white">
+                      modelregistry
+                    </code>
+                  </div>
+                  <CodeBlock
+                    code={`git clone https://github.com/TirupMehta/ModelRegistry.git
+node ModelRegistry/cli/index.mjs models --flagship-only
+node ModelRegistry/cli/index.mjs model <id> --json
+node ModelRegistry/cli/index.mjs changes --since 2026-11-01
+node ModelRegistry/cli/index.mjs markdown /docs`}
+                  />
+                  <p className="text-xs text-black/50 dark:text-zinc-500 mt-2 leading-relaxed">
+                    Zero-dependency Node 18+ script, published package prepared at{" "}
+                    <code className="font-mono text-[11px]">cli/</code> (not yet on npm). Every
+                    command supports <code className="font-mono text-[11px]">--json</code> and{" "}
+                    <code className="font-mono text-[11px]">--base-url</code>.
+                  </p>
                 </div>
               </div>
             </TextWithBlur>

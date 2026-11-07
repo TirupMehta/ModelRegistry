@@ -13,6 +13,7 @@ const fs = require("fs")
 const path = require("path")
 const ts = require("typescript")
 const vm = require("vm")
+const { spawnSync } = require("child_process")
 const BASE = process.env.BASE_URL || "http://localhost:3000"
 
 // Expected heartbeat counts derive from the live dataset so this test
@@ -44,6 +45,7 @@ function countDataset() {
   return {
     models: modelsData.length,
     labs: labIds.length,
+    flagships: modelsData.filter((m) => m.isCompanyFlagship).length,
     lastLab: labIds[labIds.length - 1] ?? null,
     openaiFlagship: openaiFlagship?.id ?? null,
     openaiFlagshipName: openaiFlagship?.name ?? null,
@@ -76,9 +78,11 @@ console.log(`🌐 Testing live routes against ${BASE}...`)
 const failures = []
 let checked = 0
 
-async function get(path, { redirect = "follow" } = {}) {
+async function get(path, { redirect = "follow", accept, headers: extraHeaders } = {}) {
   const started = Date.now()
-  const res = await fetch(`${BASE}${path}`, { redirect })
+  const headers = { ...(extraHeaders || {}) }
+  if (accept) headers.accept = accept
+  const res = await fetch(`${BASE}${path}`, { redirect, headers })
   const ms = Date.now() - started
   return { res, ms }
 }
@@ -144,12 +148,6 @@ async function expectPng(path) {
 
 async function main() {
   // Pages
-  // NOTE: "/" is intentionally not asserted here. It is the only path behind
-  // middleware.ts, and `next start` on newer Node runtimes (>=22) crashes the
-  // edge sandbox with EvalError on Next's own compiled middleware bootstrap
-  // (eval-source-map devtool) - an environment quirk, not app code. Vercel
-  // production executes the identical bundle without issue.
-  console.log("  skip: '/' (middleware edge-sandbox quirk under local next start)")
   await expectStatus("/companies", 200)
   await expectStatus("/companies/openai", 200)
   await expectStatus("/companies/nope", 404)
@@ -158,6 +156,7 @@ async function main() {
   await expectStatus("/leaderboard", 200)
   await expectStatus("/timeline", 200)
   await expectStatus("/docs", 200)
+  await expectStatus("/cli", 200)
 
   // Fuzzy fallback: a near-miss slug of a real record redirects (307) to the
   // owning lab's flagship (manual: assert target, no follow).
@@ -173,11 +172,230 @@ async function main() {
   // Content spot-checks (all subjects derived from live data above)
   await expectContains("/companies/openai", EXPECTED.openaiFlagshipName, "text/html")
   await expectContains("/docs", "?company=", "text/html")
+  await expectContains("/cli", "ModelRegistry CLI", "text/html")
   await expectContains("/sitemap.xml", "/companies/openai", "xml")
   await expectContains("/sitemap.xml", "/docs", "xml")
   await expectContains("/rss.xml", EXPECTED.newestName, "xml")
   await expectContains("/llms.txt", `/companies/${EXPECTED.lastLab}`, "text/plain")
   await expectContains("/llms-full.txt", EXPECTED.newestName, "text/plain")
+
+  // ---- Agent readiness: negotiation, JSON errors, rate-limit publication ----
+  // These are the machine-facing contracts summarised in llms.txt, /docs,
+  // OpenAPI and the README. They are asserted against a real response, never
+  // against source text, because headers and status codes are the contract.
+
+  // Homepage Markdown negotiation (acceptmarkdown.com): Markdown body, correct
+  // content type, and Vary: Accept so caches keep the variants apart.
+  try {
+    const { res, ms } = await get("/", { accept: "text/markdown" })
+    const ct = res.headers.get("content-type") || ""
+    const vary = (res.headers.get("vary") || "").toLowerCase()
+    const body = await res.text()
+    if (res.status === 200 && ct.includes("text/markdown") && vary.includes("accept") && body.length > 200) {
+      pass("homepage markdown negotiation", `${ms}ms, ${(body.length / 1024).toFixed(1)}KB, vary '${vary}'`)
+    } else {
+      fail("homepage markdown negotiation", `status ${res.status}, ct '${ct}', vary '${vary}', ${body.length}B`)
+    }
+  } catch (e) {
+    fail("homepage markdown negotiation", `fetch failed: ${e.message}`)
+  }
+
+  // Homepage HTML must stay HTML. The UA is set to a curl string because the
+  // terminal shortcut rewrites curl user agents to the plain-text CLI table -
+  // an explicit Accept: text/html has to win over that.
+  for (const [uaLabel, ua] of [
+    ["browser", `Mozilla/5.0 (compatible; route-test)`],
+    ["curl", "curl/8.5.0"],
+  ]) {
+    try {
+      const { res } = await get("/", { accept: "text/html", headers: { "user-agent": ua } })
+      const ct = res.headers.get("content-type") || ""
+      if (res.status === 200 && ct.includes("text/html")) pass(`homepage html (${uaLabel} ua)`)
+      else fail(`homepage html (${uaLabel} ua)`, `status ${res.status}, ct '${ct}'`)
+    } catch (e) {
+      fail(`homepage html (${uaLabel} ua)`, e.message)
+    }
+  }
+
+  // The terminal shortcut survives for a bare curl request.
+  try {
+    const { res } = await get("/", { headers: { "user-agent": "curl/8.5.0" } })
+    const text = await res.text()
+    if (res.status === 200 && text.startsWith("====")) pass("bare curl root -> cli table")
+    else fail("bare curl root", `status ${res.status}, first line '${text.split("\n")[0]}'`)
+  } catch (e) {
+    fail("bare curl root", e.message)
+  }
+
+  // Markdown 404: a real 404 with a parseable body that links the recovery docs.
+  try {
+    const { res } = await get("/__ora-404-probe-js7krwol", { accept: "text/markdown" })
+    const ct = res.headers.get("content-type") || ""
+    const body = await res.text()
+    const links = ["/docs", "/sitemap.xml", "/llms.txt"].every((p) => body.includes(p))
+    if (res.status === 404 && ct.includes("text/markdown") && body.length > 20 && links) {
+      pass("markdown 404 body", `${body.length}B with docs/sitemap/llms links`)
+    } else {
+      fail("markdown 404 body", `status ${res.status}, ct '${ct}', ${body.length}B, links=${links}`)
+    }
+  } catch (e) {
+    fail("markdown 404 body", e.message)
+  }
+  try {
+    const { res } = await get("/__ora-404-probe-js7krwol", { accept: "text/html" })
+    const ct = res.headers.get("content-type") || ""
+    if (res.status === 404 && ct.includes("text/html")) pass("html 404 unchanged")
+    else fail("html 404 unchanged", `status ${res.status}, ct '${ct}'`)
+  } catch (e) {
+    fail("html 404 unchanged", e.message)
+  }
+
+  // Direct Markdown endpoint (documented fallback, both forms).
+  for (const probe of ["/api/markdown?path=/docs", "/api/markdown/docs"]) {
+    try {
+      const { res } = await get(probe)
+      const ct = res.headers.get("content-type") || ""
+      const body = await res.text()
+      if (res.status === 200 && ct.includes("text/markdown") && body.includes("ModelRegistry API Reference")) {
+        pass(`markdown endpoint ${probe}`)
+      } else {
+        fail(`markdown endpoint ${probe}`, `status ${res.status}, ct '${ct}'`)
+      }
+    } catch (e) {
+      fail(`markdown endpoint ${probe}`, e.message)
+    }
+  }
+
+  // Unknown API path: JSON 404 with code, hint, docs and the endpoint list.
+  try {
+    const { res } = await get("/api/v1/nope")
+    const ct = res.headers.get("content-type") || ""
+    const body = await res.json()
+    const ok =
+      res.status === 404 &&
+      ct.includes("application/json") &&
+      body.status === "error" &&
+      body.code === "route_not_found" &&
+      typeof body.hint === "string" &&
+      typeof body.docs === "string" &&
+      Array.isArray(body.endpoints)
+    if (ok) pass("unknown api path -> json 404", body.code)
+    else fail("unknown api path", `status ${res.status}, ct '${ct}', body ${JSON.stringify(body).slice(0, 120)}`)
+  } catch (e) {
+    fail("unknown api path", e.message)
+  }
+
+  // Read-only enforcement: JSON 405 with an Allow header.
+  try {
+    const res = await fetch(`${BASE}/api/v1/models`, { method: "POST" })
+    const ct = res.headers.get("content-type") || ""
+    const allow = res.headers.get("allow") || ""
+    const body = await res.json()
+    if (res.status === 405 && ct.includes("application/json") && allow.includes("GET") && body.code === "method_not_allowed") {
+      pass("POST /api/v1/models -> json 405", allow)
+    } else {
+      fail("POST /api/v1/models", `status ${res.status}, allow '${allow}', code '${body.code}'`)
+    }
+  } catch (e) {
+    fail("POST /api/v1/models", e.message)
+  }
+
+  // Rate-limit publication (RFC RateLimit hints + X-RateLimit mirror).
+  for (const path of ["/api/v1/models", "/api/check-updates"]) {
+    try {
+      const { res } = await get(path)
+      const rateLimit = res.headers.get("ratelimit") || ""
+      const policy = res.headers.get("ratelimit-policy") || ""
+      const limit = res.headers.get("x-ratelimit-limit") || ""
+      if (rateLimit.includes("r=600") && policy && limit === "600") pass(`${path} rate-limit headers`)
+      else fail(`${path} rate-limit headers`, `RateLimit '${rateLimit}', Policy '${policy}', X-RateLimit-Limit '${limit}'`)
+    } catch (e) {
+      fail(`${path} rate-limit headers`, e.message)
+    }
+  }
+
+  // Model 404 keeps its machine-readable code, hint and ETag-less error shape.
+  try {
+    const { res } = await get("/api/v1/models/nope-not-real")
+    const body = await res.json()
+    if (res.status === 404 && body.code === "model_not_found" && typeof body.hint === "string") {
+      pass("model 404 has code + hint", body.code)
+    } else {
+      fail("model 404 code", `status ${res.status}, code '${body.code}'`)
+    }
+  } catch (e) {
+    fail("model 404 code", e.message)
+  }
+
+  // Invalid query input: typed 400.
+  try {
+    const { res } = await get("/api/v1/changes?since=last-week")
+    const body = await res.json()
+    if (res.status === 400 && body.code === "invalid_date") pass("changes bad date -> json 400", body.code)
+    else fail("changes bad date code", `status ${res.status}, code '${body.code}'`)
+  } catch (e) {
+    fail("changes bad date code", e.message)
+  }
+
+  // OpenAPI: served, parseable, self-describing, error-typed.
+  try {
+    const { res } = await get("/openapi.json")
+    const ct = res.headers.get("content-type") || ""
+    const spec = await res.json()
+    const ops = Object.values(spec.paths).flatMap((methods) => Object.values(methods))
+    const ids = ops.map((op) => op.operationId)
+    const uniqueIds = new Set(ids).size === ids.length && ids.every(Boolean)
+    const errorSchema = Boolean(spec.components?.schemas?.ErrorResponse)
+    const retryAfter = Boolean(spec.components?.responses?.TooManyRequests?.headers?.["Retry-After"])
+    const rateLimit = Boolean(spec.components?.headers?.RateLimit)
+    if (res.status === 200 && ct.includes("application/json") && uniqueIds && errorSchema && retryAfter && rateLimit) {
+      pass("openapi.json self-describing", `${ops.length} operations, ${ids.length} operationIds`)
+    } else {
+      fail("openapi.json", `status ${res.status}, ids=${uniqueIds}, errors=${errorSchema}, retry=${retryAfter}, ratelimit=${rateLimit}`)
+    }
+  } catch (e) {
+    fail("openapi.json", e.message)
+  }
+
+  // Agent Skills discovery index, served at the well-known URI.
+  try {
+    const { res } = await get("/.well-known/agent-skills/index.json")
+    const ct = res.headers.get("content-type") || ""
+    const body = await res.json()
+    const skill = body.skills?.[0]
+    if (res.status === 200 && ct.includes("application/json") && skill?.description?.includes("Use when")) {
+      pass("agent-skills index", skill.name)
+    } else {
+      fail("agent-skills index", `status ${res.status}, ct '${ct}'`)
+    }
+  } catch (e) {
+    fail("agent-skills index", e.message)
+  }
+
+  // Trust anchors: real pages, linked from the footer and listed in the sitemap.
+  for (const path of ["/contact", "/privacy"]) {
+    try {
+      const { res } = await get(path, { accept: "text/html" })
+      const body = await res.text()
+      const text = body.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ")
+      if (res.status === 200 && text.length > 500) pass(`${path} trust page`, `${text.length} chars of text`)
+      else fail(`${path} trust page`, `status ${res.status}, ${text.length} chars`)
+    } catch (e) {
+      fail(`${path} trust page`, e.message)
+    }
+  }
+
+  // llms.txt carries the when-to-use and call-convention guidance.
+  try {
+    const { res } = await get("/llms.txt")
+    const text = await res.text()
+    const hasWhen = text.includes("When to use ModelRegistry")
+    const hasHow = text.includes("How an agent should call it")
+    if (res.status === 200 && hasWhen && hasHow) pass("llms.txt agent instructions")
+    else fail("llms.txt agent instructions", `whenToUse=${hasWhen}, howToCall=${hasHow}`)
+  } catch (e) {
+    fail("llms.txt agent instructions", e.message)
+  }
 
   // API contracts
   const api = await expectContains("/api/v1/models", '"status":"success"', "application/json")
@@ -327,6 +545,70 @@ async function main() {
   await expectPng(`/api/og?model=${EXPECTED.openaiFlagship}`)
   await expectPng("/api/og?lab=openai")
   await expectPng("/api/og")
+
+  // Official CLI (cli/): the packaged client must work against this build, not
+  // just against production. Each call is a real child process.
+  function runCli(args) {
+    return spawnSync(
+      process.execPath,
+      [path.resolve(__dirname, "../cli/index.mjs"), ...args, "--base-url", BASE],
+      { encoding: "utf8", timeout: 30_000 }
+    )
+  }
+  try {
+    const result = runCli(["models", "--flagship-only", "--json"])
+    const data = JSON.parse(result.stdout || "null")
+    if (result.status === 0 && data?.total === EXPECTED.flagships && data.models.every((m) => m.isCompanyFlagship)) {
+      pass("cli models --flagship-only", `${data.total} flagships`)
+    } else {
+      fail("cli models --flagship-only", `exit ${result.status}, ${(result.stderr || "").trim()}`)
+    }
+  } catch (e) {
+    fail("cli models --flagship-only", e.message)
+  }
+  try {
+    const result = runCli(["model", EXPECTED.openaiFlagship, "--json"])
+    const data = JSON.parse(result.stdout || "null")
+    if (result.status === 0 && data?.model?.id === EXPECTED.openaiFlagship) {
+      pass("cli model <id>", data.model.id)
+    } else {
+      fail("cli model <id>", `exit ${result.status}, ${(result.stderr || "").trim()}`)
+    }
+  } catch (e) {
+    fail("cli model <id>", e.message)
+  }
+  try {
+    const result = runCli(["markdown", "/docs"])
+    if (result.status === 0 && (result.stdout || "").includes("ModelRegistry API Reference")) {
+      pass("cli markdown /docs")
+    } else {
+      fail("cli markdown /docs", `exit ${result.status}, ${(result.stderr || "").trim()}`)
+    }
+  } catch (e) {
+    fail("cli markdown /docs", e.message)
+  }
+  try {
+    const result = runCli(["health", "--json"])
+    const data = JSON.parse(result.stdout || "null")
+    if (result.status === 0 && data?.trackedModelsCount === EXPECTED.models) {
+      pass("cli health", `${data.trackedModelsCount} models`)
+    } else {
+      fail("cli health", `exit ${result.status}, ${(result.stderr || "").trim()}`)
+    }
+  } catch (e) {
+    fail("cli health", e.message)
+  }
+  try {
+    const result = runCli(["model", "definitely-not-a-model"])
+    const stderr = result.stderr || ""
+    if (result.status === 1 && stderr.includes("model_not_found") && stderr.includes("hint:")) {
+      pass("cli API error surfaces code + hint")
+    } else {
+      fail("cli API error", `exit ${result.status}, ${stderr.trim().slice(0, 80)}`)
+    }
+  } catch (e) {
+    fail("cli API error", e.message)
+  }
 
   // Payload + timing budget for the heaviest JSON endpoint
   try {

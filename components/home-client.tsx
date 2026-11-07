@@ -196,23 +196,6 @@ export default function HomeClient() {
             </p>
           </TextWithBlur>
 
-          {/* The sentence that does the ranking work: names the category
-              ("AI model registry"), draws the line against MLOps artifact
-              registries that own the unqualified term, and answers "who made
-              this" in the page body rather than only in metadata. */}
-          <TextWithBlur delay={150}>
-            <p>
-              It is a registry of AI models rather than an MLOps artifact store: no weights, no
-              training runs, no deployment hooks, only what labs publish about frontier LLMs and
-              checkpoints, each field traceable to a primary source and dated by its last
-              verification. Built and maintained by{" "}
-              <Link href="/about" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline underline-offset-2">
-                Tirup Mehta
-              </Link>
-              .
-            </p>
-          </TextWithBlur>
-
           {/* Quick Terminal & Developer Strip */}
           <div className="flex items-center justify-between gap-2 sm:gap-3 pt-1 text-xs font-sans text-black/60 dark:text-zinc-400 w-full">
             <button

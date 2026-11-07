@@ -1,0 +1,39 @@
+{
+  "name": "modelregistry",
+  "version": "1.0.0",
+  "description": "Official CLI for ModelRegistry - query the open frontier AI model registry from the terminal. Free, unauthenticated, read-only.",
+  "type": "module",
+  "bin": {
+    "modelregistry": "./index.mjs"
+  },
+  "main": "./index.mjs",
+  "files": [
+    "index.mjs",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node ./index.mjs --version && node ./index.mjs help"
+  },
+  "keywords": [
+    "modelregistry",
+    "ai",
+    "llm",
+    "model-registry",
+    "frontier-models",
+    "cli",
+    "openapi"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TirupMehta/ModelRegistry.git",
+    "directory": "cli"
+  },
+  "homepage": "https://modelregistry.tirup.in/docs#cli",
+  "bugs": {
+    "url": "https://github.com/TirupMehta/ModelRegistry/issues"
+  }
+}

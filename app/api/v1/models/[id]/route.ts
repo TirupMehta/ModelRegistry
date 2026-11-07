@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createHash } from "crypto"
+import { apiError } from "@/lib/api-errors"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { resolveCompanyFallback } from "@/lib/model-fallback"
@@ -20,27 +21,24 @@ export async function GET(request: Request, { params }: RouteContext) {
   const id = decodeURIComponent(rawId ?? "").trim()
 
   if (!id) {
-    return NextResponse.json(
-      {
-        status: "error",
-        error: "Model id is required.",
-        methodology: "https://modelregistry.tirup.in/methodology",
-      },
-      {
-        status: 400,
-        headers: { "Access-Control-Allow-Origin": "*" },
-      }
-    )
+    return apiError({
+      status: 400,
+      code: "bad_request",
+      message: "Model id is required.",
+      hint: "Fetch /api/v1/models to list every valid id.",
+    })
   }
 
   const model = modelsData.find((m) => m.id.toLowerCase() === id.toLowerCase())
 
   if (!model) {
     const fallback = resolveCompanyFallback(id, modelsData)
-    return NextResponse.json(
-      {
-        status: "error",
-        error: `Model '${id}' not found.`,
+    return apiError({
+      status: 404,
+      code: "model_not_found",
+      message: `Model '${id}' not found.`,
+      hint: "List known ids via GET /api/v1/models (or ?company=<lab> to narrow).",
+      details: {
         id,
         ...(fallback
           ? {
@@ -49,17 +47,11 @@ export async function GET(request: Request, { params }: RouteContext) {
               suggestionUrl: `https://modelregistry.tirup.in/models/${fallback.id}`,
             }
           : {}),
-        hint: "List known ids via GET /api/v1/models (or ?company=<lab> to narrow).",
-        methodology: "https://modelregistry.tirup.in/methodology",
       },
-      {
-        status: 404,
-        headers: {
-          "Cache-Control": "public, s-maxage=300, stale-while-revalidate=3600",
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    )
+      headers: {
+        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=3600",
+      },
+    })
   }
 
   const body = {

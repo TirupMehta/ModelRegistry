@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { apiError } from "@/lib/api-errors"
 import { modelsData } from "@/data/models"
 import { openRouterModelIds } from "@/data/provider-catalog"
 
@@ -22,7 +23,14 @@ function numberOrNull(value: unknown): number | null {
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const model = modelsData.find((item) => item.id.toLowerCase() === id.toLowerCase())
-  if (!model) return NextResponse.json({ error: "Model not found" }, { status: 404 })
+  if (!model) {
+    return apiError({
+      status: 404,
+      code: "model_not_found",
+      message: `Model '${id}' not found.`,
+      details: { id, provider: "OpenRouter", endpoints: [] },
+    })
+  }
 
   const providerModelId = openRouterModelIds[model.id]
   const headers = { "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=600" }

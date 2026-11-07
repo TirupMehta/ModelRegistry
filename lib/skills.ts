@@ -10,7 +10,7 @@
 
 export const QUERY_MODELREGISTRY_SKILL_MD = `---
 name: query-modelregistry
-description: Query ModelRegistry by Tirup Mehta. List flagship models and research checkpoints across all premier labs, filter by lab or category, fetch one model by id, diff the changelog, and poll for updates. Free, unauthenticated, read-only REST API plus feeds.
+description: Query ModelRegistry by Tirup Mehta. Use when you need source-linked facts about public frontier AI models - compare context windows, prices, modalities, or licenses, find a lab's flagship or newest checkpoint, fetch one record by id, diff the changelog, or poll for updates. Free, unauthenticated, read-only REST API plus feeds.
 ---
 
 # Query ModelRegistry
@@ -19,6 +19,22 @@ ModelRegistry (https://modelregistry.tirup.in) is an open registry tracking
 primary flagship models and research checkpoints across all premier AI labs.
 It is built and maintained by Tirup Mehta (https://tirup.in).
 Everything below is public, free, and requires no account, API key, or token.
+
+## When to use this skill
+
+Use it when the task is factual lookup or comparison about public models:
+
+- "What is <lab>'s current flagship model?" -> \`?flagshipOnly=true\`
+- "Compare context windows or prices for these models" -> fetch and compare
+  \`contextWindowTokens\` and \`pricing\`
+- "When was <model> released, and what does its source say?" -> fetch one record
+- "What changed since <date>?" -> \`/api/v1/changes?since=YYYY-MM-DD\`
+- "Which models allow downloadable weights?" -> \`?openWeights=true\`
+
+Do not use it for model weights, training, inference, deployment, or artifact
+versioning. It is not an MLOps model registry and does not host models.
+If the task needs private or live provider availability, treat
+\`/api/v1/models/{id}/providers\` as a separate, non-authoritative snapshot.
 
 ## Base URL
 
@@ -127,9 +143,40 @@ re-requesting (REST/feeds: \`public, s-maxage=3600\`).
 - \`/api/badge/[company]\` - live SVG shield for a lab's flagship.
 - \`/api/badge?model=<id>&type=spec|context|pricing|status\` - per-model spec badges.
 
+## Errors
+
+Errors are JSON with a machine-readable code, never HTML:
+
+\`\`\`json
+{
+  "status": "error",
+  "error": "Model 'xyz' not found.",
+  "code": "model_not_found",
+  "hint": "List known ids via GET /api/v1/models.",
+  "docs": "https://modelregistry.tirup.in/docs#errors"
+}
+\`\`\`
+
+Branch on \`code\` (\`bad_request\`, \`invalid_date\`, \`invalid_limit\`,
+\`model_not_found\`, \`route_not_found\`, \`method_not_allowed\`,
+\`rate_limited\`). Read-only means GET and HEAD only; anything else returns 405.
+
+## Rate limits and content negotiation
+
+- Every API response advertises \`RateLimit\` and \`X-RateLimit-*\` headers
+  (600 requests/minute advisory). A 429 carries \`Retry-After\`; honour it.
+- Send \`Accept: text/markdown\` to any HTML route for a Markdown rendering.
+  Markdown responses carry \`Vary: Accept\` and keep the real status code.
+- Prefer conditional requests: send \`If-None-Match\` with the previous \`ETag\`
+  and treat 304 as "unchanged".
+
 ## Human reference and versioning
 
 Human-readable API reference: https://modelregistry.tirup.in/docs
+
+OpenAPI 3.1 description: https://modelregistry.tirup.in/openapi.json
+Trust pages: https://modelregistry.tirup.in/contact and
+https://modelregistry.tirup.in/privacy
 
 The \`/v1/\` prefix is a stability contract: breaking renames ship under a
 new version, never silently. Additive changes (new fields, labs, models)

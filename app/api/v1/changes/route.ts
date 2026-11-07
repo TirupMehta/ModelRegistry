@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createHash } from "crypto"
+import { apiError, type ApiErrorCode } from "@/lib/api-errors"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 
@@ -13,19 +14,16 @@ function isValidDate(s: string): boolean {
   return DATE_RE.test(s) && !Number.isNaN(new Date(`${s}T00:00:00Z`).getTime())
 }
 
-function error(message: string, status: 400) {
-  return NextResponse.json(
-    {
-      status: "error",
-      error: message,
+function error(message: string, code: ApiErrorCode, hint?: string) {
+  return apiError({
+    status: 400,
+    code,
+    message,
+    hint,
+    details: {
       usage: "/api/v1/changes?since=2026-10-01&until=2026-10-07&model=<id>&company=<lab>&limit=100",
-      methodology: "https://modelregistry.tirup.in/methodology",
     },
-    {
-      status,
-      headers: { "Access-Control-Allow-Origin": "*" },
-    }
-  )
+  })
 }
 
 // Incremental sync over per-model changelog history (same source as the
@@ -41,20 +39,20 @@ export async function GET(request: Request) {
   const limitRaw = searchParams.get("limit")
 
   if (since !== null && !isValidDate(since)) {
-    return error(`Invalid 'since' date '${since}'. Expected YYYY-MM-DD.`, 400)
+    return error(`Invalid 'since' date '${since}'. Expected YYYY-MM-DD.`, "invalid_date")
   }
   if (until !== null && !isValidDate(until)) {
-    return error(`Invalid 'until' date '${until}'. Expected YYYY-MM-DD.`, 400)
+    return error(`Invalid 'until' date '${until}'. Expected YYYY-MM-DD.`, "invalid_date")
   }
   if (since !== null && until !== null && since > until) {
-    return error(`'since' (${since}) must not be after 'until' (${until}).`, 400)
+    return error(`'since' (${since}) must not be after 'until' (${until}).`, "invalid_date")
   }
 
   let limit = DEFAULT_LIMIT
   if (limitRaw !== null) {
     const parsed = Number.parseInt(limitRaw, 10)
     if (!Number.isInteger(parsed) || parsed < 1) {
-      return error(`Invalid 'limit' value '${limitRaw}'. Expected an integer >= 1.`, 400)
+      return error(`Invalid 'limit' value '${limitRaw}'. Expected an integer >= 1.`, "invalid_limit")
     }
     limit = Math.min(parsed, MAX_LIMIT)
   }
