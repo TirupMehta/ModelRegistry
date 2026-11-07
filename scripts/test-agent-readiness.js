@@ -302,6 +302,32 @@ checkTrue("cli-page-title-product", /title:\s*"ModelRegistry CLI/.test(cliPage))
 checkTrue("cli-page-software-schema", cliPage.includes("SoftwareSourceCode"))
 checkTrue("sitemap-cli", sitemap.includes("/cli"))
 
+// 13. Docs reference rail: pinned while reading, released before the footer.
+// A `fixed` rail ignores the footer (it paints over it) and cannot be
+// constrained by the document column, so the rail must stay `sticky` inside
+// its reserved lane and cap its own height on short viewports.
+const docsPagePath = path.resolve(__dirname, "../app/docs/page.tsx")
+checkTrue("docs-page-exists", fs.existsSync(docsPagePath))
+if (fs.existsSync(docsPagePath)) {
+  const docsPage = fs.readFileSync(docsPagePath, "utf8")
+  const asideClass = (docsPage.match(/<aside className="([^"]+)"/) || [])[1] || ""
+  checkTrue("docs-rail-sticky", /\bsticky\b/.test(asideClass), asideClass)
+  checkTrue("docs-rail-not-fixed", !/\bfixed\b/.test(asideClass), asideClass)
+  checkTrue("docs-rail-lane", asideClass.includes("col-start-1"), asideClass)
+  checkTrue("docs-rail-self-start", asideClass.includes("self-start"), asideClass)
+  checkTrue("docs-rail-height-cap", asideClass.includes("max-h-["), asideClass)
+  checkTrue("docs-rail-inner-scroll", asideClass.includes("overflow-y-auto"), asideClass)
+  checkTrue("docs-rail-hidden-below-1440", asideClass.includes("hidden") && asideClass.includes("min-[1440px]:block"), asideClass)
+}
+
+const docsNavPath = path.resolve(__dirname, "../components/docs-nav.tsx")
+checkTrue("docs-nav-exists", fs.existsSync(docsNavPath))
+if (fs.existsSync(docsNavPath)) {
+  const docsNavSrc = fs.readFileSync(docsNavPath, "utf8")
+  checkTrue("docs-nav-readable-type", docsNavSrc.includes("text-[16px]"), "section links stay at 16px")
+  checkTrue("docs-nav-label-type", docsNavSrc.includes("text-[12px]"), "REFERENCE label stays at 12px")
+}
+
 if (failures.length > 0) {
   console.error(`\n❌ Agent-readiness failed with ${failures.length} mismatch(es).`)
   process.exit(1)

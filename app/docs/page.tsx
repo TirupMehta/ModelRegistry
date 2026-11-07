@@ -132,9 +132,12 @@ export default function DocsPage() {
       />
 
       <div className="mx-auto w-full max-w-[78rem] min-[1440px]:grid min-[1440px]:grid-cols-[11rem_minmax(0,56rem)] min-[1440px]:gap-4">
-      {/* Fixed reference rail starts on the header divider and stays in the
-          reserved left lane while the document scrolls. */}
-      <aside className="hidden min-[1440px]:block fixed top-[10.5rem] left-[max(1.5rem,calc((100vw-56rem)/2-11rem))] z-30 w-44">
+      {/* Reference rail lives in the reserved left lane and sticks while the
+          article scrolls. Sticky (not fixed) is what keeps it honest: its
+          containing block is the document column, so it stops at the last
+          paragraph and scrolls away with the page instead of sliding under the
+          footer. Short viewports scroll the rail itself. */}
+      <aside className="hidden min-[1440px]:col-start-1 min-[1440px]:row-start-1 min-[1440px]:block sticky top-8 z-30 w-44 max-h-[calc(100vh-4rem)] self-start overflow-y-auto overscroll-contain pr-1 [scrollbar-width:thin]">
         <DocsSidebar />
       </aside>
 

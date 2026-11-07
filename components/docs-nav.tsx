@@ -131,13 +131,13 @@ export default function DocsSidebar() {
   }, [])
 
   return (
-    <div className="flex flex-col">
-      <div className="text-[11px] font-mono font-semibold uppercase tracking-[0.12em] text-black/60 dark:text-zinc-300 mb-2 px-1">
+    <div className="flex flex-col pb-2">
+      <div className="text-[12px] font-mono font-semibold uppercase tracking-[0.12em] text-black/60 dark:text-zinc-300 mb-2.5 px-1">
         Reference
       </div>
       <nav
         aria-label="Reference sections"
-        className="text-[14.5px] [&_button]:!text-[14.5px] [&_button]:!px-1 [&_button]:!py-0 [&_button]:!leading-[1.3] [&_button]:focus-visible:outline [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-[#ff5d2e]"
+        className="text-[16px] [&_ul]:!pl-5 [&_button]:!text-[16px] [&_button]:!px-1 [&_button]:!py-0 [&_button]:!leading-[1.35] [&_button]:focus-visible:outline [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-[#ff5d2e] [&_a]:!text-[16px] [&_a]:!py-0 [&_a]:!leading-[1.35]"
       >
         <BounceSidebar
           items={INDEX.map((item) => item.label)}
