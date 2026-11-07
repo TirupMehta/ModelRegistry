@@ -155,12 +155,12 @@ curl -s ${SITE_URL}/latest       # newest releases`}</Code>
           <Link href="/docs" className="text-[#ff5d2e] hover:underline underline-offset-2">
             API reference
           </Link>
-          <Link href="/openapi.json" className="text-[#ff5d2e] hover:underline underline-offset-2">
+          <a href="/openapi.json" className="text-[#ff5d2e] hover:underline underline-offset-2">
             OpenAPI 3.1
-          </Link>
-          <Link href="/llms.txt" className="text-[#ff5d2e] hover:underline underline-offset-2">
+          </a>
+          <a href="/llms.txt" className="text-[#ff5d2e] hover:underline underline-offset-2">
             llms.txt
-          </Link>
+          </a>
           <a
             href="https://github.com/TirupMehta/ModelRegistry/tree/main/cli"
             className="text-[#ff5d2e] hover:underline underline-offset-2"

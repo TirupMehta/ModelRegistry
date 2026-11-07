@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import Link from "next/link"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
@@ -62,9 +63,9 @@ export default function Footer() {
                 was five vertically stacked links on narrow screens. */}
             <nav aria-label="Data and source endpoints" className="flex flex-col items-start gap-2 text-xs sm:hidden">
               <h2 className="mb-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-black/35 dark:text-zinc-600">Data</h2>
-              <Link href="/api/v1/models" className={linkClass}>JSON API</Link>
-              <Link href="/rss.xml" className={linkClass}>RSS</Link>
-              <Link href="/llms.txt" className={linkClass}>llms.txt</Link>
+              <a href="/api/v1/models" className={linkClass}>JSON API</a>
+              <a href="/rss.xml" className={linkClass}>RSS</a>
+              <a href="/llms.txt" className={linkClass}>llms.txt</a>
               <a href="https://github.com/TirupMehta/ModelRegistry" target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-1 ${linkClass}`}>
                 GitHub <ArrowUpRight size={11} aria-hidden="true" />
               </a>
@@ -77,9 +78,9 @@ export default function Footer() {
             © {currentYear} ModelRegistry <span className="mx-1.5 opacity-40">·</span> {modelsData.length} models <span className="mx-1.5 opacity-40">·</span> Dataset revised {revisedLabel}
           </p>
           <div className="flex shrink-0 flex-wrap items-center gap-x-3 gap-y-2 text-[11px] font-medium sm:gap-x-4">
-            <Link href="/api/v1/models" className={`hidden sm:inline ${linkClass}`}>JSON API</Link>
-            <Link href="/rss.xml" className={`hidden sm:inline ${linkClass}`}>RSS</Link>
-            <Link href="/llms.txt" className={`hidden sm:inline ${linkClass}`}>llms.txt</Link>
+            <a href="/api/v1/models" className={`hidden sm:inline ${linkClass}`}>JSON API</a>
+            <a href="/rss.xml" className={`hidden sm:inline ${linkClass}`}>RSS</a>
+            <a href="/llms.txt" className={`hidden sm:inline ${linkClass}`}>llms.txt</a>
             <a href="https://github.com/TirupMehta/ModelRegistry" target="_blank" rel="noopener noreferrer" className={`hidden sm:inline-flex items-center gap-1 ${linkClass}`}>
               GitHub <ArrowUpRight size={11} aria-hidden="true" />
             </a>

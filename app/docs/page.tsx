@@ -183,9 +183,11 @@ export default function DocsPage() {
                   GET only - the registry is
                   read-only, so there are no write, update, or delete operations.
                   A machine-readable OpenAPI 3.1 description lives at{" "}
-                  <Link href="/openapi.json" target="_blank" rel="noopener noreferrer" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                  {/* Static file, not a page route: a plain anchor avoids Next's
+                      RSC prefetch, which 404s on public assets. */}
+                  <a href="/openapi.json" target="_blank" rel="noopener noreferrer" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
                     /openapi.json
-                  </Link>
+                  </a>
                   ; every operation there has a unique operationId.
                 </p>
               </div>
@@ -481,13 +483,13 @@ const { total, models } = await (
                 <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
                   The same site serves agents without a separate API. Ask for Markdown
                   with content negotiation, discover it through{" "}
-                  <Link href="/llms.txt" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                  <a href="/llms.txt" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
                     llms.txt
-                  </Link>
+                  </a>
                   , and read the machine description from{" "}
-                  <Link href="/openapi.json" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                  <a href="/openapi.json" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
                     OpenAPI 3.1
-                  </Link>
+                  </a>
                   .
                 </p>
                 <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] mb-3">
@@ -597,7 +599,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
                   { href: "/llms.txt", cmd: "GET /llms.txt", desc: "Per-lab ground truth for answer engines and crawlers." },
                   { href: "/llms-full.txt", cmd: "GET /llms-full.txt", desc: "Exhaustive dump - every field of every model, including variants." },
                 ].map((f) => (
-                  <Link
+                  <a
                     key={f.href}
                     href={f.href}
                     target="_blank"
@@ -609,7 +611,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
                       <span className="truncate hidden sm:inline">{f.desc}</span>
                       <ArrowUpRight size={12} className="shrink-0 group-hover:text-[#ff5d2e] transition-colors" />
                     </span>
-                  </Link>
+                  </a>
                 ))}
               </div>
             </TextWithBlur>
