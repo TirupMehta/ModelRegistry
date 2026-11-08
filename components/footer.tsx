@@ -17,9 +17,14 @@ export default function Footer() {
       <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pt-8 sm:pt-11 pb-6">
         <div className="flex flex-col sm:grid sm:grid-cols-[1.15fr_1fr_1fr_1fr] sm:items-start sm:gap-x-6 sm:gap-y-8 pb-6 sm:pb-9 text-left">
           <div className="border-b border-black/[0.07] pb-5 dark:border-white/[0.07] sm:border-0 sm:pb-0">
-            <Link href="/" className="inline-flex items-center gap-2 text-base sm:text-sm font-display font-semibold tracking-tight text-black dark:text-white hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors">
-              <span className="w-2 h-2 rounded-sm bg-[#ff5d2e]" aria-hidden="true" />
-              ModelRegistry
+            <Link href="/" className="inline-flex items-center gap-1.5 text-xl sm:text-lg font-display font-semibold tracking-tight text-black dark:text-white transition-colors">
+              <svg viewBox="7 7 18 18" width={22} height={22} aria-hidden="true" className="shrink-0 ml-1.5 text-black dark:text-white">
+                <rect x="7" y="7" width="8.5" height="8.5" rx="2.2" fill="currentColor" />
+                <rect x="16.5" y="7" width="8.5" height="8.5" rx="2.2" fill="currentColor" fillOpacity="0.45" />
+                <rect x="7" y="16.5" width="8.5" height="8.5" rx="2.2" fill="currentColor" fillOpacity="0.45" />
+                <rect x="16.5" y="16.5" width="8.5" height="8.5" rx="2.2" fill="#ff5d2e" />
+              </svg>
+              <span>Model<span className="font-bold text-[#ff5d2e]">Registry</span></span>
             </Link>
             <p className="mt-2 max-w-64 text-xs leading-relaxed text-black/50 dark:text-zinc-500 sm:max-w-48">
               An open index of AI models, their sources, and release history.
