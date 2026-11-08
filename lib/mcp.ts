@@ -440,3 +440,51 @@ export async function callTool(name: string, args: Record<string, unknown> | und
       throw new Error(`Unknown tool '${name}'.`)
   }
 }
+
+/* --------------------------------------------------------------- resources */
+
+const FIXED_RESOURCES: Array<{ uri: string; path: string; name: string; description: string }> = [
+  { uri: "modelregistry://home", path: "/", name: "Home", description: "Registry guide, when to use it, and call conventions." },
+  { uri: "modelregistry://docs", path: "/docs", name: "API reference", description: "Full REST contract, endpoints, errors, versioning." },
+  { uri: "modelregistry://about", path: "/about", name: "About", description: "What ModelRegistry is, who maintains it, how records are verified." },
+  { uri: "modelregistry://methodology", path: "/methodology", name: "Methodology", description: "Inclusion rules, source standards, verification levels." },
+  { uri: "modelregistry://open-source", path: "/open-source", name: "Open source", description: "Latest pushes, contributors, merged PRs, how to contribute." },
+  { uri: "modelregistry://cli", path: "/cli", name: "CLI", description: "Terminal client commands and plain-text routes." },
+  { uri: "modelregistry://contact", path: "/contact", name: "Contact", description: "Channels for corrections, security reports, enquiries." },
+  { uri: "modelregistry://privacy", path: "/privacy", name: "Privacy", description: "What the site stores (very little)." },
+]
+
+export const RESOURCE_LIST = FIXED_RESOURCES.map((r) => ({
+  uri: r.uri,
+  name: r.name,
+  description: r.description,
+  mimeType: "text/markdown" as const,
+}))
+
+export const RESOURCE_TEMPLATES = [
+  {
+    uriTemplate: "modelregistry://page/{+path}",
+    name: "Any page as Markdown",
+    description: "Read any ModelRegistry page by route path, e.g. modelregistry://page/models/gpt-6-1-sol.",
+    mimeType: "text/markdown" as const,
+  },
+]
+
+export function readResource(uri: string): { contents: Array<{ uri: string; mimeType: string; text: string }> } | null {
+  const fixed = FIXED_RESOURCES.find((r) => r.uri === uri)
+  if (fixed) {
+    const doc = renderMarkdown(fixed.path)
+    if (doc.status !== 200) return null
+    return { contents: [{ uri, mimeType: "text/markdown", text: doc.body }] }
+  }
+  const prefix = "modelregistry://page/"
+  if (uri.startsWith(prefix)) {
+    const rest = uri.slice(prefix.length)
+    if (rest.length === 0) return null
+    const path = rest.startsWith("/") ? rest : `/${rest}`
+    const doc = renderMarkdown(path)
+    if (doc.status !== 200) return null
+    return { contents: [{ uri, mimeType: "text/markdown", text: doc.body }] }
+  }
+  return null
+}

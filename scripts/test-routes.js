@@ -158,7 +158,7 @@ async function main() {
   await expectStatus("/docs", 200)
   await expectStatus("/cli", 200)
   await expectStatus("/open-source", 200)
-  await expectStatus("/api/mcp", 405) // stateless MCP: POST only
+  await expectStatus("/api/mcp", 200) // landing page (GET); POST is JSON-RPC
 
   // Fuzzy fallback: a near-miss slug of a real record redirects (307) to the
   // owning lab's flagship (manual: assert target, no follow).
@@ -495,6 +495,42 @@ async function main() {
     fail("mcp parse error", e.message)
   }
 
+  try {
+    const res = await mcpPost({ jsonrpc: "2.0", id: 6, method: "resources/list" })
+    const envelope = await res.json()
+    const resources = envelope.result?.resources ?? []
+    if (res.status === 200 && resources.length >= 6 && resources.every((r) => r.uri && r.mimeType === "text/markdown")) {
+      pass("mcp resources/list", `${resources.length} resources`)
+    } else {
+      fail("mcp resources/list", `status ${res.status}, ${resources.length} resources`)
+    }
+  } catch (e) {
+    fail("mcp resources/list", e.message)
+  }
+  try {
+    const res = await mcpPost({ jsonrpc: "2.0", id: 7, method: "resources/read", params: { uri: "modelregistry://docs" } })
+    const envelope = await res.json()
+    const text = String(envelope.result?.contents?.[0]?.text ?? "")
+    if (res.status === 200 && text.includes("ModelRegistry API Reference") && text.length > 1000) {
+      pass("mcp resources/read docs", `${text.length} chars`)
+    } else {
+      fail("mcp resources/read docs", `status ${res.status}, ${text.length} chars`)
+    }
+  } catch (e) {
+    fail("mcp resources/read docs", e.message)
+  }
+  try {
+    const res = await mcpPost({ jsonrpc: "2.0", id: 8, method: "resources/read", params: { uri: "modelregistry://page/models/" + EXPECTED.openaiFlagship } })
+    const envelope = await res.json()
+    const text = String(envelope.result?.contents?.[0]?.text ?? "")
+    if (res.status === 200 && text.includes(EXPECTED.openaiFlagshipName)) {
+      pass("mcp resources/read model page", EXPECTED.openaiFlagshipName)
+    } else {
+      fail("mcp resources/read model page", `status ${res.status}, ${text.slice(0, 80)}`)
+    }
+  } catch (e) {
+    fail("mcp resources/read model page", e.message)
+  }
   // llms.txt carries the when-to-use and call-convention guidance.
   try {
     const { res } = await get("/llms.txt")

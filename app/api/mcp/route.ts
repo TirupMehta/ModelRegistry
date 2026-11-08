@@ -17,8 +17,12 @@ import {
   SERVER_INSTRUCTIONS,
   TOOL_LIST,
   callTool,
+  RESOURCE_LIST,
+  RESOURCE_TEMPLATES,
+  readResource,
   type JsonRpcRequest,
 } from "@/lib/mcp"
+import { mcpLandingHtml, mcpLandingMarkdown } from "@/lib/mcp-landing"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -64,11 +68,26 @@ export function OPTIONS() {
 }
 
 /** The stateless server supports no SSE listening stream. */
-export function GET() {
-  return new Response(
-    JSON.stringify({ jsonrpc: "2.0", id: null, error: { code: JSON_RPC_ERRORS.INVALID_REQUEST, message: "GET is not supported. Use POST with a JSON-RPC 2.0 body." } }),
-    { status: 405, headers: responseHeaders(405) }
-  )
+export function GET(request: Request) {
+  const accept = (request.headers.get("accept") || "").toLowerCase()
+  if (accept.includes("text/markdown")) {
+    return new Response(mcpLandingMarkdown(), {
+      status: 200,
+      headers: {
+        "Content-Type": "text/markdown; charset=utf-8",
+        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+        Vary: "Accept",
+      },
+    })
+  }
+  return new Response(mcpLandingHtml(), {
+    status: 200,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      Vary: "Accept",
+    },
+  })
 }
 
 /** No transport sessions exist; DELETE (session shutdown) is a no-op 405. */
@@ -130,7 +149,7 @@ export async function POST(request: Request) {
             : PROTOCOL_VERSIONS[0]
         return rpcResult(id, {
           protocolVersion,
-          capabilities: { tools: { listChanged: false } },
+          capabilities: { tools: { listChanged: false }, resources: { listChanged: false } },
           serverInfo: SERVER_INFO,
           instructions: SERVER_INSTRUCTIONS,
         })
@@ -171,7 +190,22 @@ export async function POST(request: Request) {
       }
 
       case "resources/list":
-        return rpcResult(id, { resources: [] })
+        return rpcResult(id, { resources: RESOURCE_LIST })
+
+      case "resources/templates/list":
+        return rpcResult(id, { resourceTemplates: RESOURCE_TEMPLATES })
+
+      case "resources/read": {
+        const uri = params?.uri
+        if (typeof uri !== "string" || uri.length === 0) {
+          return rpcError(id, JSON_RPC_ERRORS.INVALID_PARAMS, "resources/read requires a string 'uri'.")
+        }
+        const result = readResource(uri)
+        if (!result) {
+          return rpcError(id, JSON_RPC_ERRORS.INVALID_PARAMS, `Unknown resource '${uri}'.`, RESOURCE_LIST.map((r) => r.uri))
+        }
+        return rpcResult(id, result)
+      }
 
       case "prompts/list":
         return rpcResult(id, { prompts: [] })

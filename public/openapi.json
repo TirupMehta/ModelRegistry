@@ -472,7 +472,7 @@
             }
           },
           "202": { "description": "Notification accepted (no id present); no body." },
-          "405": { "description": "GET or DELETE: stateless server, POST only." }
+          "405": { "description": "DELETE only: stateless server. POST runs JSON-RPC; GET returns the landing document." }
         }
       }
     }

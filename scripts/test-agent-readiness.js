@@ -290,6 +290,8 @@ const mcpToolsSrc = fs.readFileSync(path.resolve(__dirname, "../lib/mcp.ts"), "u
 for (const tool of ["list_models", "get_model", "list_labs", "get_changes", "get_health", "read_page_markdown"]) {
   checkTrue(`mcp-tool-${tool}`, mcpToolsSrc.includes(`name: "${tool}"`) || mcpToolsSrc.includes(`'${tool}'`))
 }
+checkTrue("mcp-resources-exported", mcpToolsSrc.includes("export const RESOURCE_LIST") && mcpToolsSrc.includes("export function readResource"))
+checkTrue("mcp-landing-module", fs.existsSync(path.resolve(__dirname, "../lib/mcp-landing.ts")))
 
 // 9. Rate-limit headers are actually emitted by the server config.
 const nextConfig = fs.readFileSync(path.resolve(__dirname, "../next.config.mjs"), "utf8")
