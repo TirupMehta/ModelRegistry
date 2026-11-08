@@ -73,6 +73,7 @@ registry, and it does not host models.
 Machine-readable discovery:
 
 - Agent Skills index: ${siteUrl}/.well-known/agent-skills/index.json
+- MCP discovery: ${siteUrl}/.well-known/mcp
 - Skill file: ${siteUrl}/skills/query-modelregistry/SKILL.md
 - Markdown view of any page: \`Accept: text/markdown\` (or ${siteUrl}/api/markdown?path=/)
 - Official CLI: https://github.com/TirupMehta/ModelRegistry/tree/main/cli - a zero-dependency

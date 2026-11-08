@@ -20,6 +20,8 @@ import {
   RESOURCE_LIST,
   RESOURCE_TEMPLATES,
   readResource,
+  PROMPT_LIST,
+  getPrompt,
   type JsonRpcRequest,
 } from "@/lib/mcp"
 import { mcpLandingHtml, mcpLandingMarkdown } from "@/lib/mcp-landing"
@@ -149,7 +151,7 @@ export async function POST(request: Request) {
             : PROTOCOL_VERSIONS[0]
         return rpcResult(id, {
           protocolVersion,
-          capabilities: { tools: { listChanged: false }, resources: { listChanged: false } },
+          capabilities: { tools: { listChanged: false }, resources: { listChanged: false }, prompts: { listChanged: false } },
           serverInfo: SERVER_INFO,
           instructions: SERVER_INSTRUCTIONS,
         })
@@ -192,28 +194,40 @@ export async function POST(request: Request) {
       case "resources/list":
         return rpcResult(id, { resources: RESOURCE_LIST })
 
-      case "resources/templates/list":
-        return rpcResult(id, { resourceTemplates: RESOURCE_TEMPLATES })
+      case "prompts/list":
+        return rpcResult(id, { prompts: PROMPT_LIST })
+
+      case "prompts/get": {
+        const name = params?.name
+        if (typeof name !== "string") {
+          return rpcError(id, JSON_RPC_ERRORS.INVALID_PARAMS, "prompts/get requires a string 'name'.")
+        }
+        const prompt = getPrompt(name, params?.arguments as Record<string, string> | undefined)
+        if (!prompt) {
+          return rpcError(id, JSON_RPC_ERRORS.INVALID_PARAMS, `Unknown prompt '${name}'.`, PROMPT_LIST.map((p) => p.name))
+        }
+        return rpcResult(id, prompt)
+      }
 
       case "resources/read": {
         const uri = params?.uri
         if (typeof uri !== "string" || uri.length === 0) {
           return rpcError(id, JSON_RPC_ERRORS.INVALID_PARAMS, "resources/read requires a string 'uri'.")
         }
-        const result = readResource(uri)
+        const result = await readResource(uri)
         if (!result) {
           return rpcError(id, JSON_RPC_ERRORS.INVALID_PARAMS, `Unknown resource '${uri}'.`, RESOURCE_LIST.map((r) => r.uri))
         }
         return rpcResult(id, result)
       }
 
-      case "prompts/list":
-        return rpcResult(id, { prompts: [] })
+      case "resources/templates/list":
+        return rpcResult(id, { resourceTemplates: RESOURCE_TEMPLATES })
 
       // Anything else: a real method miss with the protocol-standard code.
       default:
         return rpcError(id, JSON_RPC_ERRORS.METHOD_NOT_FOUND, `Method '${method}' is not supported.`, {
-          supported: ["initialize", "ping", "tools/list", "tools/call"],
+          supported: ["initialize", "ping", "tools/list", "tools/call", "resources/list", "resources/read", "resources/templates/list", "prompts/list", "prompts/get"],
         })
     }
   } catch (error) {

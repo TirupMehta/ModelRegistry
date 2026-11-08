@@ -632,6 +632,23 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
                 ))}
               </div>
               <p className="text-xs text-black/50 dark:text-zinc-500 mt-3 leading-relaxed max-w-2xl">
+                The server also exposes four prompts (<code className="font-mono text-xs">registry_overview</code>,{" "}
+                <code className="font-mono text-xs">research_model</code>,{" "}
+                <code className="font-mono text-xs">compare_models</code>,{" "}
+                <code className="font-mono text-xs">incremental_sync</code>) and eight Markdown
+                resources (<code className="font-mono text-xs">modelregistry://home</code>,{" "}
+                <code className="font-mono text-xs">/docs</code>,{" "}
+                <code className="font-mono text-xs">/about</code>,{" "}
+                <code className="font-mono text-xs">/methodology</code>,{" "}
+                <code className="font-mono text-xs">/open-source</code>,{" "}
+                <code className="font-mono text-xs">/cli</code>,{" "}
+                <code className="font-mono text-xs">/contact</code>,{" "}
+                <code className="font-mono text-xs">/privacy</code>,{" "}
+                <code className="font-mono text-xs">/llms.txt</code>, plus{" "}
+                <code className="font-mono text-xs">modelregistry://page/{"{"}+path{"}"}</code> for any page).
+                Auto-discovery: <code className="font-mono text-xs">{SITE_URL}/.well-known/mcp</code>.
+              </p>
+              <p className="text-xs text-black/50 dark:text-zinc-500 mt-3 leading-relaxed max-w-2xl">
                 Missing records return <code className="font-mono text-xs">model_not_found</code> inside an
                 <code className="font-mono text-xs"> isError</code> result - the same code + hint contract as the REST
                 API. Tool outcomes are data facts only: no live availability claims.

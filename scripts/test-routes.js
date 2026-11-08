@@ -499,7 +499,7 @@ async function main() {
     const res = await mcpPost({ jsonrpc: "2.0", id: 6, method: "resources/list" })
     const envelope = await res.json()
     const resources = envelope.result?.resources ?? []
-    if (res.status === 200 && resources.length >= 6 && resources.every((r) => r.uri && r.mimeType === "text/markdown")) {
+    if (res.status === 200 && resources.length >= 6 && resources.every((r) => r.uri && (r.mimeType === "text/markdown" || r.mimeType === "text/plain"))) {
       pass("mcp resources/list", `${resources.length} resources`)
     } else {
       fail("mcp resources/list", `status ${res.status}, ${resources.length} resources`)
@@ -530,6 +530,42 @@ async function main() {
     }
   } catch (e) {
     fail("mcp resources/read model page", e.message)
+  }
+  try {
+    const res = await mcpPost({ jsonrpc: "2.0", id: 9, method: "prompts/list" })
+    const envelope = await res.json()
+    const prompts = envelope.result?.prompts ?? []
+    const names = new Set(prompts.map((p) => p.name))
+    if (res.status === 200 && ["registry_overview", "research_model", "compare_models", "incremental_sync"].every((n) => names.has(n))) {
+      pass("mcp prompts/list", `${prompts.length} prompts`)
+    } else {
+      fail("mcp prompts/list", `status ${res.status}, ${prompts.length} prompts`)
+    }
+  } catch (e) {
+    fail("mcp prompts/list", e.message)
+  }
+  try {
+    const res = await mcpPost({ jsonrpc: "2.0", id: 10, method: "prompts/get", params: { name: "research_model", arguments: { id: EXPECTED.openaiFlagship } } })
+    const envelope = await res.json()
+    const text = String(envelope.result?.messages?.[0]?.content?.text ?? "")
+    if (res.status === 200 && text.includes(EXPECTED.openaiFlagship) && text.includes("get_model")) {
+      pass("mcp prompts/get research_model", `${text.length} chars`)
+    } else {
+      fail("mcp prompts/get research_model", `status ${res.status}, ${text.length} chars`)
+    }
+  } catch (e) {
+    fail("mcp prompts/get research_model", e.message)
+  }
+  try {
+    const res = await fetch(`${BASE}/.well-known/mcp`)
+    const body = await res.json()
+    if (res.status === 200 && typeof body.endpoint === "string" && body.endpoint.endsWith("/api/mcp") && Array.isArray(body.tools) && body.tools.includes("get_model")) {
+      pass("well-known mcp discovery", `${body.tools.length} tools`)
+    } else {
+      fail("well-known mcp discovery", `status ${res.status}`)
+    }
+  } catch (e) {
+    fail("well-known mcp discovery", e.message)
   }
   // llms.txt carries the when-to-use and call-convention guidance.
   try {

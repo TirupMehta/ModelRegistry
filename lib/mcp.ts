@@ -81,6 +81,8 @@ call get_model for the full record including per-field source citations.`,
         openWeights: { type: "boolean", description: "Keep only open-weight records when true." },
         flagshipOnly: { type: "boolean", description: "Keep only primary flagships (at most one per lab) when true." },
         latestOnly: { type: "boolean", description: "Keep only newest released checkpoints when true." },
+        limit: { type: "number", description: "Max records to return, 1-500. Default 100. Use offset for pagination." },
+        offset: { type: "number", description: "Records to skip before returning. Default 0." },
       },
       required: [],
       additionalProperties: false,
@@ -260,15 +262,31 @@ export async function callTool(name: string, args: Record<string, unknown> | und
   switch (name) {
     case "list_models": {
       const filtered = applyModelFilters(params as ModelArgs, modelsData)
+      const MAX_LIMIT = 500
+      const DEFAULT_LIMIT = 100
+      let limit = DEFAULT_LIMIT
+      if (params.limit !== undefined) {
+        const parsed = typeof params.limit === "number" ? params.limit : Number.parseInt(String(params.limit), 10)
+        if (Number.isInteger(parsed) && parsed >= 1) limit = Math.min(parsed, MAX_LIMIT)
+      }
+      let offset = 0
+      if (params.offset !== undefined) {
+        const parsed = typeof params.offset === "number" ? params.offset : Number.parseInt(String(params.offset), 10)
+        if (Number.isInteger(parsed) && parsed >= 0) offset = parsed
+      }
+      const page = filtered.slice(offset, offset + limit)
       return {
         isError: false,
         text: json({
           status: "success",
           total: filtered.length,
+          returned: page.length,
+          offset,
+          limit,
           updatedAt: datasetRevision.revisedAt,
           datasetVersion: datasetRevision.datasetVersion,
           note: "Trimmed records - call get_model with an id for the full record with per-field citations.",
-          models: filtered.map(trimModel),
+          models: page.map(trimModel),
         }),
       }
     }
@@ -441,6 +459,144 @@ export async function callTool(name: string, args: Record<string, unknown> | und
   }
 }
 
+/* --------------------------------------------------------------- prompts */
+
+export const PROMPT_LIST = [
+  {
+    name: "registry_overview",
+    description: "Orientation prompt: what ModelRegistry is, its honesty rules, and how to query it. Use before answering any model question.",
+    arguments: [],
+  },
+  {
+    name: "research_model",
+    description: "Research one model end to end: fetch the full record, verify its sources, and report specs, pricing, benchmarks, and caveats.",
+    arguments: [{ name: "id", description: "Stable kebab-case record id, e.g. 'gpt-6-1-sol'.", required: true }],
+  },
+  {
+    name: "compare_models",
+    description: "Compare two models on context, pricing, modalities, license, and benchmarks, citing sources for each figure.",
+    arguments: [
+      { name: "idA", description: "First model id.", required: true },
+      { name: "idB", description: "Second model id.", required: true },
+    ],
+  },
+  {
+    name: "incremental_sync",
+    description: "Poll the registry for changes since a date and fetch only the changed records.",
+    arguments: [{ name: "since", description: "Inclusive lower bound, YYYY-MM-DD.", required: true }],
+  },
+]
+
+export function getPrompt(name: string, args: Record<string, string> | undefined): { description: string; messages: Array<{ role: "user"; content: { type: "text"; text: string } }> } | null {
+  const a = args ?? {}
+  switch (name) {
+    case "registry_overview":
+      return {
+        description: PROMPT_LIST[0].description,
+        messages: [
+          {
+            role: "user",
+            content: {
+              type: "text",
+              text: `You are answering questions using ModelRegistry, an open, source-linked registry of frontier AI model specifications.
+
+Before answering, internalise these rules:
+- Specification figures are lab-reported unless a cited source states otherwise; benchmarks are never independently reproduced.
+- lastVerifiedAt is the date a source was reviewed, not a live availability signal. Dataset revision dates never substitute for field verification.
+- There is no "partially verified" badge: sources and the last-checked date are shown directly.
+- Retired records stay for history; provider availability may have changed.
+- Unverified records can never carry flagship or latest labels.
+- An unmapped model is not unavailable: provider coverage is OpenRouter-only and explicit.
+
+Discovery:
+- Human reference: https://modelregistry.tirup.in/docs
+- OpenAPI 3.1: https://modelregistry.tirup.in/openapi.json
+- Compact agent guide: https://modelregistry.tirup.in/llms.txt
+- Exhaustive matrix: https://modelregistry.tirup.in/llms-full.txt
+- JSON API: https://modelregistry.tirup.in/api/v1/models
+- Health: https://modelregistry.tirup.in/api/check-updates
+
+Tools: list_models, get_model, list_labs, get_changes, get_health, read_page_markdown.
+Resources: modelregistry://home, /docs, /about, /methodology, /open-source, /cli, /contact, /privacy, /llms.txt, and modelregistry://page/{+path} for any page.
+
+When asked about a model, prefer get_model(id) and cite the model page URL plus datasetVersion. If you only have a name, call list_models(company=...) first.`,
+            },
+          },
+        ],
+      }
+    case "research_model": {
+      const id = a.id
+      if (!id) return null
+      return {
+        description: PROMPT_LIST[1].description,
+        messages: [
+          {
+            role: "user",
+            content: {
+              type: "text",
+              text: `Research the model with id "${id}" using ModelRegistry.
+
+Steps:
+1. Call get_model("${id}") for the full record: specifications, pricing, modalities, lab-reported benchmarks, per-field source citations, and the dated changelog.
+2. If the call returns model_not_found, call list_models(company=<lab>) to find the closest id and retry once.
+3. Report: name/version/lab, release date, context window, max output, parameters, license, pricing, modalities, benchmarks (each with its source), primary sources, last-verified date, and changelog highlights.
+4. State caveats explicitly: lab-reported benchmarks (not independently reproduced), source-review date (not live availability), and any field without a cited source.
+5. Cite the model page URL and datasetVersion in the final answer.`,
+            },
+          },
+        ],
+      }
+    }
+    case "compare_models": {
+      const idA = a.idA
+      const idB = a.idB
+      if (!idA || !idB) return null
+      return {
+        description: PROMPT_LIST[2].description,
+        messages: [
+          {
+            role: "user",
+            content: {
+              type: "text",
+              text: `Compare two models using ModelRegistry: "${idA}" vs "${idB}".
+
+Steps:
+1. Call get_model("${idA}") and get_model("${idB}") in parallel.
+2. Build a side-by-side table on: release date, context window, max output tokens, parameters, license, open weights, pricing (per 1M tokens or per second), modalities, and lab-reported benchmarks.
+3. For every figure, cite the primary source URL and the last-verified date. Do not compare benchmarks that were run under different conditions without noting it.
+4. End with a one-paragraph verdict that states the comparison basis and any uncertainty (missing sources, differing benchmark suites).`,
+            },
+          },
+        ],
+      }
+    }
+    case "incremental_sync": {
+      const since = a.since
+      if (!since) return null
+      return {
+        description: PROMPT_LIST[3].description,
+        messages: [
+          {
+            role: "user",
+            content: {
+              type: "text",
+              text: `Sync ModelRegistry incrementally since ${since}.
+
+Steps:
+1. Call get_changes("${since}") for the changelog entries (newest first).
+2. For each changed modelId, call get_model(id) to fetch the full updated record.
+3. Report: total changes, per-model summary of what changed (date + summary), and the new datasetVersion.
+4. Note any record whose lastVerifiedAt is older than the change date (possible staleness).`,
+            },
+          },
+        ],
+      }
+    }
+    default:
+      return null
+  }
+}
+
 /* --------------------------------------------------------------- resources */
 
 const FIXED_RESOURCES: Array<{ uri: string; path: string; name: string; description: string }> = [
@@ -454,12 +610,20 @@ const FIXED_RESOURCES: Array<{ uri: string; path: string; name: string; descript
   { uri: "modelregistry://privacy", path: "/privacy", name: "Privacy", description: "What the site stores (very little)." },
 ]
 
-export const RESOURCE_LIST = FIXED_RESOURCES.map((r) => ({
-  uri: r.uri,
-  name: r.name,
-  description: r.description,
-  mimeType: "text/markdown" as const,
-}))
+export const RESOURCE_LIST = [
+  {
+    uri: "modelregistry://llms.txt",
+    name: "llms.txt (compact agent guide)",
+    description: "Per-lab ground truth, when-to-use, call conventions, common questions.",
+    mimeType: "text/plain" as const,
+  },
+  ...FIXED_RESOURCES.map((r) => ({
+    uri: r.uri,
+    name: r.name,
+    description: r.description,
+    mimeType: "text/markdown" as const,
+  })),
+]
 
 export const RESOURCE_TEMPLATES = [
   {
@@ -470,7 +634,20 @@ export const RESOURCE_TEMPLATES = [
   },
 ]
 
-export function readResource(uri: string): { contents: Array<{ uri: string; mimeType: string; text: string }> } | null {
+export async function readResource(uri: string): Promise<{ contents: Array<{ uri: string; mimeType: string; text: string }> } | null> {
+  if (uri === "modelregistry://llms.txt") {
+    try {
+      const mod = (await import("@/app/llms.txt/route")) as { GET: () => Promise<Response> | Response }
+      const res = await mod.GET()
+      const text = await res.text()
+      if (text && text.length > 100) {
+        return { contents: [{ uri, mimeType: "text/plain", text }] }
+      }
+    } catch {
+      return null
+    }
+    return null
+  }
   const fixed = FIXED_RESOURCES.find((r) => r.uri === uri)
   if (fixed) {
     const doc = renderMarkdown(fixed.path)
