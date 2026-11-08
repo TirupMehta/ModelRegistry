@@ -50,13 +50,11 @@ export default function Footer() {
               <h2 className="mb-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-black/35 dark:text-zinc-600">About &amp; data</h2>
               <Link href="/methodology" className={linkClass}>Methodology</Link>
               <Link href="/about" className={linkClass}>About</Link>
-              <Link href="/open-source" className={linkClass}>Open source</Link>
               <Link href="/contact" className={linkClass}>Contact</Link>
               <Link href="/privacy" className={linkClass}>Privacy</Link>
               <Link href="/editorial-policy" className={linkClass}>Editorial policy</Link>
               <Link href="/changelog" className={linkClass}>Changelog</Link>
               <Link href="/docs" className={linkClass}>API &amp; docs</Link>
-              <Link href="/cli" className={linkClass}>CLI</Link>
             </nav>
 
             {/* Mobile only: fills the second row of the link grid and keeps
@@ -67,6 +65,7 @@ export default function Footer() {
               <a href="/api/v1/models" className={linkClass}>JSON API</a>
               <a href="/rss.xml" className={linkClass}>RSS</a>
               <a href="/llms.txt" className={linkClass}>llms.txt</a>
+              <Link href="/open-source" className={linkClass}>Open source</Link>
               <a href="https://github.com/TirupMehta/ModelRegistry" target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-1 ${linkClass}`}>
                 GitHub <ArrowUpRight size={11} aria-hidden="true" />
               </a>
@@ -82,6 +81,7 @@ export default function Footer() {
             <a href="/api/v1/models" className={`hidden sm:inline ${linkClass}`}>JSON API</a>
             <a href="/rss.xml" className={`hidden sm:inline ${linkClass}`}>RSS</a>
             <a href="/llms.txt" className={`hidden sm:inline ${linkClass}`}>llms.txt</a>
+            <Link href="/open-source" className={`hidden sm:inline ${linkClass}`}>Open source</Link>
             <a href="https://github.com/TirupMehta/ModelRegistry" target="_blank" rel="noopener noreferrer" className={`hidden sm:inline-flex items-center gap-1 ${linkClass}`}>
               GitHub <ArrowUpRight size={11} aria-hidden="true" />
             </a>
