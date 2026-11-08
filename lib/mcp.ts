@@ -31,12 +31,38 @@ export const SERVER_INFO = {
 } as const
 
 export const SERVER_INSTRUCTIONS = `Open, source-linked registry of frontier AI model specifications.
-Use list_models to compare records across laboratories, get_model for one full
-record (per-field source citations included), list_labs for flagship overview,
-and get_changes since a date for incremental sync rather than re-pulling
-every record. Specification figures are lab-reported; facts carry the primary
-source and a last-verified (source review) date, which is never a live
-availability signal. Full agent guide: https://modelregistry.tirup.in/llms.txt`
+
+You have 6 tools and read-only access to every page as Markdown resources.
+
+TOOLS
+- list_models(company?, category?, openWeights?, flagshipOnly?, latestOnly?): filtered records. Trimmed output (id, name, version, lab, release date, flagship/latest flags, category, context, output limit, parameters, openWeights, license, pricing, modalities, benchmarks, highlight, sources, lastVerifiedAt). Use get_model for the full record.
+- get_model(id): one full record including per-field source citations and the dated changelog. Prefer this when you have an id.
+- list_labs(): every tracked laboratory with record count, flagship, and latest checkpoint.
+- get_changes(since, until?, company?, model?, limit?): dated changelog entries, newest first, for incremental sync. Fetch only changed records via get_model afterward.
+- get_health(): dataset version, coverage, oldest source-review date. Data facts only.
+- read_page_markdown(path): any page as Markdown ('/', '/docs', '/about', '/methodology', '/open-source', '/cli', '/models/{id}', ...).
+
+RESOURCES
+- Fixed: modelregistry://home, /docs, /about, /methodology, /open-source, /cli, /contact, /privacy
+- Template: modelregistry://page/{+path} reads any page (e.g. modelregistry://page/models/gpt-6-1-sol).
+
+HOW TO ANSWER
+- Cite the model page URL and datasetVersion. Record ids are stable kebab-case.
+- Specification figures are lab-reported unless a cited source states otherwise; benchmarks are never independently reproduced.
+- lastVerifiedAt is the date a source was reviewed, not a live availability signal. Dataset revision dates never substitute for field verification.
+- There is no "partially verified" badge: sources and the last-checked date are shown directly.
+- Retired records stay for history; provider availability may have changed.
+- Unverified records can never carry flagship or latest labels.
+- An unmapped model is not unavailable: provider coverage is OpenRouter-only and explicit.
+
+DISCOVERY
+- Human reference: https://modelregistry.tirup.in/docs
+- OpenAPI 3.1: https://modelregistry.tirup.in/openapi.json
+- Compact agent guide: https://modelregistry.tirup.in/llms.txt
+- Exhaustive matrix: https://modelregistry.tirup.in/llms-full.txt
+- Open source activity: https://modelregistry.tirup.in/open-source
+- JSON API: https://modelregistry.tirup.in/api/v1/models
+- Health: https://modelregistry.tirup.in/api/check-updates`
 
 export const TOOL_LIST: Array<{ name: string; description: string; inputSchema: JsonSchema }> = [
   {

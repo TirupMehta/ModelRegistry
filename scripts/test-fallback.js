@@ -1,6 +1,6 @@
 /**
  * scripts/test-fallback.js
- * Permanent coverage for the retired-slug fallback (see ADR 002).
+ * Permanent coverage for the retired-slug fallback.
  * Run via `pnpm test`. Fails non-zero on any mismatch.
  */
 const fs = require("fs")
