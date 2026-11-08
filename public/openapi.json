@@ -25,7 +25,8 @@
     { "name": "changes", "description": "Changelog and incremental sync" },
     { "name": "data", "description": "Dataset snapshots and health" },
     { "name": "feeds", "description": "RSS, JSON Feed, and agent-readable text" },
-    { "name": "agents", "description": "Markdown negotiation and agent discovery" }
+    { "name": "agents", "description": "Markdown negotiation and agent discovery" },
+    { "name": "mcp", "description": "Model Context Protocol server for agent tool use" }
   ],
   "paths": {
     "/api/v1/models": {
@@ -415,6 +416,63 @@
               }
             }
           }
+        }
+      }
+    },
+    "/api/mcp": {
+      "post": {
+        "operationId": "mcpRpc",
+        "tags": ["mcp"],
+        "summary": "Model Context Protocol server (JSON-RPC 2.0, stateless)",
+        "description": "Hosted MCP endpoint for any MCP-capable client (Claude, Cursor, Codex, custom agents). Stateless JSON-RPC 2.0 over POST per the MCP 2025-06-18 revision: initialize, ping, tools/list, tools/call. No auth, no session, CORS-open. Notifications (no id) return 202; unknown methods return a JSON-RPC -32601 error listing the supported set. GET and DELETE return 405 (stateless, POST only); OPTIONS is the CORS preflight. Tool outcomes mirror the REST API data and keep the code + hint error contract inside isError results (model_not_found, invalid_params, route_not_found, invalid_date). Tool results never imply live availability.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["jsonrpc", "method"],
+                "properties": {
+                  "jsonrpc": { "type": "string", "const": "2.0" },
+                  "id": { "type": ["string", "number"], "description": "Request id. Missing or null id is treated as a notification (HTTP 202)." },
+                  "method": { "type": "string", "enum": ["initialize", "ping", "tools/list", "tools/call"] },
+                  "params": { "type": "object", "description": "For tools/call: { name, arguments }. Arguments are validated per tool; unknown tools and malformed arguments return -32602." }
+                }
+              },
+              "examples": {
+                "initialize": { "value": { "jsonrpc": "2.0", "id": 1, "method": "initialize", "params": { "protocolVersion": "2025-06-18", "capabilities": {} } } },
+                "listModels": { "value": { "jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": { "name": "list_models", "arguments": { "company": "anthropic", "flagshipOnly": true } } } },
+                "getModel": { "value": { "jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": { "name": "get_model", "arguments": { "id": "gpt-6-1-sol" } } } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "JSON-RPC 2.0 envelope (result or error). Tool errors ride inside a result's isError flag with the REST code + hint contract; only malformed requests produce JSON-RPC error objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "jsonrpc": { "type": "string", "const": "2.0" },
+                    "id": {},
+                    "result": { "type": "object" },
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "integer", "enum": [-32700, -32600, -32601, -32602, -32603] },
+                        "message": { "type": "string" },
+                        "data": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "202": { "description": "Notification accepted (no id present); no body." },
+          "405": { "description": "GET or DELETE: stateless server, POST only." }
         }
       }
     }

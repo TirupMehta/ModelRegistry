@@ -129,6 +129,40 @@ Full parameter reference, live counts, and Python/JS examples: [modelregistry.ti
 
 ---
 
+## MCP Server (add ModelRegistry to any AI)
+
+A hosted Model Context Protocol server is available at
+**`https://modelregistry.tirup.in/api/mcp`** - no auth, no key, stateless
+JSON-RPC 2.0 (POST) implementing the MCP 2025-06-18 revision. Register the URL
+in any MCP-capable client and the AI gets tools to read the full source-linked
+registry:
+
+| Tool | What it returns |
+| --- | --- |
+| `list_models` | Filtered records (company, category, openWeights, flagshipOnly, latestOnly) |
+| `get_model` | One full record: specs, benchmarks, per-field source citations, changelog |
+| `list_labs` | Every tracked laboratory with flagship and latest checkpoint |
+| `get_changes` | Changelog entries since a date, for incremental sync |
+| `get_health` | Dataset version, coverage, oldest source-review date |
+| `read_page_markdown` | Any page rendered as Markdown (`/docs`, `/about`, ...) |
+
+Most clients take the URL verbatim in their MCP config:
+
+```json
+{
+  "mcpServers": {
+    "modelregistry": {
+      "url": "https://modelregistry.tirup.in/api/mcp"
+    }
+  }
+}
+```
+
+Claude Code: `claude mcp add --transport http modelregistry https://modelregistry.tirup.in/api/mcp`
+
+
+---
+
 ## 🤝 Contributing (Takes 60 Seconds)
 
 ModelRegistry uses a **single-file contribution workflow**. You only ever edit **one file**: [`data/models.ts`](./data/models.ts).
@@ -138,6 +172,10 @@ ModelRegistry uses a **single-file contribution workflow**. You only ever edit *
 3. **Open a Pull Request**!
 
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the copy-paste snippet.
+
+Everything about the project's open development - latest pushes, community
+contributors, and merged pull requests, fetched live from the GitHub API - is
+on the [open-source page](https://modelregistry.tirup.in/open-source).
 
 ### 🤖 Contributing With AI
 

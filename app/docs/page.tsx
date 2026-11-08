@@ -588,6 +588,57 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
             </TextWithBlur>
           </div>
 
+          <div id="mcp" className="scroll-mt-24 mb-12">
+            <TextWithBlur>
+              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-2">
+                MCP server
+              </h2>
+              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+                A hosted Model Context Protocol server for any MCP-capable AI client:
+                Claude, Cursor, Codex, Windsurf, or your own agent. Stateless JSON-RPC
+                2.0 over POST (MCP 2025-06-18 revision), serving the same dataset the
+                REST API serves, so the two surfaces never disagree.
+              </p>
+              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+                Register the URL{" "}
+                <code className="font-mono text-xs">{SITE_URL}/api/mcp</code> - most clients
+                take it verbatim in their MCP config:
+              </p>
+              <CodeBlock
+                code={`{
+  "mcpServers": {
+    "modelregistry": {
+      "url": "${SITE_URL}/api/mcp"
+    }
+  }
+}`}
+              />
+              <p className="text-xs text-black/50 dark:text-zinc-500 mt-2 mb-4 leading-relaxed">
+                Claude Code: <code className="font-mono text-[11px]">claude mcp add --transport http modelregistry {SITE_URL}/api/mcp</code>
+              </p>
+              <div className="divide-y divide-black/5 dark:divide-white/[0.06] rounded-md border border-black/10 dark:border-white/[0.08]">
+                {[
+                  { tool: "list_models", desc: "Filtered /api/v1/models, trimmed per-record output." },
+                  { tool: "get_model", desc: "One full record: specs, benchmarks, per-field source citations, changelog." },
+                  { tool: "list_labs", desc: "Every tracked laboratory with flagship and checkpoint." },
+                  { tool: "get_changes", desc: "Changelog entries since a date for incremental sync." },
+                  { tool: "get_health", desc: "Dataset version, coverage, oldest source review date." },
+                  { tool: "read_page_markdown", desc: "Any page rendered as Markdown." },
+                ].map((t) => (
+                  <div key={t.tool} className="flex items-center gap-3 px-4 py-3">
+                    <code className="font-mono text-xs text-black/80 dark:text-zinc-200 shrink-0">{t.tool}</code>
+                    <span className="text-xs text-black/45 dark:text-zinc-400 min-w-0">{t.desc}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-black/50 dark:text-zinc-500 mt-3 leading-relaxed max-w-2xl">
+                Missing records return <code className="font-mono text-xs">model_not_found</code> inside an
+                <code className="font-mono text-xs"> isError</code> result - the same code + hint contract as the REST
+                API. Tool outcomes are data facts only: no live availability claims.
+              </p>
+            </TextWithBlur>
+          </div>
+
           <div id="feeds" className="scroll-mt-24 mb-12">
             <TextWithBlur>
               <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-3">

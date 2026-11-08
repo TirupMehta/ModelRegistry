@@ -187,7 +187,10 @@ export default function AboutPage() {
 
         <H2>{faqs[3].q}</H2>
         <P>
-          Yes. The registry is MIT licensed. Machine-readable access needs no account and no key:
+          Yes. The registry is MIT licensed and built in public - commits,
+          contributors, and pull requests are on the{" "}
+          <A href="/open-source">open-source page</A>. Machine-readable access needs no
+          account and no key:
           the <A href="/api/v1/models">JSON API</A>, <A href="/api/v1/snapshot">snapshot</A>,{" "}
           <A href="/rss.xml">RSS</A>, <A href="/feed.json">JSON Feed</A> and{" "}
           <A href="/llms.txt">llms.txt</A> are all public. <A href="/docs">Docs</A> covers the

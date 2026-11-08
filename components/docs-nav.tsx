@@ -16,6 +16,7 @@ const INDEX = [
   { id: "agent-prompts", label: "Agent prompts" },
   { id: "agent-access", label: "Agent access" },
   { id: "cli", label: "CLI & plain text" },
+  { id: "mcp", label: "MCP server" },
   { id: "feeds", label: "Feeds" },
   { id: "badges", label: "Badges & health" },
   { id: "versioning", label: "Versioning" },

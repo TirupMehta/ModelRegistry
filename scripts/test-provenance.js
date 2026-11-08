@@ -85,7 +85,7 @@ check(
 const sitemap = read("app/sitemap.ts")
 check("sitemap core routes use revision date", sitemap.includes("lastModified: revisedAt"))
 check("sitemap has no bare build-time lastmod", !/lastModified: now\b/.test(sitemap))
-for (const p of ["methodology", "editorial-policy", "changelog", "flagships", "pricing", "context", "licenses", "modalities", "retired", "feed.json"]) {
+for (const p of ["methodology", "editorial-policy", "changelog", "flagships", "pricing", "context", "licenses", "modalities", "retired", "feed.json", "open-source"]) {
   check(`sitemap covers /${p}`, sitemap.includes(`/${p}`))
 }
 check("model JSON-LD uses TechArticle", read("app/models/[id]/page.tsx").includes('"@type": "TechArticle"'))

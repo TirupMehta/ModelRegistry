@@ -175,8 +175,12 @@ Branch on \`code\` (\`bad_request\`, \`invalid_date\`, \`invalid_limit\`,
 Human-readable API reference: https://modelregistry.tirup.in/docs
 
 OpenAPI 3.1 description: https://modelregistry.tirup.in/openapi.json
+MCP server: https://modelregistry.tirup.in/api/mcp (stateless JSON-RPC 2.0 over
+POST; tools: list_models, get_model, list_labs, get_changes, get_health,
+read_page_markdown)
 Trust pages: https://modelregistry.tirup.in/contact and
 https://modelregistry.tirup.in/privacy
+Project open-source activity: https://modelregistry.tirup.in/open-source
 
 The \`/v1/\` prefix is a stability contract: breaking renames ship under a
 new version, never silently. Additive changes (new fields, labs, models)

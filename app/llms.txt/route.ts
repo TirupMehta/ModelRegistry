@@ -33,6 +33,8 @@ export async function GET() {
 - Full LLM Matrix: ${siteUrl}/llms-full.txt
 - Sitemap: ${siteUrl}/sitemap.xml
 - GitHub: https://github.com/TirupMehta/ModelRegistry
+- Open source: ${siteUrl}/open-source
+- MCP server (JSON-RPC, stateless): ${siteUrl}/api/mcp
 - Contact: ${siteUrl}/contact
 - Privacy: ${siteUrl}/privacy
 - Dataset version: ${datasetRevision.datasetVersion} (data revised ${datasetRevision.revisedAt})
@@ -64,6 +66,9 @@ registry, and it does not host models.
    \`invalid_date\`, \`route_not_found\`, \`method_not_allowed\`, \`rate_limited\`).
 6. Honour \`RateLimit\` headers (600 requests/minute advisory) and
    \`Retry-After\` on a 429. Cache for the \`s-maxage\` the response advertises.
+7. Or register the MCP server at ${siteUrl}/api/mcp instead: stateless
+   JSON-RPC 2.0 over POST, tools list_models/get_model/list_labs/get_changes/
+   get_health/read_page_markdown.
 
 Machine-readable discovery:
 
@@ -110,6 +115,7 @@ An MLOps model registry (MLflow, SageMaker, Vertex AI) stores the artifacts a te
 - Methodology: ${siteUrl}/methodology
 - Editorial policy: ${siteUrl}/editorial-policy
 - About the project and its maintainer: ${siteUrl}/about
+- Open-source activity and contribution guide: ${siteUrl}/open-source
 - Contact channels: ${siteUrl}/contact
 - Privacy policy: ${siteUrl}/privacy
 - Versioned dataset snapshot: ${siteUrl}/api/v1/snapshot

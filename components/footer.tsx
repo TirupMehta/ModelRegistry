@@ -50,6 +50,7 @@ export default function Footer() {
               <h2 className="mb-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-black/35 dark:text-zinc-600">About &amp; data</h2>
               <Link href="/methodology" className={linkClass}>Methodology</Link>
               <Link href="/about" className={linkClass}>About</Link>
+              <Link href="/open-source" className={linkClass}>Open source</Link>
               <Link href="/contact" className={linkClass}>Contact</Link>
               <Link href="/privacy" className={linkClass}>Privacy</Link>
               <Link href="/editorial-policy" className={linkClass}>Editorial policy</Link>

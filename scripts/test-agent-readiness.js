@@ -53,6 +53,10 @@ const registry = {
   "@/lib/site": site,
   "../utils": utils,
   "@/lib/utils": utils,
+  // lib/markdown imports only the static repo URL from lib/github; the stub
+  // keeps the markdown registry loadable without network code.
+  "../github": { REPO_URL: "https://github.com/TirupMehta/ModelRegistry" },
+  "@/lib/github": { REPO_URL: "https://github.com/TirupMehta/ModelRegistry" },
 }
 
 const { prefersMarkdown } = loadTsModule("../lib/content-negotiation.ts")
@@ -110,7 +114,7 @@ const labDoc = renderMarkdown(`/companies/${labId}`)
 check("md-lab-status", labDoc.status, 200)
 checkTrue("md-lab-name", labDoc.body.includes(companies[labId].name))
 
-for (const route of ["/contact", "/privacy", "/about", "/methodology", "/pricing", "/changelog", "/flagships", "/companies", "/cli"]) {
+for (const route of ["/contact", "/privacy", "/about", "/methodology", "/pricing", "/changelog", "/flagships", "/companies", "/cli", "/open-source"]) {
   const doc = renderMarkdown(route)
   checkTrue(`md-${route}-200`, doc.status === 200 && doc.body.length > 300, `${doc.body.length} chars`)
 }
@@ -245,7 +249,7 @@ checkTrue("org-knows-about", entities.includes("knowsAbout") && entities.include
 
 // 7. Agent instructions: when-to-use lives in llms.txt and the skill.
 const llms = fs.readFileSync(path.resolve(__dirname, "../app/llms.txt/route.ts"), "utf8")
-for (const token of ["When to use ModelRegistry", "How an agent should call it", "text/markdown", "/openapi.json", "/contact", "/privacy"]) {
+for (const token of ["When to use ModelRegistry", "How an agent should call it", "text/markdown", "/openapi.json", "/contact", "/privacy", "/open-source", "/api/mcp"]) {
   checkTrue(`llms-${token.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`, llms.includes(token))
 }
 const skills = fs.readFileSync(path.resolve(__dirname, "../lib/skills.ts"), "utf8")
@@ -267,6 +271,25 @@ checkTrue("sitemap-privacy", sitemap.includes("/privacy"))
 const footer = fs.readFileSync(path.resolve(__dirname, "../components/footer.tsx"), "utf8")
 checkTrue("footer-contact", footer.includes('href="/contact"'))
 checkTrue("footer-privacy", footer.includes('href="/privacy"'))
+// Open-source page: existence, sitemap, and footer sync, same contract as the trust anchors.
+checkTrue("page-open-source", fs.existsSync(path.resolve(__dirname, "../app/open-source/page.tsx")))
+const openSourceSrc = fs.readFileSync(path.resolve(__dirname, "../app/open-source/page.tsx"), "utf8")
+checkTrue("open-source-honest-fallback", openSourceSrc.includes("unavailable right now"))
+checkTrue("sitemap-open-source", sitemap.includes("/open-source"))
+checkTrue("footer-open-source", footer.includes('href="/open-source"'))
+checkTrue("markdown-open-source", fs.readFileSync(path.resolve(__dirname, "../lib/markdown.ts"), "utf8").includes('"/open-source"'))
+// GitHub webhook refresh: push events must actually clear the caches the page reads.
+const refreshSrc = fs.readFileSync(path.resolve(__dirname, "../app/api/github-refresh/route.ts"), "utf8")
+checkTrue("refresh-revalidates-page", refreshSrc.includes("revalidatePath") && refreshSrc.includes('"/open-source"'))
+checkTrue("refresh-revalidates-tag", refreshSrc.includes("revalidateTag") && refreshSrc.includes('"github-repo"'))
+checkTrue("repo-fetch-tagged", fs.readFileSync(path.resolve(__dirname, "../lib/github.ts"), "utf8").includes('tags: ["github-repo"]'))
+// MCP server: tool logic and endpoint stay paired; the docs reference and openapi list it.
+checkTrue("page-mcp-endpoint", fs.existsSync(path.resolve(__dirname, "../app/api/mcp/route.ts")))
+checkTrue("mcp-tools-module", fs.existsSync(path.resolve(__dirname, "../lib/mcp.ts")))
+const mcpToolsSrc = fs.readFileSync(path.resolve(__dirname, "../lib/mcp.ts"), "utf8")
+for (const tool of ["list_models", "get_model", "list_labs", "get_changes", "get_health", "read_page_markdown"]) {
+  checkTrue(`mcp-tool-${tool}`, mcpToolsSrc.includes(`name: "${tool}"`) || mcpToolsSrc.includes(`'${tool}'`))
+}
 
 // 9. Rate-limit headers are actually emitted by the server config.
 const nextConfig = fs.readFileSync(path.resolve(__dirname, "../next.config.mjs"), "utf8")
@@ -277,6 +300,9 @@ checkTrue("config-rate-limit-source", nextConfig.includes('source: "/api/:path*"
 const docsSrc = fs.readFileSync(path.resolve(__dirname, "../app/docs/page.tsx"), "utf8")
 checkTrue("docs-title-product", /title:\s*"ModelRegistry API Reference/.test(docsSrc))
 checkTrue("docs-h1-product", docsSrc.includes("ModelRegistry API Reference"))
+checkTrue("docs-mcp-section", docsSrc.includes('id="mcp"') && docsSrc.includes("/api/mcp"))
+const openapiFull = fs.readFileSync(path.resolve(__dirname, "../public/openapi.json"), "utf8")
+checkTrue("openapi-mcp-path", openapiFull.includes("/api/mcp") && openapiFull.includes("mcpRpc"))
 
 // 11. The new test runs from pnpm test.
 const pkg = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../package.json"), "utf8"))

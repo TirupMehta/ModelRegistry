@@ -157,6 +157,8 @@ async function main() {
   await expectStatus("/timeline", 200)
   await expectStatus("/docs", 200)
   await expectStatus("/cli", 200)
+  await expectStatus("/open-source", 200)
+  await expectStatus("/api/mcp", 405) // stateless MCP: POST only
 
   // Fuzzy fallback: a near-miss slug of a real record redirects (307) to the
   // owning lab's flagship (manual: assert target, no follow).
@@ -373,7 +375,7 @@ async function main() {
   }
 
   // Trust anchors: real pages, linked from the footer and listed in the sitemap.
-  for (const path of ["/contact", "/privacy"]) {
+  for (const path of ["/contact", "/privacy", "/open-source"]) {
     try {
       const { res } = await get(path, { accept: "text/html" })
       const body = await res.text()
@@ -383,6 +385,114 @@ async function main() {
     } catch (e) {
       fail(`${path} trust page`, e.message)
     }
+  }
+
+  // MCP server (POST-only JSON-RPC, stateless): initialize handshake,
+  // tools/list schema, tools/call round trip, and the honest error contract.
+  // Each call is a real transport exchange, not a source-text assertion.
+  async function mcpPost(body) {
+    return fetch(`${BASE}/api/mcp`, {
+      method: "POST",
+      headers: { "content-type": "application/json", accept: "application/json" },
+      body: JSON.stringify(body),
+    })
+  }
+  try {
+    const res = await mcpPost({ jsonrpc: "2.0", id: 1, method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {} } })
+    const envelope = await res.json()
+    const ok =
+      res.status === 200 &&
+      envelope.jsonrpc === "2.0" &&
+      envelope.id === 1 &&
+      envelope.result?.serverInfo?.name === "modelregistry" &&
+      envelope.result?.protocolVersion === "2025-06-18" &&
+      typeof envelope.result?.capabilities?.tools === "object"
+    if (ok) pass("mcp initialize", envelope.result.serverInfo.version)
+    else fail("mcp initialize", `status ${res.status}, ${JSON.stringify(envelope).slice(0, 120)}`)
+  } catch (e) {
+    fail("mcp initialize", e.message)
+  }
+  try {
+    const res = await mcpPost({ jsonrpc: "2.0", id: 2, method: "tools/list" })
+    const envelope = await res.json()
+    const tools = envelope.result?.tools
+    const named = new Set((tools ?? []).map((t) => t.name))
+    const complete = ["list_models", "get_model", "list_labs", "get_changes", "get_health", "read_page_markdown"].every((n) => named.has(n))
+    const shaped = (tools ?? []).every((t) => t.inputSchema?.type === "object" && typeof t.description === "string")
+    if (res.status === 200 && complete && shaped) pass("mcp tools/list", `${tools.length} tools, schemas ok`)
+    else fail("mcp tools/list", `status ${res.status}, complete=${complete}, shaped=${shaped}`)
+  } catch (e) {
+    fail("mcp tools/list", e.message)
+  }
+  try {
+    const res = await mcpPost({
+      jsonrpc: "2.0",
+      id: 3,
+      method: "tools/call",
+      params: { name: "get_model", arguments: { id: EXPECTED.openaiFlagship } },
+    })
+    const envelope = await res.json()
+    const text = String(envelope.result?.content?.[0]?.text ?? "")
+    const record = JSON.parse(text)
+    if (res.status === 200 && !envelope.result?.isError && record.model?.id === EXPECTED.openaiFlagship) {
+      pass("mcp tools/call get_model", record.model.name)
+    } else {
+      fail("mcp tools/call get_model", `status ${res.status}, isError=${envelope.result?.isError}, text=${text.slice(0, 80)}`)
+    }
+  } catch (e) {
+    fail("mcp tools/call get_model", e.message)
+  }
+  try {
+    const res = await mcpPost({
+      jsonrpc: "2.0",
+      id: 4,
+      method: "tools/call",
+      params: { name: "get_model", arguments: { id: "nor-this-model-exists-42kx" } },
+    })
+    const envelope = await res.json()
+    const payload = JSON.parse(String(envelope.result?.content?.[0]?.text ?? "{}"))
+    if (res.status === 200 && envelope.result?.isError === true && payload.code === "model_not_found" && typeof payload.hint === "string") {
+      pass("mcp unknown model -> code + hint inside isError", payload.code)
+    } else {
+      fail("mcp unknown model", `status ${res.status}, ${String(envelope.result?.content?.[0]?.text ?? "").slice(0, 120)}`)
+    }
+  } catch (e) {
+    fail("mcp unknown model", e.message)
+  }
+  try {
+    const res = await mcpPost({ jsonrpc: "2.0", id: 5, method: "tools/call", params: { name: "does_not_exist" } })
+    const envelope = await res.json()
+    if (res.status === 200 && envelope.error?.code === -32602 && Array.isArray(envelope.error?.data)) {
+      pass("mcp unknown tool -> json-rpc -32602", envelope.error.data.join(","))
+    } else {
+      fail("mcp unknown tool", `status ${res.status}, error ${JSON.stringify(envelope.error)}`)
+    }
+  } catch (e) {
+    fail("mcp unknown tool", e.message)
+  }
+  try {
+    const res = await mcpPost({ jsonrpc: "2.0", method: "notifications/initialized" })
+    if (res.status === 202) pass("mcp notification -> 202")
+    else fail("mcp notification", `status ${res.status}`)
+  } catch (e) {
+    fail("mcp notification", e.message)
+  }
+  try {
+    const res = await fetch(`${BASE}/api/mcp`, {
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json",
+        // curl UA variant: the browser shortcut at "/" must never leak here
+        "user-agent": "curl/8.5.0",
+      },
+      body: "not json",
+      method: "POST",
+    })
+    const envelope = await res.json()
+    if (res.status === 200 && envelope.error?.code === -32700) pass("mcp parse error -> json-rpc -32700")
+    else fail("mcp parse error", `status ${res.status}, error ${JSON.stringify(envelope.error)}`)
+  } catch (e) {
+    fail("mcp parse error", e.message)
   }
 
   // llms.txt carries the when-to-use and call-convention guidance.

@@ -2,6 +2,7 @@ import { companies } from "@/data/companies"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { SITE_NAME, SITE_URL } from "@/lib/site"
+import { REPO_URL } from "@/lib/github"
 import { formatPrice } from "@/lib/utils"
 
 /**
@@ -132,6 +133,7 @@ ${flagshipsTable()}
 - \`GET ${SITE_URL}/llms.txt\` - compact per-lab summary
 - \`GET ${SITE_URL}/llms-full.txt\` - exhaustive field matrix
 - \`GET ${SITE_URL}/api/check-updates\` - dataset counts and verification snapshot
+- \`POST ${SITE_URL}/api/mcp\` - MCP server endpoint (JSON-RPC 2.0, stateless; tools: list_models, get_model, list_labs, get_changes, get_health, read_page_markdown)
 
 All of the above are free, unauthenticated, and read-only. Send
 \`Accept: text/markdown\` to any HTML route for the Markdown version.
@@ -463,6 +465,40 @@ available, the source that justified the change.
     )}
 
 ${resourceLinks("/editorial-policy")}
+`,
+  }),
+  "/open-source": () => ({
+    status: 200,
+    body: `${frontMatter(
+      "Open source",
+      `The registry is MIT licensed and developed in public. The dataset records,
+the site source, the CLI, and the agent skills all live in one repository -
+what the community sees is what runs in production.
+
+- Repository: ${REPO_URL}
+- License: MIT (see LICENSE in the repository)
+- Commit history: ${REPO_URL}/commits/main
+- Contributor graph: ${REPO_URL}/graphs/contributors
+- Merged pull requests: ${REPO_URL}/pulls?q=is%3Apr+is%3Amerged
+- Human page with live pushes, contributors, and merged PRs: ${SITE_URL}/open-source
+
+## How to contribute
+
+- **Add a model**: open an issue at ${REPO_URL}/issues or use the suggestion
+  form at ${SITE_URL}/suggest. Every fact needs a primary source you actually
+  opened (announcement, model card, API pricing page, or weights repository).
+- **Correct a record**: use the data-correction template -
+  ${REPO_URL}/issues/new?template=data-correction.yml
+- **Code, docs, or feeds**: open an issue or pull request; run \`pnpm test\`
+  first - it validates the schema and keeps every surface in sync.
+- **Security reports**: never a public issue. Follow
+  ${REPO_URL}/blob/main/SECURITY.md.
+
+A generated issue never publishes a record: maintainer review and source
+checks are required before anything appears in the dataset.`
+    )}
+
+${resourceLinks("/open-source")}
 `,
   }),
   "/contact": () => ({

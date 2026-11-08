@@ -19,6 +19,8 @@ export async function GET() {
 
 Canonical Registry: ${siteUrl}
 Repository: https://github.com/TirupMehta/ModelRegistry
+Open source page (pushes, contributors, merged PRs): ${siteUrl}/open-source
+MCP server: ${siteUrl}/api/mcp (JSON-RPC 2.0 over POST, tools=list_models/get_model/list_labs/get_changes/get_health/read_page_markdown)
 Specification Standard: ModelRegistry Spec v1.0
 Dataset version: ${datasetRevision.datasetVersion} (data revised ${datasetRevision.revisedAt})
 Verification: per-model status, sources, and changelog on each /models/:id page; methodology at ${siteUrl}/methodology. Benchmark figures below are lab-reported, not independently reproduced.
