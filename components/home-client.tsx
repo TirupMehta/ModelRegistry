@@ -437,7 +437,7 @@ export default function HomeClient() {
                         <span className="font-display font-semibold text-[17px] leading-snug tracking-tight text-black dark:text-white min-w-0">
                           {model.name}
                         </span>
-                        <span className="inline-flex items-center gap-1 text-[11px] font-sans px-1.5 py-0.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 shrink-0 whitespace-nowrap font-medium mt-0.5">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-sans px-1.5 py-0.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 shrink-0 max-w-[110px] truncate font-medium mt-0.5" title={model.statusBadge}>
                           {model.statusBadge}
                         </span>
                       </div>
@@ -476,7 +476,7 @@ export default function HomeClient() {
 
                       {specializedDrop && activeTab === "flagships" && (
                         <div className="mt-2.5 text-xs font-sans text-black/50 dark:text-zinc-400">
-                          <span className="block">
+                          <span className="block truncate" title={`${specializedDrop.name} (${specializedDrop.categoryLabel})`}>
                             Checkpoint:{" "}
                             <span className="text-black/80 dark:text-zinc-200 underline underline-offset-2 font-normal">
                               {specializedDrop.name}
@@ -519,7 +519,7 @@ export default function HomeClient() {
                         {/* Checkpoint Callout */}
                         {specializedDrop && activeTab === "flagships" && (
                           <div className="mt-1 text-xs font-sans text-black/50 dark:text-zinc-400">
-                            <span className="block">
+                            <span className="block truncate" title={`${specializedDrop.name} (${specializedDrop.categoryLabel})`}>
                               Checkpoint drop:{" "}
                               <span className="text-black/80 dark:text-zinc-200 underline underline-offset-2 font-normal">
                                 {specializedDrop.name}
@@ -542,7 +542,7 @@ export default function HomeClient() {
                         >
                           {formatDate(model.releaseDate)}
                         </time>
-                        <span className="inline-flex items-center gap-1.5 rounded-md border border-black/10 bg-white px-2 py-1 text-xs font-sans text-black/70 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-zinc-300">
+                        <span className="inline-flex items-center gap-1.5 rounded-md border border-black/10 bg-white px-2 py-1 text-xs font-sans text-black/70 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-zinc-300 max-w-[150px] truncate" title={model.statusBadge}>
                           {model.statusBadge}
                         </span>
 
