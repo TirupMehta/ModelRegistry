@@ -4465,7 +4465,7 @@ export const modelsData: ModelItem[] = [
       live: true,
     },
     {
-      url: "https://openrouter.ai/tencent/hunyuan-hy4",
+      url: "https://openrouter.ai/tencent/hy4",
       publisher: "OpenRouter",
       title: "Hy4 listing and pricing",
       accessedAt: "2026-11-05",
@@ -4531,7 +4531,7 @@ export const modelsData: ModelItem[] = [
       ],
       pricing: [
       {
-        url: "https://openrouter.ai/tencent/hunyuan-hy4",
+        url: "https://openrouter.ai/tencent/hy4",
         publisher: "OpenRouter",
         title: "Hy4 listing and pricing",
         accessedAt: "2026-11-05",
@@ -4581,7 +4581,7 @@ export const modelsData: ModelItem[] = [
         summary: "Initial registry entry for the full Hy4 release; becomes Tencent's flagship and latest checkpoint, superseding Hy3 and the Hy4 Preview.",
         sources: [
           "https://hunyuan.tencent.com",
-          "https://openrouter.ai/tencent/hunyuan-hy4",
+          "https://openrouter.ai/tencent/hy4",
         ],
       },
     ],
@@ -7177,7 +7177,7 @@ export const modelsData: ModelItem[] = [
         date: "2026-11-04",
         summary: "Successor ChatGPT Images 2.6 shipped across ChatGPT, Codex, and the API; this record stays as the Images 2.5 generation.",
         sources: [
-          "https://openai.com/index/introducing-chatgpt-images-2-6/",
+          "https://openai.com/index/introducing-images-2-6/",
         ],
       },
     ],
@@ -7221,20 +7221,19 @@ export const modelsData: ModelItem[] = [
       },
     ],
     links: {
-      announcement: "https://openai.com/index/introducing-chatgpt-images-2-6/",
+      announcement: "https://openai.com/index/introducing-images-2-6/",
       playground: "https://chatgpt.com",
       apiDocs: "https://developers.openai.com/api/docs/models/gpt-image-2.6-flare",
     },
     sources: [
     {
-      url: "https://openai.com/index/introducing-chatgpt-images-2-6/",
+      url: "https://openai.com/index/introducing-images-2-6/",
       publisher: "OpenAI",
       title: "ChatGPT Images 2.6 announcement",
       publishedAt: "2026-11-04",
       accessedAt: "2026-11-05",
       sourceType: "announcement",
-      live: false,
-      note: "Host alive; automated fetch blocked, announcement reviewed via the OpenAI announcement and API posts cited in the Nov 4 release summary.",
+      live: true,
     },
     {
       url: "https://developers.openai.com/api/docs/models/gpt-image-2.6-flare",
@@ -7248,14 +7247,13 @@ export const modelsData: ModelItem[] = [
     fieldSources: {
       releaseDate: [
       {
-        url: "https://openai.com/index/introducing-chatgpt-images-2-6/",
+        url: "https://openai.com/index/introducing-images-2-6/",
         publisher: "OpenAI",
         title: "ChatGPT Images 2.6 announcement",
         publishedAt: "2026-11-04",
         accessedAt: "2026-11-05",
         sourceType: "announcement",
-        live: false,
-        note: "Host alive; automated fetch blocked, announcement reviewed via the OpenAI announcement and API posts cited in the Nov 4 release summary.",
+        live: true,
       },
       ],
       contextWindow: [
@@ -7346,7 +7344,7 @@ export const modelsData: ModelItem[] = [
         date: "2026-11-04",
         summary: "Initial registry entry for the Images 2.6 release (Flare and Sunburst API twins).",
         sources: [
-          "https://openai.com/index/introducing-chatgpt-images-2-6/",
+          "https://openai.com/index/introducing-images-2-6/",
           "https://developers.openai.com/api/docs/models/gpt-image-2.6-flare",
         ],
       },
