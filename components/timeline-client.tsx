@@ -59,10 +59,10 @@ export default function TimelineClient() {
                 className="border-l border-black/10 dark:border-white/[0.08] pl-3.5 sm:pl-6 ml-1.5 sm:ml-2 relative scroll-mt-24"
               >
                 {/* Technical node indicator */}
-                <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-[#ff5d2e] ring-4 ring-[#ff5d2e]/15" />
+                <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-accent ring-4 ring-accent/15" />
 
                 <h2 className="text-base sm:text-lg font-medium text-black dark:text-white mb-4 flex items-center gap-2 font-sans">
-                  <Calendar size={14} className="text-[#ff5d2e]" />
+                  <Calendar size={14} className="text-accent-ink" />
                   <span>{monthYear}</span>
                   <span className="text-xs text-black/40 dark:text-zinc-400 font-normal">
                     [{models.length} {models.length === 1 ? "release" : "releases"}]
@@ -86,22 +86,22 @@ export default function TimelineClient() {
                             openModel(model)
                           }
                         }}
-                        className="card-lift cursor-pointer p-3.5 sm:p-4 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#0d0f13] shadow-sm hover:border-[#ff5d2e]/40 transition-all duration-150 select-none group"
+                        className="card-lift cursor-pointer p-3.5 sm:p-4 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[var(--surface-field)] shadow-sm hover:border-accent/40 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 select-none group"
                       >
                         <div className="mb-1.5">
                           <div className="flex items-center gap-2 font-sans min-w-0">
                             <span
                               className="w-2 h-2 rounded-[3px] ring-1 ring-black/10 dark:ring-white/10 shrink-0"
-                              style={{ backgroundColor: company?.accentColor || "#ff5d2e" }}
+                              style={{ backgroundColor: company?.accentColor || "rgb(var(--accent-rgb))" }}
                             />
-                            <span className="text-black/55 dark:text-zinc-400 uppercase text-[11px] truncate">
+                            <span className="text-black/55 dark:text-zinc-400 text-[11px] truncate">
                               {model.companyName}
                             </span>
                             <span className="ml-auto text-[11px] text-black/40 dark:text-zinc-400 tabular-nums whitespace-nowrap shrink-0">
                               {formatDate(model.releaseDate)}
                             </span>
                           </div>
-                          <div className="mt-1 font-sans text-[15px] sm:text-base font-medium tracking-tight leading-snug text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
+                          <div className="mt-1 font-sans text-[15px] sm:text-base font-medium tracking-tight leading-snug text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
                             {model.name}
                           </div>
                         </div>
@@ -115,12 +115,12 @@ export default function TimelineClient() {
                             <span className="text-[11px] text-black/45 dark:text-zinc-400">
                               {model.contextWindow}
                             </span>
-                            <span className="text-[11px] uppercase px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e]">
+                            <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-accent/40 group-hover:text-accent-ink">
                               {model.statusBadge}
                             </span>
                           </div>
 
-                          <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-zinc-400 group-hover:text-[#ff5d2e] transition-colors shrink-0">
+                          <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-zinc-400 group-hover:text-accent-ink transition-colors shrink-0">
                             INSPECT SPEC <ArrowUpRight size={10} className="opacity-60" />
                           </span>
                         </div>

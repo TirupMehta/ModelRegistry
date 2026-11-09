@@ -26,17 +26,18 @@ export default function FlagshipsPage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <p className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold mb-2">
-          Reference · updated {datasetRevision.revisedAt} (dataset {datasetRevision.datasetVersion})
-        </p>
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           Current flagship by lab
         </h1>
+        <p className="mb-5 flex items-center gap-2 text-xs font-sans text-black/50 dark:text-zinc-500">
+          <span>Dataset revised</span>
+          <time dateTime={datasetRevision.revisedAt} className="tabular-nums">{datasetRevision.revisedAt}</time>
+        </p>
         <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-8 max-w-3xl">
           One row per lab: its primary general-purpose model. “Flagship” never means “best” -
           it means the lab&apos;s main model. Every label requires fresh, live evidence (see{" "}
-          <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">methodology</Link>).
-          Chronological view: <Link href="/timeline" className="text-[#ff5d2e] hover:underline underline-offset-2">release timeline</Link>.
+          <Link href="/methodology" className="text-accent-ink hover:underline underline-offset-2">methodology</Link>).
+          Chronological view: <Link href="/timeline" className="text-accent-ink hover:underline underline-offset-2">release timeline</Link>.
         </p>
         <FlagshipsClient />
       </section>

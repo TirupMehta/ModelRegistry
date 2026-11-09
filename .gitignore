@@ -31,3 +31,7 @@ next-env.d.ts
 Thumbs.db
 
 .neon
+
+# local tooling
+.commandcode/
+.hallmark/

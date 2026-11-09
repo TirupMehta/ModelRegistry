@@ -30,7 +30,7 @@ function H2({ children }: { children: React.ReactNode }) {
 
 function P({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
+    <p className="max-w-[68ch] text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
       {children}
     </p>
   )
@@ -38,7 +38,7 @@ function P({ children }: { children: React.ReactNode }) {
 
 function A({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="text-[#ff5d2e] hover:underline underline-offset-2">
+    <Link href={href} className="text-accent-ink hover:underline underline-offset-2">
       {children}
     </Link>
   )
@@ -64,15 +64,15 @@ export default function ContactPage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <p className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold mb-2">
-          Trust &amp; provenance
-        </p>
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-2">
           Contact ModelRegistry
         </h1>
-        <p className="text-xs font-sans text-black/45 dark:text-zinc-500 mb-8">
-          Pick the channel for the job you have ·{" "}
-          <A href="/about">About</A> · <A href="/privacy">Privacy</A>
+        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-sans text-black/50 dark:text-zinc-500">
+          <span>Pick the channel for the job you have.</span>
+          <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
+          <A href="/about">About</A>
+          <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
+          <A href="/privacy">Privacy</A>
         </p>
 
         <P>

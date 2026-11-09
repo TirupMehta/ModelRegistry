@@ -177,14 +177,14 @@ export default function AlertsPopup() {
         <div
           ref={dialogRef}
           tabIndex={-1}
-          className="alerts-popup-panel relative m-auto w-full max-w-md max-h-[calc(100dvh-1.5rem)] overflow-y-auto overscroll-contain rounded-2xl border border-black/10 bg-white p-4 shadow-2xl outline-none ring-1 ring-black/5 transition-colors duration-150 ease-out dark:border-white/[0.08] dark:bg-[#0e1014] dark:ring-white/5 sm:p-6"
+          className="alerts-popup-panel relative m-auto w-full max-w-md max-h-[calc(100dvh-1.5rem)] overflow-y-auto overscroll-contain rounded-2xl border border-black/10 bg-white p-4 shadow-2xl outline-none ring-1 ring-black/5 transition-colors duration-150 ease-out dark:border-white/[0.08] dark:bg-[var(--surface-raised)] dark:ring-white/5 sm:p-6"
           onClick={(event) => event.stopPropagation()}
         >
           {/* Dossier-style control bar, matching the model datasheet. */}
           <div className="mb-4 flex items-center justify-between gap-2 border-b border-black/10 pb-3 dark:border-white/[0.08] sm:mb-5">
-            <div className="flex min-w-0 items-center gap-1.5 text-[11px] font-sans text-[#ff5d2e] sm:gap-2">
+            <div className="flex min-w-0 items-center gap-1.5 text-[11px] font-sans text-accent-ink sm:gap-2">
               <Bell size={13} className="shrink-0" aria-hidden="true" />
-              <span className="truncate font-medium uppercase tracking-widest">
+              <span className="truncate font-medium">
                 Model Alerts
               </span>
             </div>
@@ -202,9 +202,6 @@ export default function AlertsPopup() {
             </button>
           </div>
 
-          <p className="mb-1.5 text-[11px] font-sans font-semibold uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400">
-            Waitlist open
-          </p>
           <h2
             id="alerts-popup-title"
             className="text-balance font-display text-xl font-semibold tracking-tight text-black dark:text-white sm:text-2xl"
@@ -225,7 +222,7 @@ export default function AlertsPopup() {
             </span>
             <Link
               href="/alerts"
-              className="inline-flex shrink-0 items-center gap-1 font-medium text-[#ff5d2e] underline-offset-2 hover:underline"
+              className="inline-flex shrink-0 items-center gap-1 font-medium text-accent-ink underline-offset-2 hover:underline"
             >
               How it works
               <ArrowUpRight size={10} aria-hidden="true" />

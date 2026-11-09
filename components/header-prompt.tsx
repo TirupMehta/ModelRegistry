@@ -71,16 +71,16 @@ export default function HeaderPrompt() {
         onFocus={showHint}
         onBlur={hideHint}
         className={[
-          "hidden sm:inline-flex items-center gap-1.5 sm:gap-2 py-1.5 px-2.5 sm:px-3 rounded-md text-xs sm:text-[13px] font-sans tracking-tight whitespace-nowrap transition-colors duration-200 select-none cursor-pointer shrink-0",
+          "hidden h-8 shrink-0 cursor-pointer select-none items-center gap-1.5 whitespace-nowrap rounded-md px-2.5 text-xs font-sans tracking-tight transition-colors duration-200 sm:inline-flex sm:gap-2 sm:px-3 sm:text-[13px]",
           promptCopied
-            ? "bg-emerald-500/10 border border-emerald-500/50 text-emerald-600 dark:text-emerald-400"
-            : "bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/[0.08] text-black/60 dark:text-zinc-300 hover:border-[#ff5d2e]/60 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] active:scale-[0.97]",
+            ? "bg-good/10 border border-good/50 text-good dark:text-good"
+            : "bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/[0.08] text-black/60 dark:text-zinc-300 hover:border-accent/60 hover:text-accent-ink active:scale-[0.97]",
         ].join(" ")}
       >
         {promptCopied ? (
           <Check key="copied" size={13} className="draw-check shrink-0" />
         ) : (
-          <Sparkles size={13} className="text-[#ff5d2e] shrink-0" />
+          <Sparkles size={13} className="text-accent-ink shrink-0" />
         )}
         <span>{promptCopied ? "Copied" : "Copy Prompt"}</span>
       </button>
@@ -91,7 +91,7 @@ export default function HeaderPrompt() {
           aria-hidden="true"
           onMouseEnter={showHint}
           onMouseLeave={hideHint}
-          className="hidden sm:block fixed z-[60] w-64 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#13161c] px-3.5 py-3 shadow-2xl ring-1 ring-black/5 dark:ring-white/5 animate-in fade-in duration-150"
+          className="hidden sm:block fixed z-[60] w-64 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[var(--surface-hover)] px-3.5 py-3 shadow-2xl ring-1 ring-black/5 dark:ring-white/5 animate-in fade-in duration-150"
           style={{ top: hintPos.top, right: hintPos.right }}
         >
           <p className="text-xs font-sans font-semibold text-black dark:text-white">
@@ -103,7 +103,7 @@ export default function HeaderPrompt() {
           </p>
           <span
             aria-hidden="true"
-            className="absolute -top-[5px] right-8 w-2 h-2 rotate-45 bg-white dark:bg-[#13161c] border-l border-t border-black/10 dark:border-white/10"
+            className="absolute -top-[5px] right-8 w-2 h-2 rotate-45 bg-white dark:bg-[var(--surface-hover)] border-l border-t border-black/10 dark:border-white/10"
           />
         </div>
       )}

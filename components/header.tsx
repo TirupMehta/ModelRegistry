@@ -17,49 +17,48 @@ export default function Header() {
   return (
     <>
       {/* ── Top Telemetry Readout Bar ────────────────────────────────────── */}
-      <div className="w-full bg-black/[0.02] dark:bg-[#0a0c0f] border-b border-black/5 dark:border-white/[0.06] py-2 text-[11px] font-sans text-black/60 dark:text-zinc-400">
+      <div className="w-full bg-black/[0.02] dark:bg-[var(--surface-bar)] border-b border-black/5 dark:border-white/[0.06] py-2 text-[11px] font-sans text-black/60 dark:text-zinc-400">
         <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="relative flex w-1.5 h-1.5 shrink-0">
-              <span className="absolute inline-flex w-full h-full rounded-full bg-[#00e599] opacity-60 animate-ping" />
-              <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-[#00e599]" />
-            </span>
-            <span className="truncate tracking-wide">
+          <div className="flex min-w-0 items-center gap-2">
+            <span className="block min-w-0 truncate">
               <span className="font-medium text-black/70 dark:text-zinc-200">Curated dataset</span>
-              <span className="text-black/30 dark:text-zinc-500"> · {modelsData.length} models · Revised {revisedLabel}</span>
+              <span className="mx-2 inline-block h-3 w-px translate-y-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
+              <span className="tabular-nums text-black/45 dark:text-zinc-500">{modelsData.length} models</span>
+              <span className="mx-2 hidden h-3 w-px translate-y-px bg-black/10 sm:inline-block dark:bg-white/15" aria-hidden="true" />
+              <span className="hidden text-black/45 sm:inline dark:text-zinc-500">Revised {revisedLabel}</span>
             </span>
           </div>
 
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 text-[11px] sm:text-[12px] font-sans">
+          <div className="flex shrink-0 items-center gap-2.5 text-[11px] font-sans sm:gap-3 sm:text-[12px]">
             <Link
               href="/rss.xml"
-              className="group inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
+              className="group inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150"
             >
-              <Rss size={11} className="text-[#ff5d2e]" />
+              <Rss size={11} className="text-accent-ink" />
               <span>RSS</span>
             </Link>
-            <span className="opacity-20 select-none">/</span>
+            <span className="inline-block h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
             <Link
               href="/api/v1/models"
-              className="group inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
+              className="group inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150"
             >
-              <Code2 size={11} className="text-[#ff5d2e]" />
+              <Code2 size={11} className="text-accent-ink" />
               <span>API</span>
             </Link>
-            <span className="opacity-20 select-none">/</span>
+            <span className="inline-block h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
             <Link
               href="/docs"
-              className="group inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150"
+              className="group inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150"
             >
-              <File size={11} className="text-[#ff5d2e]" />
-              <span>DOCS</span>
+              <File size={11} className="text-accent-ink" />
+              <span>Docs</span>
             </Link>
           </div>
         </div>
       </div>
 
       {/* ── Industrial Header Unit ────────────────────────────────────────── */}
-      <header className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pt-5 sm:pt-6 md:pt-16 pb-0">
+      <header className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pt-5 sm:pt-6 md:pt-8 pb-0">
         <TextWithBlur>
           <div className="flex items-center justify-between gap-3 mb-4 md:mb-6">
             <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
@@ -71,7 +70,7 @@ export default function Header() {
               <a
                 href="/suggest"
                 title="Suggest a model for review"
-                className="group inline-flex items-center justify-center gap-1 sm:gap-1.5 h-7 px-2.5 sm:px-3 text-[11px] sm:text-xs font-sans font-medium tracking-wide bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white border border-black dark:border-white hover:border-[#ff5d2e] rounded-lg shadow-sm hover:shadow-md hover:shadow-[#ff5d2e]/20 active:scale-[0.97] transition-all duration-150 select-none cursor-pointer"
+                className="group inline-flex h-8 cursor-pointer select-none items-center justify-center gap-1 rounded-lg border border-black bg-black px-2.5 text-[11px] font-sans font-medium text-white shadow-sm transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 hover:border-accent hover:bg-accent hover:shadow-md hover:shadow-accent/20 active:scale-[0.97] sm:gap-1.5 sm:px-3 sm:text-xs dark:border-white dark:bg-white dark:text-black dark:hover:bg-accent dark:hover:text-white"
               >
                 <GitPullRequest
                   size={12}
@@ -79,18 +78,18 @@ export default function Header() {
                 />
                 <span className="hidden sm:inline">Contribute</span>
                 <span className="sm:hidden">Add</span>
-                <ArrowUpRight size={11} className="opacity-50 group-hover:opacity-100 group-hover:translate-x-px group-hover:-translate-y-px transition-all duration-150" />
+                <ArrowUpRight size={11} className="opacity-50 group-hover:opacity-100 group-hover:translate-x-px group-hover:-translate-y-px transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150" />
               </a>
 
               <AnimatedThemeToggler
-                className="flex items-center justify-center w-7 h-7 rounded-lg border border-black/10 dark:border-white/[0.08] bg-white/60 dark:bg-white/[0.03] text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:border-black/20 dark:hover:border-white/20 hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-95 transition-all duration-150 cursor-pointer shrink-0"
+                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-black/10 bg-white/60 text-black/50 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 hover:border-black/20 hover:bg-black/5 hover:text-black active:scale-95 dark:border-white/[0.08] dark:bg-white/[0.03] dark:text-zinc-400 dark:hover:border-white/20 dark:hover:bg-white/[0.06] dark:hover:text-white"
               />
             </div>
           </div>
         </TextWithBlur>
 
         {/* ── Segmented Navigation Line ──────────────────────────────────── */}
-        <div className="flex items-center gap-3 sm:gap-4 mb-6 md:mb-8 border-b border-black/5 dark:border-white/[0.07] pb-3 sm:justify-between overflow-visible">
+        <div className="flex items-center gap-3 overflow-visible border-b border-black/5 pb-3 sm:justify-between sm:gap-4 dark:border-white/[0.07]">
           <TextWithBlur delay={100} className="min-w-0 flex-1 sm:flex-none w-full sm:w-auto max-w-full">
             <HeaderNav />
           </TextWithBlur>

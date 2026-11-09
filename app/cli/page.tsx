@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 function Code({ children }: { children: string }) {
   return (
-    <pre className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] overflow-x-auto p-3.5 mb-4">
+    <pre className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] overflow-x-auto p-3.5 mb-4">
       <code className="font-mono text-[12px] leading-5 text-black/80 dark:text-zinc-200 whitespace-pre">
         {children}
       </code>
@@ -74,9 +74,6 @@ export default function CliPage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <p className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold mb-2">
-          Tools · Node 18+ · zero dependencies
-        </p>
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           ModelRegistry CLI
         </h1>
@@ -111,7 +108,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}</Code>
         <h2 className="text-lg sm:text-xl font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           Commands
         </h2>
-        <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] mb-4">
+        <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] mb-4">
           <Row name="models" desc="List tracked models. Filters: --company, --category, --open-weights, --flagship-only, --latest-only." />
           <Row name="model <id>" desc="One record: specs, pricing, license, verification status, lab-reported benchmarks, sources." />
           <Row name="changes" desc="Changelog entries newest first. Filters: --since, --until, --model, --company, --limit." />
@@ -152,18 +149,18 @@ curl -s ${SITE_URL}/latest       # newest releases`}</Code>
         </ul>
 
         <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs">
-          <Link href="/docs" className="text-[#ff5d2e] hover:underline underline-offset-2">
+          <Link href="/docs" className="text-accent-ink hover:underline underline-offset-2">
             API reference
           </Link>
-          <a href="/openapi.json" className="text-[#ff5d2e] hover:underline underline-offset-2">
+          <a href="/openapi.json" className="text-accent-ink hover:underline underline-offset-2">
             OpenAPI 3.1
           </a>
-          <a href="/llms.txt" className="text-[#ff5d2e] hover:underline underline-offset-2">
+          <a href="/llms.txt" className="text-accent-ink hover:underline underline-offset-2">
             llms.txt
           </a>
           <a
             href="https://github.com/TirupMehta/ModelRegistry/tree/main/cli"
-            className="text-[#ff5d2e] hover:underline underline-offset-2"
+            className="text-accent-ink hover:underline underline-offset-2"
           >
             CLI source on GitHub
           </a>

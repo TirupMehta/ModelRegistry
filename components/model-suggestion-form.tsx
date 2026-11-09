@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { ArrowUpRight, ExternalLink } from "lucide-react"
 
-const inputClass = "w-full rounded-lg border border-black/10 dark:border-white/[0.1] bg-white dark:bg-[#0d0f13] px-3 py-2.5 text-sm text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-[#ff5d2e]/20"
+const inputClass = "w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-3 py-2.5 text-sm text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-accent-ink/20"
 
 export default function ModelSuggestionForm() {
   const [issueUrl, setIssueUrl] = useState("")
@@ -50,8 +50,8 @@ export default function ModelSuggestionForm() {
     <label className="grid gap-1.5 text-xs font-medium text-black/70 dark:text-zinc-300">Why should it be included?<textarea name="summary" rows={3} maxLength={1000} className={`${inputClass} resize-y`} placeholder="Briefly describe what launched and why it fits the registry." onChange={() => setIssueUrl("")} /></label>
     {error && <p role="alert" className="text-sm text-red-700 dark:text-red-300">{error}</p>}
     <div className="flex flex-wrap items-center gap-3">
-      {!issueUrl ? <button type="submit" className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-black px-4 text-sm font-medium text-white transition-colors hover:bg-[#ff5d2e] dark:bg-white dark:text-black dark:hover:bg-[#ff5d2e] dark:hover:text-white">Prepare GitHub issue <ArrowUpRight size={14} /></button>
-        : <a href={issueUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-black px-4 text-sm font-medium text-white transition-colors hover:bg-[#ff5d2e] dark:bg-white dark:text-black dark:hover:bg-[#ff5d2e] dark:hover:text-white">Review and submit on GitHub <ExternalLink size={14} /></a>}
+      {!issueUrl ? <button type="submit" className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-black px-4 text-sm font-medium text-white transition-colors hover:bg-accent dark:bg-white dark:text-black dark:hover:bg-accent dark:hover:text-white">Prepare GitHub issue <ArrowUpRight size={14} /></button>
+        : <a href={issueUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-black px-4 text-sm font-medium text-white transition-colors hover:bg-accent dark:bg-white dark:text-black dark:hover:bg-accent dark:hover:text-white">Review and submit on GitHub <ExternalLink size={14} /></a>}
       <span className="text-[11px] text-black/45 dark:text-zinc-500">GitHub account required to submit. Your text stays in this page until you open the draft.</span>
     </div>
   </form>

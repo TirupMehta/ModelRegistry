@@ -15,7 +15,7 @@ export interface ChangelogEntry {
 }
 
 const LAST_VISIT_KEY = "modelregistry.changelog.lastVisit"
-const controlClass = "rounded-lg border border-black/10 dark:border-white/[0.1] bg-white dark:bg-[#0d0f13] px-2.5 py-2 text-xs text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#ff5d2e]/20"
+const controlClass = "rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-2.5 py-2 text-xs text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-accent-ink/20"
 
 export default function ChangelogClient({ entries }: { entries: ChangelogEntry[] }) {
   const [lab, setLab] = useState("all")
@@ -59,13 +59,13 @@ export default function ChangelogClient({ entries }: { entries: ChangelogEntry[]
         <input className={controlClass} type="date" value={until} min={from || undefined} onChange={(e) => setUntil(e.target.value)} />
       </label>
       <label className={`inline-flex min-h-9 items-center gap-2 rounded-lg px-2 text-xs ${!ready || !lastVisit ? "text-black/35 dark:text-zinc-600" : "text-black/70 dark:text-zinc-300"}`}>
-        <input type="checkbox" checked={sinceLastVisit} disabled={!ready || !lastVisit} onChange={(e) => setSinceLastVisit(e.target.checked)} className="accent-[#ff5d2e]" />
+        <input type="checkbox" checked={sinceLastVisit} disabled={!ready || !lastVisit} onChange={(e) => setSinceLastVisit(e.target.checked)} className="accent-accent" />
         Since my last visit{lastVisit ? ` (${lastVisit})` : ""}
       </label>
-      <button type="button" onClick={reset} className="inline-flex min-h-9 items-center gap-1 text-xs text-[#ff5d2e] hover:underline"><RotateCcw size={12} /> Clear</button>
+      <button type="button" onClick={reset} className="inline-flex min-h-9 items-center gap-1 text-xs text-accent-ink hover:underline"><RotateCcw size={12} /> Clear</button>
       <div className="ml-auto flex items-center gap-3 text-xs">
-        <a href="/rss.xml" className="inline-flex items-center gap-1 text-black/55 dark:text-zinc-400 hover:text-[#ff5d2e]"><Rss size={13} /> RSS</a>
-        <a href="/feed.json" className="text-black/55 dark:text-zinc-400 hover:text-[#ff5d2e]">JSON Feed</a>
+        <a href="/rss.xml" className="inline-flex items-center gap-1 text-black/55 dark:text-zinc-400 hover:text-accent-ink"><Rss size={13} /> RSS</a>
+        <a href="/feed.json" className="text-black/55 dark:text-zinc-400 hover:text-accent-ink">JSON Feed</a>
       </div>
     </div>
     <p className="mb-3 text-[11px] tabular-nums text-black/45 dark:text-zinc-500" aria-live="polite">Showing {visible.length} of {entries.length} changes</p>
@@ -73,7 +73,7 @@ export default function ChangelogClient({ entries }: { entries: ChangelogEntry[]
       {visible.map((entry, index) => <li key={`${entry.date}-${entry.modelId}-${index}`} className="flex flex-col gap-1 border-b border-black/10 dark:border-white/[0.08] py-3 text-sm sm:flex-row sm:items-baseline sm:gap-3">
         <time dateTime={entry.date} className="shrink-0 text-xs tabular-nums text-black/45 dark:text-zinc-500 sm:w-24">{entry.date}</time>
         <div className="min-w-0">
-          <Link href={`/models/${entry.modelId}`} className="font-medium tracking-tight text-black dark:text-white hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors">{entry.modelName}</Link>
+          <Link href={`/models/${entry.modelId}`} className="font-medium tracking-tight text-black dark:text-white hover:text-accent-ink transition-colors">{entry.modelName}</Link>
           <span className="ml-2 text-[11px] text-black/40 dark:text-zinc-500">{entry.companyName}</span>
           <p className="text-[13px] leading-relaxed text-black/60 dark:text-zinc-400">{entry.summary}</p>
         </div>

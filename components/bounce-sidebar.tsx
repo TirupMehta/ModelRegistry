@@ -176,7 +176,7 @@ export function BounceSidebar({
               role="presentation"
               data-slot="bounce-sidebar-heading"
               style={{ color: dotColor }}
-              className="px-1 pb-1 pt-7 text-[11px] font-semibold uppercase tracking-[0.14em] first:pt-0"
+              className="px-1 pb-1 pt-7 text-[11px] font-semibold first:pt-0"
             >
               {label}
             </li>

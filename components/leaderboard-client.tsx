@@ -104,7 +104,7 @@ export default function LeaderboardClient() {
               Editorial snapshots comparing foundation models domain by domain
               {datasetRevisedLabel ? `, using the dataset revised ${datasetRevisedLabel}` : ""}. Leaders hold the
               highest <em>published</em> score in each comparison - not a universal “best model”
-              title. <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">Methodology</Link>
+              title. <Link href="/methodology" className="text-accent-ink hover:underline underline-offset-2">Methodology</Link>
             </p>
           </TextWithBlur>
         </div>
@@ -131,12 +131,12 @@ export default function LeaderboardClient() {
               <TextWithBlur key={category.title} delay={index * 35}>
                 <div
                   id={anchorId}
-                  className="card-lift scroll-mt-24 p-4 sm:p-6 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#111317] shadow-sm [transition:border-color,background-color_120ms_ease-out]"
+                  className="card-lift scroll-mt-24 p-4 sm:p-6 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[var(--surface-raised)] shadow-sm [transition:border-color,background-color_120ms_ease-out]"
                 >
                   {/* Category Header */}
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded flex items-center justify-center bg-black/5 dark:bg-[#15181e] border border-black/10 dark:border-white/[0.08] text-[#ff5d2e] shrink-0">
+                      <div className="w-8 h-8 rounded flex items-center justify-center bg-black/5 dark:bg-[var(--surface-hover)] border border-black/10 dark:border-white/[0.08] text-accent-ink shrink-0">
                         <Icon size={16} />
                       </div>
                       <div>
@@ -165,17 +165,17 @@ export default function LeaderboardClient() {
                             openModel(model)
                           }
                         }}
-                        className="group cursor-pointer p-2.5 sm:p-3 rounded-xl border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.995] transition-all duration-150 flex items-center justify-between gap-2.5 sm:gap-3 text-xs"
+                        className="group cursor-pointer p-2.5 sm:p-3 rounded-xl border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[var(--surface-field)] hover:border-accent/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.995] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 flex items-center justify-between gap-2.5 sm:gap-3 text-xs"
                       >
                         <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
                           {category.ordered ? (
-                            <span className="font-mono text-[11px] text-black/30 dark:text-zinc-600 w-5 shrink-0 tabular-nums transition-colors group-hover:text-[#ff5d2e]">
+                            <span className="font-mono text-[11px] text-black/30 dark:text-zinc-600 w-5 shrink-0 tabular-nums transition-colors group-hover:text-accent-ink">
                               {String(mIndex + 1).padStart(2, "0")}
                             </span>
                           ) : (
                             <span className="w-1 h-1 rounded-full bg-black/25 dark:bg-white/25 shrink-0" aria-hidden="true" />
                           )}
-                          <span className="font-medium text-black dark:text-zinc-100 truncate group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
+                          <span className="font-medium text-black dark:text-zinc-100 truncate group-hover:text-accent-ink transition-colors duration-150">
                             {model.name}
                           </span>
                           <span className="text-black/40 dark:text-zinc-400 font-sans text-[11px] shrink-0 hidden sm:inline">
@@ -187,14 +187,14 @@ export default function LeaderboardClient() {
                           <span className="text-[11px] text-black/55 dark:text-zinc-400 hidden sm:inline tabular-nums">
                             {model.contextWindow.replace(" tokens", "")}
                           </span>
-                          <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-[#ff5d2e]/40 group-hover:text-[#ff5d2e] tabular-nums whitespace-nowrap">
+                          <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-accent/40 group-hover:text-accent-ink tabular-nums whitespace-nowrap">
                             {model.pricingUnit
                               ? formatPrice(model)
                               : model.pricing.input === 0
                                 ? "Free"
                                 : `$${model.pricing.input}/M`}
                           </span>
-                          <ArrowUpRight size={12} className="opacity-30 group-hover:opacity-100 group-hover:translate-x-px group-hover:-translate-y-px text-black dark:text-white group-hover:text-[#ff5d2e] transition-all duration-150" />
+                          <ArrowUpRight size={12} className="opacity-30 group-hover:opacity-100 group-hover:translate-x-px group-hover:-translate-y-px text-black dark:text-white group-hover:text-accent-ink transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150" />
                         </div>
                       </div>
                     ))}
@@ -209,7 +209,7 @@ export default function LeaderboardClient() {
                         {leaderboardMethodology[category.methodKey].basis}{" "}
                         <span className="tabular-nums">Reviewed {leaderboardMethodology[category.methodKey].evaluatedAt}.</span>{" "}
                         {leaderboardMethodology[category.methodKey].sources.map((u) => (
-                          <a key={u} href={u} target="_blank" rel="noopener noreferrer" className="text-[#ff5d2e] hover:underline underline-offset-2 mr-2">
+                          <a key={u} href={u} target="_blank" rel="noopener noreferrer" className="text-accent-ink hover:underline underline-offset-2 mr-2">
                             {new URL(u).hostname.replace(/^www\./, "")}
                           </a>
                         ))}
@@ -232,9 +232,9 @@ export default function LeaderboardClient() {
             This leaderboard is an editorial snapshot, not an objective ranking. Scores are
             lab-published figures that vendors measure with different harnesses and versions;
             usage stats reflect observed public routing share. Full rules:{" "}
-            <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">/methodology</Link>
+            <Link href="/methodology" className="text-accent-ink hover:underline underline-offset-2">/methodology</Link>
             {" "}· Record-level sources:{" "}
-            <Link href="/changelog" className="text-[#ff5d2e] hover:underline underline-offset-2">/changelog</Link>
+            <Link href="/changelog" className="text-accent-ink hover:underline underline-offset-2">/changelog</Link>
           </p>
         </div>
       </section>

@@ -3,11 +3,30 @@
 @tailwind utilities;
 
 :root {
-  --accent: #ff501a;
+  /* Two accents, two jobs. `--accent` is a fill and display colour; it does
+     not carry small text on paper (2.85:1 against the cream). `--accent-ink`
+     is the text-safe step of the same hue (4.8:1). Tailwind reads the rgb
+     channels so opacity modifiers like `text-accent-ink/70` still work. */
+  --accent-rgb: 255 93 46;
+  --accent: rgb(var(--accent-rgb));
+  --accent-ink-rgb: 194 65 12;
+  --accent-ink: rgb(var(--accent-ink-rgb));
+  --good-rgb: 5 150 105;
+  --good: rgb(var(--good-rgb));
   --bg: #f7f7f4;
   --card-bg: #ffffff;
   --fg: #111215;
+  /* One ladder of surfaces. Components climb it instead of repeating a hex
+     per component, which is what made the dark theme drift by component. */
+  --surface-bar: rgba(0, 0, 0, 0.02);
+  --surface-inset: rgba(0, 0, 0, 0.035);
+  --surface-sunken: rgba(0, 0, 0, 0.02);
+  --surface-field: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-hover: rgba(0, 0, 0, 0.04);
   --border-color: rgba(0, 0, 0, 0.08);
+  /* A field outline needs 3:1 against paper to read as a field at all. */
+  --field-edge: rgba(0, 0, 0, 0.46);
   --text-muted: rgba(17, 18, 21, 0.45);
   --text-secondary: rgba(17, 18, 21, 0.70);
   --text-primary: rgba(17, 18, 21, 0.92);
@@ -17,11 +36,20 @@ html.dark {
   --bg: #07080a;
   --card-bg: #0d0f13;
   --fg: #f4f5f7;
+  --surface-bar: #0a0c0f;
+  --surface-inset: #101318;
+  --surface-sunken: #0c0e12;
+  --surface-field: #0d0f13;
+  --surface-raised: #0e1014;
+  --surface-hover: #13161c;
   --border-color: rgba(255, 255, 255, 0.08);
+  --field-edge: rgba(255, 255, 255, 0.22);
   --text-muted: rgba(244, 245, 247, 0.42);
   --text-secondary: rgba(244, 245, 247, 0.68);
   --text-primary: rgba(244, 245, 247, 0.95);
-  --accent: #ff5d2e;
+  --accent-rgb: 255 93 46;
+  --accent-ink-rgb: 255 138 99;
+  --good-rgb: 52 211 153;
 }
 
 /* Disable transitions on initial render */
@@ -38,7 +66,8 @@ html.dark {
   outline: none;
 }
 :focus-visible {
-  outline: 2px solid var(--accent);
+  /* The ink step, not the fill: a coral ring is 2.8:1 on paper. */
+  outline: 2px solid var(--accent-ink);
   outline-offset: 2px;
   border-radius: 6px;
 }

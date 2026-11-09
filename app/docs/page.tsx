@@ -47,7 +47,7 @@ function CodeBlock({ code }: { code: string }) {
 function ParamRow({ name, type, desc }: { name: string; type: string; desc: string }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-[170px_110px_1fr] gap-1 sm:gap-4 px-5 py-3 border-t border-black/5 dark:border-white/[0.06] first:border-t-0 text-xs font-sans items-baseline">
-      <code className="font-mono text-[#ff5d2e] dark:text-[#ff7347] font-medium">{name}</code>
+      <code className="font-mono text-accent-ink font-medium">{name}</code>
       <span className="text-black/40 dark:text-zinc-500">{type}</span>
       <span className="text-black/65 dark:text-zinc-300 leading-relaxed">{desc}</span>
     </div>
@@ -66,7 +66,7 @@ function FieldRow({ name, type, desc }: { name: string; type: string; desc: stri
 
 function Note({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-md border border-[#ff5d2e]/25 bg-black/[0.02] dark:bg-white/[0.02] px-5 py-3.5 text-xs sm:text-[13px] font-sans text-black/65 dark:text-zinc-300 leading-relaxed">
+    <div className="rounded-md border border-accent/25 bg-black/[0.02] dark:bg-white/[0.02] px-5 py-3.5 text-xs sm:text-[13px] font-sans text-black/65 dark:text-zinc-300 leading-relaxed">
       {children}
     </div>
   )
@@ -144,16 +144,16 @@ export default function DocsPage() {
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20 min-w-0 min-[1440px]:col-start-2 min-[1440px]:mx-0">
         {/* Breadcrumb */}
         <TextWithBlur>
-          <div className="flex items-center gap-2.5 mb-7 text-xs font-sans tracking-wider leading-relaxed text-black/50 dark:text-zinc-400 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex items-center gap-2.5 mb-7 text-xs font-sans leading-relaxed text-black/50 dark:text-zinc-400 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             <Link
               href="/"
-              className="inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150 shrink-0"
+              className="inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150 shrink-0"
             >
               <ArrowLeft size={13} />
               <span>LEDGER</span>
             </Link>
             <span className="shrink-0">/</span>
-            <span className="text-[#ff5d2e] font-medium truncate">DOCS</span>
+            <span className="text-accent-ink font-medium truncate">DOCS</span>
           </div>
         </TextWithBlur>
 
@@ -185,7 +185,7 @@ export default function DocsPage() {
                   A machine-readable OpenAPI 3.1 description lives at{" "}
                   {/* Static file, not a page route: a plain anchor avoids Next's
                       RSC prefetch, which 404s on public assets. */}
-                  <a href="/openapi.json" target="_blank" rel="noopener noreferrer" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                  <a href="/openapi.json" target="_blank" rel="noopener noreferrer" className="text-accent-ink hover:underline">
                     /openapi.json
                   </a>
                   ; every operation there has a unique operationId.
@@ -224,7 +224,7 @@ export default function DocsPage() {
                 response advertises the advisory budget so an agent can
                 self-throttle instead of discovering it through a 429:
               </p>
-              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] mb-4">
+              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] mb-4">
                 <ParamRow name="RateLimit" type="header" desc={'"default";r=600;t=60 - 600 requests per 60-second window.'} />
                 <ParamRow name="X-RateLimit-Limit · X-RateLimit-Window" type="header" desc="600 and 60, for clients that only read the X-RateLimit-* family." />
                 <ParamRow name="Retry-After" type="header" desc="Seconds to wait, sent with any 429. The waitlist form returns a real 429 with this header when its throttler trips." />
@@ -264,7 +264,7 @@ export default function DocsPage() {
   "docs": "${SITE_URL}/docs#errors"
 }`}
               />
-              <div className="mt-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014]">
+              <div className="mt-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]">
                 <ParamRow name="200 + empty list" type="filters" desc="?company=unknownlab or a category with no matches. status stays “success”, total is 0." />
                 <ParamRow name="bad_request" type="400 · 422" desc="Missing or malformed input. The error field says what to fix." />
                 <ParamRow name="invalid_date · invalid_limit" type="400" desc="/api/v1/changes rejects malformed dates and limits with these codes." />
@@ -279,7 +279,7 @@ export default function DocsPage() {
           <div id="get-models" className="scroll-mt-24 mb-12">
             <TextWithBlur>
               <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 shrink-0">
+                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                   GET
                 </span>
                 <code className="font-mono text-sm sm:text-[15px] font-medium text-black dark:text-white break-all">
@@ -291,7 +291,7 @@ export default function DocsPage() {
                 specifications - plus a per-laboratory rollup. All parameters are optional
                 and combinable.
               </p>
-              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] mb-3">
+              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] mb-3">
                 <ParamRow name="company" type="string" desc={`Lab id - ${labList.map((l) => l.id).join(", ")}.`} />
                 <ParamRow name="category" type="string" desc="flagship · reasoning · open-weights · code · multimodal · audio · image · video" />
                 <ParamRow name="openWeights" type="string" desc="“true” for downloadable weights, “false” for proprietary API models." />
@@ -305,7 +305,7 @@ export default function DocsPage() {
           <div id="get-model" className="scroll-mt-24 mb-12">
             <TextWithBlur>
               <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 shrink-0">
+                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                   GET
                 </span>
                 <code className="font-mono text-sm sm:text-[15px] font-medium text-black dark:text-white break-all">
@@ -326,7 +326,7 @@ export default function DocsPage() {
               />
               <div className="mt-5 border-t border-black/10 pt-4 dark:border-white/[0.08]">
                 <div className="mb-2 flex flex-wrap items-center gap-2.5">
-                  <span className="inline-flex shrink-0 rounded border border-emerald-500/25 bg-emerald-500/10 px-2 py-0.5 font-mono text-[11px] font-bold tracking-wider text-emerald-600 dark:text-emerald-400">GET</span>
+                  <span className="inline-flex shrink-0 rounded border border-emerald-500/25 bg-good/10 px-2 py-0.5 font-mono text-[11px] font-bold text-good dark:text-good">GET</span>
                   <code className="break-all font-mono text-sm font-medium text-black dark:text-white">/api/v1/models/{"{id}"}/providers</code>
                 </div>
                 <p className="text-sm leading-relaxed text-black/60 dark:text-zinc-400">Returns current OpenRouter endpoint listings, provider-specific prices, and limits where an exact model mapping exists. This provider snapshot does not update or verify the lab-sourced facts in the registry. An unmapped record may still be available through other providers.</p>
@@ -338,7 +338,7 @@ export default function DocsPage() {
           <div id="get-changes" className="scroll-mt-24 mb-12">
             <TextWithBlur>
               <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 shrink-0">
+                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                   GET
                 </span>
                 <code className="font-mono text-sm sm:text-[15px] font-medium text-black dark:text-white break-all">
@@ -347,7 +347,7 @@ export default function DocsPage() {
               </div>
               <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
                 Incremental sync over per-model changelog history - same source as{" "}
-                <Link href="/changelog" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                <Link href="/changelog" className="text-accent-ink hover:underline">
                   /changelog
                 </Link>
                 , newest first. Poll with{" "}
@@ -357,7 +357,7 @@ export default function DocsPage() {
                 Unknown model/company filters return 200 with an empty list; malformed
                 dates return 400.
               </p>
-              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] mb-3">
+              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] mb-3">
                 <ParamRow name="since" type="date" desc="Inclusive lower bound, YYYY-MM-DD - e.g. 2026-10-01." />
                 <ParamRow name="until" type="date" desc="Inclusive upper bound, YYYY-MM-DD." />
                 <ParamRow name="model" type="string" desc="Filter to one record id (case-insensitive)." />
@@ -379,7 +379,7 @@ export default function DocsPage() {
                 Every entry in <code className="font-mono text-xs">models[]</code> follows this
                 shape. Fields marked conditional appear only where they apply.
               </p>
-              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014]">
+              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]">
                 <FieldRow name="id" type="string" desc="Stable kebab-case identifier. Never reused; suitable as a long-lived foreign key." />
                 <FieldRow name="companyId · companyName" type="string" desc="Owning laboratory. companyId matches ?company= and /companies/:id." />
                 <FieldRow name="name · version" type="string" desc="Display name and lab version string (e.g. “6.0-Astra”, “V4.1-Flash-Beta”)." />
@@ -408,7 +408,7 @@ export default function DocsPage() {
               </p>
               <div className="grid grid-cols-1 gap-5">
                 <div>
-                  <p className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.18em] text-[#ff5d2e] dark:text-[#ff7347] mb-2">
+                  <p className="font-mono text-[11px] sm:text-xs text-accent-ink mb-2">
                     01 · One flagship per lab - cURL
                   </p>
                   <CodeBlock
@@ -416,7 +416,7 @@ export default function DocsPage() {
                   />
                 </div>
                 <div>
-                  <p className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.18em] text-[#ff5d2e] dark:text-[#ff7347] mb-2">
+                  <p className="font-mono text-[11px] sm:text-xs text-accent-ink mb-2">
                     02 · Newest video checkpoints - Python
                   </p>
                   <CodeBlock
@@ -428,7 +428,7 @@ for m in res["models"]:
                   />
                 </div>
                 <div>
-                  <p className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.18em] text-[#ff5d2e] dark:text-[#ff7347] mb-2">
+                  <p className="font-mono text-[11px] sm:text-xs text-accent-ink mb-2">
                     03 · Filter by lab in the browser - JavaScript
                   </p>
                   <CodeBlock
@@ -461,7 +461,7 @@ const { total, models } = await (
                       key={s.n}
                       className="flex items-center gap-2.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] px-3 py-2.5"
                     >
-                      <span className="font-mono text-[11px] text-[#ff5d2e] dark:text-[#ff7347] shrink-0">
+                      <span className="font-mono text-[11px] text-accent-ink shrink-0">
                         {s.n}
                       </span>
                       <span className="text-black/70 dark:text-zinc-300">{s.t}</span>
@@ -483,16 +483,16 @@ const { total, models } = await (
                 <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
                   The same site serves agents without a separate API. Ask for Markdown
                   with content negotiation, discover it through{" "}
-                  <a href="/llms.txt" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                  <a href="/llms.txt" className="text-accent-ink hover:underline">
                     llms.txt
                   </a>
                   , and read the machine description from{" "}
-                  <a href="/openapi.json" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                  <a href="/openapi.json" className="text-accent-ink hover:underline">
                     OpenAPI 3.1
                   </a>
                   .
                 </p>
-                <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] mb-3">
+                <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] mb-3">
                   <ParamRow name="Accept: text/markdown" type="header" desc="Any HTML page, including /, returns Markdown with Content-Type: text/markdown and Vary: Accept. HTML is unchanged for text/html." />
                   <ParamRow name="GET /api/markdown?path=/…" type="endpoint" desc="Direct Markdown view without relying on negotiation. Unknown paths return a Markdown 404 with a recovery block." />
                   <ParamRow name="GET /llms.txt · /llms-full.txt" type="text" desc="Compact site guide, then the exhaustive field matrix." />
@@ -522,7 +522,7 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
                 answers in plain text. For filters, tables, and `--json` output there is also an
                 official CLI (<code className="font-mono text-xs">cli/</code> in the repository:
                 zero dependencies, Node 18+). See the{" "}
-                <Link href="/cli" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                <Link href="/cli" className="text-accent-ink hover:underline">
                   CLI page
                 </Link>{" "}
                 for install and commands.
@@ -530,7 +530,7 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
               <div className="grid grid-cols-1 gap-3">
                 <div>
                   <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 shrink-0">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                       GET
                     </span>
                     <code className="font-mono text-sm font-medium text-black dark:text-white">
@@ -541,7 +541,7 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 shrink-0">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                       GET
                     </span>
                     <code className="font-mono text-sm font-medium text-black dark:text-white">
@@ -552,7 +552,7 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 shrink-0">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                       GET
                     </span>
                     <code className="font-mono text-sm font-medium text-black dark:text-white">
@@ -563,7 +563,7 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold tracking-wider bg-black/[0.06] dark:bg-white/[0.08] text-black/70 dark:text-zinc-300 border border-black/15 dark:border-white/15 shrink-0">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-black/[0.06] dark:bg-white/[0.08] text-black/70 dark:text-zinc-300 border border-black/15 dark:border-white/15 shrink-0">
                       CLI
                     </span>
                     <code className="font-mono text-sm font-medium text-black dark:text-white">
@@ -677,7 +677,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
                     <code className="font-mono text-xs text-black/80 dark:text-zinc-200">{f.cmd}</code>
                     <span className="flex items-center gap-2 text-xs text-black/45 dark:text-zinc-400 min-w-0">
                       <span className="truncate hidden sm:inline">{f.desc}</span>
-                      <ArrowUpRight size={12} className="shrink-0 group-hover:text-[#ff5d2e] transition-colors" />
+                      <ArrowUpRight size={12} className="shrink-0 group-hover:text-accent-ink transition-colors" />
                     </span>
                   </a>
                 ))}
@@ -741,13 +741,13 @@ ${SITE_URL}/api/check-updates`}
                   <Link
                     key={lab.id}
                     href={`/companies/${lab.id}`}
-                    className="group flex items-center gap-2 px-3 py-2.5 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e]/40 transition-colors"
+                    className="group flex items-center gap-2 px-3 py-2.5 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-accent/40 transition-colors"
                   >
                     <span
                       className="w-2 h-2 rounded-sm shrink-0"
                       style={{ backgroundColor: lab.accentColor }}
                     />
-                    <span className="text-xs font-sans text-black/70 dark:text-zinc-300 group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors truncate">
+                    <span className="text-xs font-sans text-black/70 dark:text-zinc-300 group-hover:text-accent-ink transition-colors truncate">
                       {lab.name}
                     </span>
                   </Link>
@@ -765,7 +765,7 @@ ${SITE_URL}/api/check-updates`}
                 Cite the canonical record URL plus the dataset version you used, e.g.{" "}
                 <code className="font-mono text-xs">https://modelregistry.tirup.in/models/mistral-large-4 (dataset {datasetRevision.datasetVersion})</code>.
                 Record IDs are stable; field values can be corrected, with history on{" "}
-                <Link href="/changelog" className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline">
+                <Link href="/changelog" className="text-accent-ink hover:underline">
                   /changelog
                 </Link>
                 . Versioned full-dataset downloads:{" "}
@@ -786,7 +786,7 @@ ${SITE_URL}/api/check-updates`}
                   href="https://github.com/TirupMehta/ModelRegistry/issues"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#ff5d2e] dark:text-[#ff7347] hover:underline"
+                  className="text-accent-ink hover:underline"
                 >
                   GitHub
                 </a>{" "}

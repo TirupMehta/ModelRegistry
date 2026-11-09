@@ -123,10 +123,10 @@ export default function AlertsWaitlistForm({
       <div
         role="status"
         aria-live="polite"
-        className="rounded-2xl border border-emerald-500/30 dark:border-emerald-500/25 bg-emerald-500/[0.06] dark:bg-emerald-500/[0.08] p-5 sm:p-6"
+        className="rounded-2xl border border-good/30 dark:border-good/25 bg-good/[0.06] dark:bg-good/[0.08] p-5 sm:p-6"
       >
         <div className="flex items-start gap-3">
-          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 shrink-0">
+          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-good/15 text-good dark:text-good shrink-0">
             <Check size={15} className="draw-check" />
           </span>
           <div className="min-w-0">
@@ -147,7 +147,7 @@ export default function AlertsWaitlistForm({
       className={
         embedded
           ? ""
-          : "rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#111317] p-4 sm:p-6 shadow-sm"
+          : "rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[var(--surface-raised)] p-4 sm:p-6 shadow-sm"
       }
     >
       <div className="flex flex-col gap-1.5">
@@ -173,10 +173,10 @@ export default function AlertsWaitlistForm({
           placeholder="name@example.com"
           disabled={submitting}
           style={{ outline: "none" }}
-          className="w-full px-3 py-2.5 text-sm font-sans bg-white dark:bg-[#0d0f13] border border-black/10 dark:border-white/[0.08] rounded-lg shadow-sm focus:outline-none focus:border-[#ff5d2e]/60 focus:ring-2 focus:ring-[#ff5d2e]/15 text-black dark:text-white placeholder:text-black/35 dark:placeholder:text-zinc-500 transition-colors duration-150 disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-3 py-2.5 text-sm font-sans text-black shadow-sm placeholder:text-black/35 transition-colors duration-150 focus:border-accent-ink focus:outline-none focus:ring-2 focus:ring-accent-ink/20 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white dark:placeholder:text-zinc-500"
         />
         {!embedded && (
-          <p id={`${emailId}-hint`} className="text-[11px] font-sans text-black/45 dark:text-zinc-500">
+          <p id={`${emailId}-hint`} className="text-xs font-sans text-black/45 dark:text-zinc-500">
             Stored so we can send the launch email. Not shared, not sold.
           </p>
         )}
@@ -194,7 +194,7 @@ export default function AlertsWaitlistForm({
           }}
           disabled={submitting}
           aria-describedby={`${consentId}-copy`}
-          className="w-4 h-4 shrink-0 rounded border border-black/25 dark:border-white/25 accent-[#ff5d2e] cursor-pointer disabled:cursor-not-allowed"
+          className="w-4 h-4 shrink-0 rounded border border-black/25 dark:border-white/25 accent-accent cursor-pointer disabled:cursor-not-allowed"
         />
         <label
           id={`${consentId}-copy`}
@@ -206,19 +206,19 @@ export default function AlertsWaitlistForm({
       </div>
 
       {!embedded && (
-        <p className="mt-3 text-[11px] font-sans leading-5 text-black/45 dark:text-zinc-500">
+        <p className="mt-3 text-xs font-sans leading-5 text-black/45 dark:text-zinc-500">
           This is a one-time launch announcement, not a subscription. Joining the waitlist does not turn on model
           notifications, and you are not added to any mailing list beyond that single message.
         </p>
       )}
 
       {fieldError && (
-        <p id={errorId} role="alert" className="mt-3 text-[11px] font-sans text-red-600 dark:text-red-400">
+        <p id={errorId} role="alert" className="mt-3 text-xs font-sans text-red-600 dark:text-red-400">
           {fieldError}
         </p>
       )}
       {formError && (
-        <p role="alert" className="mt-3 text-[11px] font-sans text-red-600 dark:text-red-400">
+        <p role="alert" className="mt-3 text-xs font-sans text-red-600 dark:text-red-400">
           {formError}
         </p>
       )}
@@ -242,7 +242,7 @@ export default function AlertsWaitlistForm({
         disabled={submitting}
         className={`mt-5 inline-flex ${
           embedded ? "w-full" : "w-full sm:w-auto"
-        } items-center justify-center gap-1.5 h-9 px-4 text-xs font-sans font-medium tracking-wide bg-black text-white dark:bg-white dark:text-black hover:bg-[#ff5d2e] dark:hover:bg-[#ff5d2e] dark:hover:text-white border border-black dark:border-white hover:border-[#ff5d2e] rounded-lg shadow-sm hover:shadow-md hover:shadow-[#ff5d2e]/20 active:scale-[0.97] transition-all duration-150 select-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-black dark:disabled:hover:bg-white disabled:active:scale-100`}
+        } items-center justify-center gap-1.5 h-9 px-4 text-xs font-sans font-medium tracking-wide bg-black text-white dark:bg-white dark:text-black hover:bg-accent dark:hover:bg-accent dark:hover:text-white border border-black dark:border-white hover:border-accent rounded-lg shadow-sm hover:shadow-md hover:shadow-accent/20 active:scale-[0.97] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 select-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-black dark:disabled:hover:bg-white disabled:active:scale-100`}
       >
         {submitting ? (
           <>

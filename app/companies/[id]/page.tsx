@@ -168,10 +168,10 @@ export default async function CompanyPage({ params }: Props) {
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         {/* Breadcrumb */}
         <TextWithBlur>
-          <div className="flex items-center gap-2.5 mb-7 text-xs font-sans tracking-wider leading-relaxed text-black/50 dark:text-zinc-400 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex items-center gap-2.5 mb-7 text-xs font-sans leading-relaxed text-black/50 dark:text-zinc-400 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             <Link
               href="/"
-              className="inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150 shrink-0"
+              className="inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150 shrink-0"
             >
               <ArrowLeft size={13} />
               <span>LEDGER</span>
@@ -179,18 +179,18 @@ export default async function CompanyPage({ params }: Props) {
             <span className="shrink-0">/</span>
             <Link
               href="/companies"
-              className="hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150 shrink-0"
+              className="hover:text-accent-ink transition-colors duration-150 shrink-0"
             >
               <span>LABORATORIES</span>
             </Link>
             <span className="shrink-0">/</span>
-            <span className="text-[#ff5d2e] font-medium truncate">{lab.shortName.toUpperCase()}</span>
+            <span className="text-accent-ink font-medium truncate">{lab.shortName.toUpperCase()}</span>
           </div>
         </TextWithBlur>
 
         {/* Lab Hero */}
         <TextWithBlur delay={80}>
-          <div className="p-4 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#111317] mb-6">
+          <div className="p-4 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[var(--surface-raised)] mb-6">
             <div className="flex items-start justify-between gap-3 sm:gap-4">
               <div className="flex items-start gap-3 min-w-0">
                 <div
@@ -211,7 +211,7 @@ export default async function CompanyPage({ params }: Props) {
                 href={lab.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1 text-xs font-sans text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors duration-150 shrink-0 whitespace-nowrap pt-1"
+                className="group inline-flex items-center gap-1 text-xs font-sans text-black/50 dark:text-zinc-400 hover:text-accent-ink transition-colors duration-150 shrink-0 whitespace-nowrap pt-1"
               >
                 <Globe size={12} />
                 <span>{new URL(lab.website).hostname}</span>
@@ -224,21 +224,21 @@ export default async function CompanyPage({ params }: Props) {
             </p>
 
             {/* Lab Stats Strip */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-4 pt-4 border-t border-black/5 dark:border-white/[0.06] text-[11px] font-sans tracking-wider text-black/45 dark:text-zinc-400 tabular-nums">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-4 pt-4 border-t border-black/5 dark:border-white/[0.06] text-[11px] font-sans text-black/45 dark:text-zinc-400 tabular-nums">
               <span className="inline-flex items-center gap-1.5">
-                <Layers size={11} className="text-[#ff5d2e]" />
+                <Layers size={11} className="text-accent-ink" />
                 {labModels.length} MODEL{labModels.length === 1 ? "" : "S"} TRACKED
               </span>
               {openCount > 0 && (
                 <span className="inline-flex items-center gap-1.5">
-                  <Boxes size={11} className="text-[#ff5d2e]" />
+                  <Boxes size={11} className="text-accent-ink" />
                   {openCount} OPEN WEIGHTS
                 </span>
               )}
               {newest && (
                 <span className="inline-flex items-center gap-1.5">
-                  <Sparkles size={11} className="text-[#1a73e8] dark:text-[#8ab4f8]" />
-                  NEWEST: {newest.name.toUpperCase()} · {getRelativeTimeString(newest.releaseDate).toUpperCase()}
+                  <Sparkles size={11} className="text-accent-ink" />
+                  Newest: {newest.name}, {getRelativeTimeString(newest.releaseDate)}
                 </span>
               )}
             </div>
@@ -255,7 +255,7 @@ export default async function CompanyPage({ params }: Props) {
               {faqAnswer}{" "}
               <Link
                 href="/methodology"
-                className="text-[#ff5d2e] hover:underline underline-offset-2 whitespace-nowrap"
+                className="text-accent-ink hover:underline underline-offset-2 whitespace-nowrap"
               >
                 How we define “latest”
               </Link>
@@ -266,7 +266,7 @@ export default async function CompanyPage({ params }: Props) {
         {/* Release Timeline (month-grouped rail, mirrors /timeline) */}
         <TextWithBlur delay={140}>
           <div className="flex items-baseline justify-between gap-3 mb-5">
-            <h2 className="text-sm font-sans font-medium tracking-wider text-black/60 dark:text-zinc-300 uppercase">
+            <h2 className="text-sm font-sans font-medium text-black/60 dark:text-zinc-300">
               Release Timeline
             </h2>
             <span className="text-[11px] font-sans text-black/35 dark:text-zinc-500 tabular-nums">
@@ -297,18 +297,18 @@ export default async function CompanyPage({ params }: Props) {
                     <Link
                       key={model.id}
                       href={`/models/${model.id}`}
-                      className="group cursor-pointer block p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[#0d0f13] hover:border-[#ff5d2e]/40 transition-colors duration-150 select-none"
+                      className="group cursor-pointer block p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[var(--surface-field)] hover:border-accent/40 transition-colors duration-150 select-none"
                     >
                       <div className="mb-1.5">
-                        <div className="font-sans text-[15px] sm:text-base font-medium tracking-tight leading-snug text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150">
+                        <div className="font-sans text-[15px] sm:text-base font-medium tracking-tight leading-snug text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
                           {model.name}
                         </div>
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mt-1.5 font-sans">
-                          <span className="text-[11px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03] whitespace-nowrap">
+                          <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03] whitespace-nowrap">
                             {model.statusBadge}
                           </span>
                           {model.isCompanyFlagship && (
-                            <span className="text-[11px] tracking-tight text-[#ff5d2e] dark:text-[#ff7347] font-medium whitespace-nowrap">
+                            <span className="text-[11px] tracking-tight text-accent-ink font-medium whitespace-nowrap">
                               • Flagship
                             </span>
                           )}
@@ -326,7 +326,7 @@ export default async function CompanyPage({ params }: Props) {
                         <span className="text-[11px] text-black/45 dark:text-zinc-400">
                           {model.categoryLabel}
                         </span>
-                        <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-zinc-400 group-hover:text-[#ff5d2e] transition-colors shrink-0">
+                        <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-zinc-400 group-hover:text-accent-ink transition-colors shrink-0">
                           OPEN DATASHEET <ArrowUpRight size={10} className="opacity-60" />
                         </span>
                       </div>

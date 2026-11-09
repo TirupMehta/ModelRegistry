@@ -8,9 +8,9 @@ import { Check, ChevronDown, RotateCcw, SlidersHorizontal, X } from "lucide-reac
 
 type FilterOption = [string, string]
 
-const fieldClass = "h-10 w-full rounded-lg border border-black/10 bg-white px-3 text-xs text-black transition-colors hover:border-black/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff5d2e]/30 dark:border-white/[0.1] dark:bg-[#0d0f13] dark:text-white dark:hover:border-white/20"
+const fieldClass = "h-10 w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-3 text-xs text-black transition-colors hover:border-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-ink/30 dark:text-white dark:hover:border-white/40"
 const labelClass = "mb-1.5 block text-[11px] font-medium text-black/60 dark:text-zinc-400"
-const inputClass = "h-10 w-full rounded-lg border border-black/10 bg-white px-3 text-xs tabular-nums text-black transition-colors placeholder:text-black/55 hover:border-black/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff5d2e]/30 dark:border-white/[0.1] dark:bg-[#0d0f13] dark:text-white dark:placeholder:text-zinc-400 dark:hover:border-white/20"
+const inputClass = "h-10 w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-3 text-xs tabular-nums text-black transition-colors placeholder:text-black/55 hover:border-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-ink/30 dark:text-white dark:placeholder:text-zinc-400 dark:hover:border-white/40"
 
 function FilterSelect({
   id,
@@ -147,7 +147,7 @@ function FilterSelect({
         <div
           ref={menuRef}
       data-model-filter-menu=""
-          className="fixed z-[1000] overflow-hidden rounded-xl border border-black/10 bg-white p-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.12)] dark:border-white/[0.12] dark:bg-[#15171c] dark:shadow-[0_8px_20px_rgba(0,0,0,0.4)]"
+          className="fixed z-[1000] overflow-hidden rounded-xl border border-black/10 bg-white p-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.12)] dark:border-white/[0.12] dark:bg-[var(--surface-hover)] dark:shadow-[0_8px_20px_rgba(0,0,0,0.4)]"
           style={{ top: menuPosition.top, left: menuPosition.left, width: menuPosition.width, maxHeight: menuPosition.maxHeight }}
         >
           <div id={id + "-options"} role="listbox" aria-labelledby={id + "-label"} className="overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" style={{ maxHeight: Math.max(64, menuPosition.maxHeight - 14) }}>
@@ -166,7 +166,7 @@ function FilterSelect({
                     close(true)
                   }}
                   onKeyDown={(event) => onOptionKeyDown(event, index)}
-                  className={"flex min-h-9 w-full items-center justify-between gap-3 rounded-lg px-2.5 text-left text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#ff5d2e]/45 " + (selected ? "bg-[#ff5d2e]/[0.08] font-medium text-[#bd401f] dark:text-[#ff987b]" : "text-black/75 hover:bg-black/[0.045] dark:text-zinc-200 dark:hover:bg-white/[0.06]")}
+                  className={"flex min-h-9 w-full items-center justify-between gap-3 rounded-lg px-2.5 text-left text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/45 " + (selected ? "bg-accent/[0.08] font-medium text-accent-ink" : "text-black/75 hover:bg-black/[0.045] dark:text-zinc-200 dark:hover:bg-white/[0.06]")}
                 >
                   <span className="truncate">{optionLabel}</span>
                   {selected && <Check size={13} aria-hidden="true" className="shrink-0" />}
@@ -237,14 +237,14 @@ export default function ModelFilterControls({
         aria-controls="model-refine-panel"
         title="Refine results"
         onClick={() => setOpen((current) => !current)}
-        className={"relative inline-flex h-5 w-5 items-center justify-center rounded-md border border-black/10 bg-black/5 text-black/65 transition-colors hover:border-black/20 hover:bg-black/[0.08] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff5d2e]/40 dark:border-white/[0.08] dark:bg-white/[0.06] dark:text-zinc-300 dark:hover:border-white/20 dark:hover:bg-white/[0.1] dark:hover:text-white " + (open || active ? "border-[#ff5d2e]/35 bg-[#ff5d2e]/[0.08] text-black dark:border-[#ff5d2e]/40 dark:bg-[#ff5d2e]/[0.12] dark:text-white" : "")}
+        className={"relative inline-flex h-7 w-7 items-center justify-center rounded text-black/45 transition-colors hover:bg-black/[0.06] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-ink/40 dark:text-zinc-400 dark:hover:bg-white/[0.08] dark:hover:text-white " + (open || active ? "bg-accent/[0.1] text-accent-ink dark:bg-accent/[0.14] dark:text-white" : "")}
       >
-        <SlidersHorizontal size={12} strokeWidth={1.8} aria-hidden="true" />
-        {active && <span aria-hidden="true" className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-[#ff5d2e] ring-2 ring-white dark:ring-[#0d0f13]" />}
+        <SlidersHorizontal size={13} strokeWidth={1.8} aria-hidden="true" />
+        {active && <span aria-hidden="true" className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-accent ring-2 ring-white dark:ring-[var(--surface-field)]" />}
       </button>}
 
       {visible && (
-        <section id="model-refine-panel" aria-label="Refine model results" className={(alwaysOpen ? "absolute inset-x-0 top-0 z-[60] w-full overflow-visible " : "absolute right-0 top-full z-[60] mt-2 w-[min(560px,calc(100vw-2rem))] overflow-visible ") + "rounded-xl border border-black/[0.12] bg-[#fbfbf9] p-3 shadow-[0_4px_14px_rgba(0,0,0,0.08)] dark:border-white/[0.12] dark:bg-[#111317] dark:shadow-[0_4px_14px_rgba(0,0,0,0.3)] sm:p-3"}>
+        <section id="model-refine-panel" aria-label="Refine model results" className={(alwaysOpen ? "absolute inset-x-0 top-0 z-[60] w-full overflow-visible " : "absolute right-0 top-full z-[60] mt-2 w-[min(560px,calc(100vw-2rem))] overflow-visible ") + "rounded-xl border border-black/[0.12] bg-[var(--card-bg)] p-3 shadow-[0_4px_14px_rgba(0,0,0,0.08)] dark:border-white/[0.12] dark:bg-[var(--surface-raised)] dark:shadow-[0_4px_14px_rgba(0,0,0,0.3)] sm:p-3"}>
           <div className="flex items-start justify-between gap-4">
             <div>
               <h2 className="text-sm font-semibold text-black dark:text-white">Refine results</h2>
@@ -255,7 +255,7 @@ export default function ModelFilterControls({
                 type="button"
                 disabled={!active}
                 onClick={() => onChange(DEFAULT_MODEL_FILTERS)}
-                className="inline-flex min-h-8 items-center gap-1.5 rounded-lg px-2 text-[11px] font-medium text-black/60 transition-colors hover:bg-black/[0.045] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff5d2e]/35 disabled:cursor-not-allowed disabled:opacity-35 dark:text-zinc-400 dark:hover:bg-white/[0.06] dark:hover:text-white"
+                className="inline-flex min-h-8 items-center gap-1.5 rounded-lg px-2 text-[11px] font-medium text-black/60 transition-colors hover:bg-black/[0.045] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/35 disabled:cursor-not-allowed disabled:opacity-35 dark:text-zinc-400 dark:hover:bg-white/[0.06] dark:hover:text-white"
               >
                 <RotateCcw size={12} aria-hidden="true" />
                 Reset{active ? " (" + activeCount + ")" : ""}
@@ -264,7 +264,7 @@ export default function ModelFilterControls({
                 type="button"
                 aria-label="Close filters"
                 onClick={() => { setOpen(false); triggerRef.current?.focus() }}
-                className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-black/55 transition-colors hover:bg-black/[0.05] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff5d2e]/35 dark:text-zinc-400 dark:hover:bg-white/[0.07] dark:hover:text-white"
+                className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-black/55 transition-colors hover:bg-black/[0.05] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/35 dark:text-zinc-400 dark:hover:bg-white/[0.07] dark:hover:text-white"
               >
                 <X size={15} aria-hidden="true" />
               </button>}

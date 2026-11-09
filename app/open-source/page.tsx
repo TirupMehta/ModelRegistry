@@ -36,7 +36,7 @@ function H2({ children }: { children: React.ReactNode }) {
 
 function P({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
+    <p className="max-w-[68ch] text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
       {children}
     </p>
   )
@@ -48,7 +48,7 @@ function A({ href, children }: { href: string; children: React.ReactNode }) {
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="text-[#ff5d2e] hover:underline underline-offset-2"
+      className="text-accent-ink hover:underline underline-offset-2"
     >
       {children}
     </a>
@@ -79,7 +79,7 @@ function PushList({ pushes }: { pushes: RepoSnapshot["pushes"] }) {
           href={push.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="shrink-0 font-mono text-xs text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347]"
+          className="shrink-0 font-mono text-xs text-black/50 dark:text-zinc-400 hover:text-accent-ink"
         >
           {push.sha.slice(0, 7)}
         </a>
@@ -87,7 +87,7 @@ function PushList({ pushes }: { pushes: RepoSnapshot["pushes"] }) {
           href={push.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="min-w-0 flex-1 truncate text-black dark:text-zinc-200 hover:text-[#ff5d2e] dark:hover:text-[#ff7347]"
+          className="min-w-0 flex-1 truncate text-black dark:text-zinc-200 hover:text-accent-ink"
           title={push.message}
         >
           {push.message}
@@ -109,7 +109,7 @@ function MergedPullList({ pulls }: { pulls: NonNullable<RepoSnapshot["mergedPull
           href={pull.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="min-w-0 flex-1 truncate text-black dark:text-zinc-200 hover:text-[#ff5d2e] dark:hover:text-[#ff7347]"
+          className="min-w-0 flex-1 truncate text-black dark:text-zinc-200 hover:text-accent-ink"
           title={pull.title}
         >
           {pull.title}
@@ -131,7 +131,7 @@ function ContributorList({ contributors }: { contributors: NonNullable<RepoSnaps
           href={contributor.profileUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full border border-black/10 dark:border-white/[0.08] px-3 py-1 text-xs text-black/70 dark:text-zinc-300 hover:border-[#ff5d2e] hover:text-[#ff5d2e] dark:hover:border-[#ff7347] dark:hover:text-[#ff7347]"
+          className="inline-flex items-center gap-1.5 rounded-full border border-black/10 dark:border-white/[0.08] px-3 py-1 text-xs text-black/70 dark:text-zinc-300 hover:border-accent hover:text-accent-ink"
         >
           {contributor.login}
           <span className="text-black/35 dark:text-zinc-600 tabular-nums">{contributor.contributions}</span>
@@ -166,15 +166,18 @@ export default async function OpenSourcePage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <p className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold mb-2">
-          Open source
-        </p>
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-2">
           Built in the open
         </h1>
-        <p className="text-xs font-sans text-black/45 dark:text-zinc-500 mb-8">
-          <A href={REPO_URL}>github.com/TirupMehta/ModelRegistry</A> · MIT licensed ·{" "}
-          {stats ? `${stats.stars} stars · ${stats.forks} forks` : "source code"} ·{" "}
+        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-sans text-black/50 dark:text-zinc-500">
+          <A href={REPO_URL}>github.com/TirupMehta/ModelRegistry</A>
+          <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
+          <span>MIT licensed</span>
+          <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
+          <span className="tabular-nums">
+            {stats ? `${stats.stars} stars, ${stats.forks} forks` : "source code"}
+          </span>
+          <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
           <A href="/about">About</A>
         </p>
 
@@ -209,7 +212,7 @@ export default async function OpenSourcePage() {
             </p>
           </>
         ) : (
-          <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
+          <p className="max-w-[68ch] text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
             The live push feed is unavailable right now. Recent history is on GitHub:{" "}
             <A href={`${REPO_URL}/commits/main`}>commits on main</A>.
           </p>
@@ -222,7 +225,7 @@ export default async function OpenSourcePage() {
             {mergedPulls && mergedPulls.length > 0 && <MergedPullList pulls={mergedPulls} />}
           </>
         ) : (
-          <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
+          <p className="max-w-[68ch] text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
             The contributor feed is unavailable right now. Everyone who has contributed so
             far is on the{" "}
             <A href={`${REPO_URL}/graphs/contributors`}>contributor graph</A>, and merged

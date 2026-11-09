@@ -141,36 +141,38 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f7f4] dark:bg-[#07080a] text-[#111215] dark:text-[#f4f5f7] transition-colors duration-150">
-      <main className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 py-6 sm:py-10">
+    <div className="min-h-screen bg-[var(--bg)] dark:bg-[var(--bg)] text-[var(--fg)] dark:text-[var(--fg)] transition-colors duration-150">
+      <main className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 py-6 sm:py-7">
         {/* Breadcrumb Navigation */}
-        <div className="flex items-center gap-2.5 mb-7 text-xs font-sans tracking-wider leading-relaxed text-black/50 dark:text-zinc-400 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="mb-5 flex items-center gap-2.5 overflow-x-auto whitespace-nowrap text-xs font-sans leading-relaxed text-black/50 [scrollbar-width:none] [-ms-overflow-style:none] dark:text-zinc-400 [&::-webkit-scrollbar]:hidden">
           <Link
             href="/"
-            className="inline-flex items-center gap-1 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150 shrink-0"
+            className="inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150 shrink-0"
           >
             <ArrowLeft size={13} />
-            <span>LEDGER</span>
+            <span>Ledger</span>
           </Link>
           <span className="shrink-0">/</span>
           <Link
             href={`/companies/${model.companyId}`}
-            className="uppercase text-black/70 dark:text-zinc-300 truncate hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150"
+            className="text-black/70 dark:text-zinc-300 truncate hover:text-accent-ink transition-colors duration-150"
           >
             {model.companyName}
           </Link>
           <span className="shrink-0">/</span>
-          <span className="text-[#ff5d2e] font-medium truncate">{model.id}</span>
+          <span className="text-accent-ink font-medium truncate">{model.id}</span>
         </div>
 
         {/* Datasheet Container */}
-        <div className="bg-white dark:bg-[#0e1014] border border-black/10 dark:border-white/[0.08] rounded-2xl shadow-sm ring-1 ring-black/5 dark:ring-white/5 p-4 sm:p-9 mb-6 sm:mb-8 leading-relaxed">
+        <div className="bg-white dark:bg-[var(--surface-raised)] border border-black/10 dark:border-white/[0.08] rounded-2xl shadow-sm ring-1 ring-black/5 dark:ring-white/5 p-4 sm:p-9 mb-6 sm:mb-8 leading-relaxed">
           {/* Top Control Bar */}
           <div className="flex items-center justify-between gap-3 border-b border-black/10 dark:border-white/[0.08] pb-4 mb-6">
-            <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] font-sans text-[#ff5d2e] min-w-0">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] font-sans text-accent-ink min-w-0">
               <Terminal size={13} className="shrink-0" />
-              <span className="uppercase tracking-widest font-medium truncate hidden sm:inline">SPEC DATASHEET // {model.id}</span>
-              <span className="uppercase tracking-widest font-medium truncate sm:hidden">DATASHEET</span>
+              <span className="truncate text-sm font-medium">Datasheet</span>
+              <span className="hidden truncate font-mono text-xs text-black/45 sm:inline dark:text-zinc-500">
+                {model.id}
+              </span>
             </div>
 
             <div className="flex items-center gap-1.5 shrink-0">
@@ -180,21 +182,21 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   setIsShareStudioOpen(true)
                 }}
                 title="Export Instagram Story / Social Card"
-                className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[10px] sm:text-[11px] font-sans text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
+                className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded border border-black/10 px-2.5 font-sans text-xs text-black/60 transition-colors duration-150 hover:border-accent hover:text-accent-ink dark:border-white/[0.08] dark:text-zinc-400"
               >
                 <Share2 size={12} className="shrink-0" />
-                <span className="hidden sm:inline">EXPORT CARD</span>
-                <span className="sm:hidden">EXPORT</span>
+                <span className="hidden sm:inline">Export card</span>
+                <span className="sm:hidden">Export</span>
               </button>
 
               <button
                 onClick={handleCopyLink}
                 title="Copy shareable permalink"
-                className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded border border-black/10 dark:border-white/[0.08] hover:border-[#ff5d2e] hover:text-[#ff5d2e] text-[10px] sm:text-[11px] font-sans text-black/60 dark:text-zinc-400 transition-colors duration-150 cursor-pointer"
+                className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded border border-black/10 px-2.5 font-sans text-xs text-black/60 transition-colors duration-150 hover:border-accent hover:text-accent-ink dark:border-white/[0.08] dark:text-zinc-400"
               >
-                {copiedLink ? <Check size={12} className="text-emerald-500 shrink-0" /> : <Link2 size={12} className="shrink-0" />}
-                <span className="hidden sm:inline">{copiedLink ? "COPIED" : "SHARE LINK"}</span>
-                <span className="sm:hidden">{copiedLink ? "COPIED" : "SHARE"}</span>
+                {copiedLink ? <Check size={12} className="text-good shrink-0" /> : <Link2 size={12} className="shrink-0" />}
+                <span className="hidden sm:inline">{copiedLink ? "Copied" : "Share link"}</span>
+                <span className="sm:hidden">{copiedLink ? "Copied" : "Share"}</span>
               </button>
             </div>
           </div>
@@ -203,14 +205,14 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           <div className="flex items-center gap-2.5 mb-4 text-xs font-sans tracking-wide leading-relaxed">
             <span
               className="w-2.5 h-2.5 rounded-sm shrink-0"
-              style={{ backgroundColor: company?.accentColor || "#ff5d2e" }}
+              style={{ backgroundColor: company?.accentColor || "rgb(var(--accent-rgb))" }}
             />
-            <span className="font-medium uppercase tracking-wider text-black/70 dark:text-zinc-300">
+            <span className="font-medium text-black/70 dark:text-zinc-300">
               {model.companyName}
             </span>
             <span className="text-black/20 dark:text-white/20 select-none">/</span>
-            <span className="text-black/45 dark:text-zinc-400">
-              RELEASED {formatDate(model.releaseDate)}
+            <span className="text-black/50 dark:text-zinc-400">
+              Released {formatDate(model.releaseDate)}
             </span>
           </div>
 
@@ -219,7 +221,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
             <h1 className="text-[22px] sm:text-3xl md:text-4xl font-display font-semibold tracking-tight leading-snug sm:leading-tight text-black dark:text-white">
               {model.name}
             </h1>
-            <span className="text-[11px] font-sans uppercase px-2.5 py-1 rounded border border-[#ff5d2e]/40 text-[#ff5d2e] bg-[#ff5d2e]/5 font-medium tracking-widest leading-relaxed">
+            <span className="text-[11px] font-sans px-2.5 py-1 rounded border border-accent/40 text-accent-ink bg-accent/5 font-medium leading-relaxed">
               {model.statusBadge}
             </span>
           </div>
@@ -231,49 +233,49 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
           {/* Key Hardware Specs Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 mb-6 sm:mb-8 text-xs font-sans">
-            <div className="p-3.5 sm:p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
-              <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1.5 text-[11px] tracking-widest">
+            <div className="p-3.5 sm:p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.03] leading-relaxed">
+              <div className="flex items-center gap-1.5 text-black/50 dark:text-zinc-400 mb-1.5 text-xs">
                 <Layers size={13} />
-                <span className="uppercase">Context</span>
+                <span>Context</span>
               </div>
-              <div className="font-semibold text-black dark:text-white text-sm sm:text-base leading-6 tracking-wide">
+              <div className="text-base font-semibold leading-6 text-black dark:text-white">
                 {model.contextWindow}
               </div>
             </div>
 
-            <div className="p-3.5 sm:p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
-              <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1.5 text-[11px] tracking-widest">
+            <div className="p-3.5 sm:p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.03] leading-relaxed">
+              <div className="flex items-center gap-1.5 text-black/50 dark:text-zinc-400 mb-1.5 text-xs">
                 <Cpu size={13} />
-                <span className="uppercase">Architecture</span>
+                <span>Architecture</span>
               </div>
-              <div className="font-medium text-black dark:text-white text-xs sm:text-sm leading-6 tracking-wide break-words">
+              <div className="break-words text-base font-medium leading-6 text-black dark:text-white">
                 {model.parameters}
               </div>
             </div>
 
-            <div className="p-3.5 sm:p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
-              <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1.5 text-[11px] tracking-widest">
+            <div className="p-3.5 sm:p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.03] leading-relaxed">
+              <div className="flex items-center gap-1.5 text-black/50 dark:text-zinc-400 mb-1.5 text-xs">
                 <DollarSign size={13} />
-                <span className="uppercase">Official API{model.pricingUnit ? "" : " (1M)"}</span>
+                <span>Official API{model.pricingUnit ? "" : " (1M)"}</span>
               </div>
-              <div className="font-semibold text-black dark:text-white text-xs sm:text-sm leading-6 tracking-wide">
+              <div className="text-base font-semibold leading-6 text-black dark:text-white">
                 <span>
                   {formatPrice(model)}
                 </span>
                 {model.openWeights && (
-                  <span className="block text-[11px] font-sans text-black/60 dark:text-zinc-400 font-normal mt-1 leading-relaxed">
+                  <span className="mt-1 block text-xs font-sans font-normal leading-relaxed text-black/60 dark:text-zinc-400">
                     + Weights Free to Self-Host
                   </span>
                 )}
               </div>
             </div>
 
-            <div className="p-3.5 sm:p-4 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[#13161c] leading-relaxed">
-              <div className="flex items-center gap-1.5 text-black/45 dark:text-zinc-400 mb-1.5 text-[11px] tracking-widest">
+            <div className="p-3.5 sm:p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.03] leading-relaxed">
+              <div className="flex items-center gap-1.5 text-black/50 dark:text-zinc-400 mb-1.5 text-xs">
                 <ShieldCheck size={13} />
-                <span className="uppercase">License</span>
+                <span>License</span>
               </div>
-              <div className="font-medium text-black dark:text-white text-xs leading-6 tracking-wide break-words">
+              <div className="break-words text-base font-medium leading-6 text-black dark:text-white">
                 {model.license}
               </div>
             </div>
@@ -283,41 +285,41 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
           {/* Verified Benchmarks Section */}
           {Object.keys(model.benchmarks).length > 0 && (
-            <div className="mb-6 sm:mb-8 border border-black/10 dark:border-white/[0.08] rounded-lg p-4 sm:p-5 bg-black/[0.01] dark:bg-black/20">
-              <div className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 uppercase tracking-widest leading-relaxed mb-1">
-                Published benchmarks · lab-reported
-              </div>
-              <p className="-mt-1 mb-4 text-[11px] font-sans text-black/45 dark:text-zinc-500">
+            <div className="mb-6 border-t border-black/10 pt-5 sm:mb-8 dark:border-white/[0.08]">
+              <h2 className="mb-1 font-display text-lg font-semibold tracking-tight text-black dark:text-white">
+                Published benchmarks, lab reported
+              </h2>
+              <p className="-mt-1 mb-4 text-xs font-sans text-black/50 dark:text-zinc-500">
                 Vendor-published figures, not independently reproduced. Source links are listed below.
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 font-sans text-xs">
                 {model.benchmarks.sweBench && (
-                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[#0e1014] leading-relaxed">
-                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1 tracking-wider">SWE-BENCH</div>
-                    <div className="text-base font-semibold text-[#ff5d2e] tracking-wide">{model.benchmarks.sweBench}</div>
+                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[var(--surface-raised)] leading-relaxed">
+                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1">SWE-BENCH</div>
+                    <div className="text-base font-semibold text-accent-ink tracking-wide">{model.benchmarks.sweBench}</div>
                   </div>
                 )}
                 {model.benchmarks.terminalBench && (
-                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[#0e1014] leading-relaxed">
-                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1 tracking-wider">TERMINAL-BENCH</div>
+                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[var(--surface-raised)] leading-relaxed">
+                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1">TERMINAL-BENCH</div>
                     <div className="text-base font-semibold text-black dark:text-white tracking-wide">{model.benchmarks.terminalBench}</div>
                   </div>
                 )}
                 {model.benchmarks.aime2024 && (
-                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[#0e1014] leading-relaxed">
-                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1 tracking-wider">AIME 2024</div>
+                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[var(--surface-raised)] leading-relaxed">
+                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1">AIME 2024</div>
                     <div className="text-base font-semibold text-black dark:text-white tracking-wide">{model.benchmarks.aime2024}</div>
                   </div>
                 )}
                 {model.benchmarks.mmluPro && (
-                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[#0e1014] leading-relaxed">
-                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1 tracking-wider">MMLU-PRO</div>
+                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[var(--surface-raised)] leading-relaxed">
+                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1">MMLU-PRO</div>
                     <div className="text-base font-semibold text-black dark:text-white tracking-wide">{model.benchmarks.mmluPro}</div>
                   </div>
                 )}
                 {model.benchmarks.gpqa && (
-                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[#0e1014] leading-relaxed">
-                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1 tracking-wider">GPQA DIAMOND</div>
+                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[var(--surface-raised)] leading-relaxed">
+                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1">GPQA DIAMOND</div>
                     <div className="text-base font-semibold text-black dark:text-white tracking-wide">{model.benchmarks.gpqa}</div>
                   </div>
                 )}
@@ -327,21 +329,21 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
           {/* Shipped Variants (e.g. API twins) */}
           {model.variants && model.variants.length > 0 && (
-            <div className="mb-6 sm:mb-8 border border-black/10 dark:border-white/[0.08] rounded-lg p-4 sm:p-5 bg-black/[0.01] dark:bg-black/20">
-              <div className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 uppercase tracking-widest leading-relaxed mb-3.5">
-                Shipped Variants
-              </div>
+            <div className="mb-6 border-t border-black/10 pt-5 sm:mb-8 dark:border-white/[0.08]">
+              <h2 className="mb-3.5 font-display text-lg font-semibold tracking-tight text-black dark:text-white">
+                Shipped variants
+              </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5 font-sans text-xs">
                 {model.variants.map((variant) => (
                   <div
                     key={variant.name}
-                    className="border border-black/10 dark:border-white/[0.08] rounded-lg p-4 sm:p-[18px] bg-white dark:bg-[#0e1014] leading-relaxed flex flex-col"
+                    className="border border-black/10 dark:border-white/[0.08] rounded-lg p-4 sm:p-[18px] bg-white dark:bg-[var(--surface-raised)] leading-relaxed flex flex-col"
                   >
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-2">
                       <span className="text-[13px] sm:text-sm font-semibold text-black dark:text-white tracking-wide">
                         {variant.name}
                       </span>
-                      <span className="text-[11px] uppercase tracking-wider px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]">
+                      <span className="rounded border border-black/10 bg-black/[0.02] px-1.5 py-0.5 text-[11px] text-black/60 dark:border-white/10 dark:bg-white/[0.03] dark:text-white/60">
                         {variant.role}
                       </span>
                     </div>
@@ -356,10 +358,10 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                         href={variant.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 mt-2.5 text-xs tracking-wider text-black/60 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150"
+                        className="inline-flex items-center gap-1 mt-2.5 text-xs text-black/60 dark:text-zinc-400 hover:text-accent-ink transition-colors duration-150"
                       >
                         <ExternalLink size={12} />
-                        <span>OFFICIAL DOCS</span>
+                        <span>Official docs</span>
                       </a>
                     )}
                   </div>
@@ -370,31 +372,26 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
           {/* Quickstart Developer Code Snippet */}
           <div className="mb-6 sm:mb-8 border border-black/10 dark:border-white/[0.08] rounded-xl overflow-hidden shadow-sm">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 bg-black/[0.03] dark:bg-[#13161c] px-3.5 sm:px-4 py-2.5 border-b border-black/10 dark:border-white/[0.08]">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 bg-black/[0.03] dark:bg-[var(--surface-hover)] px-3.5 sm:px-4 py-2.5 border-b border-black/10 dark:border-white/[0.08]">
               <div className="flex items-center justify-between gap-2 min-w-0">
                 <span className="inline-flex items-center gap-2.5">
-                  <span className="hidden sm:inline-flex items-center gap-1.5" aria-hidden="true">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
-                  </span>
-                  <span className="text-xs font-sans uppercase tracking-wide text-black/60 dark:text-zinc-400 font-medium shrink-0">
+                  <span className="shrink-0 text-sm font-medium text-black/70 dark:text-zinc-300">
                     Quickstart
                   </span>
                 </span>
                 <button
                   onClick={copyActiveSnippet}
-                  className="sm:hidden inline-flex items-center gap-1 text-[11px] font-sans text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white cursor-pointer shrink-0"
+                  className="inline-flex h-7 shrink-0 cursor-pointer items-center gap-1 text-xs font-sans text-black/50 hover:text-black sm:hidden dark:text-zinc-400 dark:hover:text-white"
                 >
-                  {copiedCode ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
-                  <span>{copiedCode ? "COPIED" : "COPY"}</span>
+                  {copiedCode ? <Check size={12} className="text-good" /> : <Copy size={12} />}
+                  <span>{copiedCode ? "Copied" : "Copy"}</span>
                 </button>
               </div>
 
               <div className="flex items-center gap-1 text-[11px] font-sans overflow-x-auto max-w-full [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                 <button
                   onClick={() => switchSnippetTab("curl")}
-                  className={`px-2 py-0.5 rounded cursor-pointer whitespace-nowrap shrink-0 transition-colors duration-150 ${
+                  className={`h-7 shrink-0 cursor-pointer whitespace-nowrap rounded px-2.5 transition-colors duration-150 ${
                     activeSnippetTab === "curl"
                       ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
                       : "text-black/40 dark:text-zinc-400 hover:text-black dark:hover:text-white"
@@ -404,7 +401,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                 </button>
                 <button
                   onClick={() => switchSnippetTab("python")}
-                  className={`px-2 py-0.5 rounded cursor-pointer whitespace-nowrap shrink-0 transition-colors duration-150 ${
+                  className={`h-7 shrink-0 cursor-pointer whitespace-nowrap rounded px-2.5 transition-colors duration-150 ${
                     activeSnippetTab === "python"
                       ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
                       : "text-black/40 dark:text-zinc-400 hover:text-black dark:hover:text-white"
@@ -414,7 +411,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                 </button>
                 <button
                   onClick={() => switchSnippetTab("local")}
-                  className={`px-2 py-0.5 rounded cursor-pointer whitespace-nowrap shrink-0 transition-colors duration-150 ${
+                  className={`h-7 shrink-0 cursor-pointer whitespace-nowrap rounded px-2.5 transition-colors duration-150 ${
                     activeSnippetTab === "local"
                       ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
                       : "text-black/40 dark:text-zinc-400 hover:text-black dark:hover:text-white"
@@ -424,15 +421,15 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                 </button>
                 <button
                   onClick={copyActiveSnippet}
-                  className="hidden sm:inline-flex items-center gap-1 ml-auto pl-2 text-[11px] font-sans text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white cursor-pointer shrink-0"
+                  className="ml-auto hidden h-7 shrink-0 cursor-pointer items-center gap-1 pl-2 text-xs font-sans text-black/50 hover:text-black sm:inline-flex dark:text-zinc-400 dark:hover:text-white"
                 >
-                  {copiedCode ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
-                  <span>{copiedCode ? "COPIED" : "COPY"}</span>
+                  {copiedCode ? <Check size={12} className="text-good" /> : <Copy size={12} />}
+                  <span>{copiedCode ? "Copied" : "Copy"}</span>
                 </button>
               </div>
             </div>
 
-            <pre className="p-3.5 sm:p-5 bg-black/[0.02] dark:bg-[#090b0e] text-xs sm:text-[13px] font-sans overflow-x-auto text-black/80 dark:text-zinc-200 leading-6 sm:leading-7 tracking-wide">
+            <pre className="p-3.5 sm:p-5 bg-black/[0.02] dark:bg-[var(--surface-bar)] text-xs sm:text-[13px] font-sans overflow-x-auto text-black/80 dark:text-zinc-200 leading-6 sm:leading-7 tracking-wide">
               <code className={activeSnippetTab === "curl" ? "whitespace-pre-wrap break-all" : "whitespace-pre"}>
                 {activeSnippetTab === "curl"
                   ? curlCommand
@@ -456,10 +453,10 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   href={model.links.announcement}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-black/60 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150"
+                  className="inline-flex items-center gap-1.5 text-black/60 dark:text-zinc-400 hover:text-accent-ink transition-colors duration-150"
                 >
                   <ExternalLink size={13} />
-                  <span>OFFICIAL ANNOUNCEMENT</span>
+                  <span>Official announcement</span>
                 </a>
               )}
               {model.links?.paper && (
@@ -467,10 +464,10 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   href={model.links.paper}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-black/60 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150"
+                  className="inline-flex items-center gap-1.5 text-black/60 dark:text-zinc-400 hover:text-accent-ink transition-colors duration-150"
                 >
                   <ExternalLink size={13} />
-                  <span>RESEARCH PAPER</span>
+                  <span>Research paper</span>
                 </a>
               )}
               {model.links?.weights && (
@@ -478,10 +475,10 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   href={model.links.weights}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 hover:underline"
+                  className="inline-flex items-center gap-1.5 text-good dark:text-good hover:underline"
                 >
                   <ExternalLink size={13} />
-                  <span>WEIGHTS / REPOSITORY</span>
+                  <span>Weights and repository</span>
                 </a>
               )}
               {model.links?.apiDocs && (
@@ -489,10 +486,10 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   href={model.links.apiDocs}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-black/60 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff5d2e] transition-colors duration-150"
+                  className="inline-flex items-center gap-1.5 text-black/60 dark:text-zinc-400 hover:text-accent-ink transition-colors duration-150"
                 >
                   <ExternalLink size={13} />
-                  <span>API DOCS</span>
+                  <span>API docs</span>
                 </a>
               )}
             </div>
@@ -501,7 +498,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
               href="/"
               className="inline-flex items-center gap-1 text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors duration-150"
             >
-              <span>BACK TO LEDGER</span>
+              <span>Back to ledger</span>
               <ChevronRight size={13} />
             </Link>
           </div>
@@ -515,7 +512,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
             aria-label={`More models from ${model.companyName}`}
             className="mb-6 sm:mb-8"
           >
-            <h2 className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 uppercase tracking-widest leading-relaxed mb-3">
+            <h2 className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 leading-relaxed mb-3">
               More from {model.companyName}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
@@ -523,20 +520,20 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                 <Link
                   key={sibling.id}
                   href={`/models/${sibling.id}`}
-                  className="group block p-3.5 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[#0e1014] hover:border-[#ff5d2e]/40 transition-colors duration-150"
+                  className="group block p-3.5 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] hover:border-accent/40 transition-colors duration-150"
                 >
-                  <div className="text-sm font-medium tracking-tight text-black dark:text-white group-hover:text-[#ff5d2e] dark:group-hover:text-[#ff7347] transition-colors duration-150 truncate">
+                  <div className="text-sm font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150 truncate">
                     {sibling.name}
                   </div>
                   <div className="mt-1 text-[11px] font-sans text-black/45 dark:text-zinc-400 truncate">
-                    {sibling.categoryLabel} · {formatDate(sibling.releaseDate)}
+                    {sibling.categoryLabel}, {formatDate(sibling.releaseDate)}
                   </div>
                 </Link>
               ))}
             </div>
             <Link
               href={`/companies/${model.companyId}`}
-              className="mt-3 inline-flex items-center gap-1 text-[11px] font-sans uppercase tracking-wider text-black/50 dark:text-zinc-400 hover:text-[#ff5d2e] transition-colors duration-150"
+              className="mt-3 inline-flex items-center gap-1 text-[11px] font-sans text-black/50 dark:text-zinc-400 hover:text-accent-ink transition-colors duration-150"
             >
               <span>All {model.companyName} models</span>
               <ChevronRight size={12} />

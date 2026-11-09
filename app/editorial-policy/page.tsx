@@ -20,7 +20,7 @@ function H2({ children }: { children: React.ReactNode }) {
 
 function P({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
+    <p className="max-w-[68ch] text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
       {children}
     </p>
   )
@@ -40,17 +40,18 @@ export default function EditorialPolicyPage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <p className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold mb-2">
-          Trust &amp; provenance
-        </p>
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-2">
           Editorial policy
         </h1>
-        <p className="text-xs font-sans text-black/45 dark:text-zinc-500 mb-8">
-          Last updated 2026-10-07 · Methodology:{" "}
-          <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">
-            /methodology
-          </Link>
+        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-sans text-black/50 dark:text-zinc-500">
+          <span>Last updated 2026-10-07</span>
+          <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
+          <span>
+            Methodology:{" "}
+            <Link href="/methodology" className="text-accent-ink hover:underline underline-offset-2">
+              /methodology
+            </Link>
+          </span>
         </p>
 
         <H2>What this registry is</H2>
@@ -77,7 +78,7 @@ export default function EditorialPolicyPage() {
           paper, or official weights repository). PRs without sources are not
           merged. Values that cannot be sourced are left out or explicitly
           marked, never filled in by guesswork. See{" "}
-          <Link href="https://github.com/TirupMehta/ModelRegistry/blob/main/CONTRIBUTING.md" className="text-[#ff5d2e] hover:underline underline-offset-2">
+          <Link href="https://github.com/TirupMehta/ModelRegistry/blob/main/CONTRIBUTING.md" className="text-accent-ink hover:underline underline-offset-2">
             CONTRIBUTING.md
           </Link>.
         </P>
@@ -86,12 +87,12 @@ export default function EditorialPolicyPage() {
         <P>
           Errors can be reported from any model page (“Report an error in this
           record”) or via a{" "}
-          <Link href="https://github.com/TirupMehta/ModelRegistry/issues/new?template=data-correction.yml" className="text-[#ff5d2e] hover:underline underline-offset-2">
+          <Link href="https://github.com/TirupMehta/ModelRegistry/issues/new?template=data-correction.yml" className="text-accent-ink hover:underline underline-offset-2">
             data-correction issue
           </Link>
           , which requires an official source. Corrections are applied with a
           dated changelog entry on the record and summarized on{" "}
-          <Link href="/changelog" className="text-[#ff5d2e] hover:underline underline-offset-2">/changelog</Link>.
+          <Link href="/changelog" className="text-accent-ink hover:underline underline-offset-2">/changelog</Link>.
         </P>
 
         <H2>Statistics and leaderboards</H2>

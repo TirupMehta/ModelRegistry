@@ -39,7 +39,7 @@ export function DocsIndexChips() {
           type="button"
           onClick={() => scrollToSection(item.id)}
           aria-controls={item.id}
-          className="shrink-0 px-3 py-1.5 rounded-full border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] text-xs font-sans text-black/65 dark:text-zinc-300 hover:border-[#ff5d2e]/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ff5d2e] cursor-pointer"
+          className="shrink-0 px-3 py-1.5 rounded-full border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] text-xs font-sans text-black/65 dark:text-zinc-300 hover:border-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-ink cursor-pointer"
         >
           {item.label}
         </button>
@@ -133,18 +133,18 @@ export default function DocsSidebar() {
 
   return (
     <div className="flex flex-col pb-2">
-      <div className="text-[12px] font-mono font-semibold uppercase tracking-[0.12em] text-black/60 dark:text-zinc-300 mb-2.5 px-1">
+      <div className="text-[12px] font-mono font-semibold text-black/60 dark:text-zinc-300 mb-2.5 px-1">
         Reference
       </div>
       <nav
         aria-label="Reference sections"
-        className="text-[16px] [&_ul]:!pl-5 [&_button]:!text-[16px] [&_button]:!px-1 [&_button]:!py-0 [&_button]:!leading-[1.35] [&_button]:focus-visible:outline [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-[#ff5d2e] [&_a]:!text-[16px] [&_a]:!py-0 [&_a]:!leading-[1.35]"
+        className="text-[16px] [&_ul]:!pl-5 [&_button]:!text-[16px] [&_button]:!px-1 [&_button]:!py-0 [&_button]:!leading-[1.35] [&_button]:focus-visible:outline [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-accent-ink [&_a]:!text-[16px] [&_a]:!py-0 [&_a]:!leading-[1.35]"
       >
         <BounceSidebar
           items={INDEX.map((item) => item.label)}
           value={activeIndex}
           onChange={(index) => jump(INDEX[index].id)}
-          dotColor="#ff5d2e"
+          dotColor="rgb(var(--accent-rgb))"
           className="gap-1"
         />
       </nav>

@@ -40,7 +40,7 @@ export default function FeedbackToggle() {
       title={on ? "Mute click sounds" : "Enable click sounds"}
       aria-label={on ? "Mute click sounds" : "Enable click sounds"}
       aria-pressed={on}
-      className="inline-flex items-center gap-1.5 rounded-md px-1.5 py-1 text-[11px] font-sans font-medium text-black/40 dark:text-zinc-500 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-95 transition-all duration-150 cursor-pointer"
+      className="inline-flex items-center gap-1.5 rounded-md px-1.5 py-1 text-[11px] font-sans font-medium text-black/40 dark:text-zinc-500 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/[0.06] active:scale-95 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 cursor-pointer"
     >
       {on ? <Volume2 size={12} /> : <VolumeX size={12} />}
       <span className="hidden sm:inline">{on ? "Ticks on" : "Muted"}</span>

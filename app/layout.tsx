@@ -163,7 +163,7 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="ModelRegistry RSS Feed" href="/rss.xml" />
       </head>
       <body
-        className={`${sans.variable} ${display.variable} font-sans antialiased bg-[#f7f7f4] dark:bg-[#07080a] text-[#111215] dark:text-[#f4f5f7] transition-colors duration-250 relative min-h-screen flex flex-col`}
+        className={`${sans.variable} ${display.variable} font-sans antialiased bg-[var(--bg)] text-[var(--fg)] transition-colors duration-200 relative min-h-screen flex flex-col`}
         suppressHydrationWarning
       >
         {/* Procedural Canvas Architectural Lighting Shader */}

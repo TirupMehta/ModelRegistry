@@ -32,8 +32,8 @@ export default function VerificationSection({ model }: { model: ModelItem }) {
       aria-label={`Sources for ${model.name}`}
       className="mt-6 sm:mt-8 border-t border-black/10 dark:border-white/[0.08] pt-4"
     >
-      <h3 className="text-[11px] font-sans font-semibold uppercase tracking-[0.12em] text-black/50 dark:text-zinc-400 mb-2">
-        Sources &amp; verification
+      <h3 className="mb-2 text-sm font-medium text-black/70 dark:text-zinc-300">
+        Sources and verification
       </h3>
       <p className="text-xs font-sans text-black/70 dark:text-zinc-300 leading-5 mb-3">
         <strong className="font-semibold text-black dark:text-white">
@@ -51,8 +51,8 @@ export default function VerificationSection({ model }: { model: ModelItem }) {
       </p>
       {fieldSources.length > 0 && (
         <details className="mb-3 text-xs font-sans">
-          <summary className="w-fit cursor-pointer text-black/60 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347]">
-            Sources by detail ·             Sources by detail - {sourcedFieldCount} fields
+          <summary className="w-fit cursor-pointer text-black/60 dark:text-zinc-400 hover:text-accent-ink">
+            Sources by detail, {sourcedFieldCount} fields
           </summary>
           <ul className="mt-2 space-y-1.5">
             {fieldSources.map(({ field, source }) => (
@@ -62,7 +62,7 @@ export default function VerificationSection({ model }: { model: ModelItem }) {
                   href={source.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-black/60 dark:text-zinc-400 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] underline underline-offset-2"
+                  className="text-black/60 dark:text-zinc-400 hover:text-accent-ink underline underline-offset-2"
                 >
                   {source.title}
                 </a>
@@ -79,12 +79,12 @@ export default function VerificationSection({ model }: { model: ModelItem }) {
               href={s.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-black/80 dark:text-zinc-200 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors break-words"
+              className="inline-flex items-center gap-1 text-black/80 dark:text-zinc-200 hover:text-accent-ink transition-colors break-words"
             >
               <span className="font-medium">{s.title}</span>
               <ExternalLink size={11} className="shrink-0 opacity-50" />
             </a>
-            <span className="text-black/45 dark:text-zinc-500"> - {s.publisher} - checked {formatDate(s.accessedAt)}</span>
+            <span className="text-black/45 dark:text-zinc-500">, {s.publisher}, checked {formatDate(s.accessedAt)}</span>
           </li>
         ))}
       </ul>
@@ -92,7 +92,7 @@ export default function VerificationSection({ model }: { model: ModelItem }) {
         href={reportIssueUrl(model.id)}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-[11px] font-sans text-black/45 dark:text-zinc-500 hover:text-[#ff5d2e] dark:hover:text-[#ff7347] transition-colors"
+        className="text-[11px] font-sans text-black/45 dark:text-zinc-500 hover:text-accent-ink transition-colors"
       >
         Report an error in this record
       </a>

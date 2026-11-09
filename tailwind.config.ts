@@ -18,12 +18,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        accent: "var(--accent)",
+        accent: "rgb(var(--accent-rgb) / <alpha-value>)",
+        "accent-ink": "rgb(var(--accent-ink-rgb) / <alpha-value>)",
+        good: "rgb(var(--good-rgb) / <alpha-value>)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "-apple-system", "sans-serif"],
         display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-sans)", "system-ui", "-apple-system", "sans-serif"],
+        // Was aliased to the sans face, so every terminal strip, ledger index
+        // and keycap rendered in Jakarta. Figures and code get a real mono.
+        mono: [
+          "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "Consolas",
+          "Liberation Mono",
+          "monospace",
+        ],
       },
     },
   },

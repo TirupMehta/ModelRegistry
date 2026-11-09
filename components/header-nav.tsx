@@ -16,11 +16,13 @@ function isLinkActive(pathname: string, href: string) {
   return pathname.startsWith(href)
 }
 
+// Plain links, not a second segmented control. The homepage already has a
+// filter track; two pill rows stacked in one screen was the dashboard tell.
 export default function HeaderNav() {
   const pathname = usePathname()
 
   return (
-    <nav className="grid w-full grid-cols-[repeat(4,minmax(0,1fr))] items-center gap-0.5 p-1 rounded-xl bg-black/[0.03] dark:bg-[#101318] border border-black/10 dark:border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.4)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] overflow-hidden sm:inline-flex sm:w-auto sm:max-w-full sm:overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+    <nav className="flex w-full items-center gap-4 overflow-x-auto sm:w-auto sm:gap-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
       {NAV_ITEMS.map(({ label, short, href }) => {
         const active = isLinkActive(pathname, href)
         return (
@@ -32,19 +34,17 @@ export default function HeaderNav() {
             }}
             aria-current={active ? "page" : undefined}
             className={[
-              "group relative inline-flex min-w-0 flex-1 sm:flex-none items-center justify-center gap-1.5 sm:gap-2 py-1.5 px-1 sm:px-3 rounded-lg text-[11px] sm:text-[13px] font-sans tracking-tight select-none cursor-pointer whitespace-nowrap transition-all duration-150 ease-out",
+              "relative shrink-0 whitespace-nowrap py-1.5 text-[13px] font-sans select-none transition-colors duration-150",
               active
-                ? "bg-white dark:bg-[#1e222a] text-black dark:text-white font-medium shadow-sm ring-1 ring-black/10 dark:ring-white/10"
-                : "text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]",
+                ? "font-medium text-black dark:text-white"
+                : "text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white",
             ].join(" ")}
           >
-            {active ? (
-              <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-[#ff5d2e] shadow-[0_0_6px_rgba(255,93,46,0.8)] shrink-0" />
-            ) : (
-              <span className="hidden sm:block w-1.5 h-1.5 rounded-full bg-black/10 dark:bg-white/10 group-hover:bg-black/25 dark:group-hover:bg-white/25 transition-colors shrink-0" />
-            )}
             <span className="truncate sm:hidden">{short}</span>
             <span className="hidden sm:inline">{label}</span>
+            {active && (
+              <span className="absolute inset-x-0 -bottom-0.5 h-0.5 rounded-full bg-accent" aria-hidden="true" />
+            )}
           </Link>
         )
       })}

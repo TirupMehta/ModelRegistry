@@ -67,15 +67,17 @@ export default function AlertsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }} />
 
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <p className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold mb-2">
-          Upcoming feature
-        </p>
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-2">
           Model Alerts
         </h1>
-        <p className="text-xs font-sans text-black/45 dark:text-zinc-500 mb-8">
-          Waitlist open · One email at launch · {modelsData.length} models across {Object.keys(companies).length} labs
-          tracked today
+        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-sans text-black/50 dark:text-zinc-500">
+          <span>Waitlist open</span>
+          <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
+          <span>One email at launch</span>
+          <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
+          <span className="tabular-nums">
+            {modelsData.length} models across {Object.keys(companies).length} labs tracked today
+          </span>
         </p>
 
         <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-8 max-w-2xl">
@@ -84,14 +86,20 @@ export default function AlertsPage() {
           they are registered.
         </p>
 
-        <div className="grid gap-3 sm:grid-cols-2 mb-10">
+        {/* The action comes before the sales pitch: someone who follows the
+            link came to join, not to read four cards first. */}
+        <div className="mb-8 w-full">
+          <AlertsWaitlistForm />
+        </div>
+
+        <div className="mb-10 grid gap-3 sm:grid-cols-2">
           {BENEFITS.map((benefit) => (
             <div
               key={benefit.title}
-              className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[#111317] p-4 shadow-sm"
+              className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[var(--surface-raised)] p-4 shadow-sm"
             >
               <div className="flex items-center gap-2 mb-1.5">
-                <benefit.icon size={13} className="text-[#ff5d2e] shrink-0" aria-hidden="true" />
+                <benefit.icon size={13} className="text-accent-ink shrink-0" aria-hidden="true" />
                 <h2 className="text-[13px] font-display font-semibold tracking-tight text-black dark:text-white">
                   {benefit.title}
                 </h2>
@@ -99,13 +107,6 @@ export default function AlertsPage() {
               <p className="text-[13px] font-sans leading-6 text-black/60 dark:text-zinc-400">{benefit.body}</p>
             </div>
           ))}
-        </div>
-
-        <div className="w-full">
-          <p className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold mb-3">
-            Join the waitlist
-          </p>
-          <AlertsWaitlistForm />
         </div>
 
         <h2 className="text-lg sm:text-xl font-display font-semibold tracking-tight text-black dark:text-white mt-10 mb-3">
@@ -128,11 +129,11 @@ export default function AlertsPage() {
 
         <p className="mt-8 text-xs font-sans text-black/45 dark:text-zinc-500">
           Questions about the data itself? See the{" "}
-          <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">
+          <Link href="/methodology" className="text-accent-ink hover:underline underline-offset-2">
             methodology
           </Link>{" "}
           and{" "}
-          <Link href="/editorial-policy" className="text-[#ff5d2e] hover:underline underline-offset-2">
+          <Link href="/editorial-policy" className="text-accent-ink hover:underline underline-offset-2">
             editorial policy
           </Link>
           .

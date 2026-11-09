@@ -32,18 +32,19 @@ export default function LicensesPage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <p className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold mb-2">
-          Reference · updated {datasetRevision.revisedAt} (dataset {datasetRevision.datasetVersion})
-        </p>
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           Open weights &amp; licenses
         </h1>
+        <p className="mb-5 flex items-center gap-2 text-xs font-sans text-black/50 dark:text-zinc-500">
+          <span>Dataset revised</span>
+          <time dateTime={datasetRevision.revisedAt} className="tabular-nums">{datasetRevision.revisedAt}</time>
+        </p>
         <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-8 max-w-3xl">
           License strings are the vendor&apos;s stated terms, grouped verbatim - read the linked
           source before deploying, especially “community” and “research” licenses with use
           restrictions. A missing weights link means no downloadable weights were found, and the
           record says so (see{" "}
-          <Link href="/methodology" className="text-[#ff5d2e] hover:underline underline-offset-2">methodology</Link>).
+          <Link href="/methodology" className="text-accent-ink hover:underline underline-offset-2">methodology</Link>).
         </p>
         <div className="space-y-6">
           {[...groups.entries()].map(([license, list]) => (
@@ -57,8 +58,8 @@ export default function LicensesPage() {
               <ul className="space-y-1.5">
                 {list.map((m) => (
                   <li key={m.id} className="flex items-center gap-2 text-sm min-w-0">
-                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${m.openWeights ? "bg-emerald-500" : "bg-black/20 dark:bg-white/20"}`} title={m.openWeights ? "Weights published" : "No published weights"} />
-                    <Link href={`/models/${m.id}`} className="font-medium tracking-tight text-black dark:text-white hover:text-[#ff5d2e] truncate">
+                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${m.openWeights ? "bg-good" : "bg-black/20 dark:bg-white/20"}`} title={m.openWeights ? "Weights published" : "No published weights"} />
+                    <Link href={`/models/${m.id}`} className="font-medium tracking-tight text-black dark:text-white hover:text-accent-ink truncate">
                       {m.name}
                     </Link>
                     <span className="text-[11px] font-sans text-black/45 dark:text-zinc-500 shrink-0 hidden sm:inline">{m.companyName}</span>
@@ -67,7 +68,7 @@ export default function LicensesPage() {
                         href={(m.fieldSources.license?.[0] || m.sources[0]).url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="ml-auto text-[11px] font-sans text-[#ff5d2e] hover:underline underline-offset-2 shrink-0"
+                        className="ml-auto text-[11px] font-sans text-accent-ink hover:underline underline-offset-2 shrink-0"
                       >
                         Source
                       </a>

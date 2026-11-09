@@ -35,7 +35,7 @@ function H2({ children }: { children: React.ReactNode }) {
 
 function P({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
+    <p className="max-w-[68ch] text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
       {children}
     </p>
   )
@@ -43,7 +43,7 @@ function P({ children }: { children: React.ReactNode }) {
 
 function A({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="text-[#ff5d2e] hover:underline underline-offset-2">
+    <Link href={href} className="text-accent-ink hover:underline underline-offset-2">
       {children}
     </Link>
   )
@@ -122,15 +122,16 @@ export default function AboutPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdFaq) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }} />
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <p className="text-[11px] font-sans uppercase tracking-[0.14em] text-black/50 dark:text-zinc-400 font-semibold mb-2">
-          Who builds this
-        </p>
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-2">
           About ModelRegistry
         </h1>
-        <p className="text-xs font-sans text-black/45 dark:text-zinc-500 mb-8">
-          Dataset {datasetRevision.datasetVersion} · revised {datasetRevision.revisedAt} ·{" "}
-          <A href="/methodology">methodology</A>
+        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-sans text-black/50 dark:text-zinc-500">
+          <span>
+            Dataset <span className="font-mono tabular-nums">{datasetRevision.datasetVersion}</span>, revised{" "}
+            <time dateTime={datasetRevision.revisedAt} className="tabular-nums">{datasetRevision.revisedAt}</time>
+          </span>
+          <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
+          <A href="/methodology">Methodology</A>
         </p>
 
         <P>
@@ -158,7 +159,7 @@ export default function AboutPage() {
         <H2>{faqs[0].q}</H2>
         <P>
           ModelRegistry is built and maintained by{" "}
-          <Link href="https://tirup.in" className="text-[#ff5d2e] hover:underline underline-offset-2">
+          <Link href="https://tirup.in" className="text-accent-ink hover:underline underline-offset-2">
             Tirup Mehta
           </Link>
           , a software engineering student and security researcher in Gujarat, India. The code, the
