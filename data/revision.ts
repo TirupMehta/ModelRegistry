@@ -5,8 +5,8 @@
  * dataset's last real change, never as a build timestamp.
  */
 export const datasetRevision = {
-  datasetVersion: "2026.11.09",
+  datasetVersion: "2026.11.09-r2",
   revisedAt: "2026-11-09",
-  contentHash: "c3848273fa4554e8",
+  contentHash: "a8cabaf8ae2f2d87",
   sourceAudit: "docs/audit-2026-10-07.md",
 } as const

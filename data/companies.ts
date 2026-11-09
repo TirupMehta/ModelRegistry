@@ -21,7 +21,7 @@ export const companies: Record<string, Company> = {
     accentColor: "#d97706",
     description: "Creator of the Claude family; pioneers of adaptive thinking, Enterprise Frontier Safeguards (EFS), and agentic knowledge work.",
     latestFlagship: "Claude Opus 5.5",
-    latestReasoning: "Claude Mythos 5.1 (Restricted) / Claude Fable 5.1",
+    latestReasoning: "Claude Mythos 5.2 (Restricted) / Claude Fable 5.2",
     openWeightsAdvocate: false,
   },
   openai: {

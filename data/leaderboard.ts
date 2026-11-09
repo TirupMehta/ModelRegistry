@@ -8,8 +8,8 @@
  * so stale references can never silently disappear from the site again.
  */
 export const leaderboardSpotlights: Record<string, string[]> = {
-  reasoning: ["claude-fable-5-1", "gpt-6-astra", "grok-4-6", "gpt-5-6"],
-  coding: ["claude-fable-5-1", "gemini-3-8-flash", "grok-4-6", "gpt-5-6"],
+  reasoning: ["claude-fable-5-2", "gpt-6-astra", "grok-4-6", "gpt-5-6"],
+  coding: ["claude-fable-5-2", "gemini-3-8-flash", "grok-4-6", "gpt-5-6"],
   value: ["deepseek-v4-flash-0731", "mimo-v2-5", "glm-5-3-flash", "minimax-m3"],
 }
 
@@ -31,7 +31,7 @@ export const leaderboardMethodology: Record<string, LeaderboardSectionMethodolog
   reasoning: {
     basis:
       "Compares lab-published reasoning and STEM scores (Terminal-Bench, SWE-bench family, GPQA Diamond, AIME) across indexed models. The named leader holds the highest published figure in this comparison, not a universal 'best model' title.",
-    evaluatedAt: "2026-10-07",
+    evaluatedAt: "2026-11-09",
     sources: [
       "https://www.swebench.com",
       "https://github.com/laude-institute/terminal-bench",
@@ -42,7 +42,7 @@ export const leaderboardMethodology: Record<string, LeaderboardSectionMethodolog
   coding: {
     basis:
       "Compares lab-published software-engineering scores (SWE-bench family incl. DeepSWE, Terminal-Bench, SWE-Bench Verified/Multilingual) across indexed models. Figures are lab-reported; harnesses and versions differ between vendors.",
-    evaluatedAt: "2026-10-07",
+    evaluatedAt: "2026-11-09",
     sources: ["https://www.swebench.com", "https://github.com/laude-institute/terminal-bench"],
     claimGuidance: "Say 'highest published score in this comparison'. Never 'best coding model'.",
   },
