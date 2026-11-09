@@ -35,7 +35,7 @@ const cases = [
   ["openai-astra", "gpt-6-1-sol"],
   ["gpt-5-6-sol", "gpt-6-1-sol"],
   ["gpt-5-6-luna", "gpt-6-1-sol"],
-  ["claude-opus-4-8", "claude-opus-5-5"],
+  ["claude-opus-4-8", "claude-fable-5-2"],
   ["xyz-nope-zz", null],
   ["pro", null], // ambiguous across labs: must 404, never guess
   ["", null],

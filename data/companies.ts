@@ -20,7 +20,7 @@ export const companies: Record<string, Company> = {
     headquarters: "San Francisco, CA",
     accentColor: "#d97706",
     description: "Creator of the Claude family; pioneers of adaptive thinking, Enterprise Frontier Safeguards (EFS), and agentic knowledge work.",
-    latestFlagship: "Claude Opus 5.5",
+    latestFlagship: "Claude Fable 5.2",
     latestReasoning: "Claude Mythos 5.2 (Restricted) / Claude Fable 5.2",
     openWeightsAdvocate: false,
   },
