@@ -27,7 +27,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**Google DeepMind**](https://deepmind.google) | [Gemini 4 Carbon](https://modelregistry.tirup.in/models/gemini-4-carbon) | - | - | Proprietary | $2 in / $10 out |
 | [**xAI**](https://x.ai) | [Grok 4.7](https://modelregistry.tirup.in/models/grok-4-7) | [Grok Voice 3.0](https://modelregistry.tirup.in/models/grok-voice-3) | 500k | Proprietary | $2 in / $6 out |
 | [**DeepSeek**](https://www.deepseek.com) | [DeepSeek V4.1 Flash](https://modelregistry.tirup.in/models/deepseek-v4-1-flash) | [DeepSeek V4.1 Flash 1017](https://modelregistry.tirup.in/models/deepseek-v4-1-flash-1017) | 1M | Open (MIT) | $0.3 in / $1.2 out *(Open)* |
-| [**Meta AI**](https://ai.meta.com) | [Muse Wonder](https://modelregistry.tirup.in/models/muse-wonder) | [Muse Spark Open](https://modelregistry.tirup.in/models/muse-spark-open) | 1M | Proprietary | $4 in / $20 out |
+| [**Meta AI**](https://ai.meta.com) | [Muse Wonder](https://modelregistry.tirup.in/models/muse-wonder) | [Muse Ember](https://modelregistry.tirup.in/models/muse-ember) | 1M | Proprietary | $4 in / $20 out |
 | [**Alibaba Cloud (Qwen)**](https://qwenlm.github.io) | [Qwen3.8 2.4T A95B](https://modelregistry.tirup.in/models/qwen-3-8-2-4t-a95b) | [Qwen3.8 Omni Flash](https://modelregistry.tirup.in/models/qwen-3-8-omni-flash) | 1M | Open (Qwen Community) | $0.8 in / $2.4 out *(Open)* |
 | [**Mistral AI**](https://mistral.ai) | [Mistral Large 4](https://modelregistry.tirup.in/models/mistral-large-4) | - | 1M | Open (Open Weights (27 Oct 2026)) | $1.36 in / $4.18 out *(Open)* |
 | [**Tencent Hunyuan**](https://hunyuan.tencent.com) | [Hy4](https://modelregistry.tirup.in/models/tencent-hy4) | - | 1M | Proprietary | $0.83 in / $2.5 out |
