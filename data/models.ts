@@ -2557,7 +2557,7 @@ export const modelsData: ModelItem[] = [
     releaseDate: "2026-09-10",
     isCompanyFlagship: true,
     isLatestCheckpoint: false,
-    statusBadge: "NEW ARCHITECTURE FLAGSHIP",
+    statusBadge: "NEW ARCHITECTURE",
     category: "flagship",
     categoryLabel: "Frontier Multimodal MoE",
     contextWindow: "1,000,000 tokens",
