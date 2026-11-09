@@ -89,7 +89,7 @@ export default function Header() {
         </TextWithBlur>
 
         {/* ── Segmented Navigation Line ──────────────────────────────────── */}
-        <div className="flex items-center gap-3 overflow-visible border-b border-black/5 pb-3 sm:justify-between sm:gap-4 dark:border-white/[0.07]">
+        <div className="mb-4 flex items-center gap-3 overflow-visible border-b border-black/5 pb-3 sm:justify-between sm:gap-4 dark:border-white/[0.07]">
           <TextWithBlur delay={100} className="min-w-0 flex-1 sm:flex-none w-full sm:w-auto max-w-full">
             <HeaderNav />
           </TextWithBlur>

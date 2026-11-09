@@ -109,7 +109,8 @@ export function mcpLandingHtml(): string {
 <title>ModelRegistry MCP server</title>
 <meta name="description" content="Hosted Model Context Protocol server for the open frontier AI model registry: no auth, stateless JSON-RPC 2.0, 6 tools." />
 <style>
-  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; max-width: 880px; margin: 0 auto; padding: 2rem 1.25rem 4rem; color: #111; line-height: 1.6; }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; max-width: 50.6rem; margin: 0 auto; padding: 2rem 1rem 4rem; color: #111; line-height: 1.6; }
+  @media (min-width: 768px) { body { padding: 2rem 5.5rem 4rem; } }
   @media (prefers-color-scheme: dark) { body { background: #0a0a0a; color: #e5e5e5; } pre, code { background: #1a1a1a; } a { color: #ff7347; } }
   h1 { font-size: 1.875rem; letter-spacing: -0.02em; margin-bottom: .25rem; }
   h2 { margin-top: 2rem; font-size: 1.25rem; letter-spacing: -0.01em; }

@@ -131,7 +131,7 @@ export default function DocsPage() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
 
-      <div className="mx-auto w-full max-w-[78rem] min-[1440px]:grid min-[1440px]:grid-cols-[11rem_minmax(0,56rem)] min-[1440px]:gap-4">
+      <div className="mx-auto w-full max-w-[78rem] min-[1440px]:grid min-[1440px]:grid-cols-[11rem_minmax(0,56rem)]">
       {/* Reference rail lives in the reserved left lane and sticks while the
           article scrolls. Sticky (not fixed) is what keeps it honest: its
           containing block is the document column, so it stops at the last
@@ -144,16 +144,16 @@ export default function DocsPage() {
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20 min-w-0 min-[1440px]:col-start-2 min-[1440px]:mx-0">
         {/* Breadcrumb */}
         <TextWithBlur>
-          <div className="flex items-center gap-2.5 mb-7 text-xs font-sans leading-relaxed text-black/50 dark:text-zinc-400 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="mb-5 flex items-center gap-2.5 overflow-x-auto whitespace-nowrap text-xs font-sans leading-relaxed text-black/50 [scrollbar-width:none] [-ms-overflow-style:none] dark:text-zinc-400 [&::-webkit-scrollbar]:hidden">
             <Link
               href="/"
               className="inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150 shrink-0"
             >
               <ArrowLeft size={13} />
-              <span>LEDGER</span>
+              <span>Ledger</span>
             </Link>
             <span className="shrink-0">/</span>
-            <span className="text-accent-ink font-medium truncate">DOCS</span>
+            <span className="truncate font-medium text-accent-ink">Docs</span>
           </div>
         </TextWithBlur>
 
@@ -161,10 +161,10 @@ export default function DocsPage() {
         <DocsIndexChips />
 
         {/* Content */}
-        <div className="min-w-0">
+        <div className="min-w-0 [&_p]:max-w-[54ch]">
           <div id="overview" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h1 className="text-3xl sm:text-4xl font-display font-medium tracking-tight text-black dark:text-white mb-4">
+              <h1 className="mb-3 font-display text-2xl font-semibold tracking-tight text-black sm:text-3xl md:text-4xl dark:text-white">
                 ModelRegistry API Reference
               </h1>
               <div className="space-y-4 text-[15px] md:text-base font-normal text-black/65 dark:text-zinc-300 leading-relaxed">

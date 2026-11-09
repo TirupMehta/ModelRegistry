@@ -174,17 +174,17 @@ export default async function CompanyPage({ params }: Props) {
               className="inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150 shrink-0"
             >
               <ArrowLeft size={13} />
-              <span>LEDGER</span>
+              <span>Ledger</span>
             </Link>
             <span className="shrink-0">/</span>
             <Link
               href="/companies"
               className="hover:text-accent-ink transition-colors duration-150 shrink-0"
             >
-              <span>LABORATORIES</span>
+              <span>Laboratories</span>
             </Link>
             <span className="shrink-0">/</span>
-            <span className="text-accent-ink font-medium truncate">{lab.shortName.toUpperCase()}</span>
+            <span className="truncate font-medium text-accent-ink">{lab.shortName}</span>
           </div>
         </TextWithBlur>
 
@@ -198,7 +198,7 @@ export default async function CompanyPage({ params }: Props) {
                   style={{ backgroundColor: lab.accentColor }}
                 />
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-medium tracking-tight text-black dark:text-white leading-none">
+                  <h1 className="font-display text-2xl font-semibold tracking-tight text-black sm:text-3xl md:text-4xl dark:text-white">
                     {lab.name}
                   </h1>
                   <p className="text-xs font-sans text-black/40 dark:text-zinc-400 mt-1.5">
@@ -227,12 +227,12 @@ export default async function CompanyPage({ params }: Props) {
             <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-4 pt-4 border-t border-black/5 dark:border-white/[0.06] text-[11px] font-sans text-black/45 dark:text-zinc-400 tabular-nums">
               <span className="inline-flex items-center gap-1.5">
                 <Layers size={11} className="text-accent-ink" />
-                {labModels.length} MODEL{labModels.length === 1 ? "" : "S"} TRACKED
+                {labModels.length} model{labModels.length === 1 ? "" : "s"} tracked
               </span>
               {openCount > 0 && (
                 <span className="inline-flex items-center gap-1.5">
                   <Boxes size={11} className="text-accent-ink" />
-                  {openCount} OPEN WEIGHTS
+                  {openCount} open weights
                 </span>
               )}
               {newest && (

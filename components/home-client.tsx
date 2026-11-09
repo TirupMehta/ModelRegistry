@@ -203,7 +203,7 @@ export default function HomeClient() {
         </article>
       </noscript>
 
-      <section className="section max-w-4xl mx-auto w-full px-4 pt-2.5 sm:px-6 md:px-20 md:pt-4 pb-0">
+      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-0">
         {/* Hero: the claim, one sentence, then the provenance that separates a
             cited registry from another list of models. */}
         <div>

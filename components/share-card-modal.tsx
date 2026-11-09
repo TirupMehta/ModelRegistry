@@ -995,7 +995,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
               {isCopied ? (
                 <>
                   <Check size={14} className="text-[var(--good)]" />
-                  <span>COPIED IMAGE TO CLIPBOARD</span>
+                  <span>Copied image to clipboard</span>
                 </>
               ) : (
                 <>
@@ -1032,7 +1032,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
               {isBadgeCopied ? (
                 <>
                   <Check size={12} className="text-[var(--good)]" />
-                  <span>BADGE MARKDOWN COPIED</span>
+                  <span>Badge markdown copied</span>
                 </>
               ) : (
                 <>

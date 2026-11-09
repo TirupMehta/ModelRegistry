@@ -333,7 +333,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
               rel="noopener noreferrer"
               className="group inline-flex w-full sm:w-auto items-center justify-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md bg-black text-white dark:bg-white dark:text-black hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors duration-150 cursor-pointer"
             >
-              <span>LAB ANNOUNCEMENT</span>
+              <span>Lab announcement</span>
               <ExternalLink size={12} className="opacity-60" />
             </a>
           )}
@@ -344,7 +344,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
               rel="noopener noreferrer"
               className="group inline-flex w-full sm:w-auto items-center justify-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-accent hover:text-accent-ink transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
             >
-              <span>OPEN PLAYGROUND</span>
+              <span>Open playground</span>
               <ExternalLink size={12} className="opacity-60" />
             </a>
           )}
@@ -355,7 +355,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
               rel="noopener noreferrer"
               className="group inline-flex w-full sm:w-auto items-center justify-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-accent hover:text-accent-ink transition-colors duration-150 text-black dark:text-zinc-300 cursor-pointer"
             >
-              <span>HUGGING FACE WEIGHTS</span>
+              <span>Hugging Face weights</span>
               <ExternalLink size={12} className="opacity-60" />
             </a>
           )}
@@ -368,7 +368,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
             className="group inline-flex w-full sm:w-auto col-span-full min-[400px]:col-span-2 sm:col-span-1 items-center justify-center gap-1.5 text-xs font-sans font-medium px-3.5 py-2 rounded-md border border-accent/40 bg-accent/10 text-accent-ink hover:bg-accent hover:text-white dark:hover:text-black transition-colors duration-150 cursor-pointer"
           >
             <Share2 size={12} />
-            <span>SHARE STORY / CARD</span>
+            <span>Share story or card</span>
           </button>
         </div>
 
