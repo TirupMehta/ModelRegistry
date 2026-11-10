@@ -43,7 +43,18 @@ export default function RetiredPage() {
         </p>
         {retired.length === 0 ? (
           <div className="rounded-xl border border-black/10 dark:border-white/[0.08] p-6 text-sm font-sans text-black/60 dark:text-zinc-400">
-            No models are currently marked retired in the registry. Older releases remain in the main index; this page does not report provider availability.
+            <p>
+              No models are currently marked retired in the registry. Older releases remain in the
+              main index; this page does not report provider availability.
+            </p>
+            <p className="mt-3">
+              Records replaced in their role by a later release are marked superseded rather than
+              retired. They are listed with their replacements on{" "}
+              <Link href="/score#superseded" className="text-accent-ink hover:underline underline-offset-2">
+                the standings page
+              </Link>
+              .
+            </p>
           </div>
         ) : (
           <div className="border-t border-black/10 dark:border-white/[0.08]">

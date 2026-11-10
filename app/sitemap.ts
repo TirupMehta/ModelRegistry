@@ -2,6 +2,7 @@ import { MetadataRoute } from "next"
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
+import { comparisonPairs } from "@/lib/seo"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://modelregistry.tirup.in"
@@ -22,6 +23,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: revisedAt,
       changeFrequency: "daily",
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/score`,
+      lastModified: revisedAt,
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/compare`,
+      lastModified: revisedAt,
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/trust`,
+      lastModified: revisedAt,
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/companies`,
@@ -175,7 +194,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   })
 
-  // 4. Machine-readable & agent discovery feeds (/llms.txt, /llms-full.txt,
+  // 4. Head-to-head comparison pages. Cross-lab pairs only, and the slug is
+  //    canonicalised by sorted id so a-vs-b and b-vs-a are one URL, not two.
+  const compareRoutes: MetadataRoute.Sitemap = comparisonPairs(modelsData).map(({ a, b }) => ({
+    url: `${baseUrl}/compare/${[a.id, b.id].sort().join("-vs-")}`,
+    lastModified: revisedAt,
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }))
+
+  // 5. Machine-readable & agent discovery feeds (/llms.txt, /llms-full.txt,
   // /rss.xml, /feed.json) are intentionally NOT listed here. A sitemap must
   // advertise canonical HTML pages you want indexed; feeding plain-text and
   // JSON endpoints into it spends this subdomain's crawl budget on documents
@@ -183,5 +211,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // not indexed" on the pages that do matter. They stay discoverable through
   // robots.txt, llms.txt, and the page footers.
 
-  return [...coreRoutes, ...labRoutes, ...modelRoutes]
+  return [...coreRoutes, ...labRoutes, ...modelRoutes, ...compareRoutes]
 }

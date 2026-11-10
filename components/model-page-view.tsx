@@ -31,9 +31,13 @@ interface ModelPageViewProps {
   siblings: ModelItem[]
   folio: string
   folioId: string
+  // Server-rendered dossier sections (provenance, evidence, FAQ, comparisons).
+  // Passed as children so their copy ships in the initial HTML at zero client
+  // cost, while still rendering inside the datasheet's <main> landmark.
+  children?: React.ReactNode
 }
 
-export default function ModelPageView({ model, siblings, folio, folioId }: ModelPageViewProps) {
+export default function ModelPageView({ model, siblings, folio, folioId, children }: ModelPageViewProps) {
   const [copiedLink, setCopiedLink] = useState(false)
   const [copiedCode, setCopiedCode] = useState(false)
   const [isShareStudioOpen, setIsShareStudioOpen] = useState(false)
@@ -505,6 +509,8 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
           <VerificationSection model={model} />
         </div>
+
+        {children}
 
         {/* Same-lab internal links: siblings + lab profile */}
         {siblings.length > 0 && (

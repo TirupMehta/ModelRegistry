@@ -5,9 +5,11 @@ import { companies } from "@/data/companies"
 import { resolveCompanyFallback } from "@/lib/model-fallback"
 import { modelSiblings, modelFolio } from "@/lib/registry"
 import { ORGANIZATION_ID, PERSON_ID, WEBSITE_ID } from "@/lib/entities"
+import { measuredProperties } from "@/lib/seo"
 import { safeJsonLd } from "@/lib/utils"
 import Header from "@/components/header"
 import ModelPageView from "@/components/model-page-view"
+import { ModelComparisons, ModelEvidence, ModelFaq, ModelPositions, ModelProvenance } from "@/components/model-dossier"
 
 interface Props {
   params: Promise<{ id: string }>
@@ -112,6 +114,13 @@ export default async function ModelPage({ params }: Props) {
     inLanguage: "en",
     isAccessibleForFree: true,
     url: `https://modelregistry.tirup.in/models/${model.id}`,
+    // Numeric facts as machine data rather than prose, so an answer engine can
+    // read the context window and the price without parsing a sentence.
+    variableMeasured: measuredProperties(model),
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", "#model-faq"],
+    },
   }
 
   // Mirrors the visible LEDGER / {LAB} / {id} breadcrumb trail.
@@ -151,7 +160,13 @@ export default async function ModelPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }}
       />
       <Header />
-      <ModelPageView model={model} siblings={siblings} folio={folio} folioId={folioId} />
+      <ModelPageView model={model} siblings={siblings} folio={folio} folioId={folioId}>
+        <ModelProvenance model={model} />
+        <ModelPositions model={model} />
+        <ModelEvidence model={model} />
+        <ModelFaq model={model} />
+        <ModelComparisons model={model} />
+      </ModelPageView>
     </>
   )
 }

@@ -93,6 +93,7 @@ export default function MethodologyPage() {
           <p>Every record cites the primary sources it was read from (announcement, model card, API docs, pricing page), with per-field citations showing which source supports which fact. Each record also carries a <strong className="text-black dark:text-white">last-verified date</strong> - the date those sources were reviewed. That date is a source-review date, not a live availability check.</p>
           <p>There is no &ldquo;partially verified&rdquo; badge on the site: a label that applies to almost every record says nothing. Instead, the sources and the last-checked date are shown directly, and every record has a &ldquo;Report an error&rdquo; link so readers can flag anything stale.</p>
           <p><strong className="text-black dark:text-white">Retired</strong> - explicitly marked as retired by the registry and kept for historical reference. This label describes availability, not verification depth, and it alone does not confirm provider availability.</p>
+          <p><strong className="text-black dark:text-white">Superseded</strong> - a later release from the same laboratory took over this model&apos;s role. The record is kept with its sources and readings and links its replacement, but it is not ranked against the current lineup. Superseded is not retired.</p>
           <p><strong className="text-black dark:text-white">Unverified records</strong> can never carry flagship or latest labels and must be treated as unconfirmed until sources are cited.</p>
         </div>
 
@@ -116,14 +117,19 @@ export default function MethodologyPage() {
           marker instead of a borrowed number.
         </P>
 
-        <H2>Downgrade, correction, retirement, removal</H2>
+        <H2>Downgrade, correction, supersession, retirement</H2>
         <P>
           A newer release does not make an older model retired or unavailable. Older releases stay in
-          the registry with their release date and sources. We mark a model retired only when a primary
-          source says it was deprecated or discontinued; a replacement link is recorded separately.
-          A record is downgraded when its evidence lapses, corrected when a primary source contradicts
-          a field, and removed only for duplicates, hoaxes, or records that never had a verifiable
-          official source. Every change is recorded in the model&apos;s changelog and the{" "}
+          the registry with their release date and sources.{" "}
+          <strong className="text-black dark:text-white">Superseded</strong> is a separate label: it
+          records that a later release from the same laboratory took over the model&apos;s role. A
+          superseded record keeps its dates, sources and benchmark readings and links the model that
+          replaced it; it is simply not ranked against the current lineup, because a reader choosing
+          today cannot pick it. We mark a model retired only when a primary source says it was
+          deprecated or discontinued. A record is downgraded when its evidence lapses, corrected when
+          a primary source contradicts a field, and removed only for duplicates, hoaxes, or records
+          that never had a verifiable official source. Every change is recorded in the model&apos;s
+          changelog and the{" "}
           <Link href="/changelog" className="text-accent-ink hover:underline underline-offset-2">public changelog</Link>.
         </P>
 

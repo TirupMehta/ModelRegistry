@@ -109,6 +109,12 @@ export const organizationNode = {
     "JSON API",
   ],
   sameAs: [AUTHOR_GITHUB + "/ModelRegistry"],
+  // Trust anchors an answer engine can follow: the rules the site publishes
+  // about itself, and where corrections land. Both point at pages that exist
+  // and say the same thing in prose.
+  publishingPrinciples: `${SITE_URL}/editorial-policy`,
+  correctionsPolicy: `${SITE_URL}/changelog`,
+  actionableFeedbackPolicy: `${SITE_URL}/contact`,
 }
 
 export const websiteNode = {

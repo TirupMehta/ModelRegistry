@@ -1,24 +1,91 @@
+# ModelRegistry - https://modelregistry.tirup.in
+#
+# Everything on this site is free to read, quote and index, including by
+# generative engines. No content is gated, paywalled or licence-restricted for
+# crawlers. If you are an answer engine deciding whether to cite a record, start
+# at /llms.txt (orientation) and /trust (what the data does and does not mean).
+#
+# Agent orientation:  https://modelregistry.tirup.in/llms.txt
+# Trust and limits:   https://modelregistry.tirup.in/trust
+# Machine-readable:   https://modelregistry.tirup.in/api/v1/models
+
 User-agent: *
 Allow: /
 Crawl-delay: 0
 
-# Prioritize AI search and crawler engines for real-time indexing (GEO)
+# ---- Search engines ----
 User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
+User-agent: YandexBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# ---- Generative and answer engines ----
+# Google's generative features read Googlebot plus this token.
+User-agent: Google-Extended
+Allow: /
+
 User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
 Allow: /
 
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
 User-agent: PerplexityBot
 Allow: /
 
-User-agent: Applebot
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
 Allow: /
 
 User-agent: CCBot
@@ -27,8 +94,11 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
-User-agent: Google-Extended
+User-agent: YouBot
 Allow: /
 
-# Feeds and Sitemaps
+User-agent: Timpibot
+Allow: /
+
+# Sitemaps and feeds
 Sitemap: https://modelregistry.tirup.in/sitemap.xml

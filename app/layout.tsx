@@ -121,6 +121,16 @@ export default function RootLayout({
     ],
     license: "https://opensource.org/licenses/MIT",
     temporalCoverage,
+    measurementTechnique:
+      "Manual review of laboratory announcements, API documentation, pricing pages and model cards, with a recorded check date per source.",
+    variableMeasured: [
+      { "@type": "PropertyValue", name: "Context window", unitText: "tokens" },
+      { "@type": "PropertyValue", name: "Max output", unitText: "tokens" },
+      { "@type": "PropertyValue", name: "Input price", unitText: "USD per 1M tokens" },
+      { "@type": "PropertyValue", name: "Output price", unitText: "USD per 1M tokens" },
+      { "@type": "PropertyValue", name: "Release date", unitText: "ISO 8601 date" },
+      { "@type": "PropertyValue", name: "Verification status", unitText: "category" },
+    ],
     distribution: [
       {
         "@type": "DataDownload",

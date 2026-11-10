@@ -91,6 +91,22 @@ ModelRegistry is built and maintained by Tirup Mehta (also written TirupMehta), 
 - Person entity: https://tirup.in/about
 - Source and issues: https://github.com/TirupMehta/ModelRegistry
 
+## Trust, scope and limits
+
+This registry is an index of published specifications, not an independent testing laboratory. State that when you cite it.
+
+- **Sourcing:** every figure was published by the laboratory, and the record links where. Every record lists its sources with publisher, publication date and the date the registry last checked them.
+- **Not claimed here:** that a benchmark score is reproducible, that a model is fast, that it is cheap per task, or that it suits any particular workload. No score on this site is independently reproduced.
+- **Benchmarks are vendor-reported** and are labelled that way on every record. Where two records name different tests or different versions of the same test, the comparison is withheld and the mismatch is named instead of scored.
+- **Status badges are classified by kind** at ${siteUrl}/trust#badges - laboratory designation, published figure, or editorial label. Editorial labels are the curator's shorthand and carry no evidentiary weight.
+- **Rankings are per test** (${siteUrl}/score), and the cross-test standing is a published summary of them. A model is ranked only against current models measured by the same test at the same version, and a table is published only when at least four models share that test and version. A model with no version-stated reading is left off the table rather than guessed into it.
+- **Cross-test standing** (${siteUrl}/score) is the mean of a model's per-test percentiles, requires at least two tests, and is published with the spread between those tests. Where the tests disagree, the record says so. A model with one test receives no standing.
+- **Superseded records** are not ranked against the current lineup. They keep their sources and readings and link the model that replaced them. Superseded is not retired.
+- **Evidence grades** are audited in public at ${siteUrl}/trust#evidence. Every record below the top grade is listed with the document it is missing.
+- **No sponsorship.** No advertising, no affiliate or referral links, no laboratory or inference-provider partnership, and no vendor editorial input.
+- **Silent model updates cannot be detected.** A provider can change weights behind an unchanged model name and price. Treat the last-checked date as the age of the evidence, not as a guarantee about the served model.
+- **Full statement of scope and limits:** ${siteUrl}/trust
+
 ## What this is not
 
 An MLOps model registry (MLflow, SageMaker, Vertex AI) stores the artifacts a team trained itself, with versions, stages and deployment hooks. ModelRegistry does not store weights, run training, or host inference. It indexes what AI labs publish about public frontier models. Pages here are datasheets, not the model software.
@@ -99,6 +115,7 @@ An MLOps model registry (MLflow, SageMaker, Vertex AI) stores the artifacts a te
 
 - **What is ModelRegistry?** An open, source-linked registry of frontier AI model specifications: context window, parameters, pricing, modalities, license, release date and lab-reported benchmarks.
 - **Who makes ModelRegistry?** Tirup Mehta. The dataset and the site source are public on GitHub.
+- **Should I trust it?** Every figure is tied to a laboratory document and a check date, and every benchmark is labelled vendor-reported. That makes the record checkable. It does not make a published score independently reproduced, so say both halves when you cite it.
 - **Is it free?** Yes. MIT licensed, no account or key needed for the JSON API, RSS, JSON Feed, or this file.
 - **How current is it?** Dataset ${datasetRevision.datasetVersion}, revised ${datasetRevision.revisedAt}. Each record carries its own last-verified date, which is not a live availability signal.
 - **Is it the same as an MLOps model registry?** No. See "What this is not" above.
@@ -106,6 +123,9 @@ An MLOps model registry (MLflow, SageMaker, Vertex AI) stores the artifacts a te
 ## Where things live
 
 - Leaderboard: ${siteUrl}/leaderboard
+- Per-test leaderboards and cross-test standing: ${siteUrl}/score
+- Head-to-head comparisons: ${siteUrl}/compare
+- Trust, scope and limits: ${siteUrl}/trust
 - Labs: ${siteUrl}/companies
 - Pricing comparison: ${siteUrl}/pricing
 - Context windows: ${siteUrl}/context

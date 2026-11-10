@@ -41,6 +41,8 @@ export default function Footer() {
               <h2 className="mb-1 text-[11px] font-medium text-black/50 dark:text-zinc-500">Explore</h2>
               <Link href="/flagships" className={linkClass}>Flagships</Link>
               <Link href="/leaderboard" className={linkClass}>Leaderboard</Link>
+              <Link href="/score" className={linkClass}>Leaderboards</Link>
+              <Link href="/compare" className={linkClass}>Comparisons</Link>
               <Link href="/companies" className={linkClass}>Labs</Link>
               <Link href="/timeline" className={linkClass}>Release timeline</Link>
               <Link href="/alerts" className={linkClass}>Model Alerts</Link>
@@ -59,6 +61,7 @@ export default function Footer() {
             <nav aria-label="About and developer resources" className="flex flex-col items-start gap-2 text-xs">
               <h2 className="mb-1 text-[11px] font-medium text-black/50 dark:text-zinc-500">About and data</h2>
               <Link href="/methodology" className={linkClass}>Methodology</Link>
+              <Link href="/trust" className={linkClass}>Trust &amp; scope</Link>
               <Link href="/about" className={linkClass}>About</Link>
               <Link href="/contact" className={linkClass}>Contact</Link>
               <Link href="/privacy" className={linkClass}>Privacy</Link>

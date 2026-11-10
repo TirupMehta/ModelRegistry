@@ -7,6 +7,7 @@ import { modelsData, ModelItem } from "@/data/models"
 import { leaderboardSpotlights, leaderboardMethodology } from "@/data/leaderboard"
 import { datasetRevision } from "@/data/revision"
 import { folioFor } from "@/lib/registry"
+import { isCurrent } from "@/lib/currency"
 import Link from "next/link"
 import { formatDate, formatPrice } from "@/lib/utils"
 import { tapFeedback } from "@/lib/feedback"
@@ -73,21 +74,21 @@ export default function LeaderboardClient() {
       icon: Maximize,
       description: "Models with published downloadable weights. License terms and hosting requirements vary by model.",
       ordered: false,
-      models: modelsData.filter((m) => m.openWeights).slice(0, 5),
+      models: modelsData.filter((m) => m.openWeights && isCurrent(m)).slice(0, 5),
     },
     {
       title: "Context Window Capacity",
       icon: Maximize,
       description: "Largest stated context limits in this dataset. A larger limit does not guarantee accurate recall across the full context.",
       ordered: true,
-      models: [...modelsData].sort((a, b) => b.contextWindowTokens - a.contextWindowTokens).slice(0, 5),
+      models: [...modelsData].filter(isCurrent).sort((a, b) => b.contextWindowTokens - a.contextWindowTokens).slice(0, 5),
     },
     {
       title: "Inference Cost & Value",
       icon: Coins,
       description: "Lowest listed input prices per 1M tokens among token-priced models. Output, caching, and provider fees affect total cost.",
       ordered: true,
-      models: [...modelsData].filter((m) => !m.pricingUnit).sort((a, b) => a.pricing.input - b.pricing.input).slice(0, 5),
+      models: [...modelsData].filter((m) => !m.pricingUnit && isCurrent(m)).sort((a, b) => a.pricing.input - b.pricing.input).slice(0, 5),
     },
   ]
 
