@@ -10612,17 +10612,17 @@ export const modelsData: ModelItem[] = [
     releaseDate: "2026-10-28",
     isCompanyFlagship: true,
     isLatestCheckpoint: true,
-    statusBadge: "NEW FRONTIER",
+    statusBadge: "GA · LIVE",
     category: "flagship",
     categoryLabel: "Frontier Cybersecurity",
-    contextWindow: "Undisclosed (pre-GA)",
+    contextWindow: "Undisclosed",
     contextWindowTokens: 0,
-    maxOutputTokens: "Undisclosed (pre-GA)",
+    maxOutputTokens: "Undisclosed",
     parameters: "Undisclosed (Google DeepMind)",
     openWeights: false,
-    license: "Proprietary API (staged rollout)",
+    license: "Proprietary API",
     pricing: { input: 2.0, output: 10.0 },
-    highlight: "Announced Oct 28, 2026; Google DeepMind's next frontier model and strongest to date - #1 on Artificial Analysis Intelligence Index v5.0 at 59, with state-of-the-art cybersecurity; staged launch (cyber defenders first), introductory $2/$10 per 1M tokens (cached 95% off), reverting to $4/$20.",
+    highlight: "Now generally available (Nov 10, 2026) to developers, enterprises, scientists, and consumers; Google DeepMind's strongest model - #1 on Artificial Analysis Intelligence Index v5.0 at 59, with state-of-the-art cybersecurity; introductory $2/$10 per 1M tokens (cached 95% off), reverting to $4/$20 after Nov 30, 2026.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {
       terminalBench: "65.2% (AA)",
@@ -10659,6 +10659,15 @@ export const modelsData: ModelItem[] = [
       sourceType: "announcement",
       live: true,
       note: "Press corroboration; quotes official post-intro pricing that Google's blog carries as a numbered footnote.",
+    },
+    {
+      url: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-carbon-now-available/",
+      publisher: "Google DeepMind",
+      title: "Gemini 4 Carbon is now available",
+      publishedAt: "2026-11-10",
+      accessedAt: "2026-11-10",
+      sourceType: "announcement",
+      live: true,
     },
     ],
     fieldSources: {
@@ -10783,7 +10792,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-28",
+    lastVerifiedAt: "2026-11-10",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -10792,6 +10801,13 @@ export const modelsData: ModelItem[] = [
         sources: [
           "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-carbon/",
           "https://deepmind.google/models/gemini/",
+        ],
+      },
+      {
+        date: "2026-11-10",
+        summary: "Now generally available to developers, enterprises, scientists, and consumers via the Gemini API, Gemini for business, Google Antigravity, Gemini app, and AI Mode in Search.",
+        sources: [
+          "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-carbon-now-available/",
         ],
       },
     ],
