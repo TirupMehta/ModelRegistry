@@ -211,7 +211,7 @@ export default async function ComparePage({ params }: Props) {
           {comparison.identical.length > 0 && (
             <div className="mt-4 flex flex-wrap items-center gap-1.5">
               <span className="text-xs font-sans text-black/40 dark:text-zinc-500 mr-1">
-                Same on both
+                Within 5% or equal
               </span>
               {comparison.identical.map((item) => (
                 <span

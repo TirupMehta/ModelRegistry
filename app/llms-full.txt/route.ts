@@ -2,6 +2,9 @@ import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { formatPrice } from "@/lib/utils"
 import { datasetRevision } from "@/data/revision"
+import { buildStanding, STANDING_VERSION } from "@/lib/standing"
+import { AGREEMENT_LABEL } from "@/lib/standing"
+import { splitLineup } from "@/lib/currency"
 
 export const dynamic = "force-dynamic"
 
@@ -45,6 +48,31 @@ EXECUTIVE KNOWLEDGE SUMMARY (GEO GROUNDING)
       text += `  -> Latest Checkpoint: ${checkpoint.name} (Released: ${checkpoint.releaseDate}, ${checkpoint.categoryLabel}).\n`
     }
   })
+
+  const standing = buildStanding(modelsData)
+  const lineup = splitLineup(modelsData)
+
+  text += `\n===============================================================================\n`
+  text += `CURRENT STANDINGS (cross-test, ${standing.rated} rated, disagreement ${Math.round(standing.betweenTestSd * 100)} pp)\n`
+  text += `===============================================================================\n`
+  text += `Standing version ${STANDING_VERSION}; rules: ${siteUrl}/methodology. Machine-readable: ${siteUrl}/api/v1/standing. Markdown: ${siteUrl}/api/markdown/score.\n`
+  text += `Standing is an expected percentile across the tests a model reports, not a percentage correct. Only current models are ranked; superseded records are listed below and not ranked.\n\n`
+  standing.rows.forEach((row) => {
+    text += `${row.place}. ${row.model.name} (${row.model.companyName}) - standing ${row.standing.toFixed(1)}, ${row.cohorts} tests, spread ${Math.round(row.spread)} pp, ${AGREEMENT_LABEL[row.agreement]}. Tests: ${row.tests.join("; ")}.\n`
+  })
+  if (standing.singleTest.length > 0) {
+    text += `\nMeasured on one test only (a position, not a standing):\n`
+    standing.singleTest.forEach((row) => {
+      text += `- ${row.model.name} (${row.model.companyName}): ${row.test}, ${row.rank} of ${row.of}, ${row.score}.\n`
+    })
+  }
+  if (lineup.superseded.length > 0) {
+    text += `\nSuperseded, kept for the record (not ranked against the current lineup):\n`
+    lineup.superseded.forEach(({ model, successor }) => {
+      text += `- ${model.name} (${model.companyName}, released ${model.releaseDate}) superseded by ${successor ? successor.name : "a later release"}.\n`
+    })
+  }
+  text += `\n`
 
   text += `\n===============================================================================\n`
   text += `ALL REGISTERED MODELS (EXHAUSTIVE TECHNICAL SPECIFICATION)\n`

@@ -59,6 +59,52 @@ const registry = {
   "@/lib/github": { REPO_URL: "https://github.com/TirupMehta/ModelRegistry" },
 }
 
+const benchmarks = loadTsModule("../lib/benchmarks.ts", registry)
+const currency = loadTsModule("../lib/currency.ts", registry)
+const leaderboards = loadTsModule("../lib/leaderboards.ts", {
+  ...registry,
+  "./benchmarks": benchmarks,
+  "./currency": currency,
+  "../lib/benchmarks": benchmarks,
+  "../lib/currency": currency,
+  "@/lib/benchmarks": benchmarks,
+  "@/lib/currency": currency,
+})
+const standing = loadTsModule("../lib/standing.ts", {
+  ...registry,
+  "./leaderboards": leaderboards,
+  "../lib/leaderboards": leaderboards,
+  "@/lib/leaderboards": leaderboards,
+})
+const seo = loadTsModule("../lib/seo.ts", {
+  ...registry,
+  "./benchmarks": benchmarks,
+  "./currency": currency,
+  "../lib/benchmarks": benchmarks,
+  "../lib/currency": currency,
+  "@/lib/benchmarks": benchmarks,
+  "@/lib/currency": currency,
+})
+
+// Extend the shared registry so downstream modules (markdown) can resolve them.
+Object.assign(registry, {
+  "./benchmarks": benchmarks,
+  "./currency": currency,
+  "./leaderboards": leaderboards,
+  "./standing": standing,
+  "./seo": seo,
+  "../lib/benchmarks": benchmarks,
+  "../lib/currency": currency,
+  "../lib/leaderboards": leaderboards,
+  "../lib/standing": standing,
+  "../lib/seo": seo,
+  "@/lib/benchmarks": benchmarks,
+  "@/lib/currency": currency,
+  "@/lib/leaderboards": leaderboards,
+  "@/lib/standing": standing,
+  "@/lib/seo": seo,
+})
+
 const { prefersMarkdown } = loadTsModule("../lib/content-negotiation.ts")
 const { renderMarkdown } = loadTsModule("../lib/markdown.ts", registry)
 

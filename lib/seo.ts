@@ -287,11 +287,34 @@ function plural(n: number, word: string): string {
 }
 
 /** "2.9x", "17%", "same". Used as the magnitude chip on a difference row. */
+/**
+ * How much larger `high` is than `low`.
+ *
+ * A real multiple reads as "3.4x". A small gap reads as the percentage above
+ * the smaller value ("2%"), never as the smaller value's share of the larger
+ * one, because "2% the ceiling of X" reads as "2% of X" and understates the
+ * gap by an order of magnitude.
+ */
 function ratio(high: number, low: number): string {
   const r = high / low
   if (r >= 10) return `${Math.round(r)}x`
   if (r >= 1.15) return `${r.toFixed(1)}x`
-  return `${Math.round(((high - low) / high) * 100)}%`
+  return `${Math.round((r - 1) * 100)}%`
+}
+
+/**
+ * Is the gap big enough to be worth a row?
+ *
+ * Five percent. Below that a difference is measurement noise dressed as a
+ * selling point: 128,000 against 131,072 output tokens, or eight dollars
+ * against eight dollars five. Those belong in the "effectively equal" list, not
+ * in a table of reasons to choose one model over another.
+ */
+const MATERIAL_GAP = 1.05
+
+function material(high: number, low: number): boolean {
+  if (low <= 0) return high > 0
+  return high / low >= MATERIAL_GAP
 }
 
 function daysBetween(isoA: string, isoB: string): number {
@@ -402,22 +425,28 @@ export function buildComparison(a: ModelItem, b: ModelItem): Comparison {
   const pickB: string[] = []
 
   if (tokenBilled) {
-    if (a.pricing.input < b.pricing.input) {
-      pickA.push(
-        `Cheaper input: ${money(a.pricing.input)} vs ${money(b.pricing.input)} per 1M tokens.`,
-      )
-    } else if (b.pricing.input < a.pricing.input) {
-      pickB.push(
-        `Cheaper input: ${money(b.pricing.input)} vs ${money(a.pricing.input)} per 1M tokens.`,
-      )
+    if (material(Math.max(a.pricing.input, b.pricing.input), Math.min(a.pricing.input, b.pricing.input))) {
+      if (a.pricing.input < b.pricing.input) {
+        pickA.push(`Cheaper input: ${money(a.pricing.input)} vs ${money(b.pricing.input)} per 1M tokens.`)
+      } else {
+        pickB.push(`Cheaper input: ${money(b.pricing.input)} vs ${money(a.pricing.input)} per 1M tokens.`)
+      }
     }
   }
 
-  if (aCtx && bCtx && aCtx !== bCtx) {
+  if (aCtx && bCtx && material(Math.max(aCtx, bCtx), Math.min(aCtx, bCtx))) {
     const narrower = aCtx > bCtx ? b : a
     const list = aCtx > bCtx ? pickA : pickB
     list.push(
       `Larger context: ${plural(Math.max(aCtx, bCtx), "token")} vs ${plural(Math.min(aCtx, bCtx), "token")} on ${narrower.name}.`,
+    )
+  }
+
+  if (aOut && bOut && material(Math.max(aOut, bOut), Math.min(aOut, bOut))) {
+    const narrower = aOut > bOut ? b : a
+    const list = aOut > bOut ? pickA : pickB
+    list.push(
+      `Longer single response: ${plural(Math.max(aOut, bOut), "output token")} vs ${plural(Math.min(aOut, bOut), "token")} on ${narrower.name}.`,
     )
   }
 
@@ -430,12 +459,9 @@ export function buildComparison(a: ModelItem, b: ModelItem): Comparison {
     )
   }
 
-  if (a.releaseDate !== b.releaseDate) {
-    const newer = a.releaseDate > b.releaseDate ? a : b
-    const older = a.releaseDate > b.releaseDate ? b : a
-    const list = a.releaseDate > b.releaseDate ? pickA : pickB
-    list.push(`Newer release: ${newer.releaseDate} vs ${older.releaseDate} on ${older.name}.`)
-  }
+  // Release recency is a fact, not an advantage. It stays in the difference
+  // table and the FAQ, where a reader can weigh it, and it is deliberately not
+  // a reason to choose a model: "released three weeks later" decides nothing.
 
   for (const row of benchmarks) {
     if (row.edge === "tie") continue
@@ -444,25 +470,30 @@ export function buildComparison(a: ModelItem, b: ModelItem): Comparison {
   }
 
   if (pickA.length === 0) {
-    pickA.push("No measured advantage over the other model on context, price, access, or recency.")
+    pickA.push(
+      `Nothing measured separates it from ${b.name}: price, context, output, modalities, weights and published benchmarks are equal or within 5%.`,
+    )
   }
   if (pickB.length === 0) {
-    pickB.push("No measured advantage over the other model on context, price, access, or recency.")
+    pickB.push(
+      `Nothing measured separates it from ${a.name}: price, context, output, modalities, weights and published benchmarks are equal or within 5%.`,
+    )
   }
 
   // --- Differences, with magnitude -------------------------------------
-  // Only axes with a real gap become rows. Everything else is listed as
-  // identical, because "both ship 1M context" is the most useful thing a
-  // reader can learn about a tiebreaker that does not exist.
+  // Only axes with a real gap become rows. A 2% output ceiling or a five cent
+  // price gap is not a difference a reader can act on, so it is listed as
+  // effectively equal instead of being dressed up as a reason to choose.
   const differences: DifferenceRow[] = []
   const identical: string[] = []
 
   if (aCtx && bCtx) {
     if (aCtx === bCtx) {
       identical.push(`Context window (${plural(aCtx, "token")})`)
+    } else if (!material(aCtx, bCtx)) {
+      identical.push(`Context window (${plural(aCtx, "token")} and ${plural(bCtx, "token")})`)
     } else {
       const big = aCtx > bCtx ? a : b
-      const small = aCtx > bCtx ? b : a
       differences.push({
         label: "Context window",
         a: plural(aCtx, "token"),
@@ -470,19 +501,20 @@ export function buildComparison(a: ModelItem, b: ModelItem): Comparison {
         delta: `${ratio(Math.max(aCtx, bCtx), Math.min(aCtx, bCtx))} more on ${big.name}`,
         edge: aCtx > bCtx ? "a" : "b",
       })
-      void small
     }
   }
 
   if (aOut && bOut) {
     if (aOut === bOut) {
       identical.push(`Max output (${plural(aOut, "token")})`)
+    } else if (!material(aOut, bOut)) {
+      identical.push(`Max output (${plural(aOut, "token")} and ${plural(bOut, "token")})`)
     } else {
       differences.push({
         label: "Max output",
         a: plural(aOut, "token"),
         b: plural(bOut, "token"),
-        delta: `${ratio(Math.max(aOut, bOut), Math.min(aOut, bOut))} ceiling on ${aOut > bOut ? a.name : b.name}`,
+        delta: `${ratio(Math.max(aOut, bOut), Math.min(aOut, bOut))} larger output ceiling on ${aOut > bOut ? a.name : b.name}`,
         edge: aOut > bOut ? "a" : "b",
       })
     }
@@ -493,6 +525,10 @@ export function buildComparison(a: ModelItem, b: ModelItem): Comparison {
     const bTotal = b.pricing.input + b.pricing.output
     if (aTotal === bTotal) {
       identical.push(`Price (${money(aTotal)} per 1M in plus 1M out)`)
+    } else if (!material(aTotal, bTotal)) {
+      identical.push(
+        `Price (${money(aTotal)} and ${money(bTotal)} per 1M in plus 1M out)`,
+      )
     } else {
       const cheap = aTotal < bTotal ? a : b
       const dear = aTotal < bTotal ? b : a
@@ -567,14 +603,15 @@ export function buildComparison(a: ModelItem, b: ModelItem): Comparison {
 
   // --- Summary ---------------------------------------------------------
   // Ordered by how much the gap is likely to change a decision: price,
-  // output ceiling, modality, self-hosting, recency. Filler such as "both
-  // are tracked in ModelRegistry" is deliberately absent.
+  // output ceiling, modality, self-hosting, context, then the axes where the
+  // two are equal. Filler such as "both are tracked in ModelRegistry" is
+  // deliberately absent.
   const sentences: string[] = []
 
   if (tokenBilled) {
     const aTotal = a.pricing.input + a.pricing.output
     const bTotal = b.pricing.input + b.pricing.output
-    if (aTotal !== bTotal) {
+    if (aTotal !== bTotal && material(Math.max(aTotal, bTotal), Math.min(aTotal, bTotal))) {
       const cheap = aTotal < bTotal ? a : b
       const dear = aTotal < bTotal ? b : a
       sentences.push(
@@ -582,7 +619,7 @@ export function buildComparison(a: ModelItem, b: ModelItem): Comparison {
       )
     } else {
       sentences.push(
-        `Both list the same price, ${money(a.pricing.input)} in and ${money(a.pricing.output)} out per 1M tokens.`,
+        `Both list about the same price, ${money(a.pricing.input)} in and ${money(a.pricing.output)} out against ${money(b.pricing.input)} in and ${money(b.pricing.output)} out per 1M tokens.`,
       )
     }
   } else {
@@ -591,11 +628,11 @@ export function buildComparison(a: ModelItem, b: ModelItem): Comparison {
     )
   }
 
-  if (aOut && bOut && aOut !== bOut) {
+  if (aOut && bOut && material(Math.max(aOut, bOut), Math.min(aOut, bOut))) {
     const wider = aOut > bOut ? a : b
     const narrower = aOut > bOut ? b : a
     sentences.push(
-      `${wider.name} allows ${plural(Math.max(aOut, bOut), "output token")} in one response, ${ratio(Math.max(aOut, bOut), Math.min(aOut, bOut))} the ceiling of ${narrower.name} at ${plural(Math.min(aOut, bOut), "token")}.`,
+      `${wider.name} allows ${plural(Math.max(aOut, bOut), "output token")} in one response, ${ratio(Math.max(aOut, bOut), Math.min(aOut, bOut))} larger than the ceiling of ${narrower.name} at ${plural(Math.min(aOut, bOut), "token")}.`,
     )
   }
 
@@ -614,7 +651,7 @@ export function buildComparison(a: ModelItem, b: ModelItem): Comparison {
     )
   }
 
-  if (aCtx && bCtx && aCtx !== bCtx) {
+  if (aCtx && bCtx && material(Math.max(aCtx, bCtx), Math.min(aCtx, bCtx))) {
     sentences.push(
       `${aCtx > bCtx ? a.name : b.name} carries the larger context window at ${plural(Math.max(aCtx, bCtx), "token")} against ${plural(Math.min(aCtx, bCtx), "token")}.`,
     )
@@ -622,9 +659,9 @@ export function buildComparison(a: ModelItem, b: ModelItem): Comparison {
 
   if (identical.length > 0) {
     sentences.push(
-      `They match on ${identical
+      `No decision turns on ${identical
         .map((item) => item.replace(/\s*\(.*\)$/, "").toLowerCase())
-        .join(", ")}, so none of those decides it.`,
+        .join(", ")}.`,
     )
   }
 

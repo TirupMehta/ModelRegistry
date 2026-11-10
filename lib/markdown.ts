@@ -4,6 +4,16 @@ import { datasetRevision } from "@/data/revision"
 import { SITE_NAME, SITE_URL } from "@/lib/site"
 import { REPO_URL } from "@/lib/github"
 import { formatPrice } from "@/lib/utils"
+import {
+  AGREEMENT_LABEL,
+  CONTESTED_SPREAD,
+  MIN_TESTS_FOR_STANDING,
+  STANDING_VERSION,
+  buildStanding,
+} from "@/lib/standing"
+import { LEADERBOARD_VERSION, MIN_COHORT_SIZE, leaderboardStats, positionsFor } from "@/lib/leaderboards"
+import { splitLineup } from "@/lib/currency"
+import { buildComparison, compareHref, resolveComparison } from "@/lib/seo"
 
 /**
  * Markdown representations of the public site, served through
@@ -384,6 +394,8 @@ ${resourceLinks(path)}
 const STATIC_PAGES: Record<string, () => MarkdownDocument> = {
   "/": homeDocument,
   "/docs": docsDocument,
+  "/score": scoreDocument,
+  "/trust": trustDocument,
   "/about": () => ({
     status: 200,
     body: `${frontMatter(
@@ -808,6 +820,275 @@ records and each laboratory's current flagship.`,
     ),
 }
 
+function scoreDocument(): MarkdownDocument {
+  const standing = buildStanding(modelsData)
+  const lineup = splitLineup(modelsData)
+  const { boards, tests } = leaderboardStats(modelsData, { currentOnly: true })
+  const disagreement = Math.round(standing.betweenTestSd * 100)
+  const contested = standing.rows.filter((row) => row.agreement === "contested").length
+
+  const rated = table(
+    ["Place", "Model", "Laboratory", "Standing", "Tests", "Spread", "Tests measured"],
+    standing.rows.map((row) => [
+      String(row.place),
+      `[${row.model.name}](${SITE_URL}/models/${row.model.id})`,
+      row.model.companyName,
+      row.standing.toFixed(1),
+      String(row.cohorts),
+      `${Math.round(row.spread)} pp`,
+      row.tests.join("; "),
+    ])
+  )
+
+  const single = table(
+    ["Model", "Laboratory", "Test", "Position", "Score"],
+    standing.singleTest.map((row) => [
+      `[${row.model.name}](${SITE_URL}/models/${row.model.id})`,
+      row.model.companyName,
+      row.test,
+      `${row.rank} of ${row.of}`,
+      row.score,
+    ])
+  )
+
+  const superseded = table(
+    ["Model", "Laboratory", "Released", "Replaced by"],
+    lineup.superseded.map(({ model, successor }) => [
+      `[${model.name}](${SITE_URL}/models/${model.id})`,
+      model.companyName,
+      model.releaseDate,
+      successor ? `[${successor.name}](${SITE_URL}/models/${successor.id})` : "a later release",
+    ])
+  )
+
+  const perTest = boards
+    .map((board) =>
+      [
+        `### ${board.test} (${board.entries.length} models)`,
+        "",
+        table(
+          ["Place", "Model", "Score", "Percentile"],
+          board.entries.map((entry) => [
+            String(entry.rank),
+            `[${entry.model.name}](${SITE_URL}/models/${entry.model.id})`,
+            entry.reading.score,
+            entry.percentile.toFixed(0),
+          ])
+        ),
+      ].join("\n")
+    )
+    .join("\n\n")
+
+  const body = `# Cross-test standing, ${SITE_NAME}
+
+A standing is an expected percentile across the tests a model reports, not a
+percentage correct and not a prediction of quality. Only current models are
+ranked: ${lineup.superseded.length} records have been replaced in their role by a
+later release from the same laboratory and are listed separately with their
+successors.
+
+- Standing version: ${STANDING_VERSION}
+- Models rated across tests: ${standing.rated} of ${standing.ranked} ranked
+- Tests disagree by: ${disagreement} percentile points (pooled between-test standard deviation)
+- Contested rows: ${contested} of ${standing.rated} have tests that disagree by more than ${CONTESTED_SPREAD} points
+- Cohorts behind the standings: ${tests}
+- Dataset revision: ${datasetRevision.datasetVersion} (data revised ${REVISED_LABEL})
+
+A gap between two rows smaller than ${disagreement} points is not a difference this
+page can defend.
+
+## Current standings
+
+${rated}
+
+A model needs at least ${MIN_TESTS_FOR_STANDING} tests to receive a standing. Spread is the
+distance between the model's best and worst test percentile, so a large spread
+means the tests tell different stories about the same model.
+
+## Models measured on one test
+
+These records have a position, not a standing. One test cannot corroborate
+itself, so no cross-test number is published for them.
+
+${single}
+
+## Superseded, kept for the record
+
+A superseded record keeps its dates, sources and readings. It is not ranked
+against the current lineup because a reader choosing a model today cannot pick
+it. Superseded is not retired: no laboratory has withdrawn these.
+
+${superseded}
+
+## Per-test tables
+
+Each table is one test at one version, published only when at least
+${MIN_COHORT_SIZE} current models share it. Percentile is the position inside that
+cohort on a 0 to 100 scale.
+
+${perTest}
+
+## How the standing is computed
+
+1. Every reading is placed on its own test's cohort. Scores from different tests
+   are never compared directly.
+2. Each reading becomes a midrank percentile inside its cohort, using the Hazen
+   plotting position so the best and worst member sit half a step inside the
+   interval rather than at exactly 0 and 100.
+3. A test contributes in proportion to how far it separates its own members. A
+   cohort where every score is within a couple of points carries little signal.
+4. The standing is the weighted mean of those percentiles. It is not a fit, an
+   average of raw percentages, or a coverage-tiered composite.
+5. A model is rated only with at least ${MIN_TESTS_FOR_STANDING} tests. With one test it keeps a
+   position on that test and no standing.
+6. Each row is refitted with one test removed at a time. A row that moves more
+   than two places is labelled test dependent, and only where three or more
+   tests exist, because a two-test row cannot be audited this way. Coverage is
+   published instead.
+
+Ranking rule v${LEADERBOARD_VERSION}: same test, same version, at least ${MIN_COHORT_SIZE} models, or no
+rank. Standing rule v${STANDING_VERSION}: at least ${MIN_TESTS_FOR_STANDING} tests, or no standing.
+
+${resourceLinks("/score")}
+`
+  return { status: 200, body }
+}
+
+function trustDocument(): MarkdownDocument {
+  const standing = buildStanding(modelsData)
+  const lineup = splitLineup(modelsData)
+  const disagreement = Math.round(standing.betweenTestSd * 100)
+
+  const body = `# Can you trust ${SITE_NAME}?
+
+${SITE_NAME} publishes a record only after it has been read from a primary
+source. There is no draft tier and no partially published state: a model page
+exists because its release date, context window, output limit, pricing, licence
+and modalities were each read from a laboratory document and cited.
+
+## How a record is published
+
+1. A laboratory announcement or model card is read directly, not summarised from
+   press coverage.
+2. Every core field is cited to the document that supports it. A field with no
+   source is left out rather than filled from another model in the same family.
+3. The source and the date it was checked are attached to the record, and the
+   dataset revision advances only when the data changes.
+
+## What is deliberately not claimed
+
+- No score is presented as independent. Every benchmark figure is published by
+  the laboratory that built the model, and the record says so next to the number.
+- No overall score exists to game upward. Rankings are one test at one version,
+  and a cross-test standing is published only for models with at least
+  ${MIN_TESTS_FOR_STANDING} tests, together with the spread between them.
+- No availability claim is made from a specification. A model being listed does
+  not mean a provider is serving it.
+- Nothing is ranked against a superseded record. ${lineup.superseded.length} records have been
+  replaced in their role and are listed with their successors instead.
+
+## The numbers a reader can check
+
+- Tests disagree by about ${disagreement} percentile points across the rated models.
+  That figure is printed next to the standings rather than hidden, and rows whose
+  tests disagree by more than ${CONTESTED_SPREAD} points are labelled contested.
+- ${standing.rated} of ${standing.ranked} ranked models have readings from more than one test.
+  The rest keep a position on the one test they reported.
+- Every table prints its cohort size. A table with fewer than ${MIN_COHORT_SIZE} models is not
+  published.
+- Every record carries its sources, per-field citations and a report-an-error link.
+
+## What this site will not do
+
+- Publish a figure with no source behind it.
+- Compare two scores from different tests or versions.
+- Give a standing to a model measured on one test.
+- Rank a superseded record against the current lineup.
+- Take payment, sponsorship or editorial input.
+
+## Corrections
+
+A field is corrected when a primary source contradicts it, and the change is
+recorded in the model's changelog and the public changelog. A record is removed
+only for duplicates, hoaxes, or records that never had a verifiable official
+source.
+
+${resourceLinks("/trust")}
+`
+  return { status: 200, body }
+}
+
+function compareDocument(slug: string): MarkdownDocument | null {
+  const pair = resolveComparison(slug, modelsData)
+  if (!pair) return null
+
+  const { a, b } = pair
+  const comparison = buildComparison(a, b)
+  const path = compareHref(a, b)
+
+  const facts = table(
+    ["Fact", a.name, b.name],
+    comparison.facts.map((fact) => [fact.label, fact.a, fact.b])
+  )
+
+  const differences = comparison.differences.length
+    ? table(
+        ["Difference", a.name, b.name, "Gap"],
+        comparison.differences.map((row) => [row.label, row.a, row.b, row.delta])
+      )
+    : "No material difference was found on the axes this registry tracks."
+
+  const benchmarks = comparison.benchmarks.length
+    ? table(
+        ["Test", a.name, b.name, "Lead"],
+        comparison.benchmarks.map((row) => [
+          row.label,
+          row.a,
+          row.b,
+          row.edge === "tie" ? "tie" : row.edge === "a" ? a.name : b.name,
+        ])
+      )
+    : "No shared benchmark at the same version, so no performance comparison is published."
+
+  const body = `# ${a.name} vs ${b.name}
+
+${comparison.summary}
+
+## Material differences
+
+${differences}
+
+## Specifications
+
+${facts}
+
+## Benchmarks
+
+${benchmarks}
+
+${comparison.evidenceNote}
+
+## Choose ${a.name} when
+
+${comparison.pickA.map((item) => `- ${item}`).join("\n")}
+
+## Choose ${b.name} when
+
+${comparison.pickB.map((item) => `- ${item}`).join("\n")}
+
+## Sources
+
+- [${a.name}](${SITE_URL}/models/${a.id}), ${a.companyName}, released ${a.releaseDate}
+- [${b.name}](${SITE_URL}/models/${b.id}), ${b.companyName}, released ${b.releaseDate}
+
+Both records are current. This page compares one output class only: a model is
+never paired with a product that produces something else.
+
+${resourceLinks(path)}
+`
+  return { status: 200, body }
+}
+
 function notFoundDocument(path: string, reason?: string): MarkdownDocument {
   const safePath = path.replace(/[\r\n]/g, "").slice(0, 200)
   const body = `# 404 - Page not found
@@ -860,6 +1141,12 @@ export function renderMarkdown(pathname: string): MarkdownDocument {
   if (companyMatch) {
     const doc = companyDocument(decodeURIComponent(companyMatch[1]))
     return doc ?? notFoundDocument(path, "No tracked laboratory has that id.")
+  }
+
+  const compareMatch = /^\/compare\/([^/]+)$/.exec(path)
+  if (compareMatch) {
+    const doc = compareDocument(decodeURIComponent(compareMatch[1]))
+    return doc ?? notFoundDocument(path, "That comparison is not published, or the pair is no longer comparable.")
   }
 
   return notFoundDocument(path)
