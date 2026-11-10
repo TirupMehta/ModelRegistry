@@ -211,7 +211,10 @@ export default function HomeClient() {
             Every frontier model, with its sources.
           </h1>
           <p className="mt-3 max-w-[52ch] text-[17px] font-normal leading-[1.55] text-black/70 sm:mt-4 sm:text-[19px] md:text-[20px] dark:text-zinc-300">
-            Specs, prices and context limits for {modelsData.length} models. Each record names the lab page it came from and the date it was checked.
+            Specs, prices and context limits for {modelsData.length} models. Each record names the lab page it came from and the date it was checked.{" "}
+            <Link href="/best" className="text-accent-ink underline-offset-4 hover:underline">
+              Which model is best for coding, science or price?
+            </Link>
           </p>
 
           <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-y border-black/10 py-4 sm:grid-cols-3 md:mt-7 dark:border-white/[0.08]">

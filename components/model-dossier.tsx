@@ -1,8 +1,9 @@
 import Link from "next/link"
+import { companies } from "@/data/companies"
 import { modelsData, type ModelItem } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { badgeInfo } from "@/lib/badges"
-import { buildLeaderboards, positionsFor } from "@/lib/leaderboards"
+import { buildLeaderboards, excludedReadings, positionsFor } from "@/lib/leaderboards"
 import { AGREEMENT_LABEL, buildStanding, standingFor } from "@/lib/standing"
 import { currentSuccessor } from "@/lib/currency"
 import { EVIDENCE_KIND_LABEL, evidenceSummary, gradeLabel } from "@/lib/evidence"
@@ -27,17 +28,23 @@ const VERIFICATION_COPY: Record<string, string> = {
   retired: "Superseded. Kept for history and linked to its replacement.",
 }
 
+/** A source check older than this, at the time of the latest revision, is shown as stale. */
+export const STALE_AFTER_DAYS = 30
+
 function daysSince(iso: string): number {
   const then = new Date(`${iso}T00:00:00Z`).getTime()
   if (Number.isNaN(then)) return 0
-  return Math.max(0, Math.floor((Date.now() - then) / 86_400_000))
+  // Measured against the dataset revision date, not the wall clock: a static page
+  // must say the same thing every time it is rendered.
+  const revised = new Date(`${datasetRevision.revisedAt}T00:00:00Z`).getTime()
+  return Math.max(0, Math.floor((revised - then) / 86_400_000))
 }
 
 export function ModelProvenance({ model }: { model: ModelItem }) {
   const badge = badgeInfo(model.statusBadge)
   const age = daysSince(model.lastVerifiedAt)
-  const stale = age > 90
-  const citation = `ModelRegistry, "${model.name}" datasheet, dataset revision ${datasetRevision.datasetVersion}, accessed YYYY-MM-DD, ${SITE}/models/${model.id}`
+  const stale = age > STALE_AFTER_DAYS
+  const citation = `ModelRegistry, "${model.name}" datasheet, dataset revision ${datasetRevision.datasetVersion}, revised ${datasetRevision.revisedAt}, ${SITE}/models/${model.id}`
 
   return (
     <section aria-labelledby="provenance-heading" className="mb-6 sm:mb-8">
@@ -80,7 +87,7 @@ export function ModelProvenance({ model }: { model: ModelItem }) {
           {stale && (
             <span className="inline-flex items-start gap-1 text-amber-700 dark:text-amber-500">
               <ShieldAlert size={11} className="shrink-0 mt-0.5" aria-hidden="true" />
-              <span>This check is {age} days old - re-confirm the source before relying on it.</span>
+              <span>The sources were last checked {age} days before the latest dataset revision. Prices and benchmark figures may have changed since: confirm on the laboratory page before relying on them.</span>
             </span>
           )}{" "}
           <Link href="/trust" className="text-accent-ink hover:underline underline-offset-2">
@@ -160,6 +167,12 @@ export function ModelFaq({ model }: { model: ModelItem }) {
   )
 }
 
+const LAB_ORDER = Object.keys(companies)
+function labRank(id: string): number {
+  const index = LAB_ORDER.indexOf(id)
+  return index === -1 ? LAB_ORDER.length : index
+}
+
 export function ModelComparisons({ model }: { model: ModelItem }) {
   const direct = comparisonPairs(modelsData).filter(
     (pair) => pair.a.id === model.id || pair.b.id === model.id,
@@ -170,6 +183,12 @@ export function ModelComparisons({ model }: { model: ModelItem }) {
     .sort((x, y) => {
       const flagshipDelta = Number(y.opponent.isCompanyFlagship) - Number(x.opponent.isCompanyFlagship)
       if (flagshipDelta !== 0) return flagshipDelta
+      // Rivals a reader would actually weigh first: the registry lists labs in
+      // order of how widely their models are used, so earlier labs come first.
+      // Sorting by release date alone surfaced the newest obscure model instead
+      // of the model people are comparing against.
+      const labDelta = labRank(x.opponent.companyId) - labRank(y.opponent.companyId)
+      if (labDelta !== 0) return labDelta
       return y.opponent.releaseDate.localeCompare(x.opponent.releaseDate)
     })
     .slice(0, 6)
@@ -243,8 +262,8 @@ export function ModelEvidence({ model }: { model: ModelItem }) {
           Evidence
         </h2>
         <span className="text-[11px] font-sans text-black/40 dark:text-zinc-500 tabular-nums">
-          {summary.items.length} document{summary.items.length === 1 ? "" : "s"} �{" "}
-          {summary.kinds.length} kind{summary.kinds.length === 1 ? "" : "s"} � {summary.citedCount} cited
+          {summary.items.length} document{summary.items.length === 1 ? "" : "s"} ·{" "}
+          {summary.kinds.length} kind{summary.kinds.length === 1 ? "" : "s"} · {summary.citedCount} cited
         </span>
         <span
           className={`ml-auto inline-flex items-center gap-1 rounded border px-1.5 py-0.5 text-[11px] font-sans font-medium ${gradeTone}`}
@@ -300,10 +319,10 @@ export function ModelEvidence({ model }: { model: ModelItem }) {
                     </a>
                     <span className="text-black/35 dark:text-zinc-600">
                       {" "}
-                      � {item.publisher}
-                      {item.publishedAt ? ` � ${item.publishedAt}` : ""}
-                      {item.accessedAt ? ` � checked ${item.accessedAt}` : ""}
-                      {item.cited ? "" : " � official link"}
+                      · {item.publisher}
+                      {item.publishedAt ? ` · ${item.publishedAt}` : ""}
+                      {item.accessedAt ? ` · checked ${item.accessedAt}` : ""}
+                      {item.cited ? "" : " · official link"}
                     </span>
                   </li>
                 ))}
@@ -359,7 +378,48 @@ export function ModelPositions({ model }: { model: ModelItem }) {
   const boards = buildLeaderboards(modelsData, { currentOnly: true })
   const positions = positionsFor(model, boards)
   const standing = standingFor(model, buildStanding(modelsData))
-  if (positions.length === 0) return null
+  if (positions.length === 0) {
+    const reasons = excludedReadings(modelsData, boards, { currentOnly: true }).filter(
+      (item) => item.model.id === model.id,
+    )
+    return (
+      <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
+        <h2
+          id="score-heading"
+          className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 leading-relaxed mb-3"
+        >
+          Where it ranks
+        </h2>
+        <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4">
+          <p className="text-sm font-sans text-black/70 dark:text-zinc-300 leading-6">
+            Not ranked yet.{" "}
+            {reasons.length === 0
+              ? "No benchmark with a comparable test and version is recorded for this model, so any position would be invented."
+              : "Its published scores cannot join a comparison table:"}
+          </p>
+          {reasons.length > 0 && (
+            <ul className="mt-2 space-y-1.5 text-xs font-sans text-black/55 dark:text-zinc-400 leading-5">
+              {reasons.map((item) => (
+                <li key={`${item.test}-${item.raw}`}>
+                  <span className="font-medium text-black/75 dark:text-zinc-300">
+                    {item.test} {item.raw}
+                  </span>
+                  : {item.reason}
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="mt-2 text-xs font-sans text-black/45 dark:text-zinc-500 leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
+            A missing rank means the evidence is missing, not that the model is weak.{" "}
+            <Link href="/best" className="text-accent-ink hover:underline underline-offset-2">
+              Leaders by task
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">

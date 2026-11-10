@@ -70,7 +70,11 @@ export function readBenchmark(key: BenchmarkKey, raw: string): BenchmarkReading 
   const scoreMatch = raw.match(/(\d+(?:\.\d+)?)\s*%/)
   const qualifierMatch = raw.match(/\(([^)]+)\)/)
   const qualifier = qualifierMatch ? qualifierMatch[1].trim() : null
-  const identity = qualifier ? normalizeIdentity(qualifier) : "default"
+  // GPQA is reported by laboratories almost only as the Diamond subset, and the
+  // dataset records it both bare and as "(GPQA-Diamond)". Those are the same
+  // test, so splitting them would hide a real tie behind a spelling difference.
+  const isDiamond = key === "gpqa" && qualifier !== null && /diamond/i.test(qualifier)
+  const identity = qualifier && !isDiamond ? normalizeIdentity(qualifier) : "default"
 
   return {
     key,

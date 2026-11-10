@@ -44,7 +44,7 @@ export async function GET() {
       contestedSpread: 50,
       stabilityTolerance: 2,
       midrank: "Hazen plotting position (below + (equal-1)/2 + 0.5) / n",
-      weights: "cohort discrimination (score spread inside the cohort)",
+      weights: "equal per cohort",
       audit: "leave one cohort out; test dependent when the model moves more than 2 places",
     },
     betweenTest: {

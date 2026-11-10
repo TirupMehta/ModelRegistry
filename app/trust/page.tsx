@@ -87,7 +87,7 @@ export default function TrustPage() {
     },
     {
       q: "How do I cite ModelRegistry?",
-      a: `Cite the record and its primary source, not the homepage: ModelRegistry, "Model name" datasheet, dataset revision ${datasetRevision.datasetVersion}, accessed YYYY-MM-DD, https://modelregistry.tirup.in/models/model-id.`,
+      a: `Cite the record and its primary source, not the homepage: ModelRegistry, "Model name" datasheet, dataset revision ${datasetRevision.datasetVersion}, revised ${datasetRevision.revisedAt}, https://modelregistry.tirup.in/models/model-id.`,
     },
   ]
 
@@ -535,7 +535,7 @@ export default function TrustPage() {
         <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4 mb-3">
           <code className="block text-sm font-mono text-black/70 dark:text-zinc-300 leading-6 break-words">
             ModelRegistry, &ldquo;Model name&rdquo; datasheet, dataset revision{" "}
-            {datasetRevision.datasetVersion}, accessed YYYY-MM-DD,
+            {datasetRevision.datasetVersion}, revised {datasetRevision.revisedAt},
             https://modelregistry.tirup.in/models/model-id
           </code>
         </div>

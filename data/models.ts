@@ -1770,7 +1770,7 @@ export const modelsData: ModelItem[] = [
     releaseDate: "2026-09-15",
     isCompanyFlagship: false,
     isLatestCheckpoint: false,
-    statusBadge: "#1 SPEECH-TO-SPEECH",
+    statusBadge: "SPEECH-TO-SPEECH",
     category: "audio",
     categoryLabel: "Live Speech-to-Speech",
     contextWindow: "131,072 tokens",
@@ -2563,7 +2563,7 @@ export const modelsData: ModelItem[] = [
     name: "DeepSeek V4.1 Flash",
     version: "V4.1-Flash",
     releaseDate: "2026-09-10",
-    isCompanyFlagship: true,
+    isCompanyFlagship: false,
     isLatestCheckpoint: false,
     supersededBy: "deepseek-v4-1-flash-1017",
     statusBadge: "NEW ARCHITECTURE",
@@ -3546,7 +3546,7 @@ export const modelsData: ModelItem[] = [
     openWeights: true,
     license: "Qwen Community License",
     pricing: { input: 0.8, output: 2.4 },
-    highlight: "The largest open-weight MoE model in existence. 2.4 Trillion parameters with 95B activated per token and 1M context, available on HuggingFace and ModelScope.",
+    highlight: "Qwen's largest open-weight MoE: 2.4 trillion parameters with 95B activated per token and 1M context, available on HuggingFace and ModelScope.",
     modalities: ["Text", "Code"],
     benchmarks: {
       mmluPro: "85.2%",
@@ -5210,7 +5210,7 @@ export const modelsData: ModelItem[] = [
     name: "MiniMax M3",
     version: "M3",
     releaseDate: "2026-05-31",
-    isCompanyFlagship: true,
+    isCompanyFlagship: false,
     isLatestCheckpoint: false,
     supersededBy: "minimax-m3-1-flash",
     statusBadge: "AGENT FAVORITE",
@@ -6628,7 +6628,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "Google AI Studio / Vertex AI",
     pricing: { input: 0.5, output: 2.0 },
-    highlight: "The traffic-leading Gemini on OpenRouter (7.9T/30d); best fast default for images, audio, video, and files.",
+    highlight: "The traffic-leading Gemini on OpenRouter (7.9T/30d); fast default for images, audio, video, and files.",
     modalities: ["Text", "Vision", "Audio", "Video", "Code"],
     benchmarks: {},
     links: {
@@ -6912,7 +6912,7 @@ export const modelsData: ModelItem[] = [
     highlight: "Released Sept 28, 2026; 70.6% on Terminal-Bench 4.0 versus 10.3% for Sonnet 5, running 30%+ faster at the same $2/$10 pricing.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {
-      terminalBench: "70.6%",
+      terminalBench: "70.6% (Terminal-Bench 4.0)",
     },
     links: {
       announcement: "https://www.anthropic.com/claude-sonnet-5-5",
@@ -7073,7 +7073,7 @@ export const modelsData: ModelItem[] = [
     highlight: "Released Oct 7, 2026; fastest Claude to date at $0.10/$0.50 per 1M tokens for prompts up to 100K, scoring 39.2% on Terminal-Bench 4.0.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {
-      terminalBench: "39.2%",
+      terminalBench: "39.2% (Terminal-Bench 4.0)",
     },
     links: {
       announcement: "https://www.anthropic.com/claude-haiku-5-5",
@@ -8029,7 +8029,7 @@ export const modelsData: ModelItem[] = [
     license: "Kling API / App",
     pricing: { input: 0.084, output: 0.084 },
     pricingUnit: "per second",
-    highlight: "Kuaishou's Feb 2026 video flagship: native multilingual audio, motion brush and best-in-class image-to-video at ~$0.84 per 10s clip.",
+    highlight: "Kuaishou's Feb 2026 video flagship: native multilingual audio, motion brush and image-to-video at ~$0.84 per 10s clip.",
     modalities: ["Text", "Video", "Audio"],
     benchmarks: {},
     links: {
@@ -8312,7 +8312,7 @@ export const modelsData: ModelItem[] = [
     openWeights: true,
     license: "Apache 2.0",
     pricing: { input: 0.33, output: 0.83 },
-    highlight: "Released Mar 6, 2026; India's sovereign 105B MoE trained from scratch on 12T tokens, SOTA across 22 Indian languages with 98.6 Math500 and 49.5 BrowseComp.",
+    highlight: "Released Mar 6, 2026; India's sovereign 105B MoE trained from scratch on 12T tokens, which Sarvam reports as state-of-the-art across 22 Indian languages, with 98.6 Math500 and 49.5 BrowseComp.",
     modalities: ["Text", "Code"],
     benchmarks: {
       mmluPro: "81.7%",
@@ -9723,7 +9723,7 @@ export const modelsData: ModelItem[] = [
     name: "DeepSeek V4.1 Flash 1017",
     version: "V4.1-Flash-1017",
     releaseDate: "2026-10-17",
-    isCompanyFlagship: false,
+    isCompanyFlagship: true,
     isLatestCheckpoint: true,
     statusBadge: "CHECKPOINT LEAP",
     category: "open-weights",
@@ -9898,7 +9898,7 @@ export const modelsData: ModelItem[] = [
     name: "MiniMax M3.1 Flash",
     version: "M3.1 Flash",
     releaseDate: "2026-10-19",
-    isCompanyFlagship: false,
+    isCompanyFlagship: true,
     isLatestCheckpoint: true,
     statusBadge: "FLASH AGENT PICK",
     category: "code",

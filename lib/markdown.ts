@@ -13,6 +13,7 @@ import {
 } from "@/lib/standing"
 import { LEADERBOARD_VERSION, MIN_COHORT_SIZE, leaderboardStats, positionsFor } from "@/lib/leaderboards"
 import { splitLineup } from "@/lib/currency"
+import { TIE_MARGIN_POINTS, buildBestAnswers } from "@/lib/best"
 import { buildComparison, compareHref, resolveComparison } from "@/lib/seo"
 
 /**
@@ -395,6 +396,7 @@ const STATIC_PAGES: Record<string, () => MarkdownDocument> = {
   "/": homeDocument,
   "/docs": docsDocument,
   "/score": scoreDocument,
+  "/best": bestDocument,
   "/trust": trustDocument,
   "/about": () => ({
     status: 200,
@@ -820,6 +822,41 @@ records and each laboratory's current flagship.`,
     ),
 }
 
+function bestDocument(): MarkdownDocument {
+  const answers = buildBestAnswers()
+  const sections = answers
+    .map((answer) => {
+      const list = answer.entries
+        .map((entry) => `${entry.rank}. [${entry.model.name}](${SITE_URL}/models/${entry.model.id}) - ${entry.value}`)
+        .join("\n")
+      const open = answer.openLeader
+        ? `\nBest open-weights result: [${answer.openLeader.model.name}](${SITE_URL}/models/${answer.openLeader.model.id}) (${answer.openLeader.value}, rank ${answer.openLeader.rank} of ${answer.field}).\n`
+        : ""
+      return `## ${answer.question}
+
+${answer.answer}
+
+${list}
+${open}
+${answer.caveat}`
+    })
+    .join("\n\n")
+  const body = `${frontMatter(
+    "Which AI model is best for what?",
+    `Each answer is the highest score reported on one named test among current models that report the same test at the same version. Nothing is blended across tests. A lead under ${TIE_MARGIN_POINTS} points is shown as a tie. Dataset revision ${datasetRevision.datasetVersion}.`,
+  )}
+
+${sections}
+
+## What is the best AI model overall?
+
+No model leads every test, so none is called best overall. Use the task closest to your work.
+
+${resourceLinks("/best")}
+`
+  return { status: 200, body }
+}
+
 function scoreDocument(): MarkdownDocument {
   const standing = buildStanding(modelsData)
   const lineup = splitLineup(modelsData)
@@ -937,7 +974,7 @@ ${perTest}
    interval rather than at exactly 0 and 100.
 3. A test contributes in proportion to how far it separates its own members. A
    cohort where every score is within a couple of points carries little signal.
-4. The standing is the weighted mean of those percentiles. It is not a fit, an
+4. The standing is the equal-weight mean of those percentiles. It is not a fit, an
    average of raw percentages, or a coverage-tiered composite.
 5. A model is rated only with at least ${MIN_TESTS_FOR_STANDING} tests. With one test it keeps a
    position on that test and no standing.

@@ -67,6 +67,7 @@ const EDITORIAL_PATTERNS: RegExp[] = [
   /\bEFFICIENT\b/,
   /\bFAST\b/,
   /\bSTRONGEST\b/,
+  /\bSOTA\b/,
   /\bVISUAL THINKING\b/,
 ]
 

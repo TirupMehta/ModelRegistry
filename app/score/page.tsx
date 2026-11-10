@@ -75,11 +75,11 @@ export default function ScorePage() {
   const faq = [
     {
       q: "What is the best AI model right now?",
-      a: `No single model is best, and no number on this page can say so. ${standing.rated} of ${standing.ranked} ranked models report more than one test, and those ${standing.rated} are ordered by the mean of their per-test percentiles. Where two models sit a few points apart, the gap is smaller than the ${disagreementPoints} point spread between tests, and the page does not pretend otherwise.`,
+      a: `No model leads every test, so none is called best overall; the leader on each test is on the best-by-task page (${SITE}/best). On this page, ${standing.rated} of ${standing.ranked} ranked models report more than one test, and those ${standing.rated} are ordered by the mean of their per-test percentiles. Where two models sit a few points apart, the gap is smaller than the ${disagreementPoints} point spread between tests, and the page does not pretend otherwise.`,
     },
     {
       q: "How is the cross-test standing calculated?",
-      a: "Each score is turned into its percentile inside its own cohort, so a hard exam and an easy exam count on the same footing. Those percentiles are averaged, weighted by how much ordering information each cohort carries. A model needs at least two cohorts to receive a standing. The spread between its best and worst percentile is published next to the result.",
+      a: "Each score is turned into its percentile inside its own cohort, so a hard exam and an easy exam count on the same footing. Those percentiles are averaged with equal weight per test. A model needs at least two cohorts to receive a standing. The spread between its best and worst percentile is published next to the result.",
     },
     {
       q: "Why are most models ranked on one test only?",
@@ -226,8 +226,7 @@ export default function ScorePage() {
           Cross-test standing
         </h2>
         <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-4 max-w-2xl">
-          The mean of a model&rsquo;s per-test percentiles, weighted by how much each cohort can
-          separate its members. The spread column is the disagreement behind that mean, in percentile
+          The equal-weight mean of a model&rsquo;s per-test percentiles. The spread column is the disagreement behind that mean, in percentile
           points. Read them together: a high standing with a wide spread is a compromise between
           tests, not a result.
         </p>
@@ -601,7 +600,7 @@ export default function ScorePage() {
           <details className="group border-b border-black/10 dark:border-white/[0.08]">
             <summary className={summaryClass}>
               <span className="text-sm font-sans font-medium text-black dark:text-white">
-                Cross-test standing: equate, weight, refuse, audit
+                Cross-test standing: equate, average, refuse, audit
               </span>
               <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
             </summary>
@@ -614,8 +613,8 @@ export default function ScorePage() {
                 },
                 {
                   n: "2",
-                  title: "Weight",
-                  body: "A cohort where every model scores within a couple of points cannot separate them, so it counts for less. Each cohort is weighted by the spread of its scores, which is how much ordering information it actually carries.",
+                  title: "Average",
+                  body: "Every test counts equally. Weighting a test by the spread of its raw scores would bring the raw scale back into a number built to remove it, and one outlier could set that weight. The spread of each test is published beside it instead.",
                 },
                 {
                   n: "3",

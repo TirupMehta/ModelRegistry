@@ -180,6 +180,67 @@ check("contributor guide requires primary sources", read("CONTRIBUTING.md").incl
 check("contributor guide points at live lab list", read("CONTRIBUTING.md").includes("data/companies.ts"))
 check("contributor guide carries no hardcoded lab enumeration", !/one of:\s*anthropic/.test(read("CONTRIBUTING.md")))
 
+// 11. Ranking and currency invariants (see lib/currency.ts, lib/best.ts).
+{
+  const ts = require("typescript")
+  const modelsSrc = ts.transpileModule(read("data/models.ts"), {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
+  }).outputText
+  const mod = { exports: {} }
+  new Function("module", "exports", "require", modelsSrc)(mod, mod.exports, require)
+  const models = mod.exports.modelsData
+  const byId = new Map(models.map((m) => [m.id, m]))
+
+  const supersededFlagships = models.filter((m) => m.supersededBy && m.isCompanyFlagship)
+  check(
+    "no superseded record is a company flagship",
+    supersededFlagships.length === 0,
+    supersededFlagships.map((m) => m.id).join(", "),
+  )
+  const dangling = models.filter((m) => m.supersededBy && !byId.has(m.supersededBy))
+  check("every supersededBy points at a real record", dangling.length === 0, dangling.map((m) => m.id).join(", "))
+  check("no record supersedes itself", models.every((m) => m.supersededBy !== m.id))
+  const chainEndsCurrent = models
+    .filter((m) => m.supersededBy)
+    .every((m) => {
+      const seen = new Set([m.id])
+      let cursor = byId.get(m.supersededBy)
+      while (cursor && cursor.supersededBy) {
+        if (seen.has(cursor.id)) return false
+        seen.add(cursor.id)
+        cursor = byId.get(cursor.supersededBy)
+      }
+      return Boolean(cursor)
+    })
+  check("every supersession chain ends at a current record", chainEndsCurrent)
+
+  const absolute = models.filter((m) => /in existence|best-in-class/i.test(m.highlight))
+  check(
+    "no unattributed absolute claims in highlights",
+    absolute.length === 0,
+    absolute.map((m) => m.id).join(", "),
+  )
+}
+
+// 12. Encoding and placeholder regressions that make a page look unfinished.
+{
+  const files = []
+  for (const dir of ["app", "components", "lib"]) allFiles(dir, files)
+  const sources = files.filter((f) => /\.(ts|tsx)$/.test(f))
+  const corrupted = sources.filter((f) => fs.readFileSync(f, "utf8").includes("�"))
+  check(
+    "no U+FFFD replacement characters in source",
+    corrupted.length === 0,
+    corrupted.map((f) => path.relative(ROOT, f)).join(", "),
+  )
+  const placeholder = sources.filter((f) => fs.readFileSync(f, "utf8").includes("accessed YYYY-MM-DD"))
+  check(
+    "no literal date placeholder in citation text",
+    placeholder.length === 0,
+    placeholder.map((f) => path.relative(ROOT, f)).join(", "),
+  )
+}
+
 if (failures > 0) {
   console.error(`\n❌ test-provenance failed with ${failures} failure(s).`)
   process.exit(1)

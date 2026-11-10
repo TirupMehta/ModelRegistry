@@ -85,6 +85,15 @@ const seo = loadTsModule("../lib/seo.ts", {
   "@/lib/benchmarks": benchmarks,
   "@/lib/currency": currency,
 })
+const best = loadTsModule("../lib/best.ts", {
+  ...registry,
+  "./currency": currency,
+  "./leaderboards": leaderboards,
+  "./seo": seo,
+  "@/lib/currency": currency,
+  "@/lib/leaderboards": leaderboards,
+  "@/lib/seo": seo,
+})
 
 // Extend the shared registry so downstream modules (markdown) can resolve them.
 Object.assign(registry, {
@@ -93,6 +102,7 @@ Object.assign(registry, {
   "./leaderboards": leaderboards,
   "./standing": standing,
   "./seo": seo,
+  "./best": best,
   "../lib/benchmarks": benchmarks,
   "../lib/currency": currency,
   "../lib/leaderboards": leaderboards,
@@ -103,6 +113,7 @@ Object.assign(registry, {
   "@/lib/leaderboards": leaderboards,
   "@/lib/standing": standing,
   "@/lib/seo": seo,
+  "@/lib/best": best,
 })
 
 const { prefersMarkdown } = loadTsModule("../lib/content-negotiation.ts")
