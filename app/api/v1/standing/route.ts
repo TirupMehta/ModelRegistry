@@ -68,6 +68,8 @@ export async function GET() {
     })),
     rows: standing.rows.map((row) => ({
       place: row.place,
+      tier: row.tier,
+      auditable: row.auditable,
       model: row.model.name,
       id: row.model.id,
       laboratory: row.model.companyName,

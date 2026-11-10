@@ -828,9 +828,9 @@ function scoreDocument(): MarkdownDocument {
   const contested = standing.rows.filter((row) => row.agreement === "contested").length
 
   const rated = table(
-    ["Place", "Model", "Laboratory", "Standing", "Tests", "Spread", "Tests measured"],
+    ["Tier", "Model", "Laboratory", "Standing", "Tests", "Spread", "Tests measured"],
     standing.rows.map((row) => [
-      String(row.place),
+      `Tier ${row.tier}`,
       `[${row.model.name}](${SITE_URL}/models/${row.model.id})`,
       row.model.companyName,
       row.standing.toFixed(1),

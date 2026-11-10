@@ -6,7 +6,9 @@ import { isCurrent } from "./currency"
  * Benchmark leaderboards.
  *
  * There is deliberately no cross-test composite score in this file, and the
- * absence is the design. A single number across GPQA, MMLU-Pro, DeepSWE and
+ * absence is the design. The cross-test standing in standing.ts is a separate,
+ * published summary of these leaderboards (percentiles, tiers, spread), never a
+ * replacement for them. A single number across GPQA, MMLU-Pro, DeepSWE and
  * Terminal-Bench would be an average of four different exams taken by four
  * different subsets of models. Two models can both be "scored" while sharing
  * no measurement at all, which makes the ordering an artefact of which tests

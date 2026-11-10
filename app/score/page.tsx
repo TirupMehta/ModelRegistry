@@ -69,7 +69,8 @@ export default function ScorePage() {
 
   const disagreementPoints = Math.round(standing.betweenTestSd * 100)
   const contested = standing.rows.filter((row) => row.agreement === "contested").length
-  const unstable = standing.rows.filter((row) => !row.stable).length
+  const unstable = standing.rows.filter((row) => row.auditable && !row.stable).length
+  const unaudited = standing.rows.filter((row) => !row.auditable).length
 
   const faq = [
     {
@@ -129,9 +130,9 @@ export default function ScorePage() {
     name: "AI model cross-test standing",
     url: `${SITE}/score`,
     numberOfItems: standing.rows.length,
+    itemListOrder: "https://schema.org/ItemListUnordered",
     itemListElement: standing.rows.map((row) => ({
       "@type": "ListItem",
-      position: row.place,
       name: `${row.model.name}: standing ${row.standing.toFixed(1)}, ${row.cohorts} tests, spread ${row.spread.toFixed(0)} points`,
       url: `${SITE}/models/${row.model.id}`,
     })),
@@ -240,8 +241,8 @@ export default function ScorePage() {
                 href={`/models/${row.model.id}`}
                 className="group flex flex-wrap items-baseline gap-x-3 gap-y-1.5 py-3 border-b border-black/10 dark:border-white/[0.08]"
               >
-                <span className="text-xs font-sans tabular-nums text-black/30 dark:text-zinc-600 w-5 shrink-0">
-                  {row.place}
+                <span className="text-xs font-sans tabular-nums text-black/30 dark:text-zinc-600 w-7 shrink-0">
+                  T{row.tier}
                 </span>
                 <span className="text-sm sm:text-base font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors">
                   {row.model.name}
@@ -257,12 +258,17 @@ export default function ScorePage() {
                 <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-xs font-sans text-black/50 dark:text-zinc-500">
                   {row.cohorts} tests
                 </span>
-                <span className="inline-flex items-center rounded border px-1.5 py-0.5 text-xs font-sans {AGREEMENT_CLASS[row.agreement]}">
+                <span className={`inline-flex items-center rounded border px-1.5 py-0.5 text-xs font-sans ${AGREEMENT_CLASS[row.agreement]}`}>
                   {AGREEMENT_LABEL[row.agreement]}
                 </span>
-                {!row.stable && (
+                {row.auditable && !row.stable && (
                   <span className="inline-flex items-center rounded border border-amber-600/40 px-1.5 py-0.5 text-xs font-sans text-amber-700 dark:text-amber-400 dark:border-amber-400/30">
                     Test dependent
+                  </span>
+                )}
+                {!row.auditable && (
+                  <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-xs font-sans text-black/50 dark:text-zinc-500">
+                    Not auditable
                   </span>
                 )}
                 <span className="ml-auto flex items-baseline gap-2 shrink-0">
@@ -281,10 +287,11 @@ export default function ScorePage() {
         <p className="text-sm font-sans text-black/55 dark:text-zinc-500 leading-6 max-w-2xl mb-12">
           Standing runs 1 to 99 and is an expected percentile, not a percentage correct. The
           disagreement figure of {disagreementPoints} points is the pooled spread between tests across
-          the rated models, so a gap smaller than that between two rows is not a difference this page
-          can defend. {contested} of {standing.rated} rated models have tests that disagree by more
+          the rated models. Rows are grouped into tiers: a row starts a new tier only when it sits more
+          than that figure below the top of the tier above, so models in the same tier (T1, T2) are not
+          ranked against each other. Rows inside a tier are listed by standing, which is not a claim that one is ahead. {contested} of {standing.rated} rated models have tests that disagree by more
           than {CONTESTED_SPREAD} points, and each is labelled contested rather than described as
-          strong.{unstable > 0 ? ` ${unstable} rows move more than two places when a single test is removed and are labelled test dependent.` : ""}
+          strong.{unstable > 0 ? ` ${unstable} rows move more than two places when a single test is removed and are labelled test dependent.` : ""}{unaudited > 0 ? ` ${unaudited} rows report exactly two tests; removing either leaves no standing, so the leave-one-test-out audit cannot run on them and they are labelled not auditable rather than stable.` : ""}
         </p>
 
         {/* Single-test models */}

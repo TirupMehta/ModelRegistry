@@ -56,9 +56,9 @@ EXECUTIVE KNOWLEDGE SUMMARY (GEO GROUNDING)
   text += `CURRENT STANDINGS (cross-test, ${standing.rated} rated, disagreement ${Math.round(standing.betweenTestSd * 100)} pp)\n`
   text += `===============================================================================\n`
   text += `Standing version ${STANDING_VERSION}; rules: ${siteUrl}/methodology. Machine-readable: ${siteUrl}/api/v1/standing. Markdown: ${siteUrl}/api/markdown/score.\n`
-  text += `Standing is an expected percentile across the tests a model reports, not a percentage correct. Only current models are ranked; superseded records are listed below and not ranked.\n\n`
+  text += `Standing is an expected percentile across the tests a model reports, not a percentage correct. Rows in the same tier are not separated by the evidence. Only current models are ranked; superseded records are listed below and not ranked.\n\n`
   standing.rows.forEach((row) => {
-    text += `${row.place}. ${row.model.name} (${row.model.companyName}) - standing ${row.standing.toFixed(1)}, ${row.cohorts} tests, spread ${Math.round(row.spread)} pp, ${AGREEMENT_LABEL[row.agreement]}. Tests: ${row.tests.join("; ")}.\n`
+    text += `- Tier ${row.tier}: ${row.model.name} (${row.model.companyName}) - standing ${row.standing.toFixed(1)}, ${row.cohorts} tests, spread ${Math.round(row.spread)} pp, ${AGREEMENT_LABEL[row.agreement]}. Tests: ${row.tests.join("; ")}.\n`
   })
   if (standing.singleTest.length > 0) {
     text += `\nMeasured on one test only (a position, not a standing):\n`

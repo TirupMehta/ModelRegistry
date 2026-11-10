@@ -19,9 +19,10 @@ import { buildLeaderboards, type Leaderboard } from "./leaderboards"
  *      scale. This is the whole of the difficulty correction: a two-way
  *      difficulty fit on top of a rank transform is unidentified, because the
  *      rank transform has already absorbed it.
- *   2. WEIGHT. A cohort where every model scores within a couple of points
- *      carries almost no ordering information, so it counts for less. The weight
- *      is the observed spread of the cohort.
+ *   2. WEIGHT. Every cohort counts equally. A weight taken from a cohort's raw
+ *      score range would bring the raw scale back into a number built to remove
+ *      it, and one outlier could set it. Cohort spread is published beside each
+ *      cohort instead.
  *   3. REFUSE. A standing needs readings from at least two cohorts. One test is a
  *      position on that test, not a cross-test claim, and this module refuses to
  *      manufacture the difference.
@@ -63,8 +64,15 @@ export interface StandingRow {
   model: ModelItem
   /** Expected percentile on the equated scale, 0 to 100. */
   standing: number
-  /** 1 is the highest standing among rated models. */
+  /** Sort order only. Not a claim: rows in the same tier are not separated. */
   place: number
+  /**
+   * 1 is the top tier. A row starts a new tier only when it sits more than the
+   * pooled between-test disagreement below the top of the tier above it.
+   */
+  tier: number
+  /** False when removing a test leaves this model below the two-test floor. */
+  auditable: boolean
   /** Tests behind the standing, best first. */
   tests: string[]
   cohorts: number
@@ -147,9 +155,8 @@ function midrank(values: number[], value: number): number {
   return (below + (equal - 1) / 2 + 0.5) / n
 }
 
-/** A cohort that cannot separate its members cannot order anything. */
-function discriminationWeight(spread: number): number {
-  return Math.max(0.25, Math.min(2, 0.4 + spread / 15))
+function cohortWeight(): number {
+  return 1
 }
 
 function agreementOf(spread: number): Agreement {
@@ -216,7 +223,7 @@ export function buildStanding(models: ModelItem[]): StandingResult {
   })
 
   const cohortWeights = new Map(
-    cohorts.map((cohort) => [cohort.id, discriminationWeight(cohort.spread)]),
+    cohorts.map((cohort) => [cohort.id, cohortWeight()]),
   )
 
   // ---- one draft per model --------------------------------------------
@@ -284,6 +291,8 @@ export function buildStanding(models: ModelItem[]): StandingResult {
         model: draft.model,
         standing: toPercent(mean),
         place: 0,
+        tier: 1,
+        auditable: draft.percentiles.length > MIN_TESTS_FOR_STANDING,
         tests: order.map((item) => item.test),
         cohorts: draft.percentiles.length,
         spread: Math.round(spread * 10) / 10,
@@ -300,6 +309,18 @@ export function buildStanding(models: ModelItem[]): StandingResult {
   eligible.forEach((row, index) => {
     row.place = index + 1
   })
+
+  // Tiers: a gap smaller than the pooled disagreement is not a difference.
+  const tierGap = betweenTestSd * 100
+  let tier = 1
+  let tierTop = eligible.length > 0 ? eligible[0].standing : 0
+  for (const row of eligible) {
+    if (tierTop - row.standing > tierGap) {
+      tier += 1
+      tierTop = row.standing
+    }
+    row.tier = tier
+  }
 
   // ---- leave one test out ---------------------------------------------
   // Removing a cohort can drop a model below the two-cohort floor, which is the
@@ -337,8 +358,8 @@ export function buildStanding(models: ModelItem[]): StandingResult {
   // leaves a single test, which is not a standing at all. Coverage is published
   // instead, and the audit only speaks where there is something to audit.
   for (const row of eligible) {
-    row.stable = row.maxShift <= STABILITY_TOLERANCE
-  }
+    // Without an audit there is nothing to call stable, so it is not claimed.
+    row.stable = row.auditable && row.maxShift <= STABILITY_TOLERANCE  }
 
   // ---- single test -----------------------------------------------------
   const singleTest: SingleTestRow[] = drafts
