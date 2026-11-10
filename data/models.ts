@@ -10609,7 +10609,7 @@ export const modelsData: ModelItem[] = [
     companyName: "Google DeepMind",
     name: "Gemini 4 Carbon",
     version: "4.0-Carbon",
-    releaseDate: "2026-10-28",
+    releaseDate: "2026-11-10",
     isCompanyFlagship: true,
     isLatestCheckpoint: true,
     statusBadge: "GA · LIVE",
