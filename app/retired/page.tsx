@@ -6,7 +6,7 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Retired & archived AI models - ModelRegistry",
+  title: "Retired & archived AI models",
   description:
     "Historical model records explicitly marked retired by the registry. A newer release alone does not mean an older model is discontinued.",
   alternates: { canonical: "https://modelregistry.tirup.in/retired" },

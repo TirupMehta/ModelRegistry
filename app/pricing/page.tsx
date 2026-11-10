@@ -6,7 +6,7 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "AI model pricing comparison with sources - ModelRegistry",
+  title: "AI model pricing comparison with sources",
   description:
     "Official hosted API pricing per lab flagship and checkpoint, with billing units, source links, and the dataset revision they were checked against.",
   alternates: { canonical: "https://modelregistry.tirup.in/pricing" },

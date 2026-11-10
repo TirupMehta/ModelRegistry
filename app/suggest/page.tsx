@@ -3,7 +3,7 @@ import Header from "@/components/header"
 import ModelSuggestionForm from "@/components/model-suggestion-form"
 
 export const metadata: Metadata = {
-  title: "Suggest a model - ModelRegistry",
+  title: "Suggest a model",
   description: "Suggest a newly released AI model for review by the ModelRegistry maintainers.",
   alternates: { canonical: "https://modelregistry.tirup.in/suggest" },
 }

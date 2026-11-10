@@ -4,7 +4,7 @@ import Header from "@/components/header"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Editorial Policy - ModelRegistry",
+  title: "Editorial Policy",
   description:
     "ModelRegistry's editorial policy: sourcing requirements, no paid placement, no manipulated SEO, correction process, and what this registry does not claim.",
   alternates: { canonical: "https://modelregistry.tirup.in/editorial-policy" },

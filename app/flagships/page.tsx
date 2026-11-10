@@ -6,7 +6,7 @@ import { safeJsonLd } from "@/lib/utils"
 import FlagshipsClient from "@/components/flagships-client"
 
 export const metadata: Metadata = {
-  title: "Current flagship AI model by lab - ModelRegistry",
+  title: "Current flagship AI model by lab",
   description:
     "The current primary flagship foundation model for every tracked AI lab, with release dates, context windows, pricing, verification status, and primary sources.",
   alternates: { canonical: "https://modelregistry.tirup.in/flagships" },

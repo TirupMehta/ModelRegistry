@@ -6,7 +6,7 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "AI model context window comparison - ModelRegistry",
+  title: "AI model context window comparison",
   description:
     "Maximum input context per frontier AI model, sorted largest first, with primary sources and the dataset revision they were checked against.",
   alternates: { canonical: "https://modelregistry.tirup.in/context" },

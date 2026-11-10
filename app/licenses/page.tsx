@@ -6,7 +6,7 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Open-weight AI license comparison - ModelRegistry",
+  title: "Open-weight AI license comparison",
   description:
     "Which frontier models publish weights, under which license, grouped for enterprise review - with primary sources and verification status.",
   alternates: { canonical: "https://modelregistry.tirup.in/licenses" },

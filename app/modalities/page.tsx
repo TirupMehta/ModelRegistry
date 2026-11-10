@@ -6,7 +6,7 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "AI model capability & modality matrix - ModelRegistry",
+  title: "AI model capability & modality matrix",
   description:
     "Which frontier models handle text, vision, audio, video, code, and images - as declared by each lab, with sources.",
   alternates: { canonical: "https://modelregistry.tirup.in/modalities" },
