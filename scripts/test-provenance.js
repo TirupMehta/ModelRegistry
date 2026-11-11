@@ -214,6 +214,16 @@ check("contributor guide carries no hardcoded lab enumeration", !/one of:\s*anth
     })
   check("every supersession chain ends at a current record", chainEndsCurrent)
 
+  const spotMod = { exports: {} }
+  new Function("module", "exports", "require", ts.transpileModule(read("data/leaderboard.ts"), {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
+  }).outputText)(spotMod, spotMod.exports, require)
+  const { leaderboardSpotlights } = spotMod.exports
+  const staleSpotlights = Object.entries(leaderboardSpotlights).flatMap(([section, list]) =>
+    list.filter((id) => byId.get(id)?.supersededBy).map((id) => `${section}:${id}`),
+  )
+  check("no leaderboard spotlight lists a superseded model", staleSpotlights.length === 0, staleSpotlights.join(", "))
+
   const absolute = models.filter((m) => /in existence|best-in-class/i.test(m.highlight))
   check(
     "no unattributed absolute claims in highlights",

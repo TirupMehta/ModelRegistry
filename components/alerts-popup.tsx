@@ -19,7 +19,9 @@ import { hasJoinedWaitlist } from "@/lib/waitlist/client-storage"
 
 const DISMISS_KEY = "modelregistry:alerts-popup:v1:dismissed-at"
 const DISMISS_COOLDOWN_MS = 14 * 24 * 60 * 60 * 1000
-const OPEN_DELAY_MS = 6_000
+const OPEN_DELAY_MS = 25_000
+/** A visitor sees a page or two before anything asks for an email address. */
+const MIN_PAGES_BEFORE_ASKING = 3
 
 export default function AlertsPopup() {
   const [open, setOpen] = useState(false)
@@ -54,6 +56,15 @@ export default function AlertsPopup() {
       if (dismissedAt && Date.now() - dismissedAt < DISMISS_COOLDOWN_MS) return
     } catch {
       // Private mode / blocked storage: show once per page load.
+    }
+
+    // Do not ask a stranger for an email before they have looked around.
+    try {
+      const pages = Number(sessionStorage.getItem("mr_pages") ?? 0) + 1
+      sessionStorage.setItem("mr_pages", String(pages))
+      if (pages < MIN_PAGES_BEFORE_ASKING) return
+    } catch {
+      return
     }
 
     // A deep link to a model dossier is a specific intent; do not interrupt it.

@@ -36,7 +36,7 @@ function isNewDrop(releaseDate: string, now: number = Date.now()): boolean {
   return diffDays >= 0 && diffDays <= NEW_DROPS_WINDOW_DAYS
 }
 
-export default function HomeClient() {
+export default function HomeClient({ quickAnswers }: { quickAnswers?: React.ReactNode }) {
   const [activeTab, setActiveTab] = useState<ViewTab>("flagships")
   const [searchQuery, setSearchQuery] = useState("")
   const [filters, setFilters] = useState<ModelFilters>(DEFAULT_MODEL_FILTERS)
@@ -211,11 +211,9 @@ export default function HomeClient() {
             Every frontier model, with its sources.
           </h1>
           <p className="mt-3 max-w-[52ch] text-[17px] font-normal leading-[1.55] text-black/70 sm:mt-4 sm:text-[19px] md:text-[20px] dark:text-zinc-300">
-            Specs, prices and context limits for {modelsData.length} models. Each record names the lab page it came from and the date it was checked.{" "}
-            <Link href="/best" className="text-accent-ink underline-offset-4 hover:underline">
-              Which model is best for coding, science or price?
-            </Link>
+            Specs, prices and context limits for {modelsData.length} models. Each record names the lab page it came from and the date it was checked.
           </p>
+          {quickAnswers}
 
           <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-y border-black/10 py-4 sm:grid-cols-3 md:mt-7 dark:border-white/[0.08]">
             <div className="min-w-0">
@@ -268,7 +266,7 @@ export default function HomeClient() {
                     : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
                 }`}
               >
-                New Drops <span className="hidden sm:inline opacity-60 tabular-nums text-[11px]">{counts.latestDrops}</span>
+                <span className="sm:hidden">New</span><span className="hidden sm:inline">New Drops</span> <span className="hidden sm:inline opacity-60 tabular-nums text-[11px]">{counts.latestDrops}</span>
               </button>
 
               <button

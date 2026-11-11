@@ -8,9 +8,11 @@
  * so stale references can never silently disappear from the site again.
  */
 export const leaderboardSpotlights: Record<string, string[]> = {
-  reasoning: ["claude-fable-5-2", "gpt-6-astra", "grok-4-6", "gpt-5-6"],
-  coding: ["claude-fable-5-2", "gemini-3-8-flash", "grok-4-6", "gpt-5-6"],
-  value: ["deepseek-v4-flash-0731", "mimo-v2-5", "glm-5-3-flash", "minimax-m3"],
+  // Chosen from the independent Artificial Analysis results (see data/independent-benchmarks.ts)
+  // and limited to current models: a superseded record is not something a reader can pick.
+  reasoning: ["claude-fable-5-2", "gemini-4-carbon", "claude-opus-5-5", "gpt-6-astra"],
+  coding: ["claude-fable-5-2", "claude-opus-5-5", "gpt-6-astra", "gpt-6-1-terra"],
+  value: ["gpt-6-1-sol", "gpt-6-1-terra", "muse-ember", "mimo-v2-6-flash"],
 }
 
 export interface LeaderboardSectionMethodology {
@@ -30,27 +32,23 @@ export interface LeaderboardSectionMethodology {
 export const leaderboardMethodology: Record<string, LeaderboardSectionMethodology> = {
   reasoning: {
     basis:
-      "Compares lab-published reasoning and STEM scores (Terminal-Bench, SWE-bench family, GPQA Diamond, AIME) across indexed models. The named leader holds the highest published figure in this comparison, not a universal 'best model' title.",
-    evaluatedAt: "2026-11-09",
-    sources: [
-      "https://www.swebench.com",
-      "https://github.com/laude-institute/terminal-bench",
-      "https://artificialanalysis.ai",
-    ],
+      "Highest scores on the Artificial Analysis Intelligence Index v5.0.1 among current models, run by the evaluator on the same tasks for every model. Not a universal 'best model' title.",
+    evaluatedAt: "2026-11-11",
+    sources: ["https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index"],
     claimGuidance: "Say 'highest published score in this comparison'. Never 'best reasoning model'.",
   },
   coding: {
     basis:
-      "Compares lab-published software-engineering scores (SWE-bench family incl. DeepSWE, Terminal-Bench, SWE-Bench Verified/Multilingual) across indexed models. Figures are lab-reported; harnesses and versions differ between vendors.",
-    evaluatedAt: "2026-11-09",
-    sources: ["https://www.swebench.com", "https://github.com/laude-institute/terminal-bench"],
+      "Highest scores on FrontierCode 2.0 among current models: real open-source repository tasks graded on whether a maintainer would merge the change, run independently by Artificial Analysis. Many are statistically tied; see the best-by-task page.",
+    evaluatedAt: "2026-11-11",
+    sources: ["https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index"],
     claimGuidance: "Say 'highest published score in this comparison'. Never 'best coding model'.",
   },
   value: {
     basis:
-      "Compares public inference volume and price-performance (OpenRouter weekly token rankings, provider list pricing) for high-throughput models. Volume reflects observed usage share, not quality.",
-    evaluatedAt: "2026-10-07",
-    sources: ["https://openrouter.ai/rankings"],
-    claimGuidance: "Say 'highest observed usage share'. Never 'best value model'.",
+      "Models on the cost frontier: no other current model scores higher on the independent Intelligence Index for less cost per task. Cost counts the reasoning tokens a model spends.",
+    evaluatedAt: "2026-11-11",
+    sources: ["https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index"],
+    claimGuidance: "Say 'on the cost frontier'. Never 'best value model'.",
   },
 }

@@ -237,12 +237,17 @@ function valueAnswer(): BestAnswer | null {
   const rows = valueRows().filter((row) => row.onFrontier)
   if (rows.length < 3) return null
   const sorted = [...rows].sort((a, b) => b.index - a.index)
-  const entries = sorted.slice(0, 3).map((row, index) => ({
+  const cheapestAbove50 = [...rows].filter((r) => r.index >= 50).sort((x, y) => x.costPerTask - y.costPerTask)[0]
+  // The headline is the best result per dollar, so it leads the list; the strongest
+  // scorers follow so the page still shows what the extra money buys.
+  const ordered = cheapestAbove50
+    ? [cheapestAbove50, ...sorted.filter((row) => row !== cheapestAbove50)]
+    : sorted
+  const entries = ordered.slice(0, 3).map((row, index) => ({
     model: row.model,
     value: `index ${row.index} at ${money(row.costPerTask)} per task`,
     rank: index + 1,
   }))
-  const cheapestAbove50 = [...rows].filter((r) => r.index >= 50).sort((a, b) => a.costPerTask - b.costPerTask)[0]
   return {
     id: "value",
     question: "Best AI model for the money",

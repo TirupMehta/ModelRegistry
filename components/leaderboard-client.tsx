@@ -42,7 +42,7 @@ export default function LeaderboardClient() {
     {
       title: "Reasoning & STEM Intelligence",
       icon: Brain,
-      description: "A reviewed set of models with published reasoning and STEM results. Scores and test conditions vary by lab.",
+      description: "The highest independent Intelligence Index scores among current models.",
       ordered: false,
       methodKey: "reasoning",
       models: modelsData.filter((m) =>
@@ -52,7 +52,7 @@ export default function LeaderboardClient() {
     {
       title: "Agentic Software Engineering & Coding",
       icon: Code,
-      description: "A reviewed set of models with published software-engineering results. Compare only matching benchmarks and versions.",
+      description: "The highest independent FrontierCode 2.0 scores among current models.",
       ordered: false,
       methodKey: "coding",
       models: modelsData.filter((m) =>
@@ -60,9 +60,9 @@ export default function LeaderboardClient() {
       ),
     },
     {
-      title: "High-Volume Value",
+      title: "Best Score Per Dollar",
       icon: Layers,
-      description: "Models in a reviewed OpenRouter usage snapshot. Routing share reflects observed traffic, not model quality.",
+      description: "Current models on the cost frontier: nothing scores higher for less.",
       ordered: false,
       methodKey: "value",
       models: modelsData.filter((m) =>

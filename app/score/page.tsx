@@ -511,6 +511,12 @@ export default function ScorePage() {
           ))}
         </div>
 
+        {/* The raw tables are long: collapsed by default so the answer is not buried. */}
+        <details className="mb-12 rounded-xl border border-black/10 dark:border-white/[0.08] p-4 sm:p-5">
+          <summary className="cursor-pointer list-none text-sm font-sans font-medium text-black dark:text-white">
+            Show the raw evidence: every test ranked on its own, and each model&rsquo;s position on every test
+          </summary>
+          <div className="mt-6">
         {/* Per-test tables */}
         <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1">
           Every test, ranked on its own
@@ -651,6 +657,9 @@ export default function ScorePage() {
           </Link>
           .
         </p>
+
+          </div>
+        </details>
 
         {/* Rules */}
         <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-4">
