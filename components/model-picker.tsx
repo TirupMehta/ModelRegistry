@@ -58,6 +58,7 @@ function Dropdown({
 }) {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(0)
+  const [more, setMore] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
@@ -74,9 +75,16 @@ function Dropdown({
     return () => document.removeEventListener("pointerdown", onPointerDown)
   }, [open])
 
+  const updateMore = () => {
+    const list = listRef.current
+    if (!list) return
+    setMore(list.scrollTop + list.clientHeight < list.scrollHeight - 4)
+  }
+
   useEffect(() => {
     if (!open) return
     listRef.current?.children[active]?.scrollIntoView({ block: "nearest" })
+    updateMore()
   }, [open, active])
 
   const openList = () => {
@@ -156,12 +164,14 @@ function Dropdown({
       </button>
 
       {open && (
+        <div className="absolute left-0 right-0 z-30 mt-1.5 overflow-hidden rounded-xl border border-black/10 bg-white shadow-[0_12px_32px_-8px_rgba(0,0,0,0.18)] sm:right-auto sm:min-w-full sm:w-max sm:max-w-[min(24rem,90vw)] dark:border-white/15 dark:bg-[var(--surface-raised)]">
         <ul
           ref={listRef}
           role="listbox"
           aria-labelledby={`${id}-label`}
           tabIndex={-1}
-          className="absolute left-0 right-0 z-30 mt-1.5 max-h-72 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden rounded-xl border border-black/10 bg-white p-1 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.18)] sm:right-auto sm:min-w-full sm:w-max sm:max-w-[min(24rem,90vw)] dark:border-white/15 dark:bg-[var(--surface-raised)]"
+          onScroll={updateMore}
+          className="max-h-72 overflow-auto p-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
           {options.map((option, index) => {
             const isSelected = option.value === value
@@ -182,6 +192,16 @@ function Dropdown({
             )
           })}
         </ul>
+        {/* With no scrollbar, a fade and a chevron say there is more below. */}
+        <div
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-x-0 bottom-0 flex h-12 items-end justify-center bg-gradient-to-t from-white via-white/85 to-transparent pb-1 transition-opacity duration-150 dark:from-[var(--surface-raised)] dark:via-[var(--surface-raised)]/85 ${
+            more ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <ChevronDown size={14} className="text-black/40 dark:text-zinc-400" />
+        </div>
+        </div>
       )}
     </div>
   )
