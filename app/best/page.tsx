@@ -26,6 +26,24 @@ export const metadata: Metadata = {
   },
 }
 
+/** Short names for the jump chips; the full question stays as the section heading. */
+const SHORT_LABEL: Record<string, string> = {
+  intelligenceIndex: "Overall",
+  arenaText: "Chat preference",
+  frontierCode: "Coding",
+  terminalBench4: "Terminal work",
+  hleDiamond: "Expert questions",
+  automationBench: "Business automation",
+  omniscience: "Reliability",
+  critPt: "Physics",
+  terminalBenchScience: "Science workflows",
+  aaBriefcase: "Long deliverables",
+  gdpPdf: "Long documents",
+  value: "Best value",
+  price: "Cheapest",
+  context: "Longest context",
+}
+
 export default function BestPage() {
   const answers = buildBestAnswers()
   const boards = buildIndependentBoards(modelsData)
@@ -142,11 +160,7 @@ export default function BestPage() {
               href={`#${answer.id.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`}
               className="inline-flex min-h-9 items-center rounded-full border border-black/10 px-3 text-xs font-sans text-black/65 transition-colors hover:text-black dark:border-white/15 dark:text-zinc-400 dark:hover:text-white"
             >
-              {answer.question
-                .replace(/^Best AI model for /, "")
-                .replace(/^Best AI model /, "")
-                .replace(/^Most /, "")
-                .replace(/^Cheapest AI model by /, "Cheapest ")}
+              {SHORT_LABEL[answer.id.replace("independent::", "")] ?? answer.question}
             </a>
           ))}
         </nav>

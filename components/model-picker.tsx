@@ -1,7 +1,8 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useId, useMemo, useRef, useState } from "react"
 import Link from "next/link"
+import { Check, ChevronDown } from "lucide-react"
 
 export interface PickerTest {
   key: string
@@ -32,6 +33,160 @@ function show(unit: PickerTest["unit"], value: number): string {
   return unit === "percent" ? `${value.toFixed(1)}%` : `${value}`
 }
 
+interface Option {
+  value: string
+  label: string
+}
+
+/**
+ * A dropdown that looks like the rest of the site instead of the operating
+ * system's: a rounded panel, the selected option marked with a check, and the
+ * usual keyboard behaviour (arrows, Home, End, Enter, Escape).
+ */
+function Dropdown({
+  label,
+  value,
+  options,
+  onChange,
+  className = "",
+}: {
+  label: string
+  value: string
+  options: Option[]
+  onChange: (value: string) => void
+  className?: string
+}) {
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState(0)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const listRef = useRef<HTMLUListElement>(null)
+  const id = useId()
+  const selectedIndex = Math.max(0, options.findIndex((option) => option.value === value))
+  const selected = options[selectedIndex]
+
+  useEffect(() => {
+    if (!open) return
+    const onPointerDown = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false)
+    }
+    document.addEventListener("pointerdown", onPointerDown)
+    return () => document.removeEventListener("pointerdown", onPointerDown)
+  }, [open])
+
+  useEffect(() => {
+    if (!open) return
+    listRef.current?.children[active]?.scrollIntoView({ block: "nearest" })
+  }, [open, active])
+
+  const openList = () => {
+    setActive(selectedIndex)
+    setOpen(true)
+  }
+
+  const choose = (index: number) => {
+    onChange(options[index].value)
+    setOpen(false)
+    buttonRef.current?.focus()
+  }
+
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    if (!open) {
+      if (["ArrowDown", "ArrowUp", "Enter", " "].includes(event.key)) {
+        event.preventDefault()
+        openList()
+      }
+      return
+    }
+    switch (event.key) {
+      case "ArrowDown":
+        event.preventDefault()
+        setActive((index) => Math.min(options.length - 1, index + 1))
+        break
+      case "ArrowUp":
+        event.preventDefault()
+        setActive((index) => Math.max(0, index - 1))
+        break
+      case "Home":
+        event.preventDefault()
+        setActive(0)
+        break
+      case "End":
+        event.preventDefault()
+        setActive(options.length - 1)
+        break
+      case "Enter":
+      case " ":
+        event.preventDefault()
+        choose(active)
+        break
+      case "Escape":
+        event.preventDefault()
+        setOpen(false)
+        break
+      case "Tab":
+        setOpen(false)
+        break
+    }
+  }
+
+  return (
+    <div ref={rootRef} className={`relative ${className}`}>
+      <span id={`${id}-label`} className="mb-1.5 block text-[11px] font-sans font-medium uppercase tracking-wide text-black/40 dark:text-zinc-500">
+        {label}
+      </span>
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-labelledby={`${id}-label ${id}-value`}
+        onClick={() => (open ? setOpen(false) : openList())}
+        onKeyDown={onKeyDown}
+        className="flex min-h-11 w-full items-center justify-between gap-3 rounded-xl border border-black/15 bg-white px-3.5 text-left text-sm font-sans text-black shadow-[0_1px_0_rgba(0,0,0,0.03)] transition-colors hover:border-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:border-white/20 dark:bg-[var(--surface-raised)] dark:text-white dark:hover:border-white/40"
+      >
+        <span id={`${id}-value`} className="truncate">
+          {selected?.label}
+        </span>
+        <ChevronDown
+          size={16}
+          aria-hidden="true"
+          className={`shrink-0 text-black/45 transition-transform duration-150 dark:text-zinc-400 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      {open && (
+        <ul
+          ref={listRef}
+          role="listbox"
+          aria-labelledby={`${id}-label`}
+          tabIndex={-1}
+          className="absolute left-0 right-0 z-30 mt-1.5 max-h-72 overflow-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden rounded-xl border border-black/10 bg-white p-1 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.18)] sm:right-auto sm:min-w-full sm:w-max sm:max-w-[min(24rem,90vw)] dark:border-white/15 dark:bg-[var(--surface-raised)]"
+        >
+          {options.map((option, index) => {
+            const isSelected = option.value === value
+            return (
+              <li
+                key={option.value}
+                role="option"
+                aria-selected={isSelected}
+                onPointerEnter={() => setActive(index)}
+                onClick={() => choose(index)}
+                className={`flex min-h-10 cursor-pointer items-center justify-between gap-6 rounded-lg px-3 text-sm font-sans transition-colors ${
+                  index === active ? "bg-black/[0.05] dark:bg-white/[0.08]" : ""
+                } ${isSelected ? "font-medium text-black dark:text-white" : "text-black/70 dark:text-zinc-300"}`}
+              >
+                <span>{option.label}</span>
+                {isSelected && <Check size={15} aria-hidden="true" className="shrink-0 text-accent-ink" />}
+              </li>
+            )
+          })}
+        </ul>
+      )}
+    </div>
+  )
+}
+
 /**
  * "Which model for me?" in three choices. It filters and sorts the same
  * independent results the rest of the page is built from, so the picker can
@@ -55,8 +210,6 @@ export default function ModelPicker({ tests, models }: { tests: PickerTest[]; mo
   }, [models, test, budget, openOnly])
 
   if (!test) return null
-  const selectClass =
-    "min-h-10 rounded-lg border border-black/15 bg-white px-3 text-sm font-sans text-black dark:border-white/20 dark:bg-[var(--surface-raised)] dark:text-white"
 
   return (
     <section
@@ -65,43 +218,44 @@ export default function ModelPicker({ tests, models }: { tests: PickerTest[]; mo
     >
       <h2
         id="picker-heading"
-        className="mb-3 font-display text-lg font-semibold tracking-tight text-black dark:text-white"
+        className="mb-4 font-display text-lg font-semibold tracking-tight text-black dark:text-white"
       >
         Find a model for your job
       </h2>
-      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-        <label className="sr-only" htmlFor="picker-test">
-          What do you need it for
-        </label>
-        <select id="picker-test" className={selectClass} value={test.key} onChange={(e) => setTestKey(e.target.value)}>
-          {tests.map((candidate) => (
-            <option key={candidate.key} value={candidate.key}>
-              {candidate.task}
-            </option>
-          ))}
-        </select>
-        <label className="sr-only" htmlFor="picker-budget">
-          Budget
-        </label>
-        <select id="picker-budget" className={selectClass} value={budget} onChange={(e) => setBudget(e.target.value)}>
-          {BUDGETS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <label className="inline-flex min-h-10 items-center gap-2 text-sm font-sans text-black/70 dark:text-zinc-300">
-          <input type="checkbox" checked={openOnly} onChange={(e) => setOpenOnly(e.target.checked)} className="h-4 w-4" />
+
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_auto] sm:items-end">
+        <Dropdown
+          label="What do you need it for"
+          value={test.key}
+          options={tests.map((candidate) => ({ value: candidate.key, label: candidate.task }))}
+          onChange={setTestKey}
+        />
+        <Dropdown label="Budget" value={budget} options={BUDGETS} onChange={setBudget} />
+        <button
+          type="button"
+          role="switch"
+          aria-checked={openOnly}
+          onClick={() => setOpenOnly((value) => !value)}
+          className="flex min-h-11 items-center gap-2.5 rounded-xl border border-black/15 px-3.5 text-sm font-sans text-black/80 transition-colors hover:border-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:border-white/20 dark:text-zinc-300 dark:hover:border-white/40"
+        >
+          <span
+            aria-hidden="true"
+            className={`relative h-5 w-9 shrink-0 rounded-full transition-colors ${openOnly ? "bg-accent" : "bg-black/20 dark:bg-white/25"}`}
+          >
+            <span
+              className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-all ${openOnly ? "left-[18px]" : "left-0.5"}`}
+            />
+          </span>
           Open weights only
-        </label>
+        </button>
       </div>
 
       {picks.length === 0 ? (
-        <p className="mt-4 text-sm font-sans text-black/60 dark:text-zinc-400">
+        <p className="mt-5 text-sm font-sans text-black/60 dark:text-zinc-400">
           No current model with an independent result fits those limits. Loosen the budget or the open-weights filter.
         </p>
       ) : (
-        <ol className="mt-4">
+        <ol className="mt-5">
           {picks.map((model, index) => (
             <li key={model.id}>
               <Link
