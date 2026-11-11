@@ -4,7 +4,14 @@ import { modelsData, type ModelItem } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { badgeInfo } from "@/lib/badges"
 import { buildLeaderboards, excludedReadings, positionsFor } from "@/lib/leaderboards"
-import { AGREEMENT_LABEL, buildStanding, standingFor } from "@/lib/standing"
+import { AGREEMENT_LABEL, standingFor } from "@/lib/standing"
+import {
+  INDEPENDENT_EVALUATOR,
+  buildIndependentBoards,
+  buildIndependentStanding,
+  independentFor,
+  independentPositionsFor,
+} from "@/lib/independent"
 import { currentSuccessor } from "@/lib/currency"
 import { EVIDENCE_KIND_LABEL, evidenceSummary, gradeLabel } from "@/lib/evidence"
 import { SITE, compareHref, comparisonPairs, faqPage } from "@/lib/seo"
@@ -375,9 +382,107 @@ export function ModelPositions({ model }: { model: ModelItem }) {
     )
   }
 
+  const independentPositions = independentPositionsFor(model, buildIndependentBoards(modelsData))
+  const independentRecord = independentFor(model.id)
+  if ((independentPositions.length > 0 || (independentRecord?.extras?.length ?? 0) > 0) && independentRecord) {
+    const rated = standingFor(model, buildIndependentStanding(modelsData))
+    return (
+      <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
+        <h2
+          id="score-heading"
+          className="text-xs font-sans font-medium text-black/60 dark:text-zinc-400 leading-relaxed mb-3"
+        >
+          Independent results
+        </h2>
+        <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4">
+          {rated && (
+            <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 pb-3 mb-3 border-b border-black/5 dark:border-white/[0.06]">
+              <span className="text-xs font-sans text-black/45 dark:text-zinc-500">Cross-test standing</span>
+              <span className="text-lg font-display font-semibold tracking-tight text-black dark:text-white tabular-nums leading-none">
+                {rated.standing.toFixed(1)}
+              </span>
+              <span className="text-xs font-sans text-black/45 dark:text-zinc-500">Tier {rated.tier}</span>
+              <span className="text-xs font-sans tabular-nums text-black/45 dark:text-zinc-500">
+                {rated.cohorts} tests, spread {rated.spread.toFixed(0)}
+              </span>
+              <span className="ml-auto text-xs font-sans text-black/45 dark:text-zinc-500">
+                {AGREEMENT_LABEL[rated.agreement]}
+              </span>
+            </div>
+          )}
+          <div className="space-y-2">
+            {independentPositions.map((position) => (
+              <div key={position.test} className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                <span className="text-sm font-sans text-black/70 dark:text-zinc-300">{position.test}</span>
+                <span className="hidden sm:inline text-xs font-sans text-black/35 dark:text-zinc-600">
+                  {position.domain}
+                </span>
+                {position.tiedWithLeader && position.rank > 1 && (
+                  <span className="text-[11px] font-sans text-black/45 dark:text-zinc-500">
+                    not separable from the leader
+                  </span>
+                )}
+                <span className="ml-auto text-sm font-sans tabular-nums text-black/70 dark:text-zinc-300">
+                  <strong className="font-semibold text-black dark:text-white">{position.rank}</strong> of{" "}
+                  {position.of}
+                </span>
+                <span className="text-xs font-sans tabular-nums text-black/45 dark:text-zinc-500 w-14 text-right shrink-0">
+                  {position.score}
+                </span>
+              </div>
+            ))}
+          </div>
+          {independentRecord.extras && independentRecord.extras.length > 0 && (
+            <ul className="space-y-2 text-sm font-sans text-black/70 dark:text-zinc-300">
+              {independentRecord.extras.map((extra) => (
+                <li key={extra.label}>
+                  <span className="font-medium text-black dark:text-white">{extra.label}:</span> {extra.value}
+                  <span className="block text-xs text-black/45 dark:text-zinc-500">
+                    {extra.note}{" "}
+                    <a href={extra.sourceUrl} rel="noopener noreferrer" className="text-accent-ink hover:underline underline-offset-2">
+                      Source
+                    </a>
+                  </span>
+                </li>
+              ))}
+              <li className="text-xs text-black/45 dark:text-zinc-500">
+                Too few registry models have this kind of result to rank them against each other, so no position is claimed.
+              </li>
+            </ul>
+          )}
+          {typeof independentRecord.costPerTask === "number" && (
+            <p className="mt-3 text-xs font-sans text-black/55 dark:text-zinc-400 leading-5">
+              Evaluator cost per task ${independentRecord.costPerTask.toFixed(2)}
+              {typeof independentRecord.minutesPerTask === "number"
+                ? `, ${independentRecord.minutesPerTask.toFixed(1)} minutes per task`
+                : ""}
+              .
+            </p>
+          )}
+          <p className="mt-3 text-xs font-sans text-black/45 dark:text-zinc-500 leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
+            Run by {INDEPENDENT_EVALUATOR.name} as {independentRecord.evaluatedAs}: same tasks and harness
+            for every model, read {INDEPENDENT_EVALUATOR.retrievedAt} from{" "}
+            <a
+              href={independentRecord.sourceUrl}
+              rel="noopener noreferrer"
+              className="text-accent-ink hover:underline underline-offset-2"
+            >
+              the evaluator&rsquo;s page
+            </a>
+            . Laboratory-reported figures are listed separately above and are not part of this ranking.{" "}
+            <Link href="/score" className="text-accent-ink hover:underline underline-offset-2">
+              How it is computed
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
+    )
+  }
+
   const boards = buildLeaderboards(modelsData, { currentOnly: true })
   const positions = positionsFor(model, boards)
-  const standing = standingFor(model, buildStanding(modelsData))
+  const standing = standingFor(model, buildIndependentStanding(modelsData))
   if (positions.length === 0) {
     const reasons = excludedReadings(modelsData, boards, { currentOnly: true }).filter(
       (item) => item.model.id === model.id,

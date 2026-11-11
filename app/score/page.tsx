@@ -12,15 +12,17 @@ import {
   leaderboardStats,
   positionsFor,
 } from "@/lib/leaderboards"
+import { AGREEMENT_LABEL, CORROBORATED_SPREAD, CONTESTED_SPREAD, MIN_TESTS_FOR_STANDING, STANDING_VERSION } from "@/lib/standing"
 import {
-  AGREEMENT_LABEL,
-  CORROBORATED_SPREAD,
-  CONTESTED_SPREAD,
-  MIN_TESTS_FOR_STANDING,
-  STANDING_VERSION,
-  buildStanding,
-} from "@/lib/standing"
+  INDEPENDENT_EVALUATOR,
+  buildIndependentBoards,
+  buildIndependentStanding,
+  discrepancies,
+  toLeaderboards,
+  valueRows,
+} from "@/lib/independent"
 import { splitLineup } from "@/lib/currency"
+import RankingsSwitcher from "@/components/rankings-switcher"
 import { ArrowLeft, ChevronDown } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -53,9 +55,14 @@ const AGREEMENT_CLASS: Record<string, string> = {
 
 export default function ScorePage() {
   const lineup = splitLineup(modelsData)
-  const stats = leaderboardStats(modelsData, { currentOnly: true })
-  const { boards } = stats
-  const standing = buildStanding(modelsData)
+  const independentBoards = buildIndependentBoards(modelsData)
+  const boards = toLeaderboards(independentBoards)
+  const stats = { boards, tests: independentBoards.filter((b) => b.info.key !== "intelligenceIndex").length }
+  const gaps = discrepancies(modelsData)
+  const value = valueRows(modelsData)
+  const meanGap = gaps.length > 0 ? gaps.reduce((sum, g) => sum + g.gap, 0) / gaps.length : 0
+  const lowerCount = gaps.filter((g) => g.gap < 0).length
+  const standing = buildIndependentStanding(modelsData)
 
   // Raw evidence behind each standing: where a model sits on every test it reports.
   const multi = lineup.current
@@ -178,6 +185,8 @@ export default function ScorePage() {
           <span className="font-medium text-accent-ink">Standing</span>
         </nav>
 
+        <RankingsSwitcher current="/score" />
+
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           How the models compare
         </h1>
@@ -293,6 +302,95 @@ export default function ScorePage() {
           strong.{unstable > 0 ? ` ${unstable} rows move more than two places when a single test is removed and are labelled test dependent.` : ""}{unaudited > 0 ? ` ${unaudited} rows report exactly two tests; removing either leaves no standing, so the leave-one-test-out audit cannot run on them and they are labelled not auditable rather than stable.` : ""}
         </p>
 
+        {/* Independent evidence: where laboratory figures and independent runs part ways */}
+        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+          Laboratory claims against independent runs
+        </h2>
+        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-4 max-w-2xl">
+          Nine of the ten tests in the standing were run by {INDEPENDENT_EVALUATOR.name} on the same
+          tasks with the same harness for every model; the tenth is arena.ai&rsquo;s blind human-preference
+          Elo, a second evaluator and a different kind of measurement. Where a laboratory also published its own Terminal-Bench
+          figure, the gap is below. {lowerCount} of {gaps.length} independent results are lower than
+          the laboratory figure, by {Math.abs(Math.round(meanGap * 10) / 10)} points on average.
+          Rows marked &ldquo;version not stated&rdquo; are shown but are not like-for-like, because the
+          laboratory did not say which version it ran.
+        </p>
+        <div className="mb-12 overflow-x-auto">
+          <table className="w-full text-left text-sm font-sans">
+            <thead>
+              <tr className="border-b border-black/10 text-xs text-black/50 dark:border-white/[0.08] dark:text-zinc-500">
+                <th className="py-2 pr-4 font-medium">Model</th>
+                <th className="py-2 pr-4 font-medium">Laboratory</th>
+                <th className="py-2 pr-4 font-medium">Independent</th>
+                <th className="py-2 font-medium">Gap</th>
+              </tr>
+            </thead>
+            <tbody>
+              {gaps.map((gap) => (
+                <tr key={gap.model.id} className="border-b border-black/10 dark:border-white/[0.08]">
+                  <td className="py-2.5 pr-4">
+                    <Link href={`/models/${gap.model.id}`} className="font-medium text-black hover:text-accent-ink dark:text-white">
+                      {gap.model.name}
+                    </Link>
+                    {!gap.likeForLike && (
+                      <span className="ml-2 text-xs text-black/40 dark:text-zinc-500">version not stated</span>
+                    )}
+                  </td>
+                  <td className="py-2.5 pr-4 tabular-nums text-black/70 dark:text-zinc-300">{gap.lab.toFixed(1)}%</td>
+                  <td className="py-2.5 pr-4 tabular-nums text-black/70 dark:text-zinc-300">{gap.independent.toFixed(1)}%</td>
+                  <td className="py-2.5 tabular-nums font-medium text-black dark:text-white">
+                    {gap.gap > 0 ? "+" : ""}
+                    {gap.gap.toFixed(1)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Cost of a point */}
+        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+          What a point costs
+        </h2>
+        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-4 max-w-2xl">
+          The evaluator&rsquo;s Intelligence Index with the cost and time it took to run one task. A
+          model is on the frontier when no other model scores higher for less money. Cost per task
+          includes the reasoning tokens a model chooses to spend, so a cheap price per token does not
+          always mean a cheap answer.
+        </p>
+        <div className="mb-12 overflow-x-auto">
+          <table className="w-full text-left text-sm font-sans">
+            <thead>
+              <tr className="border-b border-black/10 text-xs text-black/50 dark:border-white/[0.08] dark:text-zinc-500">
+                <th className="py-2 pr-4 font-medium">Model</th>
+                <th className="py-2 pr-4 font-medium">Index</th>
+                <th className="py-2 pr-4 font-medium">Cost / task</th>
+                <th className="py-2 pr-4 font-medium">Minutes / task</th>
+                <th className="py-2 font-medium">Frontier</th>
+              </tr>
+            </thead>
+            <tbody>
+              {value.map((row) => (
+                <tr key={row.model.id} className="border-b border-black/10 dark:border-white/[0.08]">
+                  <td className="py-2.5 pr-4">
+                    <Link href={`/models/${row.model.id}`} className="font-medium text-black hover:text-accent-ink dark:text-white">
+                      {row.model.name}
+                    </Link>
+                  </td>
+                  <td className="py-2.5 pr-4 tabular-nums text-black/70 dark:text-zinc-300">{row.index}</td>
+                  <td className="py-2.5 pr-4 tabular-nums text-black/70 dark:text-zinc-300">${row.costPerTask.toFixed(2)}</td>
+                  <td className="py-2.5 pr-4 tabular-nums text-black/70 dark:text-zinc-300">
+                    {row.minutesPerTask === null ? "-" : row.minutesPerTask.toFixed(1)}
+                  </td>
+                  <td className="py-2.5 text-xs text-black/60 dark:text-zinc-400">{row.onFrontier ? "Yes" : ""}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {standing.singleTest.length > 0 && (
+          <>
         {/* Single-test models */}
         <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1">
           Ranked on one test only
@@ -363,6 +461,9 @@ export default function ScorePage() {
             </tbody>
           </table>
         </div>
+
+          </>
+        )}
 
         {/* Superseded */}
         <h2
@@ -541,9 +642,10 @@ export default function ScorePage() {
         )}
 
         <p className="text-sm font-sans text-black/55 dark:text-zinc-500 leading-6 max-w-2xl mb-12">
-          {stats.unranked} of {modelsData.length} records carry no rankable reading: the laboratory
-          publishes no benchmark, states no version, or too few tracked models report the same test.
-          They remain in the registry with full specifications.{" "}
+          {lineup.current.length - standing.ranked} of {lineup.current.length} current models have no independent
+          result yet, because {INDEPENDENT_EVALUATOR.name} has not published one. Their laboratory-reported
+          figures stay on each model page and are never mixed into this standing.
+          {" "}
           <Link href="/trust" className="text-accent-ink hover:underline underline-offset-2">
             Scope and limits
           </Link>

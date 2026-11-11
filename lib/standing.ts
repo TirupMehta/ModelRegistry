@@ -44,7 +44,7 @@ import { buildLeaderboards, type Leaderboard } from "./leaderboards"
  */
 
 /** Bumped when the equating, the weighting, the refusal rule or the audit changes. */
-export const STANDING_VERSION = "1.0.0"
+export const STANDING_VERSION = "2.0.0"
 
 /** One reading is a position on one test, not a cross-test claim. */
 export const MIN_TESTS_FOR_STANDING = 2
@@ -183,10 +183,23 @@ function toPercent(fraction: number): number {
   return Math.max(1, Math.min(99, Math.round(fraction * 1000) / 10))
 }
 
-export function buildStanding(models: ModelItem[]): StandingResult {
+/** The minimum a board must expose to be equated: any evaluator, any test. */
+export interface RankableBoard {
+  id: string
+  test: string
+  domain: string
+  entries: {
+    model: ModelItem
+    reading: { value: number | null; score: string }
+    rank: number
+  }[]
+}
+
+export function buildStanding(models: ModelItem[], rankable?: RankableBoard[]): StandingResult {
   // Only records a reader can choose today: a superseded checkpoint is not an
   // option, so ranking it against a current release would be ranking history.
-  const boards = buildLeaderboards(models, { currentOnly: true })
+  // Boards can come from any one evaluator; the default is the laboratory-reported set.
+  const boards: RankableBoard[] = rankable ?? buildLeaderboards(models, { currentOnly: true })
 
   const rankedIds = new Set(boards.flatMap((board) => board.entries.map((entry) => entry.model.id)))
   const ranked = rankedIds.size

@@ -222,6 +222,44 @@ check("contributor guide carries no hardcoded lab enumeration", !/one of:\s*anth
   )
 }
 
+// 11b. Independent benchmark records must be traceable and in range.
+{
+  const ts = require("typescript")
+  const load = (rel) => {
+    const out = ts.transpileModule(read(rel), {
+      compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
+    }).outputText
+    const mod = { exports: {} }
+    new Function("module", "exports", "require", out)(mod, mod.exports, require)
+    return mod.exports
+  }
+  const { independentRecords, INDEPENDENT_EVALUATOR, INDEPENDENT_BENCHMARKS } = load("data/independent-benchmarks.ts")
+  const { modelsData } = load("data/models.ts")
+  const ids = new Set(modelsData.map((m) => m.id))
+  const keys = new Set(INDEPENDENT_BENCHMARKS.map((b) => b.key))
+  const info = new Map(INDEPENDENT_BENCHMARKS.map((b) => [b.key, b]))
+  const problems = []
+  const seen = new Set()
+  for (const record of independentRecords) {
+    if (!ids.has(record.modelId)) problems.push(`${record.modelId}: unknown model`)
+    if (seen.has(record.modelId)) problems.push(`${record.modelId}: duplicate record`)
+    seen.add(record.modelId)
+    if (!/^https:\/\/artificialanalysis\.ai\//.test(record.sourceUrl)) problems.push(`${record.modelId}: source is not the evaluator`)
+    if (!record.evaluatedAs) problems.push(`${record.modelId}: no evaluated-as configuration`)
+    if (record.values.arenaText !== undefined && !/^https:\/\/arena\.ai\//.test(record.arenaSourceUrl || "")) problems.push(`${record.modelId}: arena score without an arena.ai source`)
+    for (const [key, value] of Object.entries(record.values)) {
+      if (!keys.has(key)) problems.push(`${record.modelId}: unknown benchmark ${key}`)
+      const unit = info.get(key)?.unit
+      if (typeof value !== "number" || Number.isNaN(value)) problems.push(`${record.modelId}.${key}: not a number`)
+      else if (unit === "percent" && (value < 0 || value > 100)) problems.push(`${record.modelId}.${key}: percent out of range`)
+      else if (unit === "net" && (value < -100 || value > 100)) problems.push(`${record.modelId}.${key}: net score out of range`)
+      else if (unit === "index" && (value < 0 || value > 100)) problems.push(`${record.modelId}.${key}: index out of range`)
+    }
+  }
+  check("independent records are traceable and in range", problems.length === 0, problems.slice(0, 4).join(" | "))
+  check("independent evaluator has a retrieval date", /^\d{4}-\d{2}-\d{2}$/.test(INDEPENDENT_EVALUATOR.retrievedAt))
+}
+
 // 12. Encoding and placeholder regressions that make a page look unfinished.
 {
   const files = []

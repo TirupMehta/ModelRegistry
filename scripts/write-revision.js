@@ -13,7 +13,7 @@ const fs = require("fs")
 const path = require("path")
 const crypto = require("crypto")
 
-const DATA_FILES = ["../data/models.ts", "../data/companies.ts", "../data/leaderboard.ts", "../data/provider-catalog.ts"]
+const DATA_FILES = ["../data/models.ts", "../data/companies.ts", "../data/leaderboard.ts", "../data/provider-catalog.ts", "../data/independent-benchmarks.ts"]
 const OUT_PATH = path.resolve(__dirname, "../data/revision.ts")
 
 function todayUTC() {

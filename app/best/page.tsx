@@ -4,7 +4,9 @@ import Header from "@/components/header"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import { SITE, breadcrumbList, faqPage } from "@/lib/seo"
-import { TIE_MARGIN_POINTS, buildBestAnswers } from "@/lib/best"
+import { buildBestAnswers } from "@/lib/best"
+import { INDEPENDENT_EVALUATOR } from "@/lib/independent"
+import RankingsSwitcher from "@/components/rankings-switcher"
 import { ArrowLeft, ArrowUpRight } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -32,7 +34,7 @@ export default function BestPage() {
     })),
     {
       q: "What is the best AI model overall?",
-      a: `No model leads every test, so none is called best overall. The leaders by task are listed on this page, each with its score, test version and field size, as of dataset revision ${datasetRevision.datasetVersion}. Pick the task closest to your own work.`,
+      a: `${answers[0]?.answer ?? ""} No model leads every test, so check the task closest to your own work: the leaders differ by task, and the cheapest strong option is not the highest scorer. Dataset revision ${datasetRevision.datasetVersion}.`,
     },
   ]
 
@@ -71,17 +73,19 @@ export default function BestPage() {
           <span className="font-medium text-accent-ink">Best by task</span>
         </nav>
 
+        <RankingsSwitcher current="/best" />
+
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           Which AI model is best for what?
         </h1>
         <p className="text-base text-black/65 dark:text-zinc-400 leading-7 max-w-2xl mb-3">
-          Each answer below is the highest score reported on one named test, among current models
-          that report the same test at the same version. Nothing is blended across tests, because a
-          model that leads one exam can trail another. A lead under {TIE_MARGIN_POINTS} points is
-          shown as a tie.
+          Each answer is the highest score on one named test, among current models that all took that
+          test, run by one independent evaluator with the same tasks and harness. No laboratory chose
+          the test or the settings. Where the number of tasks is small enough that a lead could be
+          noise, the page says which models cannot be separated from the leader.
         </p>
         <p className="text-sm font-sans text-black/50 dark:text-zinc-500 leading-6 max-w-2xl mb-10">
-          Scores are published by the laboratories and are not reproduced here. Dataset revision{" "}
+          Scores are from Artificial Analysis, read {INDEPENDENT_EVALUATOR.retrievedAt}, and are not reproduced by ModelRegistry. Dataset revision{" "}
           {datasetRevision.datasetVersion}. Superseded models are excluded: you cannot choose them
           today.{" "}
           <Link href="/score" className="text-accent-ink hover:underline underline-offset-2">
@@ -160,10 +164,10 @@ export default function BestPage() {
             What is the best AI model overall?
           </h2>
           <p className="text-sm sm:text-base text-black/70 dark:text-zinc-400 leading-7 max-w-2xl">
-            No model leads every test here, so none is called best overall. Different laboratories
-            publish different tests, and most current models report only one or two of them, so an
-            overall order would mostly reflect which tests each laboratory chose to show. Use the
-            task closest to your work, then check the{" "}
+            {answers[0]?.entries[0] ? `${answers[0].entries[0].model.name} has the highest overall score here, ` : ""}
+            but no model leads every test, and the highest scorer is rarely the best value. The leaders
+            above differ by task, and the cost table shows what each point costs. Pick the task
+            closest to your work, then check the{" "}
             <Link href="/compare" className="text-accent-ink hover:underline underline-offset-2">
               head-to-head comparison
             </Link>{" "}

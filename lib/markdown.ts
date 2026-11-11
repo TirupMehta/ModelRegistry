@@ -4,16 +4,11 @@ import { datasetRevision } from "@/data/revision"
 import { SITE_NAME, SITE_URL } from "@/lib/site"
 import { REPO_URL } from "@/lib/github"
 import { formatPrice } from "@/lib/utils"
-import {
-  AGREEMENT_LABEL,
-  CONTESTED_SPREAD,
-  MIN_TESTS_FOR_STANDING,
-  STANDING_VERSION,
-  buildStanding,
-} from "@/lib/standing"
+import { AGREEMENT_LABEL, CONTESTED_SPREAD, MIN_TESTS_FOR_STANDING, STANDING_VERSION } from "@/lib/standing"
+import { buildIndependentStanding } from "@/lib/independent"
 import { LEADERBOARD_VERSION, MIN_COHORT_SIZE, leaderboardStats, positionsFor } from "@/lib/leaderboards"
 import { splitLineup } from "@/lib/currency"
-import { TIE_MARGIN_POINTS, buildBestAnswers } from "@/lib/best"
+import { buildBestAnswers } from "@/lib/best"
 import { buildComparison, compareHref, resolveComparison } from "@/lib/seo"
 
 /**
@@ -843,14 +838,14 @@ ${answer.caveat}`
     .join("\n\n")
   const body = `${frontMatter(
     "Which AI model is best for what?",
-    `Each answer is the highest score reported on one named test among current models that report the same test at the same version. Nothing is blended across tests. A lead under ${TIE_MARGIN_POINTS} points is shown as a tie. Dataset revision ${datasetRevision.datasetVersion}.`,
+    `Each answer is the highest score on one named test among current models that all took that test, run by one independent evaluator (Artificial Analysis) with the same tasks and harness. Where the task count is small enough that a lead could be noise, the models that cannot be separated from the leader are counted. Dataset revision ${datasetRevision.datasetVersion}.`,
   )}
 
 ${sections}
 
 ## What is the best AI model overall?
 
-No model leads every test, so none is called best overall. Use the task closest to your work.
+The highest overall score is the first answer above, but no model leads every test and the highest scorer is rarely the best value. Use the task closest to your work.
 
 ${resourceLinks("/best")}
 `
@@ -858,7 +853,7 @@ ${resourceLinks("/best")}
 }
 
 function scoreDocument(): MarkdownDocument {
-  const standing = buildStanding(modelsData)
+  const standing = buildIndependentStanding(modelsData)
   const lineup = splitLineup(modelsData)
   const { boards, tests } = leaderboardStats(modelsData, { currentOnly: true })
   const disagreement = Math.round(standing.betweenTestSd * 100)
@@ -992,7 +987,7 @@ ${resourceLinks("/score")}
 }
 
 function trustDocument(): MarkdownDocument {
-  const standing = buildStanding(modelsData)
+  const standing = buildIndependentStanding(modelsData)
   const lineup = splitLineup(modelsData)
   const disagreement = Math.round(standing.betweenTestSd * 100)
 

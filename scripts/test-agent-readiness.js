@@ -85,14 +85,29 @@ const seo = loadTsModule("../lib/seo.ts", {
   "@/lib/benchmarks": benchmarks,
   "@/lib/currency": currency,
 })
+const independentData = loadTsModule("../data/independent-benchmarks.ts")
+const independent = loadTsModule("../lib/independent.ts", {
+  ...registry,
+  "@/data/independent-benchmarks": independentData,
+  "./currency": currency,
+  "./benchmarks": benchmarks,
+  "./leaderboards": leaderboards,
+  "./standing": standing,
+  "@/lib/currency": currency,
+  "@/lib/benchmarks": benchmarks,
+  "@/lib/leaderboards": leaderboards,
+  "@/lib/standing": standing,
+})
 const best = loadTsModule("../lib/best.ts", {
   ...registry,
   "./currency": currency,
   "./leaderboards": leaderboards,
   "./seo": seo,
+  "./independent": independent,
   "@/lib/currency": currency,
   "@/lib/leaderboards": leaderboards,
   "@/lib/seo": seo,
+  "@/lib/independent": independent,
 })
 
 // Extend the shared registry so downstream modules (markdown) can resolve them.
@@ -114,6 +129,8 @@ Object.assign(registry, {
   "@/lib/standing": standing,
   "@/lib/seo": seo,
   "@/lib/best": best,
+  "./independent": independent,
+  "@/lib/independent": independent,
 })
 
 const { prefersMarkdown } = loadTsModule("../lib/content-negotiation.ts")

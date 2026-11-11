@@ -2,7 +2,8 @@ import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { formatPrice } from "@/lib/utils"
 import { datasetRevision } from "@/data/revision"
-import { buildStanding, STANDING_VERSION } from "@/lib/standing"
+import { STANDING_VERSION } from "@/lib/standing"
+import { buildIndependentStanding } from "@/lib/independent"
 import { AGREEMENT_LABEL } from "@/lib/standing"
 import { splitLineup } from "@/lib/currency"
 
@@ -49,7 +50,7 @@ EXECUTIVE KNOWLEDGE SUMMARY (GEO GROUNDING)
     }
   })
 
-  const standing = buildStanding(modelsData)
+  const standing = buildIndependentStanding(modelsData)
   const lineup = splitLineup(modelsData)
 
   text += `\n===============================================================================\n`

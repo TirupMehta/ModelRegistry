@@ -41,7 +41,6 @@ export default function Footer() {
               <h2 className="mb-1 text-[11px] font-medium text-black/50 dark:text-zinc-500">Explore</h2>
               <Link href="/flagships" className={linkClass}>Flagships</Link>
               <Link href="/leaderboard" className={linkClass}>Leaderboard</Link>
-              <Link href="/best" className={linkClass}>Best by task</Link>
               <Link href="/score" className={linkClass}>Leaderboards</Link>
               <Link href="/compare" className={linkClass}>Comparisons</Link>
               <Link href="/companies" className={linkClass}>Labs</Link>

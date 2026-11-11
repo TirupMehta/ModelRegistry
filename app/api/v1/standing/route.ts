@@ -2,7 +2,8 @@ import { NextResponse } from "next/server"
 import { createHash } from "crypto"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
-import { buildStanding, STANDING_VERSION } from "@/lib/standing"
+import { STANDING_VERSION } from "@/lib/standing"
+import { INDEPENDENT_EVALUATOR, buildIndependentStanding } from "@/lib/independent"
 import { splitLineup } from "@/lib/currency"
 import { leaderboardStats, LEADERBOARD_VERSION, MIN_COHORT_SIZE } from "@/lib/leaderboards"
 import { SITE_URL } from "@/lib/site"
@@ -22,7 +23,7 @@ export const dynamic = "force-dynamic"
  * can pin both and know exactly which standing it received.
  */
 export async function GET() {
-  const standing = buildStanding(modelsData)
+  const standing = buildIndependentStanding(modelsData)
   const lineup = splitLineup(modelsData)
   const { tests } = leaderboardStats(modelsData, { currentOnly: true })
 
@@ -36,6 +37,13 @@ export async function GET() {
       html: `${SITE_URL}/score`,
       markdown: `${SITE_URL}/api/markdown/score`,
       method: `${SITE_URL}/methodology`,
+    },
+    basis: {
+      evaluator: INDEPENDENT_EVALUATOR.name,
+      suite: INDEPENDENT_EVALUATOR.suite,
+      retrievedAt: INDEPENDENT_EVALUATOR.retrievedAt,
+      method: INDEPENDENT_EVALUATOR.method,
+      laboratoryReportedScoresIncluded: false,
     },
     rules: {
       minTestsForStanding: 2,

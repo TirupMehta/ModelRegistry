@@ -285,7 +285,7 @@
         "operationId": "getStanding",
         "tags": ["agents"],
         "summary": "Cross-test standing of current models",
-        "description": "Published summary of the per-test leaderboards: per-model percentile standing across at least two tests, tier, spread between tests, agreement label, auditability, and the cohorts behind it. Only current (not superseded, not retired) models are ranked. Rows in the same tier are not separated by the evidence; `place` is sort order only.",
+        "description": "Published summary of the per-test leaderboards: per-model percentile standing across at least two tests, tier, spread between tests, agreement label, auditability, and the cohorts behind it. Computed from independent results only (Artificial Analysis, same tasks and harness for every model); laboratory-reported scores are excluded. Only current (not superseded, not retired) models are ranked. Rows in the same tier are not separated by the evidence; `place` is sort order only.",
         "responses": {
           "200": {
             "description": "Standing, cohorts and single-test positions.",

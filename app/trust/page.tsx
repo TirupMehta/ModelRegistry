@@ -10,7 +10,8 @@ import { BADGE_KINDS, badgeInventory, type BadgeKind } from "@/lib/badges"
 import { compareBenchmarks } from "@/lib/benchmarks"
 import { auditEvidence } from "@/lib/evidence"
 import { LEADERBOARD_VERSION, MIN_COHORT_SIZE } from "@/lib/leaderboards"
-import { STANDING_VERSION, buildStanding } from "@/lib/standing"
+import { STANDING_VERSION } from "@/lib/standing"
+import { buildIndependentStanding } from "@/lib/independent"
 import { ArrowLeft, ArrowUpRight, Check, ChevronDown, Minus } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -58,7 +59,7 @@ export default function TrustPage() {
 
   const audit = auditEvidence(modelsData)
   const multiDocument = audit.total - audit.grades.C
-  const standing = buildStanding(modelsData)
+  const standing = buildIndependentStanding(modelsData)
 
   const faq = [
     {

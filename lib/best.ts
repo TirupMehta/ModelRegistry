@@ -1,6 +1,6 @@
 import { type ModelItem, modelsData } from "@/data/models"
 import { isCurrent } from "./currency"
-import { buildLeaderboards, type Leaderboard } from "./leaderboards"
+import { INDEPENDENT_EVALUATOR, buildIndependentBoards, valueRows, type IndependentBoard } from "./independent"
 import { outputClass } from "./seo"
 
 /**
@@ -49,63 +49,107 @@ export interface BestAnswer {
 }
 
 const QUESTION_FOR: Record<string, { question: string; use: string }> = {
-  sweBench: {
+  intelligenceIndex: {
+    question: "Best AI model overall",
+    use: "the evaluator's blend of nine tests across knowledge work, coding, science and general knowledge",
+  },
+  arenaText: {
+    question: "Most preferred AI model in blind chat votes",
+    use: "what real users prefer in blind side-by-side chats, which is taste and usefulness rather than correctness",
+  },
+  frontierCode: {
     question: "Best AI model for software engineering",
-    use: "fixing real repository issues",
+    use: "changes to real open-source repositories that a maintainer would merge",
   },
-  terminalBench: {
+  terminalBench4: {
     question: "Best AI model for agentic command-line work",
-    use: "multi-step terminal tasks",
+    use: "hard multi-step terminal tasks",
   },
-  gpqa: {
-    question: "Best AI model for graduate-level science questions",
-    use: "graduate-level science reasoning",
+  hleDiamond: {
+    question: "Best AI model for expert-level questions",
+    use: "expert-written reasoning and knowledge questions",
   },
-  mmluPro: {
-    question: "Best AI model for broad knowledge",
-    use: "broad academic knowledge",
+  critPt: {
+    question: "Best AI model for research-level physics",
+    use: "research-level physics problems solved with code",
+  },
+  terminalBenchScience: {
+    question: "Best AI model for scientific workflows",
+    use: "expert-authored research workflows run in a terminal",
+  },
+  automationBench: {
+    question: "Best AI model for business workflow automation",
+    use: "multi-step tasks across simulated business software",
+  },
+  aaBriefcase: {
+    question: "Best AI model for long business deliverables",
+    use: "spreadsheets, decks and memos produced over a long task",
+  },
+  omniscience: {
+    question: "Most factually reliable AI model",
+    use: "correct answers minus hallucinations, with no penalty for declining to answer",
+  },
+  gdpPdf: {
+    question: "Best AI model for long professional documents",
+    use: "reasoning over long real-world documents",
   },
 }
+
+/** Order shown on the page: the overall answer first, then by what people ask for most. */
+const QUESTION_ORDER = [
+  "intelligenceIndex",
+  "arenaText",
+  "frontierCode",
+  "terminalBench4",
+  "hleDiamond",
+  "automationBench",
+  "omniscience",
+  "critPt",
+  "terminalBenchScience",
+  "aaBriefcase",
+  "gdpPdf",
+]
 
 function money(value: number): string {
   if (value < 0.1) return `$${value.toFixed(3)}`
   return value < 1 ? `$${value.toFixed(2)}` : `$${value.toFixed(value % 1 === 0 ? 0 : 2)}`
 }
 
-function fromBoard(board: Leaderboard): BestAnswer | null {
-  const meta = QUESTION_FOR[board.key]
+function fromBoard(board: IndependentBoard): BestAnswer | null {
+  const meta = QUESTION_FOR[board.info.key]
   if (!meta || board.entries.length === 0) return null
+  const first = board.entries[0]
   const top = board.entries.slice(0, 3).map((entry) => ({
     model: entry.model,
-    value: entry.reading.score,
+    value: entry.score,
     rank: entry.rank,
   }))
-  const first = board.entries[0]
-  const second = board.entries[1]
-  const tied =
-    Boolean(second) &&
-    (first.reading.value as number) - (second.reading.value as number) < TIE_MARGIN_POINTS
+  const tiedOthers = board.entries.filter((entry) => entry !== first && entry.tiedWithLeader)
+  const tied = tiedOthers.length > 0
 
   const open = board.entries.find((entry) => entry.model.openWeights)
   const openLeader =
     open && !first.model.openWeights
-      ? { model: open.model, value: open.reading.score, rank: open.rank }
+      ? { model: open.model, value: open.score, rank: open.rank }
       : null
 
-  const lead = tied
-    ? `${first.model.name} (${first.reading.score}) and ${second.model.name} (${second.reading.score}) are tied within ${TIE_MARGIN_POINTS} points`
-    : `${first.model.name} reports the highest score, ${first.reading.score}`
-
+  const sampling = board.info.tasks && tiedOthers.length > 0
+    ? `With ${board.info.tasks} tasks, the sampling error is large enough that ${tiedOthers.length} other model${tiedOthers.length === 1 ? "" : "s"} cannot be separated from ${first.model.name}.`
+    : ""
+  const lead = `${first.model.name} scores highest, ${first.score}`
   return {
     id: board.id,
-    question: `${meta.question}${board.versionStated ? ` (${board.test})` : ""}`,
-    answer: `On ${board.test}, ${lead}, among ${board.entries.length} current models that report this test. Scores are laboratory-reported.`,
+    question: meta.question,
+    answer:
+      board.info.key === "arenaText"
+        ? `${first.model.name} has the highest Elo, ${first.score}, of ${board.entries.length} current models in arena.ai's blind human-preference votes. ${sampling || (tiedOthers.length > 0 ? `${tiedOthers.length} other model${tiedOthers.length === 1 ? "" : "s"} sit within the printed error of it.` : "")}`.trim()
+        : `On ${board.test}, ${lead}, of ${board.entries.length} current models, each run by ${INDEPENDENT_EVALUATOR.name} on the same tasks. ${sampling}`.trim(),
     measure: board.test,
     field: board.entries.length,
     entries: top,
     openLeader,
     tied,
-    caveat: `${board.test} measures ${meta.use}. It is one test: a model that leads here can trail on another, and laboratories choose which tests to publish.`,
+    caveat: `${board.test} measures ${meta.use}. It is one test, and the evaluator's configuration for each model may differ in reasoning effort.`,
     href: "/score",
   }
 }
@@ -171,15 +215,47 @@ function contextAnswer(models: ModelItem[]): BestAnswer | null {
 
 export function buildBestAnswers(models: ModelItem[] = modelsData): BestAnswer[] {
   const current = models.filter(isCurrent)
-  const boards = buildLeaderboards(models, { currentOnly: true })
+  const boards = buildIndependentBoards(models)
   const answers: BestAnswer[] = []
-  for (const board of boards) {
+  for (const key of QUESTION_ORDER) {
+    const board = boards.find((candidate) => candidate.info.key === key)
+    if (!board) continue
     const answer = fromBoard(board)
     if (answer) answers.push(answer)
   }
+  const value = valueAnswer()
+  if (value) answers.push(value)
   const price = priceAnswer(current)
   if (price) answers.push(price)
   const context = contextAnswer(current)
   if (context) answers.push(context)
   return answers
+}
+
+/** Best result per dollar: the cheapest model on the cost frontier that is still near the top. */
+function valueAnswer(): BestAnswer | null {
+  const rows = valueRows().filter((row) => row.onFrontier)
+  if (rows.length < 3) return null
+  const sorted = [...rows].sort((a, b) => b.index - a.index)
+  const entries = sorted.slice(0, 3).map((row, index) => ({
+    model: row.model,
+    value: `index ${row.index} at ${money(row.costPerTask)} per task`,
+    rank: index + 1,
+  }))
+  const cheapestAbove50 = [...rows].filter((r) => r.index >= 50).sort((a, b) => a.costPerTask - b.costPerTask)[0]
+  return {
+    id: "value",
+    question: "Best AI model for the money",
+    answer: cheapestAbove50
+      ? `${cheapestAbove50.model.name} is the cheapest model to score 50 or more on the independent Intelligence Index, at ${money(cheapestAbove50.costPerTask)} per task against ${money(sorted[0].costPerTask)} for ${sorted[0].model.name}, the highest scorer.`
+      : `${sorted[0].model.name} scores highest on the cost frontier.`,
+    measure: "Intelligence Index against evaluator cost per task",
+    field: rows.length,
+    entries,
+    openLeader: null,
+    tied: false,
+    caveat:
+      "The frontier lists models where no other model scores higher for less. Cost per task counts the reasoning tokens a model spends, so it is not the same as price per token.",
+    href: "/score",
+  }
 }
