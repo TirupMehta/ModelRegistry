@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
+import { independentRecords } from "@/data/independent-benchmarks"
 import { formatPrice, formatDate } from "@/lib/utils"
 import { ShareCardModal } from "@/components/share-card-modal"
 import VerificationSection from "@/components/verification-section"
@@ -38,6 +39,7 @@ interface ModelPageViewProps {
 }
 
 export default function ModelPageView({ model, siblings, folio, folioId, children }: ModelPageViewProps) {
+  const independentTerminalBench = independentRecords.find((record) => record.modelId === model.id)?.values.terminalBench4
   const [copiedLink, setCopiedLink] = useState(false)
   const [copiedCode, setCopiedCode] = useState(false)
   const [isShareStudioOpen, setIsShareStudioOpen] = useState(false)
@@ -307,6 +309,11 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[var(--surface-raised)] leading-relaxed">
                     <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1">TERMINAL-BENCH</div>
                     <div className="text-base font-semibold text-black dark:text-white tracking-wide">{model.benchmarks.terminalBench}</div>
+                    {independentTerminalBench !== undefined && (
+                      <div className="mt-1.5 text-[11px] leading-snug text-black/55 dark:text-zinc-400">
+                        Independent run: <strong className="font-semibold text-black dark:text-white">{independentTerminalBench.toFixed(1)}%</strong> on Terminal-Bench 4.0
+                      </div>
+                    )}
                   </div>
                 )}
                 {model.benchmarks.aime2024 && (

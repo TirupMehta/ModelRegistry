@@ -5,19 +5,21 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import { SITE, breadcrumbList, faqPage } from "@/lib/seo"
 import { buildBestAnswers } from "@/lib/best"
-import { INDEPENDENT_EVALUATOR } from "@/lib/independent"
+import { INDEPENDENT_EVALUATOR, buildIndependentBoards } from "@/lib/independent"
+import { modelsData } from "@/data/models"
+import ModelPicker, { type PickerModel, type PickerTest } from "@/components/model-picker"
 import RankingsSwitcher from "@/components/rankings-switcher"
 import { ArrowLeft, ArrowUpRight } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Best AI model by task: coding, science, price, context",
   description:
-    "Which AI model leads each test right now, with the score, the version, the size of the field and the runners-up. Laboratory-reported scores on one named test at a time, never a blended number.",
+    "Which AI model leads each test right now, from independent results run on the same tasks for every model, with the score, the size of the field, the runners-up and which models are statistically tied.",
   alternates: { canonical: `${SITE}/best` },
   openGraph: {
     title: "Best AI model by task",
     description:
-      "The highest reported score on each named test among current models, with the field size and the runners-up.",
+      "The highest independent score on each named test among current models, with the field size, the runners-up and the ties.",
     url: `${SITE}/best`,
     siteName: "ModelRegistry",
     type: "article",
@@ -26,6 +28,43 @@ export const metadata: Metadata = {
 
 export default function BestPage() {
   const answers = buildBestAnswers()
+  const boards = buildIndependentBoards(modelsData)
+  const TASK_NAME: Record<string, string> = {
+    intelligenceIndex: "Anything (overall score)",
+    frontierCode: "Writing and fixing code",
+    terminalBench4: "Agentic command-line work",
+    hleDiamond: "Hard expert questions",
+    automationBench: "Automating business workflows",
+    omniscience: "Factual reliability",
+    critPt: "Research-level physics",
+    terminalBenchScience: "Scientific workflows",
+    aaBriefcase: "Long business deliverables",
+    gdpPdf: "Long professional documents",
+    arenaText: "Everyday chat (human preference)",
+  }
+  const pickerTests: PickerTest[] = boards
+    .filter((board) => TASK_NAME[board.info.key])
+    .map((board) => ({
+      key: board.info.key,
+      label: board.test,
+      task: TASK_NAME[board.info.key],
+      unit: board.info.unit,
+    }))
+  const pickerModels = new Map<string, PickerModel>()
+  for (const board of boards) {
+    for (const entry of board.entries) {
+      const row = pickerModels.get(entry.model.id) ?? {
+        id: entry.model.id,
+        name: entry.model.name,
+        lab: entry.model.companyName,
+        open: entry.model.openWeights,
+        cost: typeof entry.record.costPerTask === "number" ? entry.record.costPerTask : null,
+        scores: {},
+      }
+      row.scores[board.info.key] = entry.value
+      pickerModels.set(entry.model.id, row)
+    }
+  }
 
   const faq = [
     ...answers.map((answer) => ({
@@ -93,6 +132,24 @@ export default function BestPage() {
           </Link>
           .
         </p>
+
+        <ModelPicker tests={pickerTests} models={[...pickerModels.values()]} />
+
+        <nav aria-label="Jump to a question" className="mb-10 flex flex-wrap gap-2">
+          {answers.map((answer) => (
+            <a
+              key={answer.id}
+              href={`#${answer.id.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`}
+              className="inline-flex min-h-9 items-center rounded-full border border-black/10 px-3 text-xs font-sans text-black/65 transition-colors hover:text-black dark:border-white/15 dark:text-zinc-400 dark:hover:text-white"
+            >
+              {answer.question
+                .replace(/^Best AI model for /, "")
+                .replace(/^Best AI model /, "")
+                .replace(/^Most /, "")
+                .replace(/^Cheapest AI model by /, "Cheapest ")}
+            </a>
+          ))}
+        </nav>
 
         <div className="space-y-10">
           {answers.map((answer) => (

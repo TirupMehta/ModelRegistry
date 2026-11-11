@@ -26,8 +26,8 @@ export default function RankingsSwitcher({ current }: { current: (typeof VIEWS)[
             aria-current={active ? "page" : undefined}
             className={
               active
-                ? "rounded-full bg-black px-3 py-1.5 font-medium text-white dark:bg-white dark:text-black"
-                : "rounded-full border border-black/10 px-3 py-1.5 text-black/60 transition-colors hover:text-black dark:border-white/15 dark:text-zinc-400 dark:hover:text-white"
+                ? "inline-flex min-h-9 items-center rounded-full bg-black px-3.5 font-medium text-white dark:bg-white dark:text-black"
+                : "inline-flex min-h-9 items-center rounded-full border border-black/10 px-3.5 text-black/60 transition-colors hover:text-black dark:border-white/15 dark:text-zinc-400 dark:hover:text-white"
             }
           >
             {view.label}
