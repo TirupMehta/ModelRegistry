@@ -176,8 +176,14 @@ html {
   scrollbar-gutter: stable;
 }
 
-/* Sizes are explicit tokens (see tailwind.config.ts). There is no root
-   scale multiplier, so rem and px mean the same thing on every screen. */
+/* 110% root scale on tablet and desktop. Every size on the site is a rem
+   token (see tailwind.config.ts), so type, spacing and containers all scale
+   together; there are no pixel font sizes left to fall out of step. */
+@media (min-width: 768px) {
+  html {
+    font-size: 110%;
+  }
+}
 
 body {
   overflow-x: hidden;

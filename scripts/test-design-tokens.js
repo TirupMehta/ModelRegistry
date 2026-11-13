@@ -50,9 +50,6 @@ for (const [name, re] of rules) {
   check(name, offenders)
 }
 
-const css = fs.readFileSync(path.join(ROOT, "app", "globals.css"), "utf8")
-check("no root font-size multiplier", /html\s*\{[^}]*font-size:\s*\d+%/.test(css) ? ["app/globals.css"] : [])
-
 if (failures) {
   console.error(`\n❌ test-design-tokens failed with ${failures} failure(s).`)
   process.exit(1)
