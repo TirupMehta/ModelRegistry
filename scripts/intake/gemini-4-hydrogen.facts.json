@@ -1,0 +1,86 @@
+{
+  "note": "What an extractor read from the lab's pages. Every claim carries the page, the exact sentence and the tokens that sentence must contain. intake.mjs trusts none of it until it finds the sentence on the live page.",
+  "lab": { "companyId": "google", "companyName": "Google DeepMind", "groupComment": "GOOGLE DEEPMIND (Gemini 4 fast tier)" },
+  "maintainer": {
+    "id": "gemini-4-hydrogen",
+    "name": "Gemini 4 Hydrogen",
+    "version": "4.0-Hydrogen",
+    "category": "flagship",
+    "categoryLabel": "Fast Agentic Execution",
+    "statusBadge": "GA · LIVE",
+    "isCompanyFlagship": false,
+    "openWeights": false,
+    "extraModalities": ["Code"],
+    "links": { "announcement": "blog", "playground": "https://aistudio.google.com", "apiDocs": "model" }
+  },
+  "sources": {
+    "blog": { "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-hydrogen/", "publisher": "Google DeepMind", "title": "Introducing Gemini 4 Hydrogen for Agentic Workflows (published Nov 12, 2026)", "publishedAt": "2026-11-12", "sourceType": "announcement" },
+    "model": { "url": "https://ai.google.dev/gemini-api/docs/models/gemini-4-hydrogen", "publisher": "Google DeepMind", "title": "Gemini 4 Hydrogen model page (model code, token limits, capabilities, thinking levels)", "sourceType": "api-docs" },
+    "price": { "url": "https://ai.google.dev/gemini-api/docs/pricing", "publisher": "Google DeepMind", "title": "Gemini API pricing: Gemini 4 Hydrogen at $1.50 input / $7.50 output per 1M tokens", "sourceType": "pricing", "note": "Standard paid tier. Batch and Flex tiers are priced lower and are not the list price." },
+    "card": { "url": "https://deepmind.google/models/model-cards/gemini-4-hydrogen/", "publisher": "Google DeepMind", "title": "Gemini 4 Hydrogen model card (published 12 November 2026)", "publishedAt": "2026-11-12", "sourceType": "model-card", "note": "States the model is adapted from Gemini 4 Carbon and the March 2026 knowledge cutoff." },
+    "aaModel": { "url": "https://artificialanalysis.ai/models/gemini-4-hydrogen", "publisher": "Artificial Analysis", "title": "Artificial Analysis: Gemini 4 Hydrogen", "sourceType": "benchmark" },
+    "aaCompare": { "url": "https://artificialanalysis.ai/models/releases/comparisons/claude-fable-5-2-vs-gemini-4-hydrogen", "publisher": "Artificial Analysis", "title": "Artificial Analysis: Gemini 4 Hydrogen (Xhigh) against Claude Fable 5.2, both configurations", "sourceType": "benchmark", "note": "Independent evaluator, same harness, read as the xhigh configuration." }
+  },
+  "independent": { "source": "aaCompare", "column": "Gemini 4 Hydrogen (Xhigh)" },
+  "fields": {
+    "releaseDate": {
+      "value": "2026-11-12",
+      "date": "2026-11-12",
+      "evidence": [{ "source": "card", "quote": "Published 12 November 2026", "title": "Gemini 4 Hydrogen model card (published 12 November 2026)" }]
+    },
+    "contextWindow": {
+      "value": "1,048,576 tokens (unified input and output)",
+      "tokens": 1048576,
+      "evidence": [{ "source": "model", "quote": "Context window (unified input and output token limit)** 1,048,576", "mustContain": ["1,048,576"], "title": "Gemini 4 Hydrogen model page: context window (unified input and output token limit) 1,048,576" }]
+    },
+    "maxOutputTokens": {
+      "value": "65,536 tokens (up to 1,048,576 with long decode)",
+      "evidence": [
+        { "source": "model", "quote": "Max output** 65,536 (default synchronous) / up to 1,048,576 (with", "mustContain": ["65,536", "1,048,576"], "title": "Gemini 4 Hydrogen model page: max output 65,536 default synchronous, up to 1,048,576 with long decode" },
+        { "source": "card", "quote": "up to 64K default synchronous output tokens / up to 1M via background long decode", "mustContain": ["64K", "1M"], "title": "Gemini 4 Hydrogen model card: up to 64K default synchronous output, up to 1M via background long decode" }
+      ]
+    },
+    "parameters": {
+      "value": "Undisclosed (adapted from Gemini 4 Carbon)",
+      "evidence": [{ "source": "card", "quote": "Gemini 4 Hydrogen is adapted from Gemini 4 Carbon.", "mustContain": ["Carbon"], "title": "Gemini 4 Hydrogen model card: adapted from Gemini 4 Carbon, architecture described in the Carbon card; size not disclosed" }]
+    },
+    "license": {
+      "value": "Proprietary API",
+      "evidence": [{ "source": "aaModel", "quote": "Gemini 4 Hydrogen xhigh • Proprietary model", "mustContain": ["Proprietary"], "title": "Artificial Analysis: proprietary model, weights not publicly available" }]
+    },
+    "pricing": {
+      "value": { "input": 1.5, "output": 7.5 },
+      "evidence": [
+        { "source": "price", "anchor": "## Gemini 4 Hydrogen", "quote": "Input price * Free of charge * $1.50 --- * Output price (including thinking tokens) * Free of charge * $7.50", "mustContain": ["$1.50", "$7.50"], "title": "Gemini API pricing: Gemini 4 Hydrogen, standard tier, $1.50 input and $7.50 output per 1M tokens" },
+        { "source": "blog", "quote": "priced flat across its entire 1 million-token context window at $1.50 per million input tokens and $7.50 per million output tokens", "mustContain": ["$1.50", "$7.50"], "title": "Introducing Gemini 4 Hydrogen: priced flat across its entire 1 million-token context window at $1.50/$7.50 per 1M tokens" }
+      ]
+    },
+    "modalities": {
+      "value": ["Text", "Vision", "Audio", "Video"],
+      "evidence": [{ "source": "model", "quote": "Inputs** Text, Image, Video, Audio, and PDF", "mustContain": ["Image", "Video", "Audio"], "title": "Gemini 4 Hydrogen model page: inputs text, image, video, audio and PDF; output text" }]
+    },
+    "benchmarks": {
+      "value": { "terminalBench": "57.0% (Terminal-Bench 4.1, cheating-adjusted)" },
+      "evidence": [
+        { "source": "card", "quote": "Terminal-Bench 4.1 Cheating-adjusted 57.0%", "mustContain": ["57.0%"], "title": "Gemini 4 Hydrogen model card: Terminal-Bench 4.1 (cheating-adjusted) 57.0%" },
+        { "source": "blog", "quote": "more than tripling Terminal-Bench 4.1 scores (57% vs. 18.2%)", "mustContain": ["57%", "18.2%"], "title": "Introducing Gemini 4 Hydrogen: more than tripling Terminal-Bench 4.1 scores against 3.8 Flash, 57% vs 18.2%" },
+        { "source": "aaCompare", "quote": "Terminal-Bench 4.0 59.6% 61.6% 59.6% 55.1% 54.5% 53.5%", "mustContain": ["53.5%"], "title": "Artificial Analysis: Terminal-Bench 4.0 at 53.5% on the same harness the registry uses for other models" }
+      ]
+    },
+    "isCompanyFlagship": {
+      "value": false,
+      "evidence": [{ "source": "blog", "quote": "While our frontier models, Gemini 4 Carbon and Gemini 4 Argon , excel at deep, long-horizon reasoning on your hardest problems, Hydrogen is built for rapid execution", "mustContain": ["Carbon", "Argon", "Hydrogen"], "title": "Introducing Gemini 4 Hydrogen: Carbon and Argon stay the frontier models for long-horizon reasoning, Hydrogen is built for rapid execution", "note": "Hydrogen does not take the flagship role: Google positions Carbon and Argon as the frontier tier." }]
+    },
+    "isLatestCheckpoint": {
+      "rule": "newest release in the lab's lineup",
+      "evidence": [{ "source": "blog", "quote": "Starting today, Hydrogen is rolling out globally", "mustContain": ["today"], "title": "Introducing Gemini 4 Hydrogen: available to everyone today, the newest Gemini 4 release" }]
+    }
+  },
+  "changeLog": {
+    "summary": "Initial registry entry. Rolling out the same day across the lab's developer, enterprise and consumer surfaces, with a March 2026 knowledge cutoff. Takes the latest-checkpoint flag from the previous newest release.",
+    "evidence": [
+      { "source": "blog", "quote": "Starting today, Hydrogen is rolling out globally across our developer, enterprise, and consumer surfaces", "mustContain": ["rolling out globally"] },
+      { "source": "card", "quote": "The knowledge cutoff for Gemini 4 Hydrogen is March 2026", "mustContain": ["March 2026"] }
+    ]
+  }
+}
