@@ -11,6 +11,7 @@ import { formatDate } from "@/lib/utils"
 import { folioFor, newestReleaseMonth } from "@/lib/registry"
 import { selectFeedback, tapFeedback, successFeedback } from "@/lib/feedback"
 import { ArrowUpRight, Copy, Check, X, Search, SearchX } from "lucide-react"
+import LabMark from "@/components/lab-mark"
 import ModelFilterControls from "@/components/model-filter-controls"
 import { DEFAULT_MODEL_FILTERS, filterModels, type ModelFilters } from "@/lib/model-filters"
 
@@ -480,11 +481,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     {/* Desktop ledger row (lg and up): name and facts on one line, summary below. */}
                     <div className="hidden lg:block">
                       <div className="flex items-baseline gap-3">
-                        <span
-                          aria-hidden="true"
-                          className="h-2 w-2 shrink-0 self-center rounded-[3px]"
-                          style={{ backgroundColor: companies[model.companyId]?.accentColor || "rgb(var(--accent-rgb))" }}
-                        />
+                        <LabMark companyId={model.companyId} size="sm" className="self-center" />
                         <span className="min-w-0 truncate font-display text-title font-semibold tracking-tight text-fg-strong transition-colors duration-150 group-hover:text-accent-ink">
                           {model.name}
                         </span>
@@ -501,13 +498,13 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                           className="shrink-0 self-center text-fg-muted opacity-50 transition-[opacity,transform,color] duration-150 group-hover:translate-x-px group-hover:-translate-y-px group-hover:text-accent-ink group-hover:opacity-100"
                         />
                       </div>
-                      <p className="mt-1 truncate pl-5 pr-8 text-small text-fg-muted">
+                      <p className="mt-1 truncate pl-9 pr-8 text-small text-fg-muted">
                         <span className="text-fg">{model.categoryLabel}</span>
                         <span aria-hidden="true"> · </span>
                         {summarize(model.highlight)}
                       </p>
                       {specializedDrop && activeTab === "flagships" && (
-                        <p className="mt-1 truncate pl-5 text-small text-fg-muted">
+                        <p className="mt-1 truncate pl-9 text-small text-fg-muted">
                           Also from this lab: <span className="text-fg">{specializedDrop.name}</span> ({specializedDrop.categoryLabel})
                         </p>
                       )}
@@ -521,9 +518,9 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
           <div className="hidden border-t border-black/10 lg:block dark:border-white/[0.08]" />
         </div>
 
-        {/* Labs: a raised panel so it reads as its own section, one tile per lab. */}
+        {/* Labs: soft tiles, the same surface as the spec tiles on a model page. */}
         <TextWithBlur delay={300}>
-          <section aria-labelledby="labs-heading" className="mt-20 rounded-2xl border border-black/10 bg-[var(--surface-raised)] p-5 shadow-sm sm:p-7 dark:border-white/[0.08]">
+          <section aria-labelledby="labs-heading" className="mt-16">
             <div className="flex items-baseline justify-between gap-3">
               <h2 id="labs-heading" className="font-display text-heading font-semibold tracking-tight text-fg-strong">
                 Latest flagship by lab
@@ -532,8 +529,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                 All labs
               </Link>
             </div>
-            <p className="mt-1 text-small text-fg-muted">The model each lab currently leads with.</p>
-            <ul className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
               {Object.values(companies).map((company) => {
                 const flagship = modelsData.find((m) => m.companyId === company.id && m.isCompanyFlagship)
                 if (!flagship) return null
@@ -541,19 +537,16 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                   <li key={company.id}>
                     <Link
                       href={`/models/${flagship.id}`}
-                      className="group flex h-full items-start gap-3 rounded-lg bg-black/[0.025] px-3.5 py-3 transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
+                      className="group flex h-full items-center gap-3 rounded-lg bg-black/[0.025] px-3.5 py-3 transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
                     >
-                      <span
-                        aria-hidden="true"
-                        className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-[3px]"
-                        style={{ backgroundColor: company.accentColor || "rgb(var(--accent-rgb))" }}
-                      />
+                      <LabMark companyId={company.id} />
                       <span className="min-w-0">
-                        <span className="block text-small text-fg-muted">{company.shortName}</span>
                         <span className="block truncate text-body font-semibold text-fg-strong transition-colors group-hover:text-accent-ink">
                           {flagship.name}
                         </span>
-                        <span className="block text-small tabular-nums text-fg-muted">{formatDate(flagship.releaseDate)}</span>
+                        <span className="block truncate text-small text-fg-muted">
+                          {company.shortName} · {formatDate(flagship.releaseDate)}
+                        </span>
                       </span>
                     </Link>
                   </li>
@@ -563,33 +556,40 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
           </section>
         </TextWithBlur>
 
-        {/* Use the data: an inverse band closes the page and reads as a different kind of section. */}
+        {/* Use the data: the same tile surface, laid out as four endpoints. */}
         <TextWithBlur delay={320}>
-          <section aria-labelledby="data-heading" className="mt-6 rounded-2xl bg-[#111215] p-5 text-white sm:p-7 dark:bg-white/[0.06]">
+          <section aria-labelledby="data-heading" className="mt-16">
             <div className="flex items-baseline justify-between gap-3">
-              <h2 id="data-heading" className="font-display text-heading font-semibold tracking-tight text-white">
+              <h2 id="data-heading" className="font-display text-heading font-semibold tracking-tight text-fg-strong">
                 Use the data
               </h2>
-              <Link href="/docs" className="shrink-0 text-small font-medium text-white/80 underline-offset-4 hover:text-white hover:underline">
+              <Link href="/docs" className="shrink-0 text-small font-medium text-accent-ink underline-offset-4 hover:underline">
                 API docs
               </Link>
             </div>
-            <p className="mt-1 text-small text-white/70">Free, no key. The same records as this page.</p>
-            <ul className="mt-5 grid grid-cols-1 gap-x-8 border-t border-white/15 sm:grid-cols-2">
+            <p className="mt-1 text-small text-fg-muted">Free, no key. The same records as this page.</p>
+            <ul className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 { label: "JSON API", path: "/api/v1/models" },
                 { label: "RSS feed", path: "/rss.xml" },
                 { label: "For AI agents", path: "/llms.txt" },
               ].map((item) => (
-                <li key={item.path} className="border-b border-white/15">
-                  <a href={item.path} target="_blank" rel="noopener noreferrer" className="group flex items-baseline gap-3 py-3 text-small">
-                    <span className="font-medium text-white">{item.label}</span>
-                    <span className="ml-auto truncate font-mono text-white/70 group-hover:text-white">{item.path}</span>
-                    <ArrowUpRight size={13} aria-hidden="true" className="shrink-0 self-center text-white/60 group-hover:text-white" />
+                <li key={item.path}>
+                  <a
+                    href={item.path}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block h-full rounded-lg bg-black/[0.025] px-3.5 py-3 transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
+                  >
+                    <span className="flex items-center justify-between gap-2 text-body font-semibold text-fg-strong transition-colors group-hover:text-accent-ink">
+                      {item.label}
+                      <ArrowUpRight size={14} aria-hidden="true" className="shrink-0 text-fg-muted" />
+                    </span>
+                    <span className="mt-0.5 block truncate font-mono text-small text-fg-muted">{item.path}</span>
                   </a>
                 </li>
               ))}
-              <li className="border-b border-white/15">
+              <li>
                 <button
                   type="button"
                   onClick={() => {
@@ -598,15 +598,17 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     setCurlCopied(true)
                     setTimeout(() => setCurlCopied(false), 2000)
                   }}
-                  className="group flex w-full cursor-pointer items-baseline gap-3 py-3 text-left text-small"
+                  className="group block h-full w-full cursor-pointer rounded-lg bg-black/[0.025] px-3.5 py-3 text-left transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
                 >
-                  <span className="font-medium text-white">Terminal</span>
-                  <span className="ml-auto truncate font-mono text-white/70 group-hover:text-white">{curlCopied ? "Copied" : "curl -s …/latest"}</span>
-                  {curlCopied ? (
-                    <Check size={13} aria-hidden="true" className="shrink-0 self-center text-emerald-400" />
-                  ) : (
-                    <Copy size={13} aria-hidden="true" className="shrink-0 self-center text-white/60 group-hover:text-white" />
-                  )}
+                  <span className="flex items-center justify-between gap-2 text-body font-semibold text-fg-strong transition-colors group-hover:text-accent-ink">
+                    Terminal
+                    {curlCopied ? (
+                      <Check size={14} aria-hidden="true" className="shrink-0 text-good" />
+                    ) : (
+                      <Copy size={14} aria-hidden="true" className="shrink-0 text-fg-muted" />
+                    )}
+                  </span>
+                  <span className="mt-0.5 block truncate font-mono text-small text-fg-muted">{curlCopied ? "Copied" : "curl -s …/latest"}</span>
                 </button>
               </li>
             </ul>
