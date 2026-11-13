@@ -252,16 +252,16 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           </div>
 
           {/* Lab info & Release Stamp */}
-          <div className="flex items-center gap-2.5 mb-4 text-small font-sans tracking-wide leading-relaxed">
+          <div className="mb-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-small font-sans leading-relaxed">
             <span
               className="w-2.5 h-2.5 rounded-sm shrink-0"
               style={{ backgroundColor: company?.accentColor || "rgb(var(--accent-rgb))" }}
             />
-            <span className="font-medium text-fg">
+            <span className="whitespace-nowrap font-medium text-fg">
               {model.companyName}
             </span>
             <span className="text-fg-muted dark:text-white/20 select-none">/</span>
-            <span className="text-fg-muted">
+            <span className="whitespace-nowrap text-fg-muted">
               Released {formatDate(model.releaseDate)}
             </span>
           </div>
@@ -281,57 +281,41 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
             {model.highlight}
           </p>
 
-          {/* Key Hardware Specs Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 mb-6 sm:mb-8 text-small font-sans">
-            <div className="p-3.5 sm:p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.03] leading-relaxed">
-              <div className="flex items-center gap-1.5 text-fg-muted mb-1.5 text-small">
-                <Layers size={13} />
-                <span>Context</span>
-              </div>
-              <div className="text-title font-semibold leading-6 text-black dark:text-white">
-                {splitValue(model.contextWindow).head}
-                {splitValue(model.contextWindow).note && <span className="mt-1 block text-body font-normal text-fg-muted">{splitValue(model.contextWindow).note}</span>}
-              </div>
-            </div>
-
-            <div className="p-3.5 sm:p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.03] leading-relaxed">
-              <div className="flex items-center gap-1.5 text-fg-muted mb-1.5 text-small">
-                <Cpu size={13} />
-                <span>Architecture</span>
-              </div>
-              <div className="break-words text-title font-medium leading-6 text-black dark:text-white">
-                {splitValue(model.parameters).head}
-                {splitValue(model.parameters).note && <span className="mt-1 block text-body font-normal text-fg-muted">{splitValue(model.parameters).note}</span>}
-              </div>
-            </div>
-
-            <div className="p-3.5 sm:p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.03] leading-relaxed">
-              <div className="flex items-center gap-1.5 text-fg-muted mb-1.5 text-small">
-                <DollarSign size={13} />
-                <span>Official API{model.pricingUnit ? "" : " (1M)"}</span>
-              </div>
-              <div className="text-title font-semibold leading-6 text-black dark:text-white">
-                <span>
-                  {formatPrice(model)}
-                </span>
-                {model.openWeights && (
-                  <span className="mt-1 block text-small font-sans font-normal leading-relaxed text-fg-muted">
-                    + Weights Free to Self-Host
-                  </span>
-                )}
-              </div>
-            </div>
-
-            <div className="p-3.5 sm:p-4 rounded-lg bg-black/[0.02] dark:bg-white/[0.03] leading-relaxed">
-              <div className="flex items-center gap-1.5 text-fg-muted mb-1.5 text-small">
-                <ShieldCheck size={13} />
-                <span>License</span>
-              </div>
-              <div className="break-words text-title font-medium leading-6 text-black dark:text-white">
-                {model.license}
-              </div>
-            </div>
-          </div>
+          {/* Key specs: one structure for all four tiles (label, value, note). */}
+          {(() => {
+            const context = splitValue(model.contextWindow)
+            const arch = splitValue(model.parameters)
+            const specs = [
+              {
+                icon: Layers,
+                label: "Context",
+                value: model.contextWindowTokens > 0 ? model.contextWindowTokens.toLocaleString("en-US") : context.head,
+                note: model.contextWindowTokens > 0 ? ["tokens", context.note].filter(Boolean).join(", ") : context.note,
+              },
+              { icon: Cpu, label: "Architecture", value: arch.head, note: arch.note },
+              {
+                icon: DollarSign,
+                label: "Lab price",
+                value: model.pricingUnit ? formatPrice(model) : `$${model.pricing.input.toFixed(2)} / $${model.pricing.output.toFixed(2)}`,
+                note: [model.pricingUnit ? "" : "per 1M tokens, in / out", model.openWeights ? "weights free to self-host" : ""].filter(Boolean).join("; "),
+              },
+              { icon: ShieldCheck, label: "License", value: model.license, note: "" },
+            ]
+            return (
+              <dl className="mb-6 grid grid-cols-2 gap-2.5 font-sans sm:mb-8 sm:grid-cols-4 sm:gap-3">
+                {specs.map(({ icon: Icon, label, value, note }) => (
+                  <div key={label} className="min-w-0 rounded-lg bg-black/[0.02] p-3.5 dark:bg-white/[0.03] sm:p-4">
+                    <dt className="flex items-center gap-1.5 text-small text-fg-muted">
+                      <Icon size={13} aria-hidden="true" />
+                      {label}
+                    </dt>
+                    <dd className="mt-1.5 break-words text-title font-semibold leading-6 tabular-nums text-fg-strong">{value}</dd>
+                    {note && <dd className="mt-0.5 text-small text-fg-muted">{note}</dd>}
+                  </div>
+                ))}
+              </dl>
+            )
+          })()}
 
           <ProviderAvailability modelId={model.id} />
 
