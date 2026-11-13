@@ -187,7 +187,7 @@ export default function ScorePage() {
 
         <RankingsSwitcher current="/score" />
 
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
           How the models compare
         </h1>
         <p className="text-title text-fg-muted leading-7 max-w-2xl mb-5">
@@ -220,7 +220,7 @@ export default function ScorePage() {
               key={stat.label}
               className="tile p-4"
             >
-              <div className="text-heading font-display font-semibold tracking-tight text-black dark:text-white tabular-nums">
+              <div className="text-heading font-display font-semibold tracking-tight text-fg-strong tabular-nums">
                 {stat.value}
               </div>
               <div className="mt-1 text-small font-sans text-fg-muted leading-snug">
@@ -231,7 +231,7 @@ export default function ScorePage() {
         </div>
 
         {/* Standing table */}
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
           Cross-test standing
         </h2>
         <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
@@ -252,7 +252,7 @@ export default function ScorePage() {
                 <span className="text-small font-sans tabular-nums text-fg-muted w-7 shrink-0">
                   T{row.tier}
                 </span>
-                <span className="text-body sm:text-title font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors">
+                <span className="text-body sm:text-title font-medium tracking-tight text-fg-strong group-hover:text-accent-ink transition-colors">
                   {row.model.name}
                 </span>
                 <span className="hidden sm:inline-flex items-center gap-1.5 text-small font-sans text-fg-muted">
@@ -283,7 +283,7 @@ export default function ScorePage() {
                   <span className="text-small font-sans tabular-nums text-fg-muted">
                     spread {row.spread.toFixed(0)}
                   </span>
-                  <span className="text-title font-sans font-semibold tabular-nums text-black dark:text-white">
+                  <span className="text-title font-sans font-semibold tabular-nums text-fg-strong">
                     {row.standing.toFixed(1)}
                   </span>
                 </span>
@@ -303,7 +303,7 @@ export default function ScorePage() {
         </p>
 
         {/* Independent evidence: where laboratory figures and independent runs part ways */}
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
           Laboratory claims against independent runs
         </h2>
         <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
@@ -338,7 +338,7 @@ export default function ScorePage() {
                   </td>
                   <td className="py-2.5 pr-4 tabular-nums text-fg">{gap.lab.toFixed(1)}%</td>
                   <td className="py-2.5 pr-4 tabular-nums text-fg">{gap.independent.toFixed(1)}%</td>
-                  <td className="py-2.5 tabular-nums font-medium text-black dark:text-white">
+                  <td className="py-2.5 tabular-nums font-medium text-fg-strong">
                     {gap.gap > 0 ? "+" : ""}
                     {gap.gap.toFixed(1)}
                   </td>
@@ -349,7 +349,7 @@ export default function ScorePage() {
         </div>
 
         {/* Cost of a point */}
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
           What a point costs
         </h2>
         <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
@@ -392,7 +392,7 @@ export default function ScorePage() {
         {standing.singleTest.length > 0 && (
           <>
         {/* Single-test models */}
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
           Ranked on one test only
         </h2>
         <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
@@ -436,7 +436,7 @@ export default function ScorePage() {
                   <th scope="row" className="text-left py-2.5 pr-3 font-normal">
                     <Link
                       href={`/models/${row.model.id}`}
-                      className="text-body font-sans font-medium text-black dark:text-white hover:text-accent-ink transition-colors"
+                      className="text-body font-sans font-medium text-fg-strong hover:text-accent-ink transition-colors"
                     >
                       {row.model.name}
                     </Link>
@@ -447,7 +447,7 @@ export default function ScorePage() {
                   <td
                     className={`py-2.5 px-3 text-right text-body font-sans tabular-nums ${
                       row.rank === 1
-                        ? "font-semibold text-black dark:text-white"
+                        ? "font-semibold text-fg-strong"
                         : "text-fg-muted"
                     }`}
                   >
@@ -468,7 +468,7 @@ export default function ScorePage() {
         {/* Superseded */}
         <h2
           id="superseded"
-          className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1 scroll-mt-24"
+          className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1 scroll-mt-24"
         >
           Superseded, kept for the record
         </h2>
@@ -513,12 +513,12 @@ export default function ScorePage() {
 
         {/* The raw tables are long: collapsed by default so the answer is not buried. */}
         <details className="mb-12 rounded-xl border border-black/10 dark:border-white/[0.08] p-4 sm:p-5">
-          <summary className="cursor-pointer list-none text-body font-sans font-medium text-black dark:text-white">
+          <summary className="cursor-pointer list-none text-body font-sans font-medium text-fg-strong">
             Show the raw evidence: every test ranked on its own, and each model&rsquo;s position on every test
           </summary>
           <div className="mt-6">
         {/* Per-test tables */}
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
           Every test, ranked on its own
         </h2>
         <p className="text-body font-sans text-fg-muted mb-5 max-w-2xl">
@@ -530,7 +530,7 @@ export default function ScorePage() {
           {boards.map((board) => (
             <div key={board.id}>
               <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 mb-1">
-                <h3 className="text-title font-display font-semibold tracking-tight text-black dark:text-white">
+                <h3 className="text-title font-display font-semibold tracking-tight text-fg-strong">
                   {board.test}
                 </h3>
                 <span className="text-small font-sans text-fg-muted">
@@ -557,7 +557,7 @@ export default function ScorePage() {
                       <span className="text-small font-sans tabular-nums text-fg-muted w-5 shrink-0">
                         {entry.rank}
                       </span>
-                      <span className="text-body sm:text-title font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors">
+                      <span className="text-body sm:text-title font-medium tracking-tight text-fg-strong group-hover:text-accent-ink transition-colors">
                         {entry.model.name}
                       </span>
                       <span className="hidden sm:inline-flex items-center gap-1.5 text-small font-sans text-fg-muted">
@@ -568,7 +568,7 @@ export default function ScorePage() {
                         />
                         {entry.model.companyName}
                       </span>
-                      <span className="ml-auto text-title font-sans font-semibold tabular-nums text-black dark:text-white shrink-0">
+                      <span className="ml-auto text-title font-sans font-semibold tabular-nums text-fg-strong shrink-0">
                         {entry.reading.score}
                       </span>
                     </Link>
@@ -582,7 +582,7 @@ export default function ScorePage() {
         {/* Cross-test matrix */}
         {multi.length > 0 && (
           <>
-            <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+            <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
               Position on each test
             </h2>
             <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
@@ -617,7 +617,7 @@ export default function ScorePage() {
                       <th scope="row" className="text-left py-2.5 pr-3 font-normal">
                         <Link
                           href={`/models/${model.id}`}
-                          className="text-body font-sans font-medium text-black dark:text-white hover:text-accent-ink transition-colors"
+                          className="text-body font-sans font-medium text-fg-strong hover:text-accent-ink transition-colors"
                         >
                           {model.name}
                         </Link>
@@ -630,7 +630,7 @@ export default function ScorePage() {
                             className={`py-2.5 pl-3 text-right text-body font-sans tabular-nums ${
                               position
                                 ? position.rank === 1
-                                  ? "font-semibold text-black dark:text-white"
+                                  ? "font-semibold text-fg-strong"
                                   : "text-fg-muted"
                                 : "text-fg-muted"
                             }`}
@@ -662,13 +662,13 @@ export default function ScorePage() {
         </details>
 
         {/* Rules */}
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-4">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-4">
           How the numbers are made
         </h2>
         <div className="rule-t mb-12">
           <details className="group rule-b">
             <summary className={summaryClass}>
-              <span className="text-body font-sans font-medium text-black dark:text-white">
+              <span className="text-body font-sans font-medium text-fg-strong">
                 Per-test rank: cohort, version gate, ties
               </span>
               <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
@@ -696,7 +696,7 @@ export default function ScorePage() {
                     {step.n}
                   </span>
                   <div>
-                    <h3 className="text-body font-sans font-medium text-black dark:text-white mb-1">
+                    <h3 className="text-body font-sans font-medium text-fg-strong mb-1">
                       {step.title}
                     </h3>
                     <p className="text-body font-sans text-fg-muted leading-6">
@@ -710,7 +710,7 @@ export default function ScorePage() {
 
           <details className="group rule-b">
             <summary className={summaryClass}>
-              <span className="text-body font-sans font-medium text-black dark:text-white">
+              <span className="text-body font-sans font-medium text-fg-strong">
                 Cross-test standing: equate, average, refuse, audit
               </span>
               <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
@@ -753,7 +753,7 @@ export default function ScorePage() {
                     {step.n}
                   </span>
                   <div>
-                    <h3 className="text-body font-sans font-medium text-black dark:text-white mb-1">
+                    <h3 className="text-body font-sans font-medium text-fg-strong mb-1">
                       {step.title}
                     </h3>
                     <p className="text-body font-sans text-fg-muted leading-6">
@@ -767,7 +767,7 @@ export default function ScorePage() {
 
           <details className="group rule-b">
             <summary className={summaryClass}>
-              <span className="text-body font-sans font-medium text-black dark:text-white">
+              <span className="text-body font-sans font-medium text-fg-strong">
                 What the standing cannot do
               </span>
               <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
@@ -789,7 +789,7 @@ export default function ScorePage() {
 
           <details className="group rule-b">
             <summary className={summaryClass}>
-              <span className="text-body font-sans font-medium text-black dark:text-white">
+              <span className="text-body font-sans font-medium text-fg-strong">
                 Cohort audit: which tests link to which
               </span>
               <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
@@ -866,13 +866,13 @@ export default function ScorePage() {
         </div>
 
         {/* FAQ */}
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-4">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-4">
           Questions
         </h2>
         <div className="rule-t mb-12">
           {faq.map((item) => (
             <div key={item.q} className="py-4 rule-b">
-              <h3 className="text-title font-medium tracking-tight text-black dark:text-white mb-1.5">
+              <h3 className="text-title font-medium tracking-tight text-fg-strong mb-1.5">
                 {item.q}
               </h3>
               <p className="text-body font-sans text-fg-muted leading-6 max-w-2xl">

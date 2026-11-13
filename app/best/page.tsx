@@ -191,13 +191,13 @@ export default function BestPage() {
                       <span className="w-5 shrink-0 text-small font-sans tabular-nums text-fg-muted">
                         {entry.rank}
                       </span>
-                      <span className="text-body font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors">
+                      <span className="text-body font-medium tracking-tight text-fg-strong group-hover:text-accent-ink transition-colors">
                         {entry.model.name}
                       </span>
                       <span className="hidden sm:inline text-small font-sans text-fg-muted">
                         {entry.model.companyName}
                       </span>
-                      <span className="ml-auto text-body font-sans font-semibold tabular-nums text-black dark:text-white">
+                      <span className="ml-auto text-body font-sans font-semibold tabular-nums text-fg-strong">
                         {entry.value}
                       </span>
                     </Link>
@@ -233,7 +233,7 @@ export default function BestPage() {
         </div>
 
         <section className="mt-12">
-          <h2 className="text-title font-display font-semibold tracking-tight text-black dark:text-white mb-2">
+          <h2 className="text-title font-display font-semibold tracking-tight text-fg-strong mb-2">
             What is the best AI model overall?
           </h2>
           <p className="max-w-2xl text-body leading-7 text-fg">

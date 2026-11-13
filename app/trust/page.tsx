@@ -152,7 +152,7 @@ export default function TrustPage() {
           <span className="font-medium text-accent-ink">Trust and sourcing</span>
         </nav>
 
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
           Why you can trust ModelRegistry
         </h1>
         <p className="mb-6 flex flex-wrap items-center gap-2 text-small font-sans text-fg-muted">
@@ -166,7 +166,7 @@ export default function TrustPage() {
 
         {/* The claim, stated plainly */}
         <div className="tile p-5 sm:p-6 mb-4">
-          <p className="font-display text-heading font-semibold tracking-tight text-black dark:text-white leading-snug mb-3">
+          <p className="font-display text-heading font-semibold tracking-tight text-fg-strong leading-snug mb-3">
             Every record is sourced, dated and checkable.
           </p>
           <p className="text-title text-fg-muted leading-7">
@@ -189,7 +189,7 @@ export default function TrustPage() {
               key={stat.label}
               className="tile p-4"
             >
-              <div className="text-heading font-display font-semibold tracking-tight text-black dark:text-white tabular-nums">
+              <div className="text-heading font-display font-semibold tracking-tight text-fg-strong tabular-nums">
                 {stat.value}
               </div>
               <div className="mt-1 text-small font-sans text-fg-muted leading-snug">
@@ -200,7 +200,7 @@ export default function TrustPage() {
         </div>
 
         {/* How a record gets published */}
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
           How a record gets published
         </h2>
         <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
@@ -231,7 +231,7 @@ export default function TrustPage() {
               <span className="text-small font-sans tabular-nums text-fg-muted pt-1 sm:w-6 shrink-0">
                 {row.n}
               </span>
-              <span className="text-body font-sans font-medium text-black dark:text-white sm:w-36 shrink-0">
+              <span className="text-body font-sans font-medium text-fg-strong sm:w-36 shrink-0">
                 {row.label}
               </span>
               <span className="text-body font-sans text-fg-muted leading-6">
@@ -244,7 +244,7 @@ export default function TrustPage() {
         {/* The two rules */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-12">
           <div className="tile p-4">
-            <h2 className="text-body font-sans font-semibold text-black dark:text-white mb-3">
+            <h2 className="text-body font-sans font-semibold text-fg-strong mb-3">
               What you can check
             </h2>
             <ul className="space-y-2">
@@ -265,7 +265,7 @@ export default function TrustPage() {
             </ul>
           </div>
           <div className="tile p-4">
-            <h2 className="text-body font-sans font-semibold text-black dark:text-white mb-3">
+            <h2 className="text-body font-sans font-semibold text-fg-strong mb-3">
               What this site will not do
             </h2>
             <ul className="space-y-2">
@@ -293,7 +293,7 @@ export default function TrustPage() {
         </div>
 
         {/* Objections */}
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
           The hard questions
         </h2>
         <p className="text-body font-sans text-fg-muted mb-5">
@@ -384,7 +384,7 @@ export default function TrustPage() {
                 </span>
                 <span className="flex-1 min-w-0">
                   <span className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-                    <span className="text-title font-medium tracking-tight text-black dark:text-white">
+                    <span className="text-title font-medium tracking-tight text-fg-strong">
                       {item.title}
                     </span>
                     <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-small font-sans text-fg-muted">
@@ -414,7 +414,7 @@ export default function TrustPage() {
         {/* Cross-checking */}
         <h2
           id="evidence"
-          className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1 scroll-mt-24"
+          className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1 scroll-mt-24"
         >
           How much cross-checking each record has
         </h2>
@@ -434,7 +434,7 @@ export default function TrustPage() {
               key={stat.label}
               className="tile p-4"
             >
-              <div className="text-heading font-display font-semibold tracking-tight text-black dark:text-white tabular-nums">
+              <div className="text-heading font-display font-semibold tracking-tight text-fg-strong tabular-nums">
                 {stat.value}
               </div>
               <div className="mt-1 text-small font-sans text-fg-muted leading-snug">
@@ -450,7 +450,7 @@ export default function TrustPage() {
 
         <details className="rule-t mb-12">
           <summary className={summaryClass}>
-            <span className="flex-1 text-body font-sans font-medium text-black dark:text-white">
+            <span className="flex-1 text-body font-sans font-medium text-fg-strong">
               Show the {audit.grades.C} single-document records
             </span>
             <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
@@ -483,7 +483,7 @@ export default function TrustPage() {
         {/* Badges */}
         <h2
           id="badges"
-          className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1 scroll-mt-24"
+          className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1 scroll-mt-24"
         >
           Badges say what kind of claim they are
         </h2>
@@ -502,7 +502,7 @@ export default function TrustPage() {
               <details key={kind} className={rowClass}>
                 <summary className={summaryClass}>
                   <span className="flex-1 min-w-0">
-                    <span className="text-body font-sans font-medium text-black dark:text-white">
+                    <span className="text-body font-sans font-medium text-fg-strong">
                       {info.label}{" "}
                       <span className="font-normal tabular-nums text-fg-muted">
                         ({badges.length})
@@ -530,7 +530,7 @@ export default function TrustPage() {
         </div>
 
         {/* Cite */}
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-3">
           How to cite this registry
         </h2>
         <div className="tile p-4 mb-3">
@@ -555,13 +555,13 @@ export default function TrustPage() {
         </p>
 
         {/* FAQ */}
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-4">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-4">
           Questions
         </h2>
         <div className="rule-t mb-12">
           {faq.map((item) => (
             <div key={item.q} className="py-4 rule-b">
-              <h3 className="text-title font-medium tracking-tight text-black dark:text-white mb-1.5">
+              <h3 className="text-title font-medium tracking-tight text-fg-strong mb-1.5">
                 {item.q}
               </h3>
               <p className="text-body font-sans text-fg-muted leading-6 max-w-2xl">

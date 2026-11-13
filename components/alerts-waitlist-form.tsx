@@ -130,7 +130,7 @@ export default function AlertsWaitlistForm({
             <Check size={15} className="draw-check" />
           </span>
           <div className="min-w-0">
-            <p className="text-body font-display font-semibold text-black dark:text-white">You are on the waitlist.</p>
+            <p className="text-body font-display font-semibold text-fg-strong">You are on the waitlist.</p>
             <p className="mt-1 text-small font-sans leading-6 text-fg-muted">
               We will send one email to that address when Model Alerts opens. Nothing else, and no marketing.
             </p>
@@ -242,7 +242,7 @@ export default function AlertsWaitlistForm({
         disabled={submitting}
         className={`mt-5 inline-flex ${
           embedded ? "w-full" : "w-full sm:w-auto"
-        } items-center justify-center gap-1.5 h-9 px-4 text-small font-sans font-medium tracking-wide bg-black text-white dark:bg-white dark:text-black hover:bg-accent dark:hover:bg-accent dark:hover:text-white border border-black dark:border-white hover:border-accent rounded-lg shadow-sm hover:shadow-md hover:shadow-accent/20 active:scale-[0.97] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 select-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-black dark:disabled:hover:bg-white disabled:active:scale-100`}
+        } items-center justify-center gap-1.5 h-9 px-4 text-small font-sans font-medium tracking-wide ink-solid hover:bg-accent dark:hover:bg-accent dark:hover:text-white border border-black dark:border-white hover:border-accent rounded-lg shadow-sm hover:shadow-md hover:shadow-accent/20 active:scale-[0.97] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 select-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-black dark:disabled:hover:bg-[var(--surface-raised)] disabled:active:scale-100`}
       >
         {submitting ? (
           <>

@@ -32,7 +32,7 @@ export default function LicensesPage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="page">
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
           Open weights &amp; licenses
         </h1>
         <p className="mb-5 flex items-center gap-2 text-small font-sans text-fg-muted">
@@ -49,7 +49,7 @@ export default function LicensesPage() {
         <div className="space-y-6">
           {[...groups.entries()].map(([license, list]) => (
             <div key={license} className="border border-black/10 dark:border-white/[0.08] rounded-xl p-4 sm:p-5">
-              <h2 className="text-body sm:text-title font-medium tracking-tight text-black dark:text-white mb-1 break-words">
+              <h2 className="text-body sm:text-title font-medium tracking-tight text-fg-strong mb-1 break-words">
                 {license}
               </h2>
               <p className="text-caption font-sans text-fg-muted mb-3">
@@ -59,7 +59,7 @@ export default function LicensesPage() {
                 {list.map((m) => (
                   <li key={m.id} className="flex items-center gap-2 text-body min-w-0">
                     <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${m.openWeights ? "bg-good" : "bg-black/20 dark:bg-white/20"}`} title={m.openWeights ? "Weights published" : "No published weights"} />
-                    <Link href={`/models/${m.id}`} className="font-medium tracking-tight text-black dark:text-white hover:text-accent-ink truncate">
+                    <Link href={`/models/${m.id}`} className="font-medium tracking-tight text-fg-strong hover:text-accent-ink truncate">
                       {m.name}
                     </Link>
                     <span className="text-caption font-sans text-fg-muted shrink-0 hidden sm:inline">{m.companyName}</span>

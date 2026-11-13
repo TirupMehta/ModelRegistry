@@ -28,7 +28,7 @@ export default function CompaniesClient() {
       <section className="section page">
         <div className="space-y-4 text-title font-normal text-fg leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
-            <h1 className="text-page font-medium tracking-tight text-black dark:text-white">
+            <h1 className="text-page font-medium tracking-tight text-fg-strong">
               Frontier AI Laboratories
             </h1>
             <p>
@@ -72,7 +72,7 @@ export default function CompaniesClient() {
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                           <Link
                             href={`/companies/${company.id}`}
-                            className="text-heading font-medium tracking-tight text-black dark:text-white hover:text-accent-ink transition-colors duration-150"
+                            className="text-heading font-medium tracking-tight text-fg-strong hover:text-accent-ink transition-colors duration-150"
                           >
                             {company.name}
                           </Link>
@@ -126,7 +126,7 @@ export default function CompaniesClient() {
                         </div>
 
                         <div className="flex items-baseline gap-2 mb-1">
-                          <span className="text-body sm:text-title font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
+                          <span className="text-body sm:text-title font-medium tracking-tight text-fg-strong group-hover:text-accent-ink transition-colors duration-150">
                             {flagshipModel.name}
                           </span>
                         </div>
@@ -170,7 +170,7 @@ export default function CompaniesClient() {
                         </div>
 
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 mb-1">
-                          <span className="text-body sm:text-title font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
+                          <span className="text-body sm:text-title font-medium tracking-tight text-fg-strong group-hover:text-accent-ink transition-colors duration-150">
                             {second.name}
                           </span>
                           <span className="text-small font-sans text-fg-muted">

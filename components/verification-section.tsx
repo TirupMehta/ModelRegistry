@@ -36,7 +36,7 @@ export default function VerificationSection({ model }: { model: ModelItem }) {
         Sources and verification
       </h3>
       <p className="text-small font-sans text-fg leading-5 mb-3">
-        <strong className="font-semibold text-black dark:text-white">
+        <strong className="font-semibold text-fg-strong">
           {isRetired ? "Retired record" : `${model.sources.length} primary source${model.sources.length === 1 ? "" : "s"} cited`}
         </strong>
         <span className="text-fg-muted">

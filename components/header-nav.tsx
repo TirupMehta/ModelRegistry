@@ -43,7 +43,7 @@ export default function HeaderNav() {
             className={[
               "relative inline-flex min-h-9 shrink-0 items-center whitespace-nowrap py-1.5 text-small font-sans select-none transition-colors duration-150",
               active
-                ? "font-medium text-black dark:text-white"
+                ? "font-medium text-fg-strong"
                 : "text-fg-muted hover:text-black dark:hover:text-white",
             ].join(" ")}
           >

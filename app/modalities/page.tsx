@@ -28,7 +28,7 @@ export default function ModalitiesPage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="page">
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
           Capability &amp; modality matrix
         </h1>
         <p className="mb-5 flex items-center gap-2 text-small font-sans text-fg-muted">
@@ -55,7 +55,7 @@ export default function ModalitiesPage() {
               {modelsData.map((m) => (
                 <tr key={m.id} className="border-b border-black/5 dark:border-white/[0.05] last:border-0">
                   <td className="px-4 py-2.5 min-w-0">
-                    <Link href={`/models/${m.id}`} className="font-medium tracking-tight text-black dark:text-white hover:text-accent-ink block truncate">
+                    <Link href={`/models/${m.id}`} className="font-medium tracking-tight text-fg-strong hover:text-accent-ink block truncate">
                       {m.name}
                     </Link>
                     <span className="block text-caption font-sans text-fg-muted">{m.companyName}</span>

@@ -27,7 +27,7 @@ export default function RetiredPage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="page">
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
           Retired &amp; archived
         </h1>
         <p className="mb-5 flex items-center gap-2 text-small font-sans text-fg-muted">
@@ -60,7 +60,7 @@ export default function RetiredPage() {
           <div className="rule-t">
             {retired.map((m) => (
               <div key={m.id} className="py-3 rule-b text-body">
-                <Link href={`/models/${m.id}`} className="font-medium tracking-tight text-black dark:text-white hover:text-accent-ink">
+                <Link href={`/models/${m.id}`} className="font-medium tracking-tight text-fg-strong hover:text-accent-ink">
                   {m.name}
                 </Link>
                 {m.supersededBy && (

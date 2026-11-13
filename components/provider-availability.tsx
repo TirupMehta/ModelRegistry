@@ -57,7 +57,7 @@ export function ProviderAvailability({ modelId }: { modelId: string }) {
     <section className="mb-6 sm:mb-8" aria-label="Other providers">
       <details className="group rounded-lg border border-black/10 dark:border-white/[0.08]">
         <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-body [&::-webkit-details-marker]:hidden">
-          <span className="font-medium text-black dark:text-white">Other providers</span>
+          <span className="font-medium text-fg-strong">Other providers</span>
           <span className="tabular-nums text-fg-muted">
             {result.endpoints.length} listed{cheapest !== null ? ` · from ${price(cheapest)} in` : ""}
           </span>
@@ -96,7 +96,7 @@ export function ProviderAvailability({ modelId }: { modelId: string }) {
               <tbody>
                 {rows.map((e, i) => (
                   <tr key={`${e.provider}-${e.tier ?? "default"}-${i}`} className="rule-t">
-                    <td className="py-2 pr-3 text-black dark:text-white">
+                    <td className="py-2 pr-3 text-fg-strong">
                       {e.provider}
                       {e.tier && <span className="ml-1.5 text-fg-muted">{endpointLabel(e.tier)}</span>}
                     </td>

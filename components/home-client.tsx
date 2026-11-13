@@ -216,7 +216,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
         {/* Hero: the claim, one sentence, then the provenance that separates a
             cited registry from another list of models. */}
         <div>
-          <h1 className="max-w-[20ch] font-display text-display font-semibold leading-[1.05] tracking-[-0.03em] text-black dark:text-white">
+          <h1 className="max-w-[20ch] font-display text-display font-semibold leading-[1.05] tracking-[-0.03em] text-fg-strong">
             Every frontier model, with its sources.
           </h1>
           <p className="mt-3 max-w-[52ch] text-title font-normal leading-[1.55] text-fg sm:mt-4 sm:text-title">
@@ -242,7 +242,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                 onClick={() => handleTab("flagships")}
                 className={`h-full flex-auto whitespace-nowrap px-2.5 lg:flex-none rounded-md text-small font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer ${
                   activeTab === "flagships"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
+                    ? "ink-solid font-medium shadow-sm"
                     : "text-fg-muted hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
                 }`}
               >
@@ -254,7 +254,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                 title={`Released in the last ${NEW_DROPS_WINDOW_DAYS} days, newest first`}
                 className={`h-full flex-auto whitespace-nowrap px-2.5 lg:flex-none rounded-md text-small font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer ${
                   activeTab === "latest-drops"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
+                    ? "ink-solid font-medium shadow-sm"
                     : "text-fg-muted hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
                 }`}
               >
@@ -265,7 +265,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                 onClick={() => handleTab("open-weights")}
                 className={`h-full flex-auto whitespace-nowrap px-2.5 lg:flex-none rounded-md text-small font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer ${
                   activeTab === "open-weights"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
+                    ? "ink-solid font-medium shadow-sm"
                     : "text-fg-muted hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
                 }`}
               >
@@ -277,7 +277,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                 onClick={() => handleTab("visual")}
                 className={`h-full flex-auto whitespace-nowrap px-2.5 lg:flex-none rounded-md text-small font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer ${
                   activeTab === "visual"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
+                    ? "ink-solid font-medium shadow-sm"
                     : "text-fg-muted hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
                 }`}
               >
@@ -288,7 +288,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                 onClick={() => handleTab("all")}
                 className={`h-full flex-auto whitespace-nowrap px-2.5 lg:flex-none rounded-md text-small font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer ${
                   activeTab === "all"
-                    ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
+                    ? "ink-solid font-medium shadow-sm"
                     : "text-fg-muted hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
                 }`}
               >
@@ -351,7 +351,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
               <div className="mx-auto mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/[0.04] dark:bg-white/[0.06] text-fg-muted">
                 <SearchX size={16} />
               </div>
-              <p className="text-body font-medium text-black dark:text-white">
+              <p className="text-body font-medium text-fg-strong">
                 {activeTab === "latest-drops" && !searchQuery.trim()
                   ? "No new drops in the last 30 days"
                   : "No models match your filter"}
@@ -369,7 +369,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     setFilters(DEFAULT_MODEL_FILTERS)
                     setActiveTab("all")
                   }}
-                  className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] px-3 py-1.5 text-small font-medium text-black dark:text-white hover:border-accent/50 hover:text-accent-ink active:scale-[0.98] transition-[color,background-color,border-color,opacity,transform,box-shadow] cursor-pointer"
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-black/10 dark:border-white/10 bg-[var(--surface-raised)] dark:bg-white/[0.04] px-3 py-1.5 text-small font-medium text-fg-strong hover:border-accent/50 hover:text-accent-ink active:scale-[0.98] transition-[color,background-color,border-color,opacity,transform,box-shadow] cursor-pointer"
                 >
                   <X size={12} />
                   Clear filter
@@ -427,7 +427,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
 
                       {/* Title + badge */}
                       <div className="flex items-start justify-between gap-2 mb-1">
-                        <span className="font-display font-semibold text-title leading-snug tracking-tight text-black dark:text-white min-w-0">
+                        <span className="font-display font-semibold text-title leading-snug tracking-tight text-fg-strong min-w-0">
                           {model.name}
                         </span>
                       </div>
@@ -442,7 +442,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                           <p className="text-caption font-sans font-medium text-fg-muted">
                             Input / 1M
                           </p>
-                          <p className="text-small font-sans font-semibold tabular-nums text-black dark:text-white mt-0.5 truncate">
+                          <p className="text-small font-sans font-semibold tabular-nums text-fg-strong mt-0.5 truncate">
                             {model.pricing.input === 0 ? "Free" : `$${model.pricing.input}`}
                           </p>
                         </div>
@@ -450,7 +450,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                           <p className="text-caption font-sans font-medium text-fg-muted">
                             Context
                           </p>
-                          <p className="text-small font-sans font-semibold tabular-nums text-black dark:text-white mt-0.5 truncate">
+                          <p className="text-small font-sans font-semibold tabular-nums text-fg-strong mt-0.5 truncate">
                             {model.contextWindow.replace(" tokens", "")}
                           </p>
                         </div>
@@ -458,7 +458,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                           <p className="text-caption font-sans font-medium text-fg-muted">
                             Access
                           </p>
-                          <p className="text-small font-sans font-semibold text-black dark:text-white mt-0.5 truncate">
+                          <p className="text-small font-sans font-semibold text-fg-strong mt-0.5 truncate">
                             {model.openWeights ? "Open" : "API"}
                           </p>
                         </div>

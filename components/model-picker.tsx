@@ -90,7 +90,7 @@ export default function ModelPicker({ tests, models }: { tests: PickerTest[]; mo
             className={`relative h-5 w-9 shrink-0 rounded-full transition-colors ${openOnly ? "bg-accent" : "bg-black/20 dark:bg-white/25"}`}
           >
             <span
-              className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-all ${openOnly ? "left-[18px]" : "left-0.5"}`}
+              className={`absolute top-0.5 h-4 w-4 rounded-full bg-[var(--surface-raised)] shadow transition-all ${openOnly ? "left-[18px]" : "left-0.5"}`}
             />
           </span>
           Open weights only
@@ -116,7 +116,7 @@ export default function ModelPicker({ tests, models }: { tests: PickerTest[]; mo
                   {model.name}
                 </span>
                 <span className="hidden text-small font-sans text-fg-muted sm:inline">{model.lab}</span>
-                <span className="ml-auto text-body font-sans font-semibold tabular-nums text-black dark:text-white">
+                <span className="ml-auto text-body font-sans font-semibold tabular-nums text-fg-strong">
                   {show(test.unit, model.scores[test.key])}
                 </span>
                 <span className="w-20 shrink-0 text-right text-small font-sans tabular-nums text-fg-muted">

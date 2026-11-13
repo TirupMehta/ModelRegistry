@@ -67,7 +67,7 @@ export default function AlertsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }} />
 
       <section className="page">
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-2">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-2">
           Model Alerts
         </h1>
         <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-small font-sans text-fg-muted">
@@ -100,7 +100,7 @@ export default function AlertsPage() {
             >
               <div className="flex items-center gap-2 mb-1.5">
                 <benefit.icon size={13} className="text-accent-ink shrink-0" aria-hidden="true" />
-                <h2 className="text-small font-display font-semibold tracking-tight text-black dark:text-white">
+                <h2 className="text-small font-display font-semibold tracking-tight text-fg-strong">
                   {benefit.title}
                 </h2>
               </div>
@@ -109,7 +109,7 @@ export default function AlertsPage() {
           ))}
         </div>
 
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mt-10 mb-3">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mt-10 mb-3">
           What this is, for now
         </h2>
         <div className="text-body text-fg leading-6 sm:leading-7 space-y-2 max-w-2xl">

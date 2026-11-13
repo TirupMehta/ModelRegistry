@@ -26,7 +26,7 @@ export default function RankingsSwitcher({ current }: { current: (typeof VIEWS)[
             aria-current={active ? "page" : undefined}
             className={
               active
-                ? "inline-flex min-h-9 items-center rounded-full bg-black px-3.5 font-medium text-white dark:bg-white dark:text-black"
+                ? "ink-solid inline-flex min-h-9 items-center rounded-full px-3.5 font-medium"
                 : "inline-flex min-h-9 items-center rounded-full border border-black/10 px-3.5 text-fg-muted transition-colors hover:text-black dark:border-white/15 dark:hover:text-white"
             }
           >

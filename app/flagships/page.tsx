@@ -26,7 +26,7 @@ export default function FlagshipsPage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="page">
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
           Current flagship by lab
         </h1>
         <p className="mb-5 flex items-center gap-2 text-small font-sans text-fg-muted">

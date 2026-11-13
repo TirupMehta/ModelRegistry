@@ -91,10 +91,10 @@ export default function HeaderPrompt() {
           aria-hidden="true"
           onMouseEnter={showHint}
           onMouseLeave={hideHint}
-          className="hidden sm:block fixed z-[60] w-64 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[var(--surface-hover)] px-3.5 py-3 shadow-2xl ring-1 ring-black/5 dark:ring-white/5 animate-in fade-in duration-150"
+          className="hidden sm:block fixed z-[60] w-64 rounded-xl border border-black/10 dark:border-white/10 bg-[var(--surface-raised)] dark:bg-[var(--surface-hover)] px-3.5 py-3 shadow-2xl ring-1 ring-black/5 dark:ring-white/5 animate-in fade-in duration-150"
           style={{ top: hintPos.top, right: hintPos.right }}
         >
-          <p className="text-small font-sans font-semibold text-black dark:text-white">
+          <p className="text-small font-sans font-semibold text-fg-strong">
             Contribute with AI
           </p>
           <p className="mt-1 text-caption font-sans leading-relaxed text-fg-muted">
@@ -103,7 +103,7 @@ export default function HeaderPrompt() {
           </p>
           <span
             aria-hidden="true"
-            className="absolute -top-[5px] right-8 w-2 h-2 rotate-45 bg-white dark:bg-[var(--surface-hover)] border-l border-t border-black/10 dark:border-white/10"
+            className="absolute -top-[5px] right-8 w-2 h-2 rotate-45 bg-[var(--surface-raised)] dark:bg-[var(--surface-hover)] border-l border-t border-black/10 dark:border-white/10"
           />
         </div>
       )}

@@ -41,7 +41,7 @@ function Code({ children }: { children: string }) {
 function Row({ name, desc }: { name: string; desc: string }) {
   return (
     <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 px-4 py-3 border-b border-black/5 dark:border-white/[0.06] last:border-0">
-      <code className="font-mono text-small text-black dark:text-white sm:w-52 shrink-0">{name}</code>
+      <code className="font-mono text-small text-fg-strong sm:w-52 shrink-0">{name}</code>
       <span className="text-small text-fg-muted leading-relaxed">{desc}</span>
     </div>
   )
@@ -74,7 +74,7 @@ export default function CliPage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="page">
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
           ModelRegistry CLI
         </h1>
         <p className="text-body text-fg leading-6 sm:leading-7 mb-8 max-w-3xl">
@@ -84,7 +84,7 @@ export default function CliPage() {
           hints, and a <code className="font-mono text-small">--json</code> flag for pipelines.
         </p>
 
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-3">
           Run it
         </h2>
         <p className="text-body text-fg leading-6 mb-3 max-w-3xl">
@@ -105,7 +105,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}</Code>
           installed.
         </p>
 
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-3">
           Commands
         </h2>
         <div className="tile mb-4">
@@ -118,7 +118,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}</Code>
           <Row name="--base-url" desc="Point at a preview or local build. Also read from MODELREGISTRY_BASE_URL." />
         </div>
 
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-3">
           No install needed
         </h2>
         <p className="text-body text-fg leading-6 mb-4 max-w-3xl">
@@ -128,7 +128,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}</Code>
 curl -s ${SITE_URL}/api/v1/cli   # the same table, explicitly
 curl -s ${SITE_URL}/latest       # newest releases`}</Code>
 
-        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-3">
           Honest limits
         </h2>
         <ul className="text-body text-fg leading-6 space-y-1.5 mb-8 max-w-3xl list-disc pl-5">

@@ -891,7 +891,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
             <div className="flex items-center justify-between pb-3 sm:pb-4 rule-b mb-4 sm:mb-5">
               <div className="flex items-center gap-2">
                 <Sparkles size={16} className="text-accent-ink" />
-                <h3 className="text-body font-medium tracking-tight text-black dark:text-white">
+                <h3 className="text-body font-medium tracking-tight text-fg-strong">
                   Social Card Studio
                 </h3>
               </div>
@@ -914,7 +914,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
                   onClick={() => setRatio("story")}
                   className={`px-2.5 py-2 rounded text-small font-sans transition-colors cursor-pointer flex flex-col items-center gap-1 ${
                     ratio === "story"
-                      ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
+                      ? "ink-solid font-medium shadow-xs"
                       : "text-fg-muted hover:text-black dark:hover:text-white"
                   }`}
                 >
@@ -925,7 +925,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
                   onClick={() => setRatio("square")}
                   className={`px-2.5 py-2 rounded text-small font-sans transition-colors cursor-pointer flex flex-col items-center gap-1 ${
                     ratio === "square"
-                      ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
+                      ? "ink-solid font-medium shadow-xs"
                       : "text-fg-muted hover:text-black dark:hover:text-white"
                   }`}
                 >
@@ -936,7 +936,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
                   onClick={() => setRatio("landscape")}
                   className={`px-2.5 py-2 rounded text-small font-sans transition-colors cursor-pointer flex flex-col items-center gap-1 ${
                     ratio === "landscape"
-                      ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
+                      ? "ink-solid font-medium shadow-xs"
                       : "text-fg-muted hover:text-black dark:hover:text-white"
                   }`}
                 >
@@ -959,7 +959,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
                   }}
                   className={`p-2.5 rounded-md border text-small font-sans flex items-center justify-between cursor-pointer transition-colors ${
                     cardTheme === "dark"
-                      ? "border-accent bg-black/5 dark:bg-white/[0.06] text-black dark:text-white font-medium"
+                      ? "border-accent bg-black/5 dark:bg-white/[0.06] text-fg-strong font-medium"
                       : "border-black/10 dark:border-white/[0.08] text-fg-muted hover:border-black/30 dark:hover:border-white/20"
                   }`}
                 >
@@ -973,7 +973,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
                   }}
                   className={`p-2.5 rounded-md border text-small font-sans flex items-center justify-between cursor-pointer transition-colors ${
                     cardTheme === "light"
-                      ? "border-accent bg-black/5 dark:bg-white/[0.06] text-black dark:text-white font-medium"
+                      ? "border-accent bg-black/5 dark:bg-white/[0.06] text-fg-strong font-medium"
                       : "border-black/10 dark:border-white/[0.08] text-fg-muted hover:border-black/30 dark:hover:border-white/20"
                   }`}
                 >
@@ -990,7 +990,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
             <button
               onClick={handleCopyImage}
               disabled={isRendering}
-              className="w-full py-2.5 px-3.5 rounded-md bg-black text-white dark:bg-white dark:text-black font-sans text-small font-medium hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+              className="w-full py-2.5 px-3.5 rounded-md ink-solid font-sans text-small font-medium hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
             >
               {isCopied ? (
                 <>
@@ -1117,7 +1117,7 @@ class ShareCardErrorBoundary extends React.Component<
           className="w-full max-w-sm rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[var(--surface-field)] p-5 shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
-          <h3 className="text-body font-sans font-medium text-black dark:text-white">
+          <h3 className="text-body font-sans font-medium text-fg-strong">
             Share preview could not be rendered
           </h3>
           <p className="mt-2 text-small font-sans leading-relaxed text-fg-muted break-words">
@@ -1126,7 +1126,7 @@ class ShareCardErrorBoundary extends React.Component<
           <div className="mt-4 flex gap-2">
             <button
               onClick={this.props.onRetry}
-              className="flex-1 py-2 px-3 rounded-md bg-black text-white dark:bg-white dark:text-black font-sans text-small font-medium hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors cursor-pointer"
+              className="flex-1 py-2 px-3 rounded-md ink-solid font-sans text-small font-medium hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors cursor-pointer"
             >
               TRY AGAIN
             </button>

@@ -70,7 +70,7 @@ export default function Header() {
               <a
                 href="/suggest"
                 title="Suggest a model for review"
-                className="group inline-flex h-8 cursor-pointer select-none items-center justify-center gap-1 rounded-lg border border-black bg-black px-2.5 text-caption font-sans font-medium text-white shadow-sm transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 hover:border-accent hover:bg-accent hover:shadow-md hover:shadow-accent/20 active:scale-[0.97] sm:gap-1.5 sm:px-3 sm:text-small dark:border-white dark:bg-white dark:text-black dark:hover:bg-accent dark:hover:text-white"
+                className="ink-solid group inline-flex h-8 cursor-pointer select-none items-center justify-center gap-1 rounded-lg border px-2.5 text-caption font-sans font-medium shadow-sm transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 hover:border-accent hover:bg-accent hover:shadow-md hover:shadow-accent/20 active:scale-[0.97] sm:gap-1.5 sm:px-3 sm:text-small dark:hover:bg-accent dark:hover:"
               >
                 <GitPullRequest
                   size={12}

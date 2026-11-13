@@ -33,7 +33,7 @@ export default function ContextPage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="page">
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
           Context window comparison
         </h1>
         <p className="mb-5 flex items-center gap-2 text-small font-sans text-fg-muted">
@@ -52,11 +52,11 @@ export default function ContextPage() {
               <span className="font-mono tabular-nums text-caption text-fg-muted w-6 shrink-0">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <Link href={`/models/${m.id}`} className="font-medium tracking-tight text-black dark:text-white hover:text-accent-ink truncate min-w-0">
+              <Link href={`/models/${m.id}`} className="font-medium tracking-tight text-fg-strong hover:text-accent-ink truncate min-w-0">
                 {m.name}
               </Link>
               <span className="text-caption font-sans text-fg-muted shrink-0 hidden sm:inline">{m.companyName}</span>
-              <span className="ml-auto tabular-nums text-small font-sans font-medium text-black dark:text-white shrink-0">
+              <span className="ml-auto tabular-nums text-small font-sans font-medium text-fg-strong shrink-0">
                 {fmt(m.contextWindowTokens)}
               </span>
               {(m.fieldSources.contextWindow?.[0] || m.sources[0]) && (

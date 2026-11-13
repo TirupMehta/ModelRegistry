@@ -7,33 +7,35 @@
      not carry small text on paper (2.85:1 against the cream). `--accent-ink`
      is the text-safe step of the same hue (4.8:1). Tailwind reads the rgb
      channels so opacity modifiers like `text-accent-ink/70` still work. */
-  --accent-rgb: 255 93 46;
+  --accent-rgb: 214 92 52;
   --accent: rgb(var(--accent-rgb));
-  --accent-ink-rgb: 194 65 12;
+  --accent-ink-rgb: 170 62 24;
   --accent-ink: rgb(var(--accent-ink-rgb));
   --good-rgb: 4 120 87;
   --good: rgb(var(--good-rgb));
-  --bg: #f7f7f4;
-  --card-bg: #ffffff;
-  --fg: #111215;
+  --bg: #f3f0e9;
+  --card-bg: #faf8f3;
+  --fg: #26231f;
   /* One ladder of surfaces. Components climb it instead of repeating a hex
      per component, which is what made the dark theme drift by component. */
   --surface-bar: rgba(0, 0, 0, 0.02);
   --surface-inset: rgba(0, 0, 0, 0.035);
   --surface-sunken: rgba(0, 0, 0, 0.02);
-  --surface-field: #ffffff;
-  --surface-raised: #ffffff;
+  --surface-field: #faf8f3;
+  --surface-raised: #faf8f3;
   --surface-hover: rgba(0, 0, 0, 0.04);
-  --border-color: rgba(0, 0, 0, 0.08);
+  --border-color: rgba(60, 45, 20, 0.1);
   /* A field outline needs 3:1 against paper to read as a field at all. */
-  --field-edge: rgba(0, 0, 0, 0.46);
-  --text-muted: rgba(17, 18, 21, 0.62);
-  --text-secondary: rgba(17, 18, 21, 0.78);
-  --text-primary: rgba(17, 18, 21, 0.94);
+  --field-edge: rgba(60, 45, 20, 0.42);
+  --text-muted: rgba(38, 35, 31, 0.64);
+  --text-secondary: rgba(38, 35, 31, 0.8);
+  --text-primary: rgba(38, 35, 31, 0.94);
+  --ink: #2b2823;
+  --on-ink: #faf8f3;
   /* Surfaces and lines. Change these to restyle every tile and divider at once. */
-  --tile: rgba(0, 0, 0, 0.025);
-  --tile-hover: rgba(0, 0, 0, 0.05);
-  --rule: rgba(0, 0, 0, 0.1);
+  --tile: rgba(60, 45, 20, 0.045);
+  --tile-hover: rgba(60, 45, 20, 0.08);
+  --rule: rgba(60, 45, 20, 0.12);
   /* Type steps that grow on wider screens. */
   --fs-headline: 1.25rem;
   --fs-heading: 1.25rem;
@@ -62,27 +64,35 @@
   }
 }
 
+/*
+ * Dark theme. Warm, like the light one: a brown-black paper instead of a blue
+ * black, off-white ink instead of pure white, and a clear step between the page,
+ * the tiles and the raised sheet so surfaces read as layers, not a flat void.
+ * Text tokens all clear 4.5:1 on the page colour.
+ */
 html.dark {
-  --bg: #07080a;
-  --card-bg: #0d0f13;
-  --fg: #f4f5f7;
-  --surface-bar: #0a0c0f;
-  --surface-inset: #101318;
-  --surface-sunken: #0c0e12;
-  --surface-field: #0d0f13;
-  --surface-raised: #0e1014;
-  --surface-hover: #13161c;
-  --border-color: rgba(255, 255, 255, 0.08);
-  --field-edge: rgba(255, 255, 255, 0.22);
-  --text-muted: rgba(244, 245, 247, 0.64);
-  --text-secondary: rgba(244, 245, 247, 0.80);
-  --text-primary: rgba(244, 245, 247, 0.95);
-  --tile: rgba(255, 255, 255, 0.03);
-  --tile-hover: rgba(255, 255, 255, 0.06);
-  --rule: rgba(255, 255, 255, 0.08);
-  --accent-rgb: 255 93 46;
-  --accent-ink-rgb: 255 138 99;
-  --good-rgb: 52 211 153;
+  --bg: #1b1a17;
+  --card-bg: #24221e;
+  --fg: #d8d3c8;
+  --surface-bar: #1f1d1a;
+  --surface-inset: #282621;
+  --surface-sunken: #1e1c19;
+  --surface-field: #24221e;
+  --surface-raised: #24221e;
+  --surface-hover: #2e2b26;
+  --border-color: rgba(255, 238, 214, 0.1);
+  --field-edge: rgba(255, 238, 214, 0.28);
+  --text-muted: rgba(232, 227, 216, 0.6);
+  --text-secondary: rgba(232, 227, 216, 0.78);
+  --text-primary: rgba(232, 227, 216, 0.92);
+  --tile: rgba(255, 238, 214, 0.05);
+  --tile-hover: rgba(255, 238, 214, 0.09);
+  --rule: rgba(255, 238, 214, 0.11);
+  --ink: #d3cdbf;
+  --on-ink: #1b1a17;
+  --accent-rgb: 226 126 86;
+  --accent-ink-rgb: 234 156 120;
+  --good-rgb: 108 190 150;
 }
 
 /* Disable transitions on initial render */
@@ -287,6 +297,7 @@ body {
  * The site's building blocks. Pages compose these instead of repeating colours,
  * radii and spacing, so one edit here changes every page.
  *   .page       page column: width, side gutters, bottom space (.page-x: without the bottom space)
+ *   .ink-solid  solid primary button
  *   .chip       small label pill
  *   .well       inset block for code
  *   .card       the one big white sheet (model datasheet)
@@ -312,6 +323,11 @@ body {
     @apply rounded-lg;
     background-color: var(--tile);
     border: 1px solid var(--rule);
+  }
+  /* Solid button: black on paper, off-white on the dark page. */
+  .ink-solid {
+    background-color: var(--ink);
+    color: var(--on-ink);
   }
   .tile {
     @apply rounded-xl;

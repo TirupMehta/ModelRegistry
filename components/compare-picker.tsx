@@ -103,7 +103,7 @@ function Combo({
         <ul
           id={listId}
           role="listbox"
-          className="absolute z-20 mt-1.5 max-h-72 w-full min-w-[15rem] overflow-y-auto rounded-xl border border-black/10 bg-white p-1 shadow-lg [scrollbar-width:none] dark:border-white/15 dark:bg-[var(--surface-raised)] [&::-webkit-scrollbar]:hidden"
+          className="absolute z-20 mt-1.5 max-h-72 w-full min-w-[15rem] overflow-y-auto rounded-xl border border-black/10 bg-[var(--surface-raised)] p-1 shadow-lg [scrollbar-width:none] dark:border-white/15 dark:bg-[var(--surface-raised)] [&::-webkit-scrollbar]:hidden"
         >
           {shown.length === 0 && <li className="px-2.5 py-2 text-small text-fg-muted">No match. Comparisons cover each lab&apos;s current flagship and newest release.</li>}
           {shown.map((model, index) => (
@@ -120,7 +120,7 @@ function Combo({
                 index === active ? "bg-black/[0.05] dark:bg-white/[0.08]" : ""
               }`}
             >
-              <span className="block text-body leading-5 text-black dark:text-white">{model.name}</span>
+              <span className="block text-body leading-5 text-fg-strong">{model.name}</span>
               <span className="block text-small leading-4 text-fg-muted">{model.lab}</span>
             </li>
           ))}
@@ -174,7 +174,7 @@ export default function ComparePicker({ models, partners }: Props) {
           type="button"
           disabled={!a || !b}
           onClick={() => a && b && go(a, b)}
-          className="inline-flex h-10 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-black px-4 text-small font-medium text-white transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-black dark:bg-white dark:text-black dark:hover:bg-accent dark:hover:text-white dark:disabled:hover:bg-white"
+          className="ink-solid inline-flex h-10 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 text-small font-medium transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40 disabled:hover: dark:hover:bg-accent dark:hover: dark:disabled:hover:bg-[var(--surface-raised)]"
         >
           Compare <ArrowRight size={16} aria-hidden="true" />
         </button>

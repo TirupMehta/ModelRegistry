@@ -56,12 +56,12 @@ function Bar({ label, value, tone }: { label: string; value: string; tone: "lab"
       <span className="h-2 overflow-hidden rounded-full bg-black/[0.06] dark:bg-white/[0.08]" aria-hidden="true">
         {isPercent && (
           <span
-            className={`block h-full rounded-full ${tone === "independent" ? "bg-black dark:bg-white" : "bg-accent"}`}
+            className={`block h-full rounded-full ${tone === "independent" ? "bg-black dark:bg-[var(--surface-raised)]" : "bg-accent"}`}
             style={{ width: `${pct}%` }}
           />
         )}
       </span>
-      <span className="text-right text-body font-semibold tabular-nums text-black dark:text-white">{value}</span>
+      <span className="text-right text-body font-semibold tabular-nums text-fg-strong">{value}</span>
     </div>
   )
 }
@@ -71,7 +71,7 @@ function BenchRow({ label, value, independent }: { label: string; value?: string
   return (
     <div className="tile p-3.5 sm:p-4">
       <div>
-        <div className="text-title font-semibold leading-snug text-black dark:text-white">{label}</div>
+        <div className="text-title font-semibold leading-snug text-fg-strong">{label}</div>
         {note && <div className="mt-0.5 text-small leading-4 text-fg-muted">{note}</div>}
       </div>
       <div className="mt-3 space-y-2">
@@ -268,7 +268,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
           {/* Model Title & SOTA Badge */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-4 sm:mb-5">
-            <h1 className="text-page font-display font-semibold tracking-tight leading-snug sm:leading-tight text-black dark:text-white">
+            <h1 className="text-page font-display font-semibold tracking-tight leading-snug sm:leading-tight text-fg-strong">
               {model.name}
             </h1>
             <span className="text-caption font-sans px-2.5 py-1 rounded border border-accent/40 text-accent-ink bg-accent/5 font-medium leading-relaxed">
@@ -322,7 +322,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           {/* Verified Benchmarks Section */}
           {Object.keys(model.benchmarks).length > 0 && (
             <div className="mb-6 border-t border-black/10 pt-5 sm:mb-8 dark:border-white/[0.08]">
-              <h2 className="mb-1 font-display text-title font-semibold tracking-tight text-black dark:text-white">
+              <h2 className="mb-1 font-display text-title font-semibold tracking-tight text-fg-strong">
                 Published benchmarks, lab reported
               </h2>
               <p className="-mt-1 mb-4 text-body font-sans text-fg-muted">
@@ -359,7 +359,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
           {/* Shipped Variants (e.g. API twins) */}
           {model.variants && model.variants.length > 0 && (
             <div className="mb-6 border-t border-black/10 pt-5 sm:mb-8 dark:border-white/[0.08]">
-              <h2 className="mb-3.5 font-display text-title font-semibold tracking-tight text-black dark:text-white">
+              <h2 className="mb-3.5 font-display text-title font-semibold tracking-tight text-fg-strong">
                 Shipped variants
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5 font-sans text-small">
@@ -369,7 +369,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                     className="tile p-4 sm:p-[18px] leading-relaxed flex flex-col"
                   >
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-2">
-                      <span className="text-small sm:text-body font-semibold text-black dark:text-white tracking-wide">
+                      <span className="text-small sm:text-body font-semibold text-fg-strong tracking-wide">
                         {variant.name}
                       </span>
                       <span className="chip">
@@ -422,7 +422,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   onClick={() => switchSnippetTab("curl")}
                   className={`h-7 shrink-0 cursor-pointer whitespace-nowrap rounded px-2.5 transition-colors duration-150 ${
                     activeSnippetTab === "curl"
-                      ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
+                      ? "bg-black/10 dark:bg-white/10 text-fg-strong font-medium"
                       : "text-fg-muted hover:text-black dark:hover:text-white"
                   }`}
                 >
@@ -432,7 +432,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   onClick={() => switchSnippetTab("python")}
                   className={`h-7 shrink-0 cursor-pointer whitespace-nowrap rounded px-2.5 transition-colors duration-150 ${
                     activeSnippetTab === "python"
-                      ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
+                      ? "bg-black/10 dark:bg-white/10 text-fg-strong font-medium"
                       : "text-fg-muted hover:text-black dark:hover:text-white"
                   }`}
                 >
@@ -442,7 +442,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   onClick={() => switchSnippetTab("local")}
                   className={`h-7 shrink-0 cursor-pointer whitespace-nowrap rounded px-2.5 transition-colors duration-150 ${
                     activeSnippetTab === "local"
-                      ? "bg-black/10 dark:bg-white/10 text-black dark:text-white font-medium"
+                      ? "bg-black/10 dark:bg-white/10 text-fg-strong font-medium"
                       : "text-fg-muted hover:text-black dark:hover:text-white"
                   }`}
                 >
@@ -554,7 +554,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                   href={`/models/${sibling.id}`}
                   className="tile-link group block p-3.5 transition-colors duration-150"
                 >
-                  <div className="text-body font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150 truncate">
+                  <div className="text-body font-medium tracking-tight text-fg-strong group-hover:text-accent-ink transition-colors duration-150 truncate">
                     {sibling.name}
                   </div>
                   <div className="mt-1 text-caption font-sans text-fg-muted truncate">

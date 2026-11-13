@@ -172,14 +172,14 @@ export function ModelFaq({ model }: { model: ModelItem }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqPage(faq)) }} />
       <h2
         id="model-faq-heading"
-        className="text-body font-semibold text-black dark:text-white mb-2.5"
+        className="text-body font-semibold text-fg-strong mb-2.5"
       >
         Common questions
       </h2>
       <div id="model-faq" className="rule-t">
         {faq.map((item) => (
           <details key={item.q} className="group rule-b">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-3 text-body font-medium text-black dark:text-white [&::-webkit-details-marker]:hidden">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-3 text-body font-medium text-fg-strong [&::-webkit-details-marker]:hidden">
               <h3 className="text-body font-medium">{item.q}</h3>
               <ChevronDown size={14} className="shrink-0 text-fg-muted transition-transform group-open:rotate-180" aria-hidden="true" />
             </summary>
@@ -223,7 +223,7 @@ export function ModelComparisons({ model }: { model: ModelItem }) {
     <section aria-labelledby="model-compare-heading" className="mb-6 sm:mb-8">
       <h2
         id="model-compare-heading"
-        className="text-body font-semibold text-black dark:text-white mb-2.5"
+        className="text-body font-semibold text-fg-strong mb-2.5"
       >
         Head-to-head comparisons
       </h2>
@@ -267,7 +267,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
       <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
         <h2
           id="score-heading"
-          className="text-title font-display font-semibold text-black dark:text-white mb-3"
+          className="text-title font-display font-semibold text-fg-strong mb-3"
         >
           Availability
         </h2>
@@ -313,7 +313,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
           </span>
         )}
         <span className="ml-auto text-body font-sans tabular-nums text-fg">
-          <strong className="font-semibold text-black dark:text-white">{position.rank}</strong> of{" "}
+          <strong className="font-semibold text-fg-strong">{position.rank}</strong> of{" "}
           {position.of}
         </span>
         <span className="text-body font-sans tabular-nums text-fg-muted w-14 text-right shrink-0">
@@ -328,7 +328,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
       <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
         <h2
           id="score-heading"
-          className="text-title font-display font-semibold text-black dark:text-white mb-3"
+          className="text-title font-display font-semibold text-fg-strong mb-3"
         >
           Independent results
         </h2>
@@ -336,7 +336,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
           {rated && (
             <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 pb-3 mb-3 border-b border-black/5 dark:border-white/[0.06]">
               <span className="text-body font-sans text-fg-muted">Cross-test standing</span>
-              <span className="text-title font-display font-semibold tracking-tight text-black dark:text-white tabular-nums leading-none">
+              <span className="text-title font-display font-semibold tracking-tight text-fg-strong tabular-nums leading-none">
                 {rated.standing.toFixed(1)}
               </span>
               <span className="text-body font-sans text-fg-muted">Tier {rated.tier}</span>
@@ -364,7 +364,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             <ul className="space-y-2 text-body font-sans text-fg">
               {independentRecord.extras.map((extra) => (
                 <li key={extra.label}>
-                  <span className="font-medium text-black dark:text-white">{extra.label}:</span> {extra.value}
+                  <span className="font-medium text-fg-strong">{extra.label}:</span> {extra.value}
                   <span className="block text-body text-fg-muted">
                     {extra.note}{" "}
                     <a href={extra.sourceUrl} rel="noopener noreferrer" className="text-accent-ink hover:underline underline-offset-2">
@@ -419,7 +419,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
       <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
         <h2
           id="score-heading"
-          className="text-title font-display font-semibold text-black dark:text-white mb-3"
+          className="text-title font-display font-semibold text-fg-strong mb-3"
         >
           Where it ranks
         </h2>
@@ -458,7 +458,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
     <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
       <h2
         id="score-heading"
-        className="text-title font-display font-semibold text-black dark:text-white mb-3"
+        className="text-title font-display font-semibold text-fg-strong mb-3"
       >
         Where it ranks
       </h2>
@@ -468,7 +468,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             <span className="text-body font-sans text-fg-muted">
               Cross-test standing
             </span>
-            <span className="text-title font-display font-semibold tracking-tight text-black dark:text-white tabular-nums leading-none">
+            <span className="text-title font-display font-semibold tracking-tight text-fg-strong tabular-nums leading-none">
               {standing.standing.toFixed(1)}
             </span>
             <span className="text-body font-sans tabular-nums text-fg-muted">
@@ -492,7 +492,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
                 {position.domain}
               </span>
               <span className="ml-auto text-body font-sans tabular-nums text-fg">
-                <strong className="font-semibold text-black dark:text-white">
+                <strong className="font-semibold text-fg-strong">
                   {position.rank}
                 </strong>{" "}
                 of {position.of}

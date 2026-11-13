@@ -92,7 +92,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
     >
       <div className="min-h-full flex justify-center p-3 sm:p-6">
       <div
-        className="relative m-auto w-full max-w-2xl bg-white dark:bg-[var(--surface-raised)] border border-black/10 dark:border-white/[0.08] rounded-2xl shadow-xl p-4 sm:p-7 sm:max-h-[92dvh] sm:overflow-y-auto sm:overscroll-contain transition-colors duration-150 ease-out"
+        className="relative m-auto w-full max-w-2xl bg-[var(--surface-raised)] dark:bg-[var(--surface-raised)] border border-black/10 dark:border-white/[0.08] rounded-2xl shadow-xl p-4 sm:p-7 sm:max-h-[92dvh] sm:overflow-y-auto sm:overscroll-contain transition-colors duration-150 ease-out"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar */}
@@ -167,7 +167,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
 
         {/* Model Title & SOTA Badge */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
-          <h2 id="modal-title" className="text-headline font-display font-semibold tracking-tight text-black dark:text-white">
+          <h2 id="modal-title" className="text-headline font-display font-semibold tracking-tight text-fg-strong">
             {model.name}
           </h2>
           <span className="text-caption font-sans px-2 py-0.5 rounded border border-accent/40 text-accent-ink bg-accent/5 font-medium">
@@ -187,7 +187,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
               <Layers size={12} className="text-accent-ink shrink-0" />
               <span className="truncate">Context</span>
             </div>
-            <p className="tabular-nums text-small sm:text-body font-semibold text-black dark:text-white leading-tight">
+            <p className="tabular-nums text-small sm:text-body font-semibold text-fg-strong leading-tight">
               {model.contextWindow}
             </p>
           </div>
@@ -197,7 +197,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
               <Cpu size={12} className="text-accent-ink shrink-0" />
               <span className="truncate">Architecture</span>
             </div>
-            <p className="tabular-nums text-small sm:text-body font-semibold text-black dark:text-white leading-tight break-words">
+            <p className="tabular-nums text-small sm:text-body font-semibold text-fg-strong leading-tight break-words">
               {model.parameters}
             </p>
           </div>
@@ -207,7 +207,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
               <DollarSign size={12} className="text-accent-ink shrink-0" />
               <span className="truncate">{model.pricingUnit ? "Official API" : "Official API / 1M"}</span>
             </div>
-            <div className="tabular-nums text-small sm:text-body font-semibold text-black dark:text-white leading-tight">
+            <div className="tabular-nums text-small sm:text-body font-semibold text-fg-strong leading-tight">
               <span>
                 {formatPrice(model)}
               </span>
@@ -245,14 +245,14 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
                   return (
                     <div
                       key={label}
-                      className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-white dark:bg-[var(--surface-hover)] shadow-sm hover:border-accent/30 transition-colors duration-150 cursor-default min-w-0"
+                      className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-[var(--surface-raised)] dark:bg-[var(--surface-hover)] shadow-sm hover:border-accent/30 transition-colors duration-150 cursor-default min-w-0"
                     >
                       <span className="text-caption font-sans font-semibold text-fg-muted block mb-1 break-words">
                         {label}
                       </span>
                       <span
                         className={`block text-body sm:text-title font-sans font-semibold tabular-nums leading-snug break-words ${
-                          i === 0 ? "text-accent-ink" : "text-black dark:text-white"
+                          i === 0 ? "text-accent-ink" : "text-fg-strong"
                         }`}
                       >
                         {value}
@@ -283,7 +283,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
                   className="tile-link p-2.5 duration-150 cursor-default"
                 >
                   <div className="flex flex-wrap items-center gap-1.5 mb-1">
-                    <span className="text-small font-sans font-medium text-black dark:text-white">
+                    <span className="text-small font-sans font-medium text-fg-strong">
                       {variant.name}
                     </span>
                     <span className="text-caption font-sans px-1 py-px rounded border border-black/10 dark:border-white/10 text-fg-muted dark:text-white/55">
@@ -293,7 +293,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
                   <p className="text-caption font-sans text-fg-muted leading-relaxed">
                     {variant.detail}
                   </p>
-                  <p className="text-caption font-sans tabular-nums text-black dark:text-white font-medium mt-1">
+                  <p className="text-caption font-sans tabular-nums text-fg-strong font-medium mt-1">
                     {variant.pricingNote}
                   </p>
                 </div>
@@ -331,7 +331,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
               href={model.links.announcement}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex w-full sm:w-auto items-center justify-center gap-1.5 text-small font-sans font-medium px-3.5 py-2 rounded-md bg-black text-white dark:bg-white dark:text-black hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors duration-150 cursor-pointer"
+              className="group inline-flex w-full sm:w-auto items-center justify-center gap-1.5 text-small font-sans font-medium px-3.5 py-2 rounded-md ink-solid hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors duration-150 cursor-pointer"
             >
               <span>Lab announcement</span>
               <ExternalLink size={12} className="opacity-60" />

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mt-8 mb-3">
+    <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mt-8 mb-3">
       {children}
     </h2>
   )
@@ -54,7 +54,7 @@ export default function MethodologyPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }} />
       <section className="page">
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-2">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-2">
           Methodology
         </h1>
         <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-small font-sans text-fg-muted">
@@ -90,20 +90,20 @@ export default function MethodologyPage() {
 
         <H2>Verification and sources</H2>
         <div className="mb-3 max-w-[54ch] space-y-2 text-body leading-6 text-fg sm:text-body sm:leading-7">
-          <p>Every record cites the primary sources it was read from (announcement, model card, API docs, pricing page), with per-field citations showing which source supports which fact. Each record also carries a <strong className="text-black dark:text-white">last-verified date</strong> - the date those sources were reviewed. That date is a source-review date, not a live availability check.</p>
+          <p>Every record cites the primary sources it was read from (announcement, model card, API docs, pricing page), with per-field citations showing which source supports which fact. Each record also carries a <strong className="text-fg-strong">last-verified date</strong> - the date those sources were reviewed. That date is a source-review date, not a live availability check.</p>
           <p>There is no &ldquo;partially verified&rdquo; badge on the site: a label that applies to almost every record says nothing. Instead, the sources and the last-checked date are shown directly, and every record has a &ldquo;Report an error&rdquo; link so readers can flag anything stale.</p>
-          <p><strong className="text-black dark:text-white">Retired</strong> - explicitly marked as retired by the registry and kept for historical reference. This label describes availability, not verification depth, and it alone does not confirm provider availability.</p>
-          <p><strong className="text-black dark:text-white">Superseded</strong> - a later release from the same laboratory took over this model&apos;s role. The record is kept with its sources and readings and links its replacement, but it is not ranked against the current lineup. Superseded is not retired.</p>
-          <p><strong className="text-black dark:text-white">Unverified records</strong> can never carry flagship or latest labels and must be treated as unconfirmed until sources are cited.</p>
+          <p><strong className="text-fg-strong">Retired</strong> - explicitly marked as retired by the registry and kept for historical reference. This label describes availability, not verification depth, and it alone does not confirm provider availability.</p>
+          <p><strong className="text-fg-strong">Superseded</strong> - a later release from the same laboratory took over this model&apos;s role. The record is kept with its sources and readings and links its replacement, but it is not ranked against the current lineup. Superseded is not retired.</p>
+          <p><strong className="text-fg-strong">Unverified records</strong> can never carry flagship or latest labels and must be treated as unconfirmed until sources are cited.</p>
         </div>
 
         <H2>What “flagship”, “latest”, and leaderboard places mean</H2>
         <P>
-          <strong className="text-black dark:text-white">Flagship</strong> = the lab&apos;s primary general-purpose model
-          (exactly one per lab). <strong className="text-black dark:text-white">Latest checkpoint</strong> = the
+          <strong className="text-fg-strong">Flagship</strong> = the lab&apos;s primary general-purpose model
+          (exactly one per lab). <strong className="text-fg-strong">Latest checkpoint</strong> = the
           lab&apos;s newest shipped release, which may be a specialized model rather than the flagship.
           Both labels require fresh (≤ 90 days), live evidence, enforced automatically - stale labels fail validation.
-          Leaderboard sections are an <strong className="text-black dark:text-white">editorial snapshot</strong>, not
+          Leaderboard sections are an <strong className="text-fg-strong">editorial snapshot</strong>, not
           objective fact: leaders hold the highest <em>published</em> score in that comparison as of the stated
           evaluation date. We say “highest published score in this comparison”, never “best model”.
         </P>
@@ -121,7 +121,7 @@ export default function MethodologyPage() {
         <P>
           A newer release does not make an older model retired or unavailable. Older releases stay in
           the registry with their release date and sources.{" "}
-          <strong className="text-black dark:text-white">Superseded</strong> is a separate label: it
+          <strong className="text-fg-strong">Superseded</strong> is a separate label: it
           records that a later release from the same laboratory took over the model&apos;s role. A
           superseded record keeps its dates, sources and benchmark readings and links the model that
           replaced it; it is simply not ranked against the current lineup, because a reader choosing
@@ -145,9 +145,9 @@ export default function MethodologyPage() {
 
         <H2>Maintenance schedule</H2>
         <div className="mb-3 max-w-[54ch] space-y-2 text-body leading-6 text-fg sm:text-body sm:leading-7">
-          <p><strong className="text-black dark:text-white">Every 30 days</strong> - automated liveness check of all cited sources; dead links re-sourced or records downgraded.</p>
-          <p><strong className="text-black dark:text-white">Every 60 days</strong> - pricing and context figures re-checked against official pricing/docs pages for all current flagships and latest checkpoints.</p>
-          <p><strong className="text-black dark:text-white">Every 90 days</strong> - full freshness rotation: any flagship/latest label older than 90 days fails validation until re-verified; leaderboard comparisons re-evaluated and re-dated; a new dated audit note is published.</p>
+          <p><strong className="text-fg-strong">Every 30 days</strong> - automated liveness check of all cited sources; dead links re-sourced or records downgraded.</p>
+          <p><strong className="text-fg-strong">Every 60 days</strong> - pricing and context figures re-checked against official pricing/docs pages for all current flagships and latest checkpoints.</p>
+          <p><strong className="text-fg-strong">Every 90 days</strong> - full freshness rotation: any flagship/latest label older than 90 days fails validation until re-verified; leaderboard comparisons re-evaluated and re-dated; a new dated audit note is published.</p>
         </div>
       </section>
     </main>

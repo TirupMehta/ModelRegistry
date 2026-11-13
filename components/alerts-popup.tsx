@@ -188,7 +188,7 @@ export default function AlertsPopup() {
         <div
           ref={dialogRef}
           tabIndex={-1}
-          className="alerts-popup-panel relative m-auto w-full max-w-md max-h-[calc(100dvh-1.5rem)] overflow-y-auto overscroll-contain rounded-2xl border border-black/10 bg-white p-4 shadow-2xl outline-none ring-1 ring-black/5 transition-colors duration-150 ease-out dark:border-white/[0.08] dark:bg-[var(--surface-raised)] dark:ring-white/5 sm:p-6"
+          className="alerts-popup-panel relative m-auto w-full max-w-md max-h-[calc(100dvh-1.5rem)] overflow-y-auto overscroll-contain rounded-2xl border border-black/10 bg-[var(--surface-raised)] p-4 shadow-2xl outline-none ring-1 ring-black/5 transition-colors duration-150 ease-out dark:border-white/[0.08] dark:bg-[var(--surface-raised)] dark:ring-white/5 sm:p-6"
           onClick={(event) => event.stopPropagation()}
         >
           {/* Dossier-style control bar, matching the model datasheet. */}
@@ -215,7 +215,7 @@ export default function AlertsPopup() {
 
           <h2
             id="alerts-popup-title"
-            className="text-balance font-display text-heading font-semibold tracking-tight text-black dark:text-white sm:text-heading"
+            className="text-balance font-display text-heading font-semibold tracking-tight text-fg-strong sm:text-heading"
           >
             Every AI model update that matters, in your inbox.
           </h2>

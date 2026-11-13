@@ -74,7 +74,7 @@ export default function ModelFilterControls({
         <section id="model-refine-panel" aria-label="Refine model results" className={(alwaysOpen ? "absolute inset-x-0 top-0 z-[60] w-full overflow-visible " : "absolute right-0 top-full z-[60] mt-2 w-[min(560px,calc(100vw-2rem))] overflow-visible ") + "rounded-xl border border-black/[0.12] bg-[var(--card-bg)] p-3 shadow-[0_4px_14px_rgba(0,0,0,0.08)] dark:border-white/[0.12] dark:bg-[var(--surface-raised)] dark:shadow-[0_4px_14px_rgba(0,0,0,0.3)] sm:p-3"}>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="text-body font-semibold text-black dark:text-white">Refine results</h2>
+              <h2 className="text-body font-semibold text-fg-strong">Refine results</h2>
               <p className="mt-1 text-small leading-relaxed text-fg-muted">Choose what matters. Results update as you change a filter.</p>
             </div>
             <div className="flex shrink-0 items-center gap-1">

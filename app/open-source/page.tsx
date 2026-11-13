@@ -28,7 +28,7 @@ export const revalidate = 900
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mt-8 mb-3">
+    <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mt-8 mb-3">
       {children}
     </h2>
   )
@@ -166,7 +166,7 @@ export default async function OpenSourcePage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="page">
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-2">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-2">
           Built in the open
         </h1>
         <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-small font-sans text-fg-muted">
@@ -191,7 +191,7 @@ export default async function OpenSourcePage() {
           run first.
         </P>
         <P>
-          The license is <strong className="text-black dark:text-white">MIT</strong>, so the
+          The license is <strong className="text-fg-strong">MIT</strong>, so the
           dataset records, the API contract shapes, and the code can be reused with
           attribution. What this page adds on top is the activity itself: pushes, merged
           pull requests, and the people behind them, fetched straight from the GitHub API.
@@ -236,7 +236,7 @@ export default async function OpenSourcePage() {
 
         <H2>How to contribute</H2>
         <P>
-          <strong className="text-black dark:text-white">Add a model.</strong> Registry
+          <strong className="text-fg-strong">Add a model.</strong> Registry
           records are primary sources or nothing: open a{" "}
           <A href={`${REPO_URL}/issues`}>GitHub issue</A> or{" "}
           <A href="/suggest">use the suggestion form</A>, and cite the lab announcement,
@@ -248,7 +248,7 @@ export default async function OpenSourcePage() {
           generated issue lands in maintainer review first.
         </P>
         <P>
-          <strong className="text-black dark:text-white">Fix code, docs, or feeds.</strong>{" "}
+          <strong className="text-fg-strong">Fix code, docs, or feeds.</strong>{" "}
           Find something broken in the site, the <A href="/cli">CLI</A>, the API contract,
           or the docs? An issue or a pull request is enough - observe the{" "}
           <A href={`${REPO_URL}/blob/main/CONTRIBUTING.md`}>contributing guide</A> and the{" "}
@@ -256,7 +256,7 @@ export default async function OpenSourcePage() {
           copy overlaps data.
         </P>
         <P>
-          <strong className="text-black dark:text-white">Security or a private report.</strong>{" "}
+          <strong className="text-fg-strong">Security or a private report.</strong>{" "}
           Do not file a public issue. The{" "}
           <A href={`${REPO_URL}/blob/main/SECURITY.md`}>security policy</A> lists the
           in-scope surfaces and the private channel, and the{" "}

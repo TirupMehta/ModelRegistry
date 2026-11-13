@@ -152,7 +152,7 @@ export default function Select({
         <div
           ref={menuRef}
           data-model-filter-menu=""
-          className="fixed z-[1000] overflow-hidden rounded-xl border border-black/10 bg-white p-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.12)] dark:border-white/[0.12] dark:bg-[var(--surface-hover)] dark:shadow-[0_8px_20px_rgba(0,0,0,0.4)]"
+          className="fixed z-[1000] overflow-hidden rounded-xl border border-black/10 bg-[var(--surface-raised)] p-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.12)] dark:border-white/[0.12] dark:bg-[var(--surface-hover)] dark:shadow-[0_8px_20px_rgba(0,0,0,0.4)]"
           style={{ top: menuPosition.top, left: menuPosition.left, width: menuPosition.width, maxHeight: menuPosition.maxHeight }}
         >
           <div id={id + "-options"} role="listbox" aria-labelledby={id + "-label"} className="overflow-y-auto overscroll-contain [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" style={{ maxHeight: Math.max(64, menuPosition.maxHeight - 14) }}>

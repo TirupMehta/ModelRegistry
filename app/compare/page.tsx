@@ -126,7 +126,7 @@ export default function CompareIndexPage() {
           <span className="font-medium text-accent-ink">Comparisons</span>
         </nav>
 
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
           AI model comparisons
         </h1>
         <p className="mb-5 flex items-center gap-2 text-small font-sans text-fg-muted">
@@ -145,7 +145,7 @@ export default function CompareIndexPage() {
 
         {popular.length > 0 && (
           <div className="mt-7">
-            <h2 className="mb-2.5 text-body font-semibold text-black dark:text-white">Popular comparisons</h2>
+            <h2 className="mb-2.5 text-body font-semibold text-fg-strong">Popular comparisons</h2>
             <ul className="grid gap-2 sm:grid-cols-2">
               {popular.map((pair) => (
                 <li key={`${pair.a.id}-${pair.b.id}`}>
@@ -153,7 +153,7 @@ export default function CompareIndexPage() {
                     href={compareHref(pair.a, pair.b)}
                     className="tile-link group flex items-center justify-between gap-3 px-3.5 py-2.5 text-body"
                   >
-                    <span className="min-w-0 truncate text-black dark:text-white">
+                    <span className="min-w-0 truncate text-fg-strong">
                       {pair.a.name} <span className="text-fg-muted">vs</span> {pair.b.name}
                     </span>
                     <ArrowUpRight size={14} className="shrink-0 opacity-40 transition-opacity group-hover:opacity-100" aria-hidden="true" />
@@ -166,7 +166,7 @@ export default function CompareIndexPage() {
 
         <details className="group mt-7 rounded-lg border border-black/10 dark:border-white/[0.08]">
           <summary className="flex cursor-pointer list-none items-center gap-2 px-3.5 py-2.5 text-body [&::-webkit-details-marker]:hidden">
-            <span className="font-medium text-black dark:text-white">All {pairs.length} comparisons</span>
+            <span className="font-medium text-fg-strong">All {pairs.length} comparisons</span>
             <ChevronDown size={14} className="ml-auto text-fg-muted transition-transform group-open:rotate-180" aria-hidden="true" />
           </summary>
           <div className="border-t border-black/10 px-4 py-5 dark:border-white/[0.08]">
@@ -175,7 +175,7 @@ export default function CompareIndexPage() {
             const lab = companies[companyId]
             return (
               <div key={companyId}>
-                <h2 className="text-title font-sans font-semibold text-black dark:text-white mb-3 flex items-baseline gap-2">
+                <h2 className="text-title font-sans font-semibold text-fg-strong mb-3 flex items-baseline gap-2">
                   <span
                     className="inline-block w-2 h-2 rounded-sm shrink-0 translate-y-[-1px]"
                     style={{ backgroundColor: lab?.accentColor ?? "#888" }}
@@ -196,13 +196,13 @@ export default function CompareIndexPage() {
                         href={compareHref(pair.a, pair.b)}
                         className="group flex flex-wrap items-baseline gap-x-2 gap-y-1 py-3 text-body transition-colors duration-150"
                       >
-                        <span className="font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink">
+                        <span className="font-medium tracking-tight text-fg-strong group-hover:text-accent-ink">
                           {pair.a.name}
                         </span>
                         <span className="text-small font-sans text-fg-muted">
                           vs
                         </span>
-                        <span className="font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink">
+                        <span className="font-medium tracking-tight text-fg-strong group-hover:text-accent-ink">
                           {pair.b.name}
                         </span>
                         <span className="ml-auto text-small font-sans text-fg-muted">

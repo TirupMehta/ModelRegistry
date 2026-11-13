@@ -185,7 +185,7 @@ export default async function ComparePage({ params }: Props) {
           </span>
         </nav>
 
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
           {a.name} vs {b.name}
         </h1>
         <p className="mb-5 flex flex-wrap items-center gap-2 text-small font-sans text-fg-muted">
@@ -227,10 +227,10 @@ export default async function ComparePage({ params }: Props) {
                 <th scope="col" className="text-left py-2 pr-3 font-sans text-small font-medium text-fg-muted">
                   Axis
                 </th>
-                <th scope="col" className="text-left py-2 pr-3 font-sans text-body font-semibold text-black dark:text-white">
+                <th scope="col" className="text-left py-2 pr-3 font-sans text-body font-semibold text-fg-strong">
                   {a.name}
                 </th>
-                <th scope="col" className="text-left py-2 font-sans text-body font-semibold text-black dark:text-white">
+                <th scope="col" className="text-left py-2 font-sans text-body font-semibold text-fg-strong">
                   {b.name}
                 </th>
               </tr>
@@ -301,10 +301,10 @@ export default async function ComparePage({ params }: Props) {
                 <th scope="col" className="text-left py-2 pr-3 font-sans text-small font-medium text-fg-muted">
                   Field
                 </th>
-                <th scope="col" className="text-left py-2 pr-3 font-sans text-body font-semibold text-black dark:text-white">
+                <th scope="col" className="text-left py-2 pr-3 font-sans text-body font-semibold text-fg-strong">
                   {a.name}
                 </th>
-                <th scope="col" className="text-left py-2 font-sans text-body font-semibold text-black dark:text-white">
+                <th scope="col" className="text-left py-2 font-sans text-body font-semibold text-fg-strong">
                   {b.name}
                 </th>
               </tr>
@@ -321,7 +321,7 @@ export default async function ComparePage({ params }: Props) {
                   <td
                     className={`py-2.5 pr-3 text-body font-sans tabular-nums ${
                       fact.edge === "a"
-                        ? "font-semibold text-black dark:text-white"
+                        ? "font-semibold text-fg-strong"
                         : "text-fg"
                     }`}
                   >
@@ -330,7 +330,7 @@ export default async function ComparePage({ params }: Props) {
                   <td
                     className={`py-2.5 text-body font-sans tabular-nums ${
                       fact.edge === "b"
-                        ? "font-semibold text-black dark:text-white"
+                        ? "font-semibold text-fg-strong"
                         : "text-fg"
                     }`}
                   >
@@ -357,10 +357,10 @@ export default async function ComparePage({ params }: Props) {
                   <th scope="col" className="text-left py-2 pr-3 font-sans text-small font-medium text-fg-muted">
                     Test
                   </th>
-                  <th scope="col" className="text-left py-2 pr-3 font-sans text-body font-semibold text-black dark:text-white">
+                  <th scope="col" className="text-left py-2 pr-3 font-sans text-body font-semibold text-fg-strong">
                     {a.name}
                   </th>
-                  <th scope="col" className="text-left py-2 font-sans text-body font-semibold text-black dark:text-white">
+                  <th scope="col" className="text-left py-2 font-sans text-body font-semibold text-fg-strong">
                     {b.name}
                   </th>
                 </tr>
@@ -377,7 +377,7 @@ export default async function ComparePage({ params }: Props) {
                     <td
                       className={`py-2.5 pr-3 text-body font-sans ${
                         row.edge === "a"
-                          ? "font-semibold text-black dark:text-white"
+                          ? "font-semibold text-fg-strong"
                           : "text-fg"
                       }`}
                     >
@@ -386,7 +386,7 @@ export default async function ComparePage({ params }: Props) {
                     <td
                       className={`py-2.5 text-body font-sans ${
                         row.edge === "b"
-                          ? "font-semibold text-black dark:text-white"
+                          ? "font-semibold text-fg-strong"
                           : "text-fg"
                       }`}
                     >
@@ -407,7 +407,7 @@ export default async function ComparePage({ params }: Props) {
         {comparison.withheld.length > 0 && (
           <details className="group mb-9 border-t rule-b">
             <summary className="flex cursor-pointer list-none items-center gap-2 py-3 [&::-webkit-details-marker]:hidden">
-              <span className="text-body font-sans font-medium text-black dark:text-white">
+              <span className="text-body font-sans font-medium text-fg-strong">
                 {comparison.withheld.length} benchmarks withheld
               </span>
               <span className="text-small font-sans text-fg-muted">
@@ -444,7 +444,7 @@ export default async function ComparePage({ params }: Props) {
               key={model.id}
               className="tile p-4"
             >
-              <h2 className="text-title font-display font-semibold tracking-tight text-black dark:text-white mb-2.5">
+              <h2 className="text-title font-display font-semibold tracking-tight text-fg-strong mb-2.5">
                 Where {model.name} leads
               </h2>
               <ul className="space-y-2">
@@ -466,7 +466,7 @@ export default async function ComparePage({ params }: Props) {
         <div className="rule-t mb-9">
           {comparison.faq.map((item) => (
             <div key={item.q} className="py-4 rule-b">
-              <h3 className="text-body font-medium tracking-tight text-black dark:text-white mb-1.5">
+              <h3 className="text-body font-medium tracking-tight text-fg-strong mb-1.5">
                 {item.q}
               </h3>
               <p className="text-body font-sans text-fg-muted leading-6">

@@ -188,7 +188,7 @@ export function BounceSidebar({
         const itemClassName = cn(
           "flex w-full cursor-pointer items-center rounded-lg p-1 text-left text-body transition-colors duration-200",
           isActive
-            ? "text-black dark:text-white"
+            ? "text-fg-strong"
             : "text-fg-muted hover:text-black dark:hover:text-white",
         );
 

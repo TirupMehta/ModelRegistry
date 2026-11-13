@@ -22,7 +22,7 @@ export default function FlagshipsClient() {
     <div className="rule-t">
       {flagships.map((model) => <div key={model.id} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 py-3 rule-b text-body">
         <span className="flex items-center gap-2 min-w-0 sm:w-64 shrink-0">
-          <Link href={`/models/${model.id}`} className="font-medium tracking-tight text-black dark:text-white hover:text-accent-ink truncate">{model.name}</Link>
+          <Link href={`/models/${model.id}`} className="font-medium tracking-tight text-fg-strong hover:text-accent-ink truncate">{model.name}</Link>
         </span>
         <Link href={`/companies/${model.companyId}`} className="text-small font-sans text-fg-muted hover:text-accent-ink shrink-0">{model.companyName}</Link>
         <span className="text-small font-sans tabular-nums text-fg-muted sm:ml-auto shrink-0">{model.releaseDate} · {model.contextWindow.replace(" tokens", "")} · ${model.pricing.input}/${model.pricing.output}</span>

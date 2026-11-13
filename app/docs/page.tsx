@@ -57,7 +57,7 @@ function ParamRow({ name, type, desc }: { name: string; type: string; desc: stri
 function FieldRow({ name, type, desc }: { name: string; type: string; desc: string }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-[180px_140px_1fr] gap-1 sm:gap-4 px-5 py-3 border-t border-black/5 dark:border-white/[0.06] first:border-t-0 text-small font-sans items-baseline">
-      <code className="font-mono text-black dark:text-white font-medium">{name}</code>
+      <code className="font-mono text-fg-strong font-medium">{name}</code>
       <span className="font-mono text-caption text-fg-muted">{type}</span>
       <span className="text-fg-muted leading-relaxed">{desc}</span>
     </div>
@@ -176,7 +176,7 @@ export default function DocsPage() {
                 </p>
                 <p>
                   Base URL for all endpoints is{" "}
-                  <span className="text-[0.98em] text-black dark:text-white bg-black/[0.04] dark:bg-white/[0.06] px-1.5 py-0.5 rounded">
+                  <span className="text-[0.98em] text-fg-strong bg-black/[0.04] dark:bg-white/[0.06] px-1.5 py-0.5 rounded">
                     {SITE_URL}
                   </span>
                   . Conventions used throughout this reference:{" "}
@@ -196,7 +196,7 @@ export default function DocsPage() {
 
           <div id="authentication" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-3">
                 Authentication
               </h2>
               <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -216,7 +216,7 @@ export default function DocsPage() {
 
           <div id="rate-limits" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-3">
                 Rate limits & caching
               </h2>
               <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -245,7 +245,7 @@ export default function DocsPage() {
 
           <div id="errors" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-3">
                 Errors
               </h2>
               <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -282,7 +282,7 @@ export default function DocsPage() {
                 <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                   GET
                 </span>
-                <code className="font-mono text-body font-medium text-black dark:text-white break-all">
+                <code className="font-mono text-body font-medium text-fg-strong break-all">
                   /api/v1/models
                 </code>
               </div>
@@ -308,7 +308,7 @@ export default function DocsPage() {
                 <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                   GET
                 </span>
-                <code className="font-mono text-body font-medium text-black dark:text-white break-all">
+                <code className="font-mono text-body font-medium text-fg-strong break-all">
                   /api/v1/models/{"{id}"}
                 </code>
               </div>
@@ -327,7 +327,7 @@ export default function DocsPage() {
               <div className="mt-5 border-t border-black/10 pt-4 dark:border-white/[0.08]">
                 <div className="mb-2 flex flex-wrap items-center gap-2.5">
                   <span className="inline-flex shrink-0 rounded border border-emerald-500/25 bg-good/10 px-2 py-0.5 font-mono text-caption font-bold text-good dark:text-good">GET</span>
-                  <code className="break-all font-mono text-body font-medium text-black dark:text-white">/api/v1/models/{"{id}"}/providers</code>
+                  <code className="break-all font-mono text-body font-medium text-fg-strong">/api/v1/models/{"{id}"}/providers</code>
                 </div>
                 <p className="text-body leading-relaxed text-fg-muted">Returns current OpenRouter endpoint listings, provider-specific prices, and limits where an exact model mapping exists. This provider snapshot does not update or verify the lab-sourced facts in the registry. An unmapped record may still be available through other providers.</p>
                 <CodeBlock code={`curl -s ${SITE_URL}/api/v1/models/gpt-6-astra/providers`} />
@@ -341,7 +341,7 @@ export default function DocsPage() {
                 <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                   GET
                 </span>
-                <code className="font-mono text-body font-medium text-black dark:text-white break-all">
+                <code className="font-mono text-body font-medium text-fg-strong break-all">
                   /api/v1/changes
                 </code>
               </div>
@@ -372,7 +372,7 @@ export default function DocsPage() {
 
           <div id="model-object" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-3">
                 The model object
               </h2>
               <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -400,7 +400,7 @@ export default function DocsPage() {
 
           <div id="examples" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-2">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-2">
                 Examples
               </h2>
               <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -444,7 +444,7 @@ const { total, models } = await (
 
             <div id="agent-prompts" className="scroll-mt-24 mb-12">
               <TextWithBlur>
-                <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-2">
+                <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-2">
                   Agent prompts
                 </h2>
                 <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -477,7 +477,7 @@ const { total, models } = await (
 
             <div id="agent-access" className="scroll-mt-24 mb-12">
               <TextWithBlur>
-                <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-2">
+                <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-2">
                   Agent access
                 </h2>
                 <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -514,7 +514,7 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
 
             <div id="cli" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-2">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-2">
                 CLI & plain text
               </h2>
               <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -533,7 +533,7 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
                     <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                       GET
                     </span>
-                    <code className="font-mono text-body font-medium text-black dark:text-white">
+                    <code className="font-mono text-body font-medium text-fg-strong">
                       /
                     </code>
                   </div>
@@ -544,7 +544,7 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
                     <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                       GET
                     </span>
-                    <code className="font-mono text-body font-medium text-black dark:text-white">
+                    <code className="font-mono text-body font-medium text-fg-strong">
                       /latest
                     </code>
                   </div>
@@ -555,7 +555,7 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
                     <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                       GET
                     </span>
-                    <code className="font-mono text-body font-medium text-black dark:text-white">
+                    <code className="font-mono text-body font-medium text-fg-strong">
                       /api/v1/cli
                     </code>
                   </div>
@@ -566,7 +566,7 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
                     <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-black/[0.06] dark:bg-white/[0.08] text-fg border border-black/15 dark:border-white/15 shrink-0">
                       CLI
                     </span>
-                    <code className="font-mono text-body font-medium text-black dark:text-white">
+                    <code className="font-mono text-body font-medium text-fg-strong">
                       modelregistry
                     </code>
                   </div>
@@ -590,7 +590,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
 
           <div id="mcp" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-2">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-2">
                 MCP server
               </h2>
               <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -658,7 +658,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
 
           <div id="feeds" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-3">
                 Feeds
               </h2>
               <div className="divide-y divide-black/5 dark:divide-white/[0.06] rounded-md border border-black/10 dark:border-white/[0.08]">
@@ -687,7 +687,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
 
           <div id="badges" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-3">
                 Badges & health
               </h2>
               <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -705,7 +705,7 @@ ${SITE_URL}/api/check-updates`}
 
           <div id="versioning" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-3">
                 Versioning
               </h2>
               <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -729,7 +729,7 @@ ${SITE_URL}/api/check-updates`}
 
           <div id="labs" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-3">
                 Laboratories
               </h2>
               <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -758,7 +758,7 @@ ${SITE_URL}/api/check-updates`}
 
           <div id="citing" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-3">
                 Citing this registry
               </h2>
               <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
@@ -777,7 +777,7 @@ ${SITE_URL}/api/check-updates`}
 
           <div id="support" className="scroll-mt-24 mb-4">
             <TextWithBlur>
-              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-fg-strong mb-3">
                 Support
               </h2>
               <p className="text-body font-normal text-fg-muted leading-relaxed max-w-2xl">

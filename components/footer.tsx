@@ -17,8 +17,8 @@ export default function Footer() {
       <div className="page-x pt-8 sm:pt-11 pb-6">
         <div className="flex flex-col sm:grid sm:grid-cols-[1.6fr_1fr_1fr_1fr] sm:items-start sm:gap-x-6 sm:gap-y-8 pb-6 sm:pb-9 text-left lg:grid-cols-[1.95fr_1fr_1fr_1fr]">
           <div className="border-b border-black/[0.07] pb-5 dark:border-white/[0.07] sm:border-0 sm:pb-0">
-            <Link href="/" className="inline-flex items-center gap-1.5 text-heading sm:text-title font-display font-semibold tracking-tight text-black dark:text-white transition-colors">
-              <svg viewBox="7 7 18 18" width={22} height={22} aria-hidden="true" className="shrink-0 text-black dark:text-white">
+            <Link href="/" className="inline-flex items-center gap-1.5 text-heading sm:text-title font-display font-semibold tracking-tight text-fg-strong transition-colors">
+              <svg viewBox="7 7 18 18" width={22} height={22} aria-hidden="true" className="shrink-0 text-fg-strong">
                 <rect x="7" y="7" width="8.5" height="8.5" rx="2.2" fill="currentColor" />
                 <rect x="16.5" y="7" width="8.5" height="8.5" rx="2.2" fill="currentColor" fillOpacity="0.45" />
                 <rect x="7" y="16.5" width="8.5" height="8.5" rx="2.2" fill="currentColor" fillOpacity="0.45" />
