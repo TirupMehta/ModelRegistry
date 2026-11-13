@@ -11,7 +11,6 @@ import { formatDate } from "@/lib/utils"
 import { folioFor, newestReleaseMonth } from "@/lib/registry"
 import { selectFeedback, tapFeedback, successFeedback } from "@/lib/feedback"
 import { ArrowUpRight, Copy, Check, X, Search, SearchX } from "lucide-react"
-import LabMark from "@/components/lab-mark"
 import ModelFilterControls from "@/components/model-filter-controls"
 import { DEFAULT_MODEL_FILTERS, filterModels, type ModelFilters } from "@/lib/model-filters"
 
@@ -481,7 +480,6 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     {/* Desktop ledger row (lg and up): name and facts on one line, summary below. */}
                     <div className="hidden lg:block">
                       <div className="flex items-baseline gap-3">
-                        <LabMark companyId={model.companyId} size="sm" className="self-center" />
                         <span className="min-w-0 truncate font-display text-title font-semibold tracking-tight text-fg-strong transition-colors duration-150 group-hover:text-accent-ink">
                           {model.name}
                         </span>
@@ -498,13 +496,13 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                           className="shrink-0 self-center text-fg-muted opacity-50 transition-[opacity,transform,color] duration-150 group-hover:translate-x-px group-hover:-translate-y-px group-hover:text-accent-ink group-hover:opacity-100"
                         />
                       </div>
-                      <p className="mt-1 truncate pl-9 pr-8 text-small text-fg-muted">
+                      <p className="mt-1 truncate pr-8 text-small text-fg-muted">
                         <span className="text-fg">{model.categoryLabel}</span>
                         <span aria-hidden="true"> · </span>
                         {summarize(model.highlight)}
                       </p>
                       {specializedDrop && activeTab === "flagships" && (
-                        <p className="mt-1 truncate pl-9 text-small text-fg-muted">
+                        <p className="mt-1 truncate text-small text-fg-muted">
                           Also from this lab: <span className="text-fg">{specializedDrop.name}</span> ({specializedDrop.categoryLabel})
                         </p>
                       )}
@@ -539,7 +537,6 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                       href={`/models/${flagship.id}`}
                       className="group flex h-full items-center gap-3 rounded-lg bg-black/[0.025] px-3.5 py-3 transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
                     >
-                      <LabMark companyId={company.id} />
                       <span className="min-w-0">
                         <span className="block truncate text-body font-semibold text-fg-strong transition-colors group-hover:text-accent-ink">
                           {flagship.name}
