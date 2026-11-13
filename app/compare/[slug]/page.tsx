@@ -201,32 +201,18 @@ export default async function ComparePage({ params }: Props) {
 
         {/* Answer - the passage an answer engine should quote, built from the
             differences rather than from the fact that both records exist. */}
-        <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4 sm:p-5 mb-6">
-          <h2 className="text-small font-sans font-semibold uppercase tracking-wide text-fg-muted mb-2">
-            Answer
-          </h2>
-          <p className="text-title text-fg leading-7">
-            {comparison.summary}
-          </p>
+        <div className="mb-8 rounded-xl bg-black/[0.025] p-5 dark:bg-white/[0.03] sm:p-6">
+          <h2 className="sr-only">Answer</h2>
+          <p className="text-title leading-7 text-fg-strong">{comparison.summary}</p>
           {comparison.identical.length > 0 && (
-            <div className="mt-4 flex flex-wrap items-center gap-1.5">
-              <span className="text-small font-sans text-fg-muted mr-1">
-                Within 5% or equal
-              </span>
-              {comparison.identical.map((item) => (
-                <span
-                  key={item}
-                  className="inline-flex items-center text-small font-sans px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-fg-muted dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03]"
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
+            <p className="mt-3 text-small leading-6 text-fg-muted">
+              <span className="font-medium text-fg">Within 5% or equal:</span> {comparison.identical.join(" · ")}
+            </p>
           )}
         </div>
 
         {/* Where they differ, with the size of each gap */}
-        <h2 className="text-title font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="mb-1 font-display text-heading font-semibold tracking-tight text-fg-strong">
           Where they differ
         </h2>
         <p className="text-body font-sans text-fg-muted mb-3">
@@ -238,7 +224,7 @@ export default async function ComparePage({ params }: Props) {
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b border-black/15 dark:border-white/[0.12]">
-                <th scope="col" className="text-left py-2 pr-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted">
+                <th scope="col" className="text-left py-2 pr-3 font-sans text-small font-medium text-fg-muted">
                   Axis
                 </th>
                 <th scope="col" className="text-left py-2 pr-3 font-sans text-body font-semibold text-black dark:text-white">
@@ -260,23 +246,23 @@ export default async function ComparePage({ params }: Props) {
                       {row.delta}
                     </span>
                   </th>
-                  <td
-                    className={`py-3 pr-3 text-body font-sans tabular-nums ${
-                      row.edge === "a"
-                        ? "font-semibold text-black dark:text-white"
-                        : "text-fg-muted"
-                    }`}
-                  >
-                    {row.a}
+                  <td className="py-2 pr-3 align-middle">
+                    <span
+                      className={`-ml-2 inline-block rounded-md px-2 py-1 text-body font-sans tabular-nums ${
+                        row.edge === "a" ? "bg-accent/10 font-semibold text-fg-strong" : "text-fg-muted"
+                      }`}
+                    >
+                      {row.a}
+                    </span>
                   </td>
-                  <td
-                    className={`py-3 text-body font-sans tabular-nums ${
-                      row.edge === "b"
-                        ? "font-semibold text-black dark:text-white"
-                        : "text-fg-muted"
-                    }`}
-                  >
-                    {row.b}
+                  <td className="py-2 align-middle">
+                    <span
+                      className={`-ml-2 inline-block rounded-md px-2 py-1 text-body font-sans tabular-nums ${
+                        row.edge === "b" ? "bg-accent/10 font-semibold text-fg-strong" : "text-fg-muted"
+                      }`}
+                    >
+                      {row.b}
+                    </span>
                   </td>
                 </tr>
               ))}
@@ -285,51 +271,34 @@ export default async function ComparePage({ params }: Props) {
         </div>
 
         {/* At a glance */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-9">
-          {[
-            { model: a, lab: labA },
-            { model: b, lab: labB },
-          ].map(({ model, lab }) => (
+        <div className="mb-10 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {[a, b].map((model) => (
             <Link
               key={model.id}
               href={`/models/${model.id}`}
-              className="group block p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] hover:border-accent/40 transition-colors duration-150"
+              className="group block rounded-xl bg-black/[0.025] p-5 transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <span
-                  className="inline-block w-2 h-2 rounded-sm shrink-0"
-                  style={{ backgroundColor: lab?.accentColor ?? "#888" }}
-                  aria-hidden="true"
-                />
-                <span className="text-small font-sans text-fg-muted truncate">
-                  {model.companyName}
-                </span>
-                <span className="ml-auto text-small font-sans px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-fg-muted dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03] whitespace-nowrap shrink-0">
-                  {model.statusBadge}
-                </span>
-              </div>
-              <div className="text-title font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
+              <div className="text-small text-fg-muted">{model.companyName}</div>
+              <div className="mt-0.5 font-display text-heading font-semibold tracking-tight text-fg-strong transition-colors group-hover:text-accent-ink">
                 {model.name}
               </div>
-              <div className="mt-1 text-small font-sans text-fg-muted">
-                {model.categoryLabel}, {formatDate(model.releaseDate)}
+              <div className="mt-1 text-small text-fg-muted">
+                {model.categoryLabel} · {formatDate(model.releaseDate)}
               </div>
-              <p className="mt-2 text-body font-sans text-fg-muted leading-6 line-clamp-3">
-                {model.highlight}
-              </p>
+              <p className="mt-3 line-clamp-3 text-body leading-6 text-fg">{model.highlight}</p>
             </Link>
           ))}
         </div>
 
         {/* Spec table */}
-        <h2 className="text-title font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h2 className="mb-3 font-display text-heading font-semibold tracking-tight text-fg-strong">
           Specification
         </h2>
         <div className="overflow-x-auto mb-9 -mx-1 px-1">
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b border-black/15 dark:border-white/[0.12]">
-                <th scope="col" className="text-left py-2 pr-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted">
+                <th scope="col" className="text-left py-2 pr-3 font-sans text-small font-medium text-fg-muted">
                   Field
                 </th>
                 <th scope="col" className="text-left py-2 pr-3 font-sans text-body font-semibold text-black dark:text-white">
@@ -374,7 +343,7 @@ export default async function ComparePage({ params }: Props) {
         </div>
 
         {/* Benchmarks */}
-        <h2 className="text-title font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="mb-1 font-display text-heading font-semibold tracking-tight text-fg-strong">
           Benchmarks both laboratories published
         </h2>
         <p className="text-body font-sans text-fg-muted mb-3">
@@ -385,7 +354,7 @@ export default async function ComparePage({ params }: Props) {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="border-b border-black/15 dark:border-white/[0.12]">
-                  <th scope="col" className="text-left py-2 pr-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted">
+                  <th scope="col" className="text-left py-2 pr-3 font-sans text-small font-medium text-fg-muted">
                     Test
                   </th>
                   <th scope="col" className="text-left py-2 pr-3 font-sans text-body font-semibold text-black dark:text-white">
@@ -491,7 +460,7 @@ export default async function ComparePage({ params }: Props) {
         </div>
 
         {/* FAQ */}
-        <h2 className="text-title font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h2 className="mb-3 font-display text-heading font-semibold tracking-tight text-fg-strong">
           Common questions
         </h2>
         <div className="border-t border-black/10 dark:border-white/[0.08] mb-9">
@@ -510,7 +479,7 @@ export default async function ComparePage({ params }: Props) {
         {/* Related */}
         {related.length > 0 && (
           <>
-            <h2 className="text-title font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+            <h2 className="mb-3 font-display text-heading font-semibold tracking-tight text-fg-strong">
               Related comparisons
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-0 border-t border-black/10 dark:border-white/[0.08] mb-8">
