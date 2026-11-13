@@ -43,7 +43,7 @@ export const companies: Record<string, Company> = {
     website: "https://deepmind.google",
     headquarters: "London, UK / Mountain View, CA",
     accentColor: "#4285f4",
-    description: "Creators of the Gemini 4 family, led by Gemini 4 Carbon - the strongest model with state-of-the-art cybersecurity and #1 on the Artificial Analysis Intelligence Index (59) at $2/$10 intro pricing - plus Gemini 4 Argon for long-horizon engineering and 1M-token output, and Gemini Omni 1.2 Flash for native 15-second video with multi-turn edits.",
+    description: "Creators of the Gemini 4 family: Gemini 4 Carbon, the strongest model with state-of-the-art cybersecurity and #1 on the Artificial Analysis Intelligence Index (59) at $2/$10 intro pricing; Gemini 4 Argon for long-horizon engineering and 1M-token output; Gemini 4 Hydrogen, the fast execution tier shipped Nov 12 at $1.50/$7.50 with a 1M-token context; plus Gemini Omni 1.2 Flash for native 15-second video with multi-turn edits.",
     latestFlagship: "Gemini 4 Carbon",
     latestReasoning: "Gemini 4 Carbon / Gemini 4 Argon",
     openWeightsAdvocate: true,

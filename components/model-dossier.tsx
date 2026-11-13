@@ -461,7 +461,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
           )}
           <p className="mt-3 text-xs font-sans text-black/45 dark:text-zinc-500 leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
             Run by {INDEPENDENT_EVALUATOR.name} as {independentRecord.evaluatedAs}: same tasks and harness
-            for every model, read {INDEPENDENT_EVALUATOR.retrievedAt} from{" "}
+            for every model, read {independentRecord.retrievedAt ?? INDEPENDENT_EVALUATOR.retrievedAt} from{" "}
             <a
               href={independentRecord.sourceUrl}
               rel="noopener noreferrer"

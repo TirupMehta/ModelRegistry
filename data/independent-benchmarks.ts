@@ -153,6 +153,11 @@ export interface IndependentRecord {
   rounded?: boolean
   /** Page the Text Arena figure was read from, when this record carries one. */
   arenaSourceUrl?: string
+  /**
+   * Date this row was read, when it is newer than the suite-wide retrieval.
+   * Omitted means INDEPENDENT_EVALUATOR.retrievedAt.
+   */
+  retrievedAt?: string
   /** 95% half-width printed by the evaluator, in the score's own units. */
   uncertainty?: Partial<Record<IndependentBenchmarkKey, number>>
   /** Results that cannot be ranked inside the registry (too few models), shown as printed. */
@@ -180,6 +185,7 @@ const G_DSPRO = `${AA}deepseek-v4-pro-vs-nvidia-nemotron-3-ultra-550b-a55b`
 const G_SPARK = `${AA}muse-spark-open-vs-claude-opus-5-5`
 const G_HY4 = `${AA}tencent-hy4-vs-claude-opus-5-5`
 const G_CARBON = "https://artificialanalysis.ai/models/releases/comparisons/claude-fable-5-2-vs-gemini-4-carbon"
+const G_HYDROGEN = "https://artificialanalysis.ai/models/releases/comparisons/claude-fable-5-2-vs-gemini-4-hydrogen"
 
 export const independentRecords: IndependentRecord[] = [
   {
@@ -253,6 +259,15 @@ export const independentRecords: IndependentRecord[] = [
     values: { intelligenceIndex: 60, aaBriefcase: 1611, automationBench: 77.8, terminalBench4: 65.2, frontierCode: 40.6, omniscience: 54, gdpPdf: 28.4, hleDiamond: 69.1, critPt: 69.0, terminalBenchScience: 64.8 },
     costPerTask: 7.76,
     minutesPerTask: 25.6,
+  },
+  {
+    modelId: "gemini-4-hydrogen",
+    evaluatedAs: "Gemini 4 Hydrogen (Xhigh)",
+    sourceUrl: G_HYDROGEN,
+    retrievedAt: "2026-11-13",
+    values: { intelligenceIndex: 54, aaBriefcase: 1567, automationBench: 76.1, terminalBench4: 53.5, frontierCode: 39.0, omniscience: 46, gdpPdf: 27.6, hleDiamond: 58.8, critPt: 66.0, terminalBenchScience: 49.5 },
+    costPerTask: 3.16,
+    minutesPerTask: 13.7,
   },
   {
     modelId: "gemini-3-8-flash",

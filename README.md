@@ -24,7 +24,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 |:---|:---|:---|:---|:---|:---|
 | [**Anthropic**](https://www.anthropic.com) | [Claude Fable 5.2](https://modelregistry.tirup.in/models/claude-fable-5-2) | - | 1M | Proprietary | $8 in / $40 out |
 | [**OpenAI**](https://openai.com) | [GPT-6.1 Sol](https://modelregistry.tirup.in/models/gpt-6-1-sol) | [GPT-6.1 Terra](https://modelregistry.tirup.in/models/gpt-6-1-terra) | 1M | Proprietary | $2 in / $10 out |
-| [**Google DeepMind**](https://deepmind.google) | [Gemini 4 Carbon](https://modelregistry.tirup.in/models/gemini-4-carbon) | - | - | Proprietary | $2 in / $10 out |
+| [**Google DeepMind**](https://deepmind.google) | [Gemini 4 Carbon](https://modelregistry.tirup.in/models/gemini-4-carbon) | [Gemini 4 Hydrogen](https://modelregistry.tirup.in/models/gemini-4-hydrogen) | - | Proprietary | $2 in / $10 out |
 | [**xAI**](https://x.ai) | [Grok 4.7](https://modelregistry.tirup.in/models/grok-4-7) | [Grok Voice 3.0](https://modelregistry.tirup.in/models/grok-voice-3) | 500k | Proprietary | $2 in / $6 out |
 | [**DeepSeek**](https://www.deepseek.com) | [DeepSeek V4.1 Flash 1017](https://modelregistry.tirup.in/models/deepseek-v4-1-flash-1017) | - | 1M | Open (MIT) | $0.15 in / $0.6 out *(Open)* |
 | [**Meta AI**](https://ai.meta.com) | [Muse Wonder](https://modelregistry.tirup.in/models/muse-wonder) | [Muse Ember](https://modelregistry.tirup.in/models/muse-ember) | 1M | Proprietary | $4 in / $20 out |
