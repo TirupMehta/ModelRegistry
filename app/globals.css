@@ -71,28 +71,31 @@
  * Text tokens all clear 4.5:1 on the page colour.
  */
 html.dark {
-  --bg: #1b1a17;
-  --card-bg: #24221e;
-  --fg: #d8d3c8;
-  --surface-bar: #1f1d1a;
-  --surface-inset: #282621;
-  --surface-sunken: #1e1c19;
-  --surface-field: #24221e;
-  --surface-raised: #24221e;
-  --surface-hover: #2e2b26;
-  --border-color: rgba(255, 238, 214, 0.1);
-  --field-edge: rgba(255, 238, 214, 0.28);
-  --text-muted: rgba(232, 227, 216, 0.6);
-  --text-secondary: rgba(232, 227, 216, 0.78);
-  --text-primary: rgba(232, 227, 216, 0.92);
-  --tile: rgba(255, 238, 214, 0.05);
-  --tile-hover: rgba(255, 238, 214, 0.09);
-  --rule: rgba(255, 238, 214, 0.11);
-  --ink: #d3cdbf;
-  --on-ink: #1b1a17;
-  --accent-rgb: 226 126 86;
-  --accent-ink-rgb: 234 156 120;
-  --good-rgb: 108 190 150;
+  /* Neutral graphite with orange as the one colour. Grey steps follow the
+     Radix dark scale; orange is its orange scale (fill, then the lighter step
+     for text). Text: #eeeeee strong, #b8b8b8 body, #8c8c8c muted (5.6:1). */
+  --bg: #111111;
+  --card-bg: #191919;
+  --fg: #eeeeee;
+  --surface-bar: #151515;
+  --surface-inset: #1e1e1e;
+  --surface-sunken: #141414;
+  --surface-field: #191919;
+  --surface-raised: #191919;
+  --surface-hover: #222222;
+  --border-color: rgba(255, 255, 255, 0.09);
+  --field-edge: rgba(255, 255, 255, 0.26);
+  --text-muted: #8c8c8c;
+  --text-secondary: #b8b8b8;
+  --text-primary: #eeeeee;
+  --tile: rgba(255, 255, 255, 0.045);
+  --tile-hover: rgba(255, 255, 255, 0.08);
+  --rule: rgba(255, 255, 255, 0.09);
+  --ink: #f76b15;
+  --on-ink: #111111;
+  --accent-rgb: 247 107 21;
+  --accent-ink-rgb: 255 160 87;
+  --good-rgb: 82 200 140;
 }
 
 /* Disable transitions on initial render */
