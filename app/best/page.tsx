@@ -9,7 +9,7 @@ import { INDEPENDENT_EVALUATOR, buildIndependentBoards } from "@/lib/independent
 import { modelsData } from "@/data/models"
 import ModelPicker, { type PickerModel, type PickerTest } from "@/components/model-picker"
 import RankingsSwitcher from "@/components/rankings-switcher"
-import { ArrowLeft, ArrowUpRight } from "lucide-react"
+import { ArrowLeft, ArrowUpRight, ChevronDown } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Best AI model by task: coding, science, price, context",
@@ -132,23 +132,11 @@ export default function BestPage() {
 
         <RankingsSwitcher current="/best" />
 
-        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="mb-2 font-display text-page font-semibold tracking-tight text-fg-strong">
           Which AI model is best for what?
         </h1>
-        <p className="text-title text-fg-muted leading-7 max-w-2xl mb-3">
-          Each answer is the highest score on one named test, among current models that all took that
-          test, run by one independent evaluator with the same tasks and harness. No laboratory chose
-          the test or the settings. Where the number of tasks is small enough that a lead could be
-          noise, the page says which models cannot be separated from the leader.
-        </p>
-        <p className="text-body font-sans text-fg-muted leading-6 max-w-2xl mb-10">
-          Scores are from Artificial Analysis, read {INDEPENDENT_EVALUATOR.retrievedAt}, and are not reproduced by ModelRegistry. Dataset revision{" "}
-          {datasetRevision.datasetVersion}. Superseded models are excluded: you cannot choose them
-          today.{" "}
-          <Link href="/score" className="text-accent-ink hover:underline underline-offset-2">
-            Full per-test tables and the cross-test standing
-          </Link>
-          .
+        <p className="mb-6 max-w-2xl text-title leading-7 text-fg">
+          Pick a job and get the leader, from independent test results.
         </p>
 
         <ModelPicker tests={pickerTests} models={[...pickerModels.values()]} />
@@ -165,26 +153,48 @@ export default function BestPage() {
           ))}
         </nav>
 
-        <div className="space-y-10">
+        <details className="group mb-10 rounded-lg bg-black/[0.025] px-4 py-3 dark:bg-white/[0.03]">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-small font-medium text-fg-strong [&::-webkit-details-marker]:hidden">
+            How these answers are chosen
+            <ChevronDown size={14} aria-hidden="true" className="text-fg-muted transition-transform group-open:rotate-180" />
+          </summary>
+          <div className="mt-3 space-y-2 text-small leading-6 text-fg">
+            <p>
+              Each answer is the highest score on one named test, among current models that all took that test, run by one
+              independent evaluator with the same tasks and harness. No laboratory chose the test or the settings. Where the number
+              of tasks is small enough that a lead could be noise, the page says which models cannot be separated from the leader.
+            </p>
+            <p className="text-fg-muted">
+              Scores are from Artificial Analysis, read {INDEPENDENT_EVALUATOR.retrievedAt}, and are not reproduced by ModelRegistry.
+              Dataset revision {datasetRevision.datasetVersion}. Superseded models are excluded: you cannot choose them today.{" "}
+              <Link href="/score" className="text-accent-ink underline-offset-4 hover:underline">
+                Full per-test tables and the cross-test standing
+              </Link>
+              .
+            </p>
+          </div>
+        </details>
+
+        <div className="space-y-4">
           {answers.map((answer) => (
             <article
               key={answer.id}
               id={answer.id.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}
-              className="border-t border-black/10 dark:border-white/[0.08] pt-5"
+              className="scroll-mt-24 rounded-xl bg-black/[0.025] p-5 sm:p-6 dark:bg-white/[0.03]"
             >
-              <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-2">
+              <h2 className="mb-1.5 font-display text-heading font-semibold tracking-tight text-fg-strong">
                 {answer.question}
               </h2>
-              <p className="text-body sm:text-title text-fg leading-7 max-w-2xl mb-4">
+              <p className="mb-4 max-w-2xl text-body leading-6 text-fg">
                 {answer.answer}
               </p>
 
-              <ol className="mb-3">
+              <ol className="mb-3 border-t border-black/10 dark:border-white/[0.08]">
                 {answer.entries.map((entry) => (
                   <li key={entry.model.id}>
                     <Link
                       href={`/models/${entry.model.id}`}
-                      className="group flex items-baseline gap-3 py-2.5 border-b border-black/10 dark:border-white/[0.08]"
+                      className="group flex items-baseline gap-3 border-b border-black/10 py-2.5 dark:border-white/[0.08]"
                     >
                       <span className="w-5 shrink-0 text-small font-sans tabular-nums text-fg-muted">
                         {entry.rank}
@@ -204,7 +214,7 @@ export default function BestPage() {
               </ol>
 
               {answer.openLeader && (
-                <p className="text-body font-sans text-fg-muted leading-6 mb-2">
+                <p className="mb-2 text-small leading-6 text-fg">
                   Best open-weights result on this test:{" "}
                   <Link
                     href={`/models/${answer.openLeader.model.id}`}
@@ -216,7 +226,7 @@ export default function BestPage() {
                 </p>
               )}
 
-              <p className="text-small font-sans text-fg-muted leading-6 max-w-2xl">
+              <p className="max-w-2xl text-small leading-6 text-fg-muted">
                 {answer.caveat}{" "}
                 <Link
                   href={answer.href}
@@ -230,11 +240,11 @@ export default function BestPage() {
           ))}
         </div>
 
-        <section className="mt-12 border-t border-black/10 dark:border-white/[0.08] pt-5">
+        <section className="mt-12">
           <h2 className="text-title font-display font-semibold tracking-tight text-black dark:text-white mb-2">
             What is the best AI model overall?
           </h2>
-          <p className="text-body sm:text-title text-fg leading-7 max-w-2xl">
+          <p className="max-w-2xl text-body leading-7 text-fg">
             {answers[0]?.entries[0] ? `${answers[0].entries[0].model.name} has the highest overall score here, ` : ""}
             but no model leads every test, and the highest scorer is rarely the best value. The leaders
             above differ by task, and the cost table shows what each point costs. Pick the task
