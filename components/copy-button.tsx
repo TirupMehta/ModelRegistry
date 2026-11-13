@@ -41,7 +41,7 @@ export default function CopyButton({
     <button
       type="button"
       onClick={handleCopy}
-      className={`inline-flex items-center justify-center gap-1.5 px-3 py-2 min-h-9 rounded-md text-xs font-sans font-medium cursor-pointer select-none transition-colors duration-200 active:scale-95 outline outline-1 -outline-offset-1 ${
+      className={`inline-flex items-center justify-center gap-1.5 px-3 py-2 min-h-9 rounded-md text-small font-sans font-medium cursor-pointer select-none transition-colors duration-200 active:scale-95 outline outline-1 -outline-offset-1 ${
         copied
           ? "bg-good/10 outline-good/50 text-good dark:text-good"
           : "outline-transparent"

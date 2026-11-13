@@ -176,7 +176,7 @@ export function BounceSidebar({
               role="presentation"
               data-slot="bounce-sidebar-heading"
               style={{ color: dotColor }}
-              className="px-1 pb-1 pt-7 text-[11px] font-semibold first:pt-0"
+              className="px-1 pb-1 pt-7 text-caption font-semibold first:pt-0"
             >
               {label}
             </li>
@@ -186,10 +186,10 @@ export function BounceSidebar({
         const href = typeof item === "string" ? undefined : item.href;
         const isActive = index === activeIndex;
         const itemClassName = cn(
-          "flex w-full cursor-pointer items-center rounded-lg p-1 text-left text-sm transition-colors duration-200",
+          "flex w-full cursor-pointer items-center rounded-lg p-1 text-left text-body transition-colors duration-200",
           isActive
             ? "text-black dark:text-white"
-            : "text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white",
+            : "text-fg-muted hover:text-black dark:hover:text-white",
         );
 
         return (

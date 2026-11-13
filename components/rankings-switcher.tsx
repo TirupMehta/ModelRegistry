@@ -15,7 +15,7 @@ export default function RankingsSwitcher({ current }: { current: (typeof VIEWS)[
   return (
     <nav
       aria-label="Ranking views"
-      className="mb-7 flex flex-wrap items-center gap-1 text-xs font-sans"
+      className="mb-7 flex flex-wrap items-center gap-1 text-small font-sans"
     >
       {VIEWS.map((view) => {
         const active = view.href === current
@@ -27,7 +27,7 @@ export default function RankingsSwitcher({ current }: { current: (typeof VIEWS)[
             className={
               active
                 ? "inline-flex min-h-9 items-center rounded-full bg-black px-3.5 font-medium text-white dark:bg-white dark:text-black"
-                : "inline-flex min-h-9 items-center rounded-full border border-black/10 px-3.5 text-black/60 transition-colors hover:text-black dark:border-white/15 dark:text-zinc-400 dark:hover:text-white"
+                : "inline-flex min-h-9 items-center rounded-full border border-black/10 px-3.5 text-fg-muted transition-colors hover:text-black dark:border-white/15 dark:hover:text-white"
             }
           >
             {view.label}

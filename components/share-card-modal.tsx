@@ -870,15 +870,15 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
                 aspectRatio: ratio === "story" ? "9/16" : ratio === "square" ? "1/1" : "16/9",
               }}
             />
-            <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 px-2 py-1 rounded-md bg-black/60 text-white text-[10px] font-sans opacity-0 group-hover/preview:opacity-100 transition-opacity pointer-events-none">
+            <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 px-2 py-1 rounded-md bg-black/60 text-white text-caption font-sans opacity-0 group-hover/preview:opacity-100 transition-opacity pointer-events-none">
               <ZoomIn size={11} /> EXPAND
             </span>
           </div>
-          <span className="text-[10px] sm:text-[11px] font-sans text-black/40 dark:text-zinc-500 mt-2 sm:mt-3 text-center px-2">
+          <span className="text-caption font-sans text-fg-muted mt-2 sm:mt-3 text-center px-2">
             Previewing {ratio === "story" ? "1080×1920 (Story)" : ratio === "square" ? "1080×1080 (Square)" : "1200×675 (Landscape)"} • High-DPI 2x • Click image to expand
           </span>
           {renderError && (
-            <span className="text-[11px] font-sans text-amber-600 dark:text-amber-400 mt-1.5 text-center px-4 leading-relaxed">
+            <span className="text-caption font-sans text-amber-600 dark:text-amber-400 mt-1.5 text-center px-4 leading-relaxed">
               {renderError}
             </span>
           )}
@@ -891,14 +891,14 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
             <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/[0.08] mb-4 sm:mb-5">
               <div className="flex items-center gap-2">
                 <Sparkles size={16} className="text-accent-ink" />
-                <h3 className="text-sm font-medium tracking-tight text-black dark:text-white">
+                <h3 className="text-body font-medium tracking-tight text-black dark:text-white">
                   Social Card Studio
                 </h3>
               </div>
               <button
                 onClick={onClose}
                 aria-label="Close share studio"
-                className="p-1 rounded text-black/40 dark:text-zinc-500 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
+                className="p-1 rounded text-fg-muted hover:text-black dark:hover:text-white transition-colors cursor-pointer"
               >
                 <X size={16} />
               </button>
@@ -906,49 +906,49 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
 
             {/* Format / Aspect Ratio Selector */}
             <div className="mb-5">
-              <label className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-2 font-medium">
+              <label className="text-caption font-sans text-fg-muted block mb-2 font-medium">
                 FORMAT & RATIO
               </label>
               <div className="grid grid-cols-3 gap-1.5 p-1 rounded-lg bg-black/[0.03] dark:bg-white/[0.04] border border-black/5 dark:border-white/[0.06]">
                 <button
                   onClick={() => setRatio("story")}
-                  className={`px-2.5 py-2 rounded text-xs font-sans transition-colors cursor-pointer flex flex-col items-center gap-1 ${
+                  className={`px-2.5 py-2 rounded text-small font-sans transition-colors cursor-pointer flex flex-col items-center gap-1 ${
                     ratio === "story"
                       ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
-                      : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+                      : "text-fg-muted hover:text-black dark:hover:text-white"
                   }`}
                 >
                   <span>9:16</span>
-                  <span className="text-[11px] opacity-70">Story</span>
+                  <span className="text-caption opacity-70">Story</span>
                 </button>
                 <button
                   onClick={() => setRatio("square")}
-                  className={`px-2.5 py-2 rounded text-xs font-sans transition-colors cursor-pointer flex flex-col items-center gap-1 ${
+                  className={`px-2.5 py-2 rounded text-small font-sans transition-colors cursor-pointer flex flex-col items-center gap-1 ${
                     ratio === "square"
                       ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
-                      : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+                      : "text-fg-muted hover:text-black dark:hover:text-white"
                   }`}
                 >
                   <span>1:1</span>
-                  <span className="text-[11px] opacity-70">Square</span>
+                  <span className="text-caption opacity-70">Square</span>
                 </button>
                 <button
                   onClick={() => setRatio("landscape")}
-                  className={`px-2.5 py-2 rounded text-xs font-sans transition-colors cursor-pointer flex flex-col items-center gap-1 ${
+                  className={`px-2.5 py-2 rounded text-small font-sans transition-colors cursor-pointer flex flex-col items-center gap-1 ${
                     ratio === "landscape"
                       ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-xs"
-                      : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white"
+                      : "text-fg-muted hover:text-black dark:hover:text-white"
                   }`}
                 >
                   <span>16:9</span>
-                  <span className="text-[11px] opacity-70">Post</span>
+                  <span className="text-caption opacity-70">Post</span>
                 </button>
               </div>
             </div>
 
             {/* Card Theme Palette */}
             <div className="mb-6">
-              <label className="text-[11px] font-sans text-black/40 dark:text-zinc-400 block mb-2 font-medium">
+              <label className="text-caption font-sans text-fg-muted block mb-2 font-medium">
                 CARD PALETTE
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -957,10 +957,10 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
                     userPickedTheme.current = true
                     setCardTheme("dark")
                   }}
-                  className={`p-2.5 rounded-md border text-xs font-sans flex items-center justify-between cursor-pointer transition-colors ${
+                  className={`p-2.5 rounded-md border text-small font-sans flex items-center justify-between cursor-pointer transition-colors ${
                     cardTheme === "dark"
                       ? "border-accent bg-black/5 dark:bg-white/[0.06] text-black dark:text-white font-medium"
-                      : "border-black/10 dark:border-white/[0.08] text-black/60 dark:text-zinc-400 hover:border-black/30 dark:hover:border-white/20"
+                      : "border-black/10 dark:border-white/[0.08] text-fg-muted hover:border-black/30 dark:hover:border-white/20"
                   }`}
                 >
                   <span>Obsidian Noir</span>
@@ -971,10 +971,10 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
                     userPickedTheme.current = true
                     setCardTheme("light")
                   }}
-                  className={`p-2.5 rounded-md border text-xs font-sans flex items-center justify-between cursor-pointer transition-colors ${
+                  className={`p-2.5 rounded-md border text-small font-sans flex items-center justify-between cursor-pointer transition-colors ${
                     cardTheme === "light"
                       ? "border-accent bg-black/5 dark:bg-white/[0.06] text-black dark:text-white font-medium"
-                      : "border-black/10 dark:border-white/[0.08] text-black/60 dark:text-zinc-400 hover:border-black/30 dark:hover:border-white/20"
+                      : "border-black/10 dark:border-white/[0.08] text-fg-muted hover:border-black/30 dark:hover:border-white/20"
                   }`}
                 >
                   <span>Vellum Archival</span>
@@ -990,7 +990,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
             <button
               onClick={handleCopyImage}
               disabled={isRendering}
-              className="w-full py-2.5 px-3.5 rounded-md bg-black text-white dark:bg-white dark:text-black font-sans text-xs font-medium hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+              className="w-full py-2.5 px-3.5 rounded-md bg-black text-white dark:bg-white dark:text-black font-sans text-small font-medium hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-xs"
             >
               {isCopied ? (
                 <>
@@ -1009,7 +1009,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
             <button
               onClick={handleDownload}
               disabled={isRendering}
-              className="w-full py-2.5 px-3.5 rounded-md border border-black/10 dark:border-white/[0.09] text-black dark:text-zinc-200 font-sans text-xs font-medium hover:border-accent hover:text-accent-ink transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer bg-black/[0.015] dark:bg-white/[0.03]"
+              className="w-full py-2.5 px-3.5 rounded-md border border-black/10 dark:border-white/[0.09] text-black dark:text-zinc-200 font-sans text-small font-medium hover:border-accent hover:text-accent-ink transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer bg-black/[0.015] dark:bg-white/[0.03]"
             >
               <Download size={14} />
               <span>DOWNLOAD PNG ({ratio.toUpperCase()})</span>
@@ -1018,7 +1018,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
             {/* Native Mobile Share (if supported) */}
             <button
               onClick={handleNativeShare}
-              className="w-full py-2 px-3 rounded text-[11px] font-sans text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full py-2 px-3 rounded text-caption font-sans text-fg-muted hover:text-black dark:hover:text-white transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <Share2 size={12} />
               <span>Share to Instagram Story / Apps</span>
@@ -1027,7 +1027,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
             {/* GitHub README Badge Option */}
             <button
               onClick={handleCopyBadge}
-              className="w-full py-2 px-3 rounded border border-dashed border-black/10 dark:border-white/[0.08] text-[11px] font-sans text-black/55 dark:text-zinc-400 hover:border-accent/40 hover:text-accent-ink transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full py-2 px-3 rounded border border-dashed border-black/10 dark:border-white/[0.08] text-caption font-sans text-fg-muted hover:border-accent/40 hover:text-accent-ink transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
             >
               {isBadgeCopied ? (
                 <>
@@ -1072,7 +1072,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
               closeZoom()
             }}
             aria-label="Close expanded preview"
-            className="fixed top-4 right-4 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white/10 text-white text-[11px] font-sans cursor-pointer hover:bg-white/20 transition-colors"
+            className="fixed top-4 right-4 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white/10 text-white text-caption font-sans cursor-pointer hover:bg-white/20 transition-colors"
           >
             <X size={12} /> ESC / CLICK TO CLOSE
           </button>
@@ -1117,22 +1117,22 @@ class ShareCardErrorBoundary extends React.Component<
           className="w-full max-w-sm rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[var(--surface-field)] p-5 shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
-          <h3 className="text-sm font-sans font-medium text-black dark:text-white">
+          <h3 className="text-body font-sans font-medium text-black dark:text-white">
             Share preview could not be rendered
           </h3>
-          <p className="mt-2 text-xs font-sans leading-relaxed text-black/60 dark:text-zinc-400 break-words">
+          <p className="mt-2 text-small font-sans leading-relaxed text-fg-muted break-words">
             {error.message || "Unknown rendering error."}
           </p>
           <div className="mt-4 flex gap-2">
             <button
               onClick={this.props.onRetry}
-              className="flex-1 py-2 px-3 rounded-md bg-black text-white dark:bg-white dark:text-black font-sans text-xs font-medium hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors cursor-pointer"
+              className="flex-1 py-2 px-3 rounded-md bg-black text-white dark:bg-white dark:text-black font-sans text-small font-medium hover:bg-accent dark:hover:bg-accent dark:hover:text-white transition-colors cursor-pointer"
             >
               TRY AGAIN
             </button>
             <button
               onClick={this.props.onClose}
-              className="flex-1 py-2 px-3 rounded-md border border-black/10 dark:border-white/10 font-sans text-xs font-medium text-black/70 dark:text-zinc-300 hover:border-accent hover:text-accent-ink transition-colors cursor-pointer"
+              className="flex-1 py-2 px-3 rounded-md border border-black/10 dark:border-white/10 font-sans text-small font-medium text-fg hover:border-accent hover:text-accent-ink transition-colors cursor-pointer"
             >
               CLOSE
             </button>

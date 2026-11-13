@@ -59,16 +59,16 @@ export function ModelProvenance({ model }: { model: ModelItem }) {
   return (
     <section aria-label="Sources" className="mt-5">
       <details className="group">
-        <summary className="flex cursor-pointer list-none items-center gap-2 border-t border-black/10 pt-4 text-xs font-sans text-black/60 dark:border-white/[0.08] dark:text-zinc-400 [&::-webkit-details-marker]:hidden">
+        <summary className="flex cursor-pointer list-none items-center gap-2 border-t border-black/10 pt-4 text-small font-sans text-fg-muted dark:border-white/[0.08] [&::-webkit-details-marker]:hidden">
           <Check size={14} className="text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
-          <span className="font-medium text-black/80 dark:text-white">{label}</span>
+          <span className="font-medium text-fg dark:text-white">{label}</span>
           <span className="tabular-nums">
             {model.sources.length} sources · checked {formatDate(model.lastVerifiedAt)}
           </span>
           <ChevronDown size={14} className="ml-auto transition-transform group-open:rotate-180" aria-hidden="true" />
         </summary>
 
-        <div className="pt-3 text-xs font-sans leading-5 text-black/65 dark:text-zinc-300">
+        <div className="pt-3 text-small font-sans leading-5 text-fg-muted">
           <p>
             {VERIFICATION_COPY[model.verificationStatus] ?? ""}{" "}
             <Link href="/trust" className="text-accent-ink hover:underline underline-offset-2">
@@ -81,7 +81,7 @@ export function ModelProvenance({ model }: { model: ModelItem }) {
             </p>
           )}
           {summary.missing.length > 0 && (
-            <ul className="mt-2 list-disc pl-5 text-black/60 dark:text-zinc-400">
+            <ul className="mt-2 list-disc pl-5 text-fg-muted">
               {summary.missing.map((gap) => (
                 <li key={gap}>{gap}</li>
               ))}
@@ -95,12 +95,12 @@ export function ModelProvenance({ model }: { model: ModelItem }) {
                   href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-baseline gap-1 text-black/80 dark:text-zinc-200 hover:text-accent-ink break-all"
+                  className="inline-flex items-baseline gap-1 text-fg hover:text-accent-ink break-all"
                 >
                   <span>{item.title}</span>
                   <ExternalLink size={11} className="shrink-0 opacity-60" aria-hidden="true" />
                 </a>
-                <span className="text-black/45 dark:text-zinc-500">
+                <span className="text-fg-muted">
                   {" "}
                   · {EVIDENCE_KIND_LABEL[item.kind as keyof typeof EVIDENCE_KIND_LABEL] ?? item.kind}
                   {item.accessedAt ? ` · checked ${item.accessedAt}` : ""}
@@ -110,13 +110,13 @@ export function ModelProvenance({ model }: { model: ModelItem }) {
           </ul>
 
           <details className="mt-4">
-            <summary className="w-fit cursor-pointer text-black/60 hover:text-accent-ink dark:text-zinc-400">Where each fact comes from</summary>
+            <summary className="w-fit cursor-pointer text-fg-muted hover:text-accent-ink">Where each fact comes from</summary>
             <ul className="mt-2 space-y-1.5">
               {Object.entries(model.fieldSources ?? {}).flatMap(([field, refs]) =>
                 (refs ?? []).map((source) => (
                   <li key={`${field}-${source.url}`}>
-                    <span className="font-medium text-black/80 dark:text-zinc-200">{fieldLabels[field as keyof typeof fieldLabels]}</span>{" "}
-                    <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-black/60 underline underline-offset-2 hover:text-accent-ink dark:text-zinc-400">
+                    <span className="font-medium text-fg">{fieldLabels[field as keyof typeof fieldLabels]}</span>{" "}
+                    <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-fg-muted underline underline-offset-2 hover:text-accent-ink">
                       {source.title}
                     </a>
                   </li>
@@ -125,15 +125,15 @@ export function ModelProvenance({ model }: { model: ModelItem }) {
             </ul>
           </details>
 
-          <p className="mt-4 text-black/55 dark:text-zinc-400">
-            Badge <span className="font-medium text-black/80 dark:text-zinc-200">{model.statusBadge}</span> is a{" "}
+          <p className="mt-4 text-fg-muted">
+            Badge <span className="font-medium text-fg">{model.statusBadge}</span> is a{" "}
             <Link href="/trust#badges" className="text-accent-ink hover:underline underline-offset-2">
               {badge.label.toLowerCase()}
             </Link>
             . {badge.basis}
           </p>
-          <p className="mt-3 text-black/45 dark:text-zinc-500">Cite this record</p>
-          <code className="block text-sm font-mono text-black/65 dark:text-zinc-400 leading-relaxed break-words">{citation}</code>
+          <p className="mt-3 text-fg-muted">Cite this record</p>
+          <code className="block text-body font-mono text-fg-muted leading-relaxed break-words">{citation}</code>
         </div>
       </details>
     </section>
@@ -172,18 +172,18 @@ export function ModelFaq({ model }: { model: ModelItem }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqPage(faq)) }} />
       <h2
         id="model-faq-heading"
-        className="text-sm font-semibold text-black dark:text-white mb-2.5"
+        className="text-body font-semibold text-black dark:text-white mb-2.5"
       >
         Common questions
       </h2>
       <div id="model-faq" className="border-t border-black/10 dark:border-white/[0.08]">
         {faq.map((item) => (
           <details key={item.q} className="group border-b border-black/10 dark:border-white/[0.08]">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-3 text-sm font-medium text-black dark:text-white [&::-webkit-details-marker]:hidden">
-              <h3 className="text-sm font-medium">{item.q}</h3>
-              <ChevronDown size={14} className="shrink-0 text-black/45 transition-transform group-open:rotate-180 dark:text-zinc-500" aria-hidden="true" />
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-3 text-body font-medium text-black dark:text-white [&::-webkit-details-marker]:hidden">
+              <h3 className="text-body font-medium">{item.q}</h3>
+              <ChevronDown size={14} className="shrink-0 text-fg-muted transition-transform group-open:rotate-180" aria-hidden="true" />
             </summary>
-            <p className="pb-3.5 pr-6 text-sm font-sans leading-6 text-black/65 dark:text-zinc-300">{item.a}</p>
+            <p className="pb-3.5 pr-6 text-body font-sans leading-6 text-fg-muted">{item.a}</p>
           </details>
         ))}
       </div>
@@ -223,7 +223,7 @@ export function ModelComparisons({ model }: { model: ModelItem }) {
     <section aria-labelledby="model-compare-heading" className="mb-6 sm:mb-8">
       <h2
         id="model-compare-heading"
-        className="text-sm font-semibold text-black dark:text-white mb-2.5"
+        className="text-body font-semibold text-black dark:text-white mb-2.5"
       >
         Head-to-head comparisons
       </h2>
@@ -232,9 +232,9 @@ export function ModelComparisons({ model }: { model: ModelItem }) {
           <Link
             key={opponent.id}
             href={compareHref(pair.a, pair.b)}
-            className="group flex items-baseline gap-2 py-2.5 border-b border-black/10 dark:border-white/[0.08] text-sm font-sans"
+            className="group flex items-baseline gap-2 py-2.5 border-b border-black/10 dark:border-white/[0.08] text-body font-sans"
           >
-            <span className="text-black/70 dark:text-zinc-300 group-hover:text-accent-ink transition-colors truncate">
+            <span className="text-fg group-hover:text-accent-ink transition-colors truncate">
               {model.name} vs {opponent.name}
             </span>
             <ArrowUpRight
@@ -247,7 +247,7 @@ export function ModelComparisons({ model }: { model: ModelItem }) {
       </div>
       <Link
         href="/compare"
-        className="mt-3 inline-flex items-center gap-1 text-sm font-sans text-black/50 dark:text-zinc-400 hover:text-accent-ink transition-colors duration-150"
+        className="mt-3 inline-flex items-center gap-1 text-body font-sans text-fg-muted hover:text-accent-ink transition-colors duration-150"
       >
         <Check size={11} aria-hidden="true" />
         <span>All model comparisons</span>
@@ -267,12 +267,12 @@ export function ModelPositions({ model }: { model: ModelItem }) {
       <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
         <h2
           id="score-heading"
-          className="text-base font-display font-semibold text-black dark:text-white mb-3"
+          className="text-title font-display font-semibold text-black dark:text-white mb-3"
         >
           Availability
         </h2>
         <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4">
-          <p className="text-sm font-sans text-black/70 dark:text-zinc-300 leading-6">
+          <p className="text-body font-sans text-fg leading-6">
             Superseded by{" "}
             {successor ? (
               <Link
@@ -286,7 +286,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             )}
             .
           </p>
-          <p className="mt-2 text-sm font-sans text-black/45 dark:text-zinc-500 leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
+          <p className="mt-2 text-body font-sans text-fg-muted leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
             This record keeps its dates, sources and readings, and is not ranked against the current
             lineup: it is not something a reader can choose today. Superseded is not retired, and no
             laboratory has withdrawn it.{" "}
@@ -303,20 +303,20 @@ export function ModelPositions({ model }: { model: ModelItem }) {
   const independentPositions = independentPositionsFor(model, buildIndependentBoards(modelsData))
   const row = (position: (typeof independentPositions)[number]) => (
       <div key={position.test} className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-        <span className="text-sm font-sans text-black/70 dark:text-zinc-300">{position.test}</span>
-        <span className="hidden sm:inline text-sm font-sans text-black/35 dark:text-zinc-600">
+        <span className="text-body font-sans text-fg">{position.test}</span>
+        <span className="hidden sm:inline text-body font-sans text-fg-muted">
           {position.domain}
         </span>
         {position.tiedWithLeader && position.rank > 1 && (
-          <span className="text-[13px] font-sans text-black/45 dark:text-zinc-500">
+          <span className="text-small font-sans text-fg-muted">
             not separable from the leader
           </span>
         )}
-        <span className="ml-auto text-sm font-sans tabular-nums text-black/70 dark:text-zinc-300">
+        <span className="ml-auto text-body font-sans tabular-nums text-fg">
           <strong className="font-semibold text-black dark:text-white">{position.rank}</strong> of{" "}
           {position.of}
         </span>
-        <span className="text-sm font-sans tabular-nums text-black/45 dark:text-zinc-500 w-14 text-right shrink-0">
+        <span className="text-body font-sans tabular-nums text-fg-muted w-14 text-right shrink-0">
           {position.score}
         </span>
       </div>
@@ -328,22 +328,22 @@ export function ModelPositions({ model }: { model: ModelItem }) {
       <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
         <h2
           id="score-heading"
-          className="text-base font-display font-semibold text-black dark:text-white mb-3"
+          className="text-title font-display font-semibold text-black dark:text-white mb-3"
         >
           Independent results
         </h2>
         <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4">
           {rated && (
             <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 pb-3 mb-3 border-b border-black/5 dark:border-white/[0.06]">
-              <span className="text-sm font-sans text-black/45 dark:text-zinc-500">Cross-test standing</span>
-              <span className="text-lg font-display font-semibold tracking-tight text-black dark:text-white tabular-nums leading-none">
+              <span className="text-body font-sans text-fg-muted">Cross-test standing</span>
+              <span className="text-title font-display font-semibold tracking-tight text-black dark:text-white tabular-nums leading-none">
                 {rated.standing.toFixed(1)}
               </span>
-              <span className="text-sm font-sans text-black/45 dark:text-zinc-500">Tier {rated.tier}</span>
-              <span className="text-sm font-sans tabular-nums text-black/45 dark:text-zinc-500">
+              <span className="text-body font-sans text-fg-muted">Tier {rated.tier}</span>
+              <span className="text-body font-sans tabular-nums text-fg-muted">
                 {rated.cohorts} tests, spread {rated.spread.toFixed(0)}
               </span>
-              <span className="ml-auto text-sm font-sans text-black/45 dark:text-zinc-500">
+              <span className="ml-auto text-body font-sans text-fg-muted">
                 {AGREEMENT_LABEL[rated.agreement]}
               </span>
             </div>
@@ -352,7 +352,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             {independentPositions.slice(0, 4).map(row)}
             {independentPositions.length > 4 && (
               <details className="group pt-1">
-                <summary className="w-fit cursor-pointer list-none text-sm text-black/60 hover:text-accent-ink dark:text-zinc-400 [&::-webkit-details-marker]:hidden">
+                <summary className="w-fit cursor-pointer list-none text-body text-fg-muted hover:text-accent-ink [&::-webkit-details-marker]:hidden">
                   <span className="group-open:hidden">Show all {independentPositions.length} tests</span>
                   <span className="hidden group-open:inline">Show fewer</span>
                 </summary>
@@ -361,11 +361,11 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             )}
           </div>
           {independentRecord.extras && independentRecord.extras.length > 0 && (
-            <ul className="space-y-2 text-sm font-sans text-black/70 dark:text-zinc-300">
+            <ul className="space-y-2 text-body font-sans text-fg">
               {independentRecord.extras.map((extra) => (
                 <li key={extra.label}>
                   <span className="font-medium text-black dark:text-white">{extra.label}:</span> {extra.value}
-                  <span className="block text-sm text-black/45 dark:text-zinc-500">
+                  <span className="block text-body text-fg-muted">
                     {extra.note}{" "}
                     <a href={extra.sourceUrl} rel="noopener noreferrer" className="text-accent-ink hover:underline underline-offset-2">
                       Source
@@ -373,13 +373,13 @@ export function ModelPositions({ model }: { model: ModelItem }) {
                   </span>
                 </li>
               ))}
-              <li className="text-sm text-black/45 dark:text-zinc-500">
+              <li className="text-body text-fg-muted">
                 Too few registry models have this kind of result to rank them against each other, so no position is claimed.
               </li>
             </ul>
           )}
           {typeof independentRecord.costPerTask === "number" && (
-            <p className="mt-3 text-sm font-sans text-black/55 dark:text-zinc-400 leading-5">
+            <p className="mt-3 text-body font-sans text-fg-muted leading-5">
               Evaluator cost per task ${independentRecord.costPerTask.toFixed(2)}
               {typeof independentRecord.minutesPerTask === "number"
                 ? `, ${independentRecord.minutesPerTask.toFixed(1)} minutes per task`
@@ -387,7 +387,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
               .
             </p>
           )}
-          <p className="mt-3 text-sm font-sans text-black/45 dark:text-zinc-500 leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
+          <p className="mt-3 text-body font-sans text-fg-muted leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
             Run by {INDEPENDENT_EVALUATOR.name} as {independentRecord.evaluatedAs}: same tasks and harness
             for every model, read {independentRecord.retrievedAt ?? INDEPENDENT_EVALUATOR.retrievedAt} from{" "}
             <a
@@ -419,22 +419,22 @@ export function ModelPositions({ model }: { model: ModelItem }) {
       <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
         <h2
           id="score-heading"
-          className="text-base font-display font-semibold text-black dark:text-white mb-3"
+          className="text-title font-display font-semibold text-black dark:text-white mb-3"
         >
           Where it ranks
         </h2>
         <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4">
-          <p className="text-sm font-sans text-black/70 dark:text-zinc-300 leading-6">
+          <p className="text-body font-sans text-fg leading-6">
             Not ranked yet.{" "}
             {reasons.length === 0
               ? "No benchmark with a comparable test and version is recorded for this model, so any position would be invented."
               : "Its published scores cannot join a comparison table:"}
           </p>
           {reasons.length > 0 && (
-            <ul className="mt-2 space-y-1.5 text-sm font-sans text-black/55 dark:text-zinc-400 leading-5">
+            <ul className="mt-2 space-y-1.5 text-body font-sans text-fg-muted leading-5">
               {reasons.map((item) => (
                 <li key={`${item.test}-${item.raw}`}>
-                  <span className="font-medium text-black/75 dark:text-zinc-300">
+                  <span className="font-medium text-fg">
                     {item.test} {item.raw}
                   </span>
                   : {item.reason}
@@ -442,7 +442,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
               ))}
             </ul>
           )}
-          <p className="mt-2 text-sm font-sans text-black/45 dark:text-zinc-500 leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
+          <p className="mt-2 text-body font-sans text-fg-muted leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
             A missing rank means the evidence is missing, not that the model is weak.{" "}
             <Link href="/best" className="text-accent-ink hover:underline underline-offset-2">
               Leaders by task
@@ -458,26 +458,26 @@ export function ModelPositions({ model }: { model: ModelItem }) {
     <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
       <h2
         id="score-heading"
-        className="text-base font-display font-semibold text-black dark:text-white mb-3"
+        className="text-title font-display font-semibold text-black dark:text-white mb-3"
       >
         Where it ranks
       </h2>
       <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4">
         {standing && (
           <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 pb-3 mb-3 border-b border-black/5 dark:border-white/[0.06]">
-            <span className="text-sm font-sans text-black/45 dark:text-zinc-500">
+            <span className="text-body font-sans text-fg-muted">
               Cross-test standing
             </span>
-            <span className="text-lg font-display font-semibold tracking-tight text-black dark:text-white tabular-nums leading-none">
+            <span className="text-title font-display font-semibold tracking-tight text-black dark:text-white tabular-nums leading-none">
               {standing.standing.toFixed(1)}
             </span>
-            <span className="text-sm font-sans tabular-nums text-black/45 dark:text-zinc-500">
+            <span className="text-body font-sans tabular-nums text-fg-muted">
               {standing.cohorts} tests
             </span>
-            <span className="text-sm font-sans tabular-nums text-black/45 dark:text-zinc-500">
+            <span className="text-body font-sans tabular-nums text-fg-muted">
               spread {standing.spread.toFixed(0)}
             </span>
-            <span className="ml-auto text-sm font-sans text-black/45 dark:text-zinc-500">
+            <span className="ml-auto text-body font-sans text-fg-muted">
               {AGREEMENT_LABEL[standing.agreement]}
             </span>
           </div>
@@ -485,25 +485,25 @@ export function ModelPositions({ model }: { model: ModelItem }) {
         <div className="space-y-2">
           {positions.map((position) => (
             <div key={position.test} className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-              <span className="text-sm font-sans text-black/70 dark:text-zinc-300">
+              <span className="text-body font-sans text-fg">
                 {position.test}
               </span>
-              <span className="text-sm font-sans text-black/35 dark:text-zinc-600">
+              <span className="text-body font-sans text-fg-muted">
                 {position.domain}
               </span>
-              <span className="ml-auto text-sm font-sans tabular-nums text-black/70 dark:text-zinc-300">
+              <span className="ml-auto text-body font-sans tabular-nums text-fg">
                 <strong className="font-semibold text-black dark:text-white">
                   {position.rank}
                 </strong>{" "}
                 of {position.of}
               </span>
-              <span className="text-sm font-sans tabular-nums text-black/45 dark:text-zinc-500 w-14 text-right shrink-0">
+              <span className="text-body font-sans tabular-nums text-fg-muted w-14 text-right shrink-0">
                 {position.score}
               </span>
             </div>
           ))}
         </div>
-        <p className="mt-3 text-sm font-sans text-black/45 dark:text-zinc-500 leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
+        <p className="mt-3 text-body font-sans text-fg-muted leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
           Ranked only against current models measured by the same test at the same version. The
           standing is the mean of the percentiles above, and its spread is the disagreement between
           them.{" "}

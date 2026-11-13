@@ -17,19 +17,19 @@ export default function Header() {
   return (
     <>
       {/* ── Top Telemetry Readout Bar ────────────────────────────────────── */}
-      <div className="w-full bg-black/[0.02] dark:bg-[var(--surface-bar)] border-b border-black/5 dark:border-white/[0.06] py-2 text-[11px] font-sans text-black/60 dark:text-zinc-400">
+      <div className="w-full bg-black/[0.02] dark:bg-[var(--surface-bar)] border-b border-black/5 dark:border-white/[0.06] py-2 text-caption font-sans text-fg-muted">
         <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-2">
             <span className="block min-w-0 truncate">
-              <span className="font-medium text-black/70 dark:text-zinc-200">Curated dataset</span>
+              <span className="font-medium text-fg">Curated dataset</span>
               <span className="mx-2 inline-block h-3 w-px translate-y-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
-              <span className="tabular-nums text-black/45 dark:text-zinc-500">{modelsData.length} models</span>
+              <span className="tabular-nums text-fg-muted">{modelsData.length} models</span>
               <span className="mx-2 hidden h-3 w-px translate-y-px bg-black/10 sm:inline-block dark:bg-white/15" aria-hidden="true" />
-              <span className="hidden text-black/45 sm:inline dark:text-zinc-500">Revised {revisedLabel}</span>
+              <span className="hidden text-fg-muted sm:inline">Revised {revisedLabel}</span>
             </span>
           </div>
 
-          <div className="flex shrink-0 items-center gap-2.5 text-[11px] font-sans sm:gap-3 sm:text-[12px]">
+          <div className="flex shrink-0 items-center gap-2.5 text-caption font-sans sm:gap-3 sm:text-caption">
             <Link
               href="/rss.xml"
               className="group inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150"
@@ -70,7 +70,7 @@ export default function Header() {
               <a
                 href="/suggest"
                 title="Suggest a model for review"
-                className="group inline-flex h-8 cursor-pointer select-none items-center justify-center gap-1 rounded-lg border border-black bg-black px-2.5 text-[11px] font-sans font-medium text-white shadow-sm transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 hover:border-accent hover:bg-accent hover:shadow-md hover:shadow-accent/20 active:scale-[0.97] sm:gap-1.5 sm:px-3 sm:text-xs dark:border-white dark:bg-white dark:text-black dark:hover:bg-accent dark:hover:text-white"
+                className="group inline-flex h-8 cursor-pointer select-none items-center justify-center gap-1 rounded-lg border border-black bg-black px-2.5 text-caption font-sans font-medium text-white shadow-sm transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 hover:border-accent hover:bg-accent hover:shadow-md hover:shadow-accent/20 active:scale-[0.97] sm:gap-1.5 sm:px-3 sm:text-small dark:border-white dark:bg-white dark:text-black dark:hover:bg-accent dark:hover:text-white"
               >
                 <GitPullRequest
                   size={12}
@@ -82,7 +82,7 @@ export default function Header() {
               </a>
 
               <AnimatedThemeToggler
-                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-black/10 bg-white/60 text-black/50 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 hover:border-black/20 hover:bg-black/5 hover:text-black active:scale-95 dark:border-white/[0.08] dark:bg-white/[0.03] dark:text-zinc-400 dark:hover:border-white/20 dark:hover:bg-white/[0.06] dark:hover:text-white"
+                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-black/10 bg-white/60 text-fg-muted transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 hover:border-black/20 hover:bg-black/5 hover:text-black active:scale-95 dark:border-white/[0.08] dark:bg-white/[0.03] dark:hover:border-white/20 dark:hover:bg-white/[0.06] dark:hover:text-white"
               />
             </div>
           </div>

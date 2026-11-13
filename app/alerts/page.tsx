@@ -67,10 +67,10 @@ export default function AlertsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }} />
 
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-2">
+        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-2">
           Model Alerts
         </h1>
-        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-sans text-black/50 dark:text-zinc-500">
+        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-small font-sans text-fg-muted">
           <span>Waitlist open</span>
           <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
           <span>One email at launch</span>
@@ -80,7 +80,7 @@ export default function AlertsPage() {
           </span>
         </p>
 
-        <p className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-8 max-w-2xl">
+        <p className="text-body text-fg leading-6 sm:leading-7 mb-8 max-w-2xl">
           ModelRegistry is updated by hand, against primary sources. Model Alerts is the planned way to be told about
           that work instead of checking the index yourself: new entries, changed specifications, and deprecations as
           they are registered.
@@ -100,19 +100,19 @@ export default function AlertsPage() {
             >
               <div className="flex items-center gap-2 mb-1.5">
                 <benefit.icon size={13} className="text-accent-ink shrink-0" aria-hidden="true" />
-                <h2 className="text-[13px] font-display font-semibold tracking-tight text-black dark:text-white">
+                <h2 className="text-small font-display font-semibold tracking-tight text-black dark:text-white">
                   {benefit.title}
                 </h2>
               </div>
-              <p className="text-[13px] font-sans leading-6 text-black/60 dark:text-zinc-400">{benefit.body}</p>
+              <p className="text-small font-sans leading-6 text-fg-muted">{benefit.body}</p>
             </div>
           ))}
         </div>
 
-        <h2 className="text-lg sm:text-xl font-display font-semibold tracking-tight text-black dark:text-white mt-10 mb-3">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mt-10 mb-3">
           What this is, for now
         </h2>
-        <div className="text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 space-y-2 max-w-2xl">
+        <div className="text-body text-fg leading-6 sm:leading-7 space-y-2 max-w-2xl">
           <p>
             A waitlist, nothing more. Your address is stored with the time you agreed and the version of the sentence
             you agreed to. No account, no profile, no tracking beyond what the site already does.
@@ -127,7 +127,7 @@ export default function AlertsPage() {
           </p>
         </div>
 
-        <p className="mt-8 text-xs font-sans text-black/45 dark:text-zinc-500">
+        <p className="mt-8 text-small font-sans text-fg-muted">
           Questions about the data itself? See the{" "}
           <Link href="/methodology" className="text-accent-ink hover:underline underline-offset-2">
             methodology

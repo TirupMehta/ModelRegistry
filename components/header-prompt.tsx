@@ -71,10 +71,10 @@ export default function HeaderPrompt() {
         onFocus={showHint}
         onBlur={hideHint}
         className={[
-          "hidden h-8 shrink-0 cursor-pointer select-none items-center gap-1.5 whitespace-nowrap rounded-md px-2.5 text-xs font-sans tracking-tight transition-colors duration-200 sm:inline-flex sm:gap-2 sm:px-3 sm:text-[13px]",
+          "hidden h-8 shrink-0 cursor-pointer select-none items-center gap-1.5 whitespace-nowrap rounded-md px-2.5 text-small font-sans tracking-tight transition-colors duration-200 sm:inline-flex sm:gap-2 sm:px-3 sm:text-small",
           promptCopied
             ? "bg-good/10 border border-good/50 text-good dark:text-good"
-            : "bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/[0.08] text-black/60 dark:text-zinc-300 hover:border-accent/60 hover:text-accent-ink active:scale-[0.97]",
+            : "bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/[0.08] text-fg-muted hover:border-accent/60 hover:text-accent-ink active:scale-[0.97]",
         ].join(" ")}
       >
         {promptCopied ? (
@@ -94,10 +94,10 @@ export default function HeaderPrompt() {
           className="hidden sm:block fixed z-[60] w-64 rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[var(--surface-hover)] px-3.5 py-3 shadow-2xl ring-1 ring-black/5 dark:ring-white/5 animate-in fade-in duration-150"
           style={{ top: hintPos.top, right: hintPos.right }}
         >
-          <p className="text-xs font-sans font-semibold text-black dark:text-white">
+          <p className="text-small font-sans font-semibold text-black dark:text-white">
             Contribute with AI
           </p>
-          <p className="mt-1 text-[11px] font-sans leading-relaxed text-black/55 dark:text-zinc-400">
+          <p className="mt-1 text-caption font-sans leading-relaxed text-fg-muted">
             One click copies the full agent prompt - paste it into Claude, Cursor, or
             Codex and it adds the model for you.
           </p>

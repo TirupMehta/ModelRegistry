@@ -21,6 +21,21 @@ const config: Config = {
         accent: "rgb(var(--accent-rgb) / <alpha-value>)",
         "accent-ink": "rgb(var(--accent-ink-rgb) / <alpha-value>)",
         good: "rgb(var(--good-rgb) / <alpha-value>)",
+        // Three text colours, all at least 4.5:1 on the page background.
+        "fg-strong": "var(--text-primary)",
+        fg: "var(--text-secondary)",
+        "fg-muted": "var(--text-muted)",
+      },
+      // The type scale. Nothing on the site is smaller than caption.
+      // page, heading and display step up on wider screens (see globals.css).
+      fontSize: {
+        caption: ["0.75rem", { lineHeight: "1rem" }],
+        small: ["0.875rem", { lineHeight: "1.25rem" }],
+        body: ["0.9375rem", { lineHeight: "1.5rem" }],
+        title: ["1.0625rem", { lineHeight: "1.5rem" }],
+        heading: ["var(--fs-heading)", { lineHeight: "var(--lh-heading)" }],
+        page: ["var(--fs-page)", { lineHeight: "var(--lh-page)" }],
+        display: ["var(--fs-display)", { lineHeight: "var(--lh-display)" }],
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "-apple-system", "sans-serif"],

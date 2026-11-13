@@ -23,16 +23,16 @@ export default function PromptBlock({ title, text, previewLines = 3 }: PromptBlo
   return (
     <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-black/40 overflow-hidden">
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-5 py-2.5 border-b border-black/10 dark:border-white/[0.08]">
-        <p className="font-mono text-[11px] sm:text-xs text-accent-ink">
+        <p className="font-mono text-caption sm:text-small text-accent-ink">
           {title}
         </p>
         <CopyButton
           text={text}
           label="COPY"
-          className="border border-black/10 dark:border-white/[0.08] text-black/60 dark:text-zinc-300 hover:border-accent/50 hover:text-accent-ink min-h-8"
+          className="border border-black/10 dark:border-white/[0.08] text-fg-muted hover:border-accent/50 hover:text-accent-ink min-h-8"
         />
       </div>
-      <pre className="px-4 sm:px-5 py-3.5 text-xs font-mono leading-relaxed text-black/80 dark:text-zinc-200 whitespace-pre-wrap break-words">
+      <pre className="px-4 sm:px-5 py-3.5 text-small font-mono leading-relaxed text-fg whitespace-pre-wrap break-words">
         {expanded ? text : preview}
       </pre>
       {hiddenCount > 0 && (
@@ -40,7 +40,7 @@ export default function PromptBlock({ title, text, previewLines = 3 }: PromptBlo
           type="button"
           onClick={() => setExpanded((v) => !v)}
           aria-expanded={expanded}
-          className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 border-t border-black/10 dark:border-white/[0.08] text-[11px] sm:text-xs font-sans text-black/50 dark:text-zinc-400 hover:text-accent-ink transition-colors cursor-pointer"
+          className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 border-t border-black/10 dark:border-white/[0.08] text-caption sm:text-small font-sans text-fg-muted hover:text-accent-ink transition-colors cursor-pointer"
         >
           <span>{expanded ? "SHOW LESS" : `READ MORE (+${hiddenCount} LINES)`}</span>
           <ChevronDown

@@ -41,10 +41,10 @@ export default function HeaderNav() {
             }}
             aria-current={active ? "page" : undefined}
             className={[
-              "relative inline-flex min-h-9 shrink-0 items-center whitespace-nowrap py-1.5 text-[13px] font-sans select-none transition-colors duration-150",
+              "relative inline-flex min-h-9 shrink-0 items-center whitespace-nowrap py-1.5 text-small font-sans select-none transition-colors duration-150",
               active
                 ? "font-medium text-black dark:text-white"
-                : "text-black/55 dark:text-zinc-400 hover:text-black dark:hover:text-white",
+                : "text-fg-muted hover:text-black dark:hover:text-white",
             ].join(" ")}
           >
             <span className="truncate sm:hidden">{short}</span>

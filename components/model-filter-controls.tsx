@@ -8,9 +8,9 @@ import { Check, ChevronDown, RotateCcw, SlidersHorizontal, X } from "lucide-reac
 
 type FilterOption = [string, string]
 
-const fieldClass = "h-10 w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-3 text-xs text-black transition-colors hover:border-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-ink/30 dark:text-white dark:hover:border-white/40"
-const labelClass = "mb-1.5 block text-[11px] font-medium text-black/60 dark:text-zinc-400"
-const inputClass = "h-10 w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-3 text-xs tabular-nums text-black transition-colors placeholder:text-black/55 hover:border-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-ink/30 dark:text-white dark:placeholder:text-zinc-400 dark:hover:border-white/40"
+const fieldClass = "h-10 w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-3 text-small text-black transition-colors hover:border-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-ink/30 dark:text-white dark:hover:border-white/40"
+const labelClass = "mb-1.5 block text-caption font-medium text-fg-muted"
+const inputClass = "h-10 w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-3 text-small tabular-nums text-black transition-colors placeholder:text-fg-muted hover:border-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-ink/30 dark:text-white dark:placeholder:text-zinc-400 dark:hover:border-white/40"
 
 function FilterSelect({
   id,
@@ -141,7 +141,7 @@ function FilterSelect({
         className={fieldClass + " flex items-center justify-between gap-2 text-left"}
       >
         <span className="truncate">{selectedLabel}</span>
-        <ChevronDown size={14} aria-hidden="true" className={"shrink-0 text-black/45 transition-transform dark:text-zinc-400" + (open ? " rotate-180" : "")} />
+        <ChevronDown size={14} aria-hidden="true" className={"shrink-0 text-fg-muted transition-transform" + (open ? " rotate-180" : "")} />
       </button>
       {open && menuPosition && typeof document !== "undefined" && createPortal(
         <div
@@ -166,7 +166,7 @@ function FilterSelect({
                     close(true)
                   }}
                   onKeyDown={(event) => onOptionKeyDown(event, index)}
-                  className={"flex min-h-9 w-full items-center justify-between gap-3 rounded-lg px-2.5 text-left text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/45 " + (selected ? "bg-accent/[0.08] font-medium text-accent-ink" : "text-black/75 hover:bg-black/[0.045] dark:text-zinc-200 dark:hover:bg-white/[0.06]")}
+                  className={"flex min-h-9 w-full items-center justify-between gap-3 rounded-lg px-2.5 text-left text-small transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/45 " + (selected ? "bg-accent/[0.08] font-medium text-accent-ink" : "text-fg hover:bg-black/[0.045] dark:hover:bg-white/[0.06]")}
                 >
                   <span className="truncate">{optionLabel}</span>
                   {selected && <Check size={13} aria-hidden="true" className="shrink-0" />}
@@ -237,7 +237,7 @@ export default function ModelFilterControls({
         aria-controls="model-refine-panel"
         title="Refine results"
         onClick={() => setOpen((current) => !current)}
-        className={"relative inline-flex h-7 w-7 items-center justify-center rounded text-black/45 transition-colors hover:bg-black/[0.06] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-ink/40 dark:text-zinc-400 dark:hover:bg-white/[0.08] dark:hover:text-white " + (open || active ? "bg-accent/[0.1] text-accent-ink dark:bg-accent/[0.14] dark:text-white" : "")}
+        className={"relative inline-flex h-7 w-7 items-center justify-center rounded text-fg-muted transition-colors hover:bg-black/[0.06] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-ink/40 dark:hover:bg-white/[0.08] dark:hover:text-white " + (open || active ? "bg-accent/[0.1] text-accent-ink dark:bg-accent/[0.14] dark:text-white" : "")}
       >
         <SlidersHorizontal size={13} strokeWidth={1.8} aria-hidden="true" />
         {active && <span aria-hidden="true" className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-accent ring-2 ring-white dark:ring-[var(--surface-field)]" />}
@@ -247,15 +247,15 @@ export default function ModelFilterControls({
         <section id="model-refine-panel" aria-label="Refine model results" className={(alwaysOpen ? "absolute inset-x-0 top-0 z-[60] w-full overflow-visible " : "absolute right-0 top-full z-[60] mt-2 w-[min(560px,calc(100vw-2rem))] overflow-visible ") + "rounded-xl border border-black/[0.12] bg-[var(--card-bg)] p-3 shadow-[0_4px_14px_rgba(0,0,0,0.08)] dark:border-white/[0.12] dark:bg-[var(--surface-raised)] dark:shadow-[0_4px_14px_rgba(0,0,0,0.3)] sm:p-3"}>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="text-sm font-semibold text-black dark:text-white">Refine results</h2>
-              <p className="mt-1 text-xs leading-relaxed text-black/55 dark:text-zinc-400">Choose what matters. Results update as you change a filter.</p>
+              <h2 className="text-body font-semibold text-black dark:text-white">Refine results</h2>
+              <p className="mt-1 text-small leading-relaxed text-fg-muted">Choose what matters. Results update as you change a filter.</p>
             </div>
             <div className="flex shrink-0 items-center gap-1">
               <button
                 type="button"
                 disabled={!active}
                 onClick={() => onChange(DEFAULT_MODEL_FILTERS)}
-                className="inline-flex min-h-8 items-center gap-1.5 rounded-lg px-2 text-[11px] font-medium text-black/60 transition-colors hover:bg-black/[0.045] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/35 disabled:cursor-not-allowed disabled:opacity-35 dark:text-zinc-400 dark:hover:bg-white/[0.06] dark:hover:text-white"
+                className="inline-flex min-h-8 items-center gap-1.5 rounded-lg px-2 text-caption font-medium text-fg-muted transition-colors hover:bg-black/[0.045] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/35 disabled:cursor-not-allowed disabled:opacity-35 dark:hover:bg-white/[0.06] dark:hover:text-white"
               >
                 <RotateCcw size={12} aria-hidden="true" />
                 Reset{active ? " (" + activeCount + ")" : ""}
@@ -264,7 +264,7 @@ export default function ModelFilterControls({
                 type="button"
                 aria-label="Close filters"
                 onClick={() => { setOpen(false); triggerRef.current?.focus() }}
-                className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-black/55 transition-colors hover:bg-black/[0.05] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/35 dark:text-zinc-400 dark:hover:bg-white/[0.07] dark:hover:text-white"
+                className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-fg-muted transition-colors hover:bg-black/[0.05] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/35 dark:hover:bg-white/[0.07] dark:hover:text-white"
               >
                 <X size={15} aria-hidden="true" />
               </button>}
@@ -303,7 +303,7 @@ export default function ModelFilterControls({
           </div>
 
           <div className="mt-2 border-t border-black/[0.08] pt-2 dark:border-white/[0.08]">
-            <p className="text-[11px] leading-relaxed text-black/55 dark:text-zinc-400">Price limits use listed input cost per 1M tokens. Models billed by another unit are excluded when a limit is set.</p>
+            <p className="text-caption leading-relaxed text-fg-muted">Price limits use listed input cost per 1M tokens. Models billed by another unit are excluded when a limit is set.</p>
           </div>
         </section>
       )}

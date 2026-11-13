@@ -58,9 +58,9 @@ function Combo({
 
   return (
     <div ref={root} className="relative min-w-0 flex-1">
-      <label className="mb-1.5 block text-xs text-black/55 dark:text-zinc-400">{label}</label>
+      <label className="mb-1.5 block text-small text-fg-muted">{label}</label>
       <div className="relative">
-        <Search size={14} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-black/40 dark:text-zinc-500" aria-hidden="true" />
+        <Search size={14} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-fg-muted" aria-hidden="true" />
         <input
           role="combobox"
           aria-expanded={open}
@@ -94,9 +94,9 @@ function Combo({
               setOpen(false)
             }
           }}
-          className="h-9 w-full rounded-md border border-black/10 bg-white pl-8 pr-8 text-sm text-black outline-none transition-colors placeholder:text-black/40 focus:border-black/30 disabled:cursor-not-allowed disabled:bg-black/[0.03] disabled:text-black/40 dark:border-white/15 dark:bg-[var(--surface-raised)] dark:text-white dark:placeholder:text-zinc-500 dark:focus:border-white/40"
+          className="h-9 w-full rounded-md border border-black/10 bg-white pl-8 pr-8 text-body text-black outline-none transition-colors placeholder:text-fg-muted focus:border-black/30 disabled:cursor-not-allowed disabled:bg-black/[0.03] disabled:text-fg-muted dark:border-white/15 dark:bg-[var(--surface-raised)] dark:text-white dark:placeholder:text-zinc-500 dark:focus:border-white/40"
         />
-        <ChevronDown size={15} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-black/40 dark:text-zinc-500" aria-hidden="true" />
+        <ChevronDown size={15} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-fg-muted" aria-hidden="true" />
       </div>
 
       {open && (
@@ -105,7 +105,7 @@ function Combo({
           role="listbox"
           className="absolute z-20 mt-1.5 max-h-72 w-full min-w-[15rem] overflow-y-auto rounded-md border border-black/10 bg-white p-1 shadow-lg [scrollbar-width:none] dark:border-white/15 dark:bg-[var(--surface-raised)] [&::-webkit-scrollbar]:hidden"
         >
-          {shown.length === 0 && <li className="px-2.5 py-2 text-xs text-black/50 dark:text-zinc-400">No match. Comparisons cover each lab&apos;s current flagship and newest release.</li>}
+          {shown.length === 0 && <li className="px-2.5 py-2 text-small text-fg-muted">No match. Comparisons cover each lab&apos;s current flagship and newest release.</li>}
           {shown.map((model, index) => (
             <li
               key={model.id}
@@ -120,8 +120,8 @@ function Combo({
                 index === active ? "bg-black/[0.05] dark:bg-white/[0.08]" : ""
               }`}
             >
-              <span className="block text-sm leading-5 text-black dark:text-white">{model.name}</span>
-              <span className="block text-xs leading-4 text-black/50 dark:text-zinc-500">{model.lab}</span>
+              <span className="block text-body leading-5 text-black dark:text-white">{model.name}</span>
+              <span className="block text-small leading-4 text-fg-muted">{model.lab}</span>
             </li>
           ))}
         </ul>
@@ -158,7 +158,7 @@ export default function ComparePicker({ models, partners }: Props) {
             if (!m || (b && !(partners[m.id] ?? []).includes(b.id))) setB(null)
           }}
         />
-        <span className="hidden pb-2 text-xs text-black/40 dark:text-zinc-500 sm:block">vs</span>
+        <span className="hidden pb-2 text-small text-fg-muted sm:block">vs</span>
         <Combo
           label="Second model"
           value={b}
@@ -174,13 +174,13 @@ export default function ComparePicker({ models, partners }: Props) {
           type="button"
           disabled={!a || !b}
           onClick={() => a && b && go(a, b)}
-          className="inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-md bg-black px-4 text-sm font-medium text-white transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-black dark:bg-white dark:text-black dark:hover:bg-accent dark:hover:text-white dark:disabled:hover:bg-white"
+          className="inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-md bg-black px-4 text-body font-medium text-white transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-black dark:bg-white dark:text-black dark:hover:bg-accent dark:hover:text-white dark:disabled:hover:bg-white"
         >
           Compare <ArrowRight size={16} aria-hidden="true" />
         </button>
       </div>
       {a && bOptions.length > 0 && (
-        <p className="mt-3 text-xs text-black/50 dark:text-zinc-400">
+        <p className="mt-3 text-small text-fg-muted">
           {bOptions.length} models can be compared with {a.name}.
         </p>
       )}

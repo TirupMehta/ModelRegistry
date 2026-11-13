@@ -428,8 +428,8 @@ const docsNavPath = path.resolve(__dirname, "../components/docs-nav.tsx")
 checkTrue("docs-nav-exists", fs.existsSync(docsNavPath))
 if (fs.existsSync(docsNavPath)) {
   const docsNavSrc = fs.readFileSync(docsNavPath, "utf8")
-  checkTrue("docs-nav-readable-type", docsNavSrc.includes("text-[16px]"), "section links stay at 16px")
-  checkTrue("docs-nav-label-type", docsNavSrc.includes("text-[12px]"), "REFERENCE label stays at 12px")
+  checkTrue("docs-nav-readable-type", docsNavSrc.includes("!text-title"), "section links use the title size token")
+  checkTrue("docs-nav-label-type", docsNavSrc.includes("text-caption"), "REFERENCE label uses the caption size token")
 }
 
 if (failures.length > 0) {

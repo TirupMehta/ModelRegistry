@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 function CodeBlock({ code }: { code: string }) {
   return (
-    <pre className="px-4 py-3.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-black/40 text-xs font-mono leading-relaxed text-black/80 dark:text-zinc-200 overflow-x-auto [scrollbar-width:thin] whitespace-pre">
+    <pre className="px-4 py-3.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-black/40 text-small font-mono leading-relaxed text-fg overflow-x-auto [scrollbar-width:thin] whitespace-pre">
       {code}
     </pre>
   )
@@ -46,27 +46,27 @@ function CodeBlock({ code }: { code: string }) {
 
 function ParamRow({ name, type, desc }: { name: string; type: string; desc: string }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-[170px_110px_1fr] gap-1 sm:gap-4 px-5 py-3 border-t border-black/5 dark:border-white/[0.06] first:border-t-0 text-xs font-sans items-baseline">
+    <div className="grid grid-cols-1 sm:grid-cols-[170px_110px_1fr] gap-1 sm:gap-4 px-5 py-3 border-t border-black/5 dark:border-white/[0.06] first:border-t-0 text-small font-sans items-baseline">
       <code className="font-mono text-accent-ink font-medium">{name}</code>
-      <span className="text-black/40 dark:text-zinc-500">{type}</span>
-      <span className="text-black/65 dark:text-zinc-300 leading-relaxed">{desc}</span>
+      <span className="text-fg-muted">{type}</span>
+      <span className="text-fg-muted leading-relaxed">{desc}</span>
     </div>
   )
 }
 
 function FieldRow({ name, type, desc }: { name: string; type: string; desc: string }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-[180px_140px_1fr] gap-1 sm:gap-4 px-5 py-3 border-t border-black/5 dark:border-white/[0.06] first:border-t-0 text-xs font-sans items-baseline">
+    <div className="grid grid-cols-1 sm:grid-cols-[180px_140px_1fr] gap-1 sm:gap-4 px-5 py-3 border-t border-black/5 dark:border-white/[0.06] first:border-t-0 text-small font-sans items-baseline">
       <code className="font-mono text-black dark:text-white font-medium">{name}</code>
-      <span className="font-mono text-[11px] text-black/40 dark:text-zinc-500">{type}</span>
-      <span className="text-black/65 dark:text-zinc-300 leading-relaxed">{desc}</span>
+      <span className="font-mono text-caption text-fg-muted">{type}</span>
+      <span className="text-fg-muted leading-relaxed">{desc}</span>
     </div>
   )
 }
 
 function Note({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-md border border-accent/25 bg-black/[0.02] dark:bg-white/[0.02] px-5 py-3.5 text-xs sm:text-[13px] font-sans text-black/65 dark:text-zinc-300 leading-relaxed">
+    <div className="rounded-md border border-accent/25 bg-black/[0.02] dark:bg-white/[0.02] px-5 py-3.5 text-small font-sans text-fg-muted leading-relaxed">
       {children}
     </div>
   )
@@ -144,7 +144,7 @@ export default function DocsPage() {
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20 min-w-0 min-[1440px]:col-start-2 min-[1440px]:mx-0">
         {/* Breadcrumb */}
         <TextWithBlur>
-          <div className="mb-5 flex items-center gap-2.5 overflow-x-auto whitespace-nowrap text-xs font-sans leading-relaxed text-black/50 [scrollbar-width:none] [-ms-overflow-style:none] dark:text-zinc-400 [&::-webkit-scrollbar]:hidden">
+          <div className="mb-5 flex items-center gap-2.5 overflow-x-auto whitespace-nowrap text-small font-sans leading-relaxed text-fg-muted [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             <Link
               href="/"
               className="inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150 shrink-0"
@@ -164,10 +164,10 @@ export default function DocsPage() {
         <div className="min-w-0 [&_p]:max-w-[54ch]">
           <div id="overview" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h1 className="mb-3 font-display text-2xl font-semibold tracking-tight text-black sm:text-3xl md:text-4xl dark:text-white">
+              <h1 className="mb-3 font-display text-heading font-semibold tracking-tight text-black sm:text-page dark:text-white">
                 ModelRegistry API Reference
               </h1>
-              <div className="space-y-4 text-[15px] md:text-base font-normal text-black/65 dark:text-zinc-300 leading-relaxed">
+              <div className="space-y-4 text-body md:text-title font-normal text-fg-muted leading-relaxed">
                 <p>
                   ModelRegistry exposes every record as machine-readable data. The REST API
                   serves versioned JSON, feeds cover syndication and AI ground truth, and
@@ -196,14 +196,14 @@ export default function DocsPage() {
 
           <div id="authentication" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
                 Authentication
               </h2>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 There is none. No API keys, no tokens, no OAuth scopes, no signup. Every
                 endpoint on this page answers anonymous requests, from browsers, servers,
                 CI jobs, and agents alike. Responses include{" "}
-                <code className="font-mono text-xs">Access-Control-Allow-Origin: *</code>,
+                <code className="font-mono text-small">Access-Control-Allow-Origin: *</code>,
                 so browser-side applications can call the API directly without a proxy.
               </p>
               <Note>
@@ -216,10 +216,10 @@ export default function DocsPage() {
 
           <div id="rate-limits" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
                 Rate limits & caching
               </h2>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 No per-client limit is enforced on reads today. Every API
                 response advertises the advisory budget so an agent can
                 self-throttle instead of discovering it through a 429:
@@ -232,27 +232,27 @@ export default function DocsPage() {
                 <ParamRow name="/api/check-updates" type="dynamic" desc="Evaluated per request. Its upstream heartbeat is cached for 5 minutes; the counts always reflect the live dataset." />
               </div>
               <Note>
-                Practical guidance: poll <code className="font-mono text-xs">/api/check-updates</code> no
+                Practical guidance: poll <code className="font-mono text-small">/api/check-updates</code> no
                 more than once every 5 minutes, and treat a change in{" "}
-                <code className="font-mono text-xs">trackedModelsCount</code> as your signal to
-                re-fetch <code className="font-mono text-xs">/api/v1/models</code>. For
-                incremental sync, poll <code className="font-mono text-xs">/api/v1/changes?since=YYYY-MM-DD</code> and
+                <code className="font-mono text-small">trackedModelsCount</code> as your signal to
+                re-fetch <code className="font-mono text-small">/api/v1/models</code>. For
+                incremental sync, poll <code className="font-mono text-small">/api/v1/changes?since=YYYY-MM-DD</code> and
                 fetch only the changed records via{" "}
-                <code className="font-mono text-xs">/api/v1/models/{"{id}"}</code>.
+                <code className="font-mono text-small">/api/v1/models/{"{id}"}</code>.
               </Note>
             </TextWithBlur>
           </div>
 
           <div id="errors" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
                 Errors
               </h2>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 The API prefers empty results over failed requests. Unknown filter values
                 return HTTP 200 with an empty collection - parse defensively and key off{" "}
-                <code className="font-mono text-xs">status</code> and{" "}
-                <code className="font-mono text-xs">total</code>. Real errors are always
+                <code className="font-mono text-small">status</code> and{" "}
+                <code className="font-mono text-small">total</code>. Real errors are always
                 JSON, never an HTML error page, and always carry a machine-readable code:
               </p>
               <CodeBlock
@@ -279,14 +279,14 @@ export default function DocsPage() {
           <div id="get-models" className="scroll-mt-24 mb-12">
             <TextWithBlur>
               <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
+                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                   GET
                 </span>
-                <code className="font-mono text-sm sm:text-[15px] font-medium text-black dark:text-white break-all">
+                <code className="font-mono text-body font-medium text-black dark:text-white break-all">
                   /api/v1/models
                 </code>
               </div>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 The primary endpoint. Returns the full registry - every model with its
                 specifications - plus a per-laboratory rollup. All parameters are optional
                 and combinable.
@@ -305,19 +305,19 @@ export default function DocsPage() {
           <div id="get-model" className="scroll-mt-24 mb-12">
             <TextWithBlur>
               <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
+                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                   GET
                 </span>
-                <code className="font-mono text-sm sm:text-[15px] font-medium text-black dark:text-white break-all">
+                <code className="font-mono text-body font-medium text-black dark:text-white break-all">
                   /api/v1/models/{"{id}"}
                 </code>
               </div>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 Poll one model without pulling the full registry. IDs are stable
                 kebab-case and matched case-insensitively. Unknown ids return a JSON
                 404 with a flagship suggestion when the slug unambiguously belongs to
                 one lab. Supports{" "}
-                <code className="font-mono text-xs">If-None-Match</code> / 304 like the
+                <code className="font-mono text-small">If-None-Match</code> / 304 like the
                 list endpoint.
               </p>
               <CodeBlock
@@ -326,10 +326,10 @@ export default function DocsPage() {
               />
               <div className="mt-5 border-t border-black/10 pt-4 dark:border-white/[0.08]">
                 <div className="mb-2 flex flex-wrap items-center gap-2.5">
-                  <span className="inline-flex shrink-0 rounded border border-emerald-500/25 bg-good/10 px-2 py-0.5 font-mono text-[11px] font-bold text-good dark:text-good">GET</span>
-                  <code className="break-all font-mono text-sm font-medium text-black dark:text-white">/api/v1/models/{"{id}"}/providers</code>
+                  <span className="inline-flex shrink-0 rounded border border-emerald-500/25 bg-good/10 px-2 py-0.5 font-mono text-caption font-bold text-good dark:text-good">GET</span>
+                  <code className="break-all font-mono text-body font-medium text-black dark:text-white">/api/v1/models/{"{id}"}/providers</code>
                 </div>
-                <p className="text-sm leading-relaxed text-black/60 dark:text-zinc-400">Returns current OpenRouter endpoint listings, provider-specific prices, and limits where an exact model mapping exists. This provider snapshot does not update or verify the lab-sourced facts in the registry. An unmapped record may still be available through other providers.</p>
+                <p className="text-body leading-relaxed text-fg-muted">Returns current OpenRouter endpoint listings, provider-specific prices, and limits where an exact model mapping exists. This provider snapshot does not update or verify the lab-sourced facts in the registry. An unmapped record may still be available through other providers.</p>
                 <CodeBlock code={`curl -s ${SITE_URL}/api/v1/models/gpt-6-astra/providers`} />
               </div>
             </TextWithBlur>
@@ -338,22 +338,22 @@ export default function DocsPage() {
           <div id="get-changes" className="scroll-mt-24 mb-12">
             <TextWithBlur>
               <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
+                <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                   GET
                 </span>
-                <code className="font-mono text-sm sm:text-[15px] font-medium text-black dark:text-white break-all">
+                <code className="font-mono text-body font-medium text-black dark:text-white break-all">
                   /api/v1/changes
                 </code>
               </div>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 Incremental sync over per-model changelog history - same source as{" "}
                 <Link href="/changelog" className="text-accent-ink hover:underline">
                   /changelog
                 </Link>
                 , newest first. Poll with{" "}
-                <code className="font-mono text-xs">?since=YYYY-MM-DD</code> (inclusive),
+                <code className="font-mono text-small">?since=YYYY-MM-DD</code> (inclusive),
                 then fetch each changed record via{" "}
-                <code className="font-mono text-xs">/api/v1/models/{"{id}"}</code>.
+                <code className="font-mono text-small">/api/v1/models/{"{id}"}</code>.
                 Unknown model/company filters return 200 with an empty list; malformed
                 dates return 400.
               </p>
@@ -372,11 +372,11 @@ export default function DocsPage() {
 
           <div id="model-object" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
                 The model object
               </h2>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
-                Every entry in <code className="font-mono text-xs">models[]</code> follows this
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
+                Every entry in <code className="font-mono text-small">models[]</code> follows this
                 shape. Fields marked conditional appear only where they apply.
               </p>
               <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]">
@@ -400,15 +400,15 @@ export default function DocsPage() {
 
           <div id="examples" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-2">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-2">
                 Examples
               </h2>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 Each recipe below does one job - pick your language, copy, run.
               </p>
               <div className="grid grid-cols-1 gap-5">
                 <div>
-                  <p className="font-mono text-[11px] sm:text-xs text-accent-ink mb-2">
+                  <p className="font-mono text-caption sm:text-small text-accent-ink mb-2">
                     01 · One flagship per lab - cURL
                   </p>
                   <CodeBlock
@@ -416,7 +416,7 @@ export default function DocsPage() {
                   />
                 </div>
                 <div>
-                  <p className="font-mono text-[11px] sm:text-xs text-accent-ink mb-2">
+                  <p className="font-mono text-caption sm:text-small text-accent-ink mb-2">
                     02 · Newest video checkpoints - Python
                   </p>
                   <CodeBlock
@@ -428,7 +428,7 @@ for m in res["models"]:
                   />
                 </div>
                 <div>
-                  <p className="font-mono text-[11px] sm:text-xs text-accent-ink mb-2">
+                  <p className="font-mono text-caption sm:text-small text-accent-ink mb-2">
                     03 · Filter by lab in the browser - JavaScript
                   </p>
                   <CodeBlock
@@ -444,14 +444,14 @@ const { total, models } = await (
 
             <div id="agent-prompts" className="scroll-mt-24 mb-12">
               <TextWithBlur>
-                <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-2">
+                <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-2">
                   Agent prompts
                 </h2>
-                <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+                <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                   Copy-paste prompts that teach any AI agent to contribute models or query
                   this registry. Same source as the header button and README - always current.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-5 text-xs font-sans">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-5 text-small font-sans">
                   {[
                     { n: "01", t: "Copy the prompt" },
                     { n: "02", t: "Paste to your agent" },
@@ -461,10 +461,10 @@ const { total, models } = await (
                       key={s.n}
                       className="flex items-center gap-2.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] px-3 py-2.5"
                     >
-                      <span className="font-mono text-[11px] text-accent-ink shrink-0">
+                      <span className="font-mono text-caption text-accent-ink shrink-0">
                         {s.n}
                       </span>
-                      <span className="text-black/70 dark:text-zinc-300">{s.t}</span>
+                      <span className="text-fg">{s.t}</span>
                     </div>
                   ))}
                 </div>
@@ -477,10 +477,10 @@ const { total, models } = await (
 
             <div id="agent-access" className="scroll-mt-24 mb-12">
               <TextWithBlur>
-                <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-2">
+                <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-2">
                   Agent access
                 </h2>
-                <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+                <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                   The same site serves agents without a separate API. Ask for Markdown
                   with content negotiation, discover it through{" "}
                   <a href="/llms.txt" className="text-accent-ink hover:underline">
@@ -514,13 +514,13 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
 
             <div id="cli" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-2">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-2">
                 CLI & plain text
               </h2>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 Three terminal-native routes need no install at all - the root URL sniffs curl and
                 answers in plain text. For filters, tables, and `--json` output there is also an
-                official CLI (<code className="font-mono text-xs">cli/</code> in the repository:
+                official CLI (<code className="font-mono text-small">cli/</code> in the repository:
                 zero dependencies, Node 18+). See the{" "}
                 <Link href="/cli" className="text-accent-ink hover:underline">
                   CLI page
@@ -530,10 +530,10 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
               <div className="grid grid-cols-1 gap-3">
                 <div>
                   <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                       GET
                     </span>
-                    <code className="font-mono text-sm font-medium text-black dark:text-white">
+                    <code className="font-mono text-body font-medium text-black dark:text-white">
                       /
                     </code>
                   </div>
@@ -541,10 +541,10 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                       GET
                     </span>
-                    <code className="font-mono text-sm font-medium text-black dark:text-white">
+                    <code className="font-mono text-body font-medium text-black dark:text-white">
                       /latest
                     </code>
                   </div>
@@ -552,10 +552,10 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-good/10 text-good dark:text-good border border-good/25 shrink-0">
                       GET
                     </span>
-                    <code className="font-mono text-sm font-medium text-black dark:text-white">
+                    <code className="font-mono text-body font-medium text-black dark:text-white">
                       /api/v1/cli
                     </code>
                   </div>
@@ -563,10 +563,10 @@ curl -s ${SITE_URL}/openapi.json | head -c 400`}
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-black/[0.06] dark:bg-white/[0.08] text-black/70 dark:text-zinc-300 border border-black/15 dark:border-white/15 shrink-0">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded font-mono text-caption font-bold bg-black/[0.06] dark:bg-white/[0.08] text-fg border border-black/15 dark:border-white/15 shrink-0">
                       CLI
                     </span>
-                    <code className="font-mono text-sm font-medium text-black dark:text-white">
+                    <code className="font-mono text-body font-medium text-black dark:text-white">
                       modelregistry
                     </code>
                   </div>
@@ -577,11 +577,11 @@ node ModelRegistry/cli/index.mjs model <id> --json
 node ModelRegistry/cli/index.mjs changes --since 2026-11-01
 node ModelRegistry/cli/index.mjs markdown /docs`}
                   />
-                  <p className="text-xs text-black/50 dark:text-zinc-500 mt-2 leading-relaxed">
+                  <p className="text-small text-fg-muted mt-2 leading-relaxed">
                     Zero-dependency Node 18+ script, published package prepared at{" "}
-                    <code className="font-mono text-[11px]">cli/</code> (not yet on npm). Every
-                    command supports <code className="font-mono text-[11px]">--json</code> and{" "}
-                    <code className="font-mono text-[11px]">--base-url</code>.
+                    <code className="font-mono text-caption">cli/</code> (not yet on npm). Every
+                    command supports <code className="font-mono text-caption">--json</code> and{" "}
+                    <code className="font-mono text-caption">--base-url</code>.
                   </p>
                 </div>
               </div>
@@ -590,18 +590,18 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
 
           <div id="mcp" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-2">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-2">
                 MCP server
               </h2>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 A hosted Model Context Protocol server for any MCP-capable AI client:
                 Claude, Cursor, Codex, Windsurf, or your own agent. Stateless JSON-RPC
                 2.0 over POST (MCP 2025-06-18 revision), serving the same dataset the
                 REST API serves, so the two surfaces never disagree.
               </p>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 Register the URL{" "}
-                <code className="font-mono text-xs">{SITE_URL}/api/mcp</code> - most clients
+                <code className="font-mono text-small">{SITE_URL}/api/mcp</code> - most clients
                 take it verbatim in their MCP config:
               </p>
               <CodeBlock
@@ -613,8 +613,8 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
   }
 }`}
               />
-              <p className="text-xs text-black/50 dark:text-zinc-500 mt-2 mb-4 leading-relaxed">
-                Claude Code: <code className="font-mono text-[11px]">claude mcp add --transport http modelregistry {SITE_URL}/api/mcp</code>
+              <p className="text-small text-fg-muted mt-2 mb-4 leading-relaxed">
+                Claude Code: <code className="font-mono text-caption">claude mcp add --transport http modelregistry {SITE_URL}/api/mcp</code>
               </p>
               <div className="divide-y divide-black/5 dark:divide-white/[0.06] rounded-md border border-black/10 dark:border-white/[0.08]">
                 {[
@@ -626,31 +626,31 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
                   { tool: "read_page_markdown", desc: "Any page rendered as Markdown." },
                 ].map((t) => (
                   <div key={t.tool} className="flex items-center gap-3 px-4 py-3">
-                    <code className="font-mono text-xs text-black/80 dark:text-zinc-200 shrink-0">{t.tool}</code>
-                    <span className="text-xs text-black/45 dark:text-zinc-400 min-w-0">{t.desc}</span>
+                    <code className="font-mono text-small text-fg shrink-0">{t.tool}</code>
+                    <span className="text-small text-fg-muted min-w-0">{t.desc}</span>
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-black/50 dark:text-zinc-500 mt-3 leading-relaxed max-w-2xl">
-                The server also exposes four prompts (<code className="font-mono text-xs">registry_overview</code>,{" "}
-                <code className="font-mono text-xs">research_model</code>,{" "}
-                <code className="font-mono text-xs">compare_models</code>,{" "}
-                <code className="font-mono text-xs">incremental_sync</code>) and eight Markdown
-                resources (<code className="font-mono text-xs">modelregistry://home</code>,{" "}
-                <code className="font-mono text-xs">/docs</code>,{" "}
-                <code className="font-mono text-xs">/about</code>,{" "}
-                <code className="font-mono text-xs">/methodology</code>,{" "}
-                <code className="font-mono text-xs">/open-source</code>,{" "}
-                <code className="font-mono text-xs">/cli</code>,{" "}
-                <code className="font-mono text-xs">/contact</code>,{" "}
-                <code className="font-mono text-xs">/privacy</code>,{" "}
-                <code className="font-mono text-xs">/llms.txt</code>, plus{" "}
-                <code className="font-mono text-xs">modelregistry://page/{"{"}+path{"}"}</code> for any page).
-                Auto-discovery: <code className="font-mono text-xs">{SITE_URL}/.well-known/mcp</code>.
+              <p className="text-small text-fg-muted mt-3 leading-relaxed max-w-2xl">
+                The server also exposes four prompts (<code className="font-mono text-small">registry_overview</code>,{" "}
+                <code className="font-mono text-small">research_model</code>,{" "}
+                <code className="font-mono text-small">compare_models</code>,{" "}
+                <code className="font-mono text-small">incremental_sync</code>) and eight Markdown
+                resources (<code className="font-mono text-small">modelregistry://home</code>,{" "}
+                <code className="font-mono text-small">/docs</code>,{" "}
+                <code className="font-mono text-small">/about</code>,{" "}
+                <code className="font-mono text-small">/methodology</code>,{" "}
+                <code className="font-mono text-small">/open-source</code>,{" "}
+                <code className="font-mono text-small">/cli</code>,{" "}
+                <code className="font-mono text-small">/contact</code>,{" "}
+                <code className="font-mono text-small">/privacy</code>,{" "}
+                <code className="font-mono text-small">/llms.txt</code>, plus{" "}
+                <code className="font-mono text-small">modelregistry://page/{"{"}+path{"}"}</code> for any page).
+                Auto-discovery: <code className="font-mono text-small">{SITE_URL}/.well-known/mcp</code>.
               </p>
-              <p className="text-xs text-black/50 dark:text-zinc-500 mt-3 leading-relaxed max-w-2xl">
-                Missing records return <code className="font-mono text-xs">model_not_found</code> inside an
-                <code className="font-mono text-xs"> isError</code> result - the same code + hint contract as the REST
+              <p className="text-small text-fg-muted mt-3 leading-relaxed max-w-2xl">
+                Missing records return <code className="font-mono text-small">model_not_found</code> inside an
+                <code className="font-mono text-small"> isError</code> result - the same code + hint contract as the REST
                 API. Tool outcomes are data facts only: no live availability claims.
               </p>
             </TextWithBlur>
@@ -658,7 +658,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
 
           <div id="feeds" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
                 Feeds
               </h2>
               <div className="divide-y divide-black/5 dark:divide-white/[0.06] rounded-md border border-black/10 dark:border-white/[0.08]">
@@ -674,8 +674,8 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
                     rel="noopener noreferrer"
                     className="group flex items-center justify-between gap-3 px-4 py-3 hover:bg-black/[0.025] dark:hover:bg-white/[0.025] transition-colors"
                   >
-                    <code className="font-mono text-xs text-black/80 dark:text-zinc-200">{f.cmd}</code>
-                    <span className="flex items-center gap-2 text-xs text-black/45 dark:text-zinc-400 min-w-0">
+                    <code className="font-mono text-small text-fg">{f.cmd}</code>
+                    <span className="flex items-center gap-2 text-small text-fg-muted min-w-0">
                       <span className="truncate hidden sm:inline">{f.desc}</span>
                       <ArrowUpRight size={12} className="shrink-0 group-hover:text-accent-ink transition-colors" />
                     </span>
@@ -687,10 +687,10 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
 
           <div id="badges" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
                 Badges & health
               </h2>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 Live SVG shields for lab flagships and per-model specs, plus a heartbeat
                 endpoint with edge-cache status and live dataset counts.
               </p>
@@ -705,22 +705,22 @@ ${SITE_URL}/api/check-updates`}
 
           <div id="versioning" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
                 Versioning
               </h2>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
-                The <code className="font-mono text-xs">/v1/</code> prefix is a stability
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
+                The <code className="font-mono text-small">/v1/</code> prefix is a stability
                 contract: breaking renames or removals ship under a new version, never
                 silently. Additive changes - new fields, new labs, new models - land in v1
                 without notice. Recent additive changes: per-record provenance (
-                <code className="font-mono text-xs">sources</code>,{" "}
-                <code className="font-mono text-xs">fieldSources</code>,{" "}
-                <code className="font-mono text-xs">verificationStatus</code>,{" "}
-                <code className="font-mono text-xs">changeLog</code>), dataset
+                <code className="font-mono text-small">sources</code>,{" "}
+                <code className="font-mono text-small">fieldSources</code>,{" "}
+                <code className="font-mono text-small">verificationStatus</code>,{" "}
+                <code className="font-mono text-small">changeLog</code>), dataset
                 versioning, ETag support, and per-second pricing units for audio models.
               </p>
               <Note>
-                Model <code className="font-mono text-xs">id</code> values are append-only.
+                Model <code className="font-mono text-small">id</code> values are append-only.
                 Entries are never deleted or recycled - retired slugs resolve to the lab&apos;s
                 flagship through the fallback documented in the Errors section.
               </Note>
@@ -729,12 +729,12 @@ ${SITE_URL}/api/check-updates`}
 
           <div id="labs" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
                 Laboratories
               </h2>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 Every lab has a profile page with its full release history. Pass its id as{" "}
-                <code className="font-mono text-xs">?company=</code> to filter the API.
+                <code className="font-mono text-small">?company=</code> to filter the API.
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {labList.map((lab) => (
@@ -747,7 +747,7 @@ ${SITE_URL}/api/check-updates`}
                       className="w-2 h-2 rounded-sm shrink-0"
                       style={{ backgroundColor: lab.accentColor }}
                     />
-                    <span className="text-xs font-sans text-black/70 dark:text-zinc-300 group-hover:text-accent-ink transition-colors truncate">
+                    <span className="text-small font-sans text-fg group-hover:text-accent-ink transition-colors truncate">
                       {lab.name}
                     </span>
                   </Link>
@@ -758,18 +758,18 @@ ${SITE_URL}/api/check-updates`}
 
           <div id="citing" className="scroll-mt-24 mb-12">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
                 Citing this registry
               </h2>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-4 max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed mb-4 max-w-2xl">
                 Cite the canonical record URL plus the dataset version you used, e.g.{" "}
-                <code className="font-mono text-xs">https://modelregistry.tirup.in/models/mistral-large-4 (dataset {datasetRevision.datasetVersion})</code>.
+                <code className="font-mono text-small">https://modelregistry.tirup.in/models/mistral-large-4 (dataset {datasetRevision.datasetVersion})</code>.
                 Record IDs are stable; field values can be corrected, with history on{" "}
                 <Link href="/changelog" className="text-accent-ink hover:underline">
                   /changelog
                 </Link>
                 . Versioned full-dataset downloads:{" "}
-                <code className="font-mono text-xs">/api/v1/snapshot</code>. Benchmark figures
+                <code className="font-mono text-small">/api/v1/snapshot</code>. Benchmark figures
                 are lab-reported - cite the linked primary source for the number itself.
               </p>
             </TextWithBlur>
@@ -777,10 +777,10 @@ ${SITE_URL}/api/check-updates`}
 
           <div id="support" className="scroll-mt-24 mb-4">
             <TextWithBlur>
-              <h2 className="text-xl font-display font-medium tracking-tight text-black dark:text-white mb-3">
+              <h2 className="text-heading font-display font-medium tracking-tight text-black dark:text-white mb-3">
                 Support
               </h2>
-              <p className="text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed max-w-2xl">
+              <p className="text-body font-normal text-fg-muted leading-relaxed max-w-2xl">
                 Something wrong with the data or an endpoint? Open an issue on{" "}
                 <a
                   href="https://github.com/TirupMehta/ModelRegistry/issues"
@@ -791,7 +791,7 @@ ${SITE_URL}/api/check-updates`}
                   GitHub
                 </a>{" "}
                 - model corrections take 60 seconds via{" "}
-                <code className="font-mono text-xs">data/models.ts</code>, and the full
+                <code className="font-mono text-small">data/models.ts</code>, and the full
                 pipeline (site, API, feeds, README) re-syncs automatically.
               </p>
             </TextWithBlur>

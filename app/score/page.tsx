@@ -44,12 +44,12 @@ const summaryClass =
   "flex cursor-pointer list-none items-center gap-3 py-3.5 [&::-webkit-details-marker]:hidden"
 
 const chevronClass =
-  "ml-auto shrink-0 text-black/30 dark:text-zinc-600 transition-transform duration-200 group-open:rotate-180"
+  "ml-auto shrink-0 text-fg-muted transition-transform duration-200 group-open:rotate-180"
 
 const AGREEMENT_CLASS: Record<string, string> = {
   corroborated:
     "border-emerald-600/35 text-emerald-700 dark:text-emerald-400 dark:border-emerald-400/30",
-  mixed: "border-black/15 text-black/50 dark:text-zinc-500 dark:border-white/15",
+  mixed: "border-black/15 text-fg-muted dark:border-white/15",
   contested: "border-amber-600/40 text-amber-700 dark:text-amber-400 dark:border-amber-400/30",
 }
 
@@ -172,7 +172,7 @@ export default function ScorePage() {
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         <nav
           aria-label="Breadcrumb"
-          className="flex items-center gap-2.5 mb-7 text-xs font-sans leading-relaxed text-black/50 dark:text-zinc-400"
+          className="flex items-center gap-2.5 mb-7 text-small font-sans leading-relaxed text-fg-muted"
         >
           <Link
             href="/"
@@ -187,16 +187,16 @@ export default function ScorePage() {
 
         <RankingsSwitcher current="/score" />
 
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           How the models compare
         </h1>
-        <p className="text-base text-black/65 dark:text-zinc-400 leading-7 max-w-2xl mb-5">
+        <p className="text-title text-fg-muted leading-7 max-w-2xl mb-5">
           A standing across tests, an honest measure of how much those tests disagree, and a refusal
           to rate a model on evidence that cannot corroborate itself. Only the current lineup is
           ranked: a superseded checkpoint is not something a reader can choose today, so it is kept
           below with its replacement instead of being placed against current models.
         </p>
-        <p className="mb-8 flex flex-wrap items-center gap-2 text-xs font-sans text-black/50 dark:text-zinc-500">
+        <p className="mb-8 flex flex-wrap items-center gap-2 text-small font-sans text-fg-muted">
           <span>Standing v{STANDING_VERSION}</span>
           <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
           <span>{standing.rated} rated</span>
@@ -220,10 +220,10 @@ export default function ScorePage() {
               key={stat.label}
               className="p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]"
             >
-              <div className="text-2xl font-display font-semibold tracking-tight text-black dark:text-white tabular-nums">
+              <div className="text-heading font-display font-semibold tracking-tight text-black dark:text-white tabular-nums">
                 {stat.value}
               </div>
-              <div className="mt-1 text-xs font-sans text-black/50 dark:text-zinc-500 leading-snug">
+              <div className="mt-1 text-small font-sans text-fg-muted leading-snug">
                 {stat.label}
               </div>
             </div>
@@ -231,10 +231,10 @@ export default function ScorePage() {
         </div>
 
         {/* Standing table */}
-        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
           Cross-test standing
         </h2>
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-4 max-w-2xl">
+        <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
           The equal-weight mean of a model&rsquo;s per-test percentiles. The spread column is the disagreement behind that mean, in percentile
           points. Read them together: a high standing with a wide spread is a compromise between
           tests, not a result.
@@ -249,13 +249,13 @@ export default function ScorePage() {
                 href={`/models/${row.model.id}`}
                 className="group flex flex-wrap items-baseline gap-x-3 gap-y-1.5 py-3 border-b border-black/10 dark:border-white/[0.08]"
               >
-                <span className="text-xs font-sans tabular-nums text-black/30 dark:text-zinc-600 w-7 shrink-0">
+                <span className="text-small font-sans tabular-nums text-fg-muted w-7 shrink-0">
                   T{row.tier}
                 </span>
-                <span className="text-sm sm:text-base font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors">
+                <span className="text-body sm:text-title font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors">
                   {row.model.name}
                 </span>
-                <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-sans text-black/45 dark:text-zinc-500">
+                <span className="hidden sm:inline-flex items-center gap-1.5 text-small font-sans text-fg-muted">
                   <span
                     className="inline-block w-1.5 h-1.5 rounded-sm shrink-0"
                     style={{ backgroundColor: lab?.accentColor ?? "#888" }}
@@ -263,27 +263,27 @@ export default function ScorePage() {
                   />
                   {row.model.companyName}
                 </span>
-                <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-xs font-sans text-black/50 dark:text-zinc-500">
+                <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-small font-sans text-fg-muted">
                   {row.cohorts} tests
                 </span>
-                <span className={`inline-flex items-center rounded border px-1.5 py-0.5 text-xs font-sans ${AGREEMENT_CLASS[row.agreement]}`}>
+                <span className={`inline-flex items-center rounded border px-1.5 py-0.5 text-small font-sans ${AGREEMENT_CLASS[row.agreement]}`}>
                   {AGREEMENT_LABEL[row.agreement]}
                 </span>
                 {row.auditable && !row.stable && (
-                  <span className="inline-flex items-center rounded border border-amber-600/40 px-1.5 py-0.5 text-xs font-sans text-amber-700 dark:text-amber-400 dark:border-amber-400/30">
+                  <span className="inline-flex items-center rounded border border-amber-600/40 px-1.5 py-0.5 text-small font-sans text-amber-700 dark:text-amber-400 dark:border-amber-400/30">
                     Test dependent
                   </span>
                 )}
                 {!row.auditable && (
-                  <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-xs font-sans text-black/50 dark:text-zinc-500">
+                  <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-small font-sans text-fg-muted">
                     Not auditable
                   </span>
                 )}
                 <span className="ml-auto flex items-baseline gap-2 shrink-0">
-                  <span className="text-xs font-sans tabular-nums text-black/40 dark:text-zinc-500">
+                  <span className="text-small font-sans tabular-nums text-fg-muted">
                     spread {row.spread.toFixed(0)}
                   </span>
-                  <span className="text-base font-sans font-semibold tabular-nums text-black dark:text-white">
+                  <span className="text-title font-sans font-semibold tabular-nums text-black dark:text-white">
                     {row.standing.toFixed(1)}
                   </span>
                 </span>
@@ -292,7 +292,7 @@ export default function ScorePage() {
           })}
         </div>
 
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 leading-6 max-w-2xl mb-12">
+        <p className="text-body font-sans text-fg-muted leading-6 max-w-2xl mb-12">
           Standing runs 1 to 99 and is an expected percentile, not a percentage correct. The
           disagreement figure of {disagreementPoints} points is the pooled spread between tests across
           the rated models. Rows are grouped into tiers: a row starts a new tier only when it sits more
@@ -303,10 +303,10 @@ export default function ScorePage() {
         </p>
 
         {/* Independent evidence: where laboratory figures and independent runs part ways */}
-        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
           Laboratory claims against independent runs
         </h2>
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-4 max-w-2xl">
+        <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
           Nine of the ten tests in the standing were run by {INDEPENDENT_EVALUATOR.name} on the same
           tasks with the same harness for every model; the tenth is arena.ai&rsquo;s blind human-preference
           Elo, a second evaluator and a different kind of measurement. Where a laboratory also published its own Terminal-Bench
@@ -316,9 +316,9 @@ export default function ScorePage() {
           laboratory did not say which version it ran.
         </p>
         <div className="mb-12 overflow-x-auto">
-          <table className="w-full text-left text-sm font-sans">
+          <table className="w-full text-left text-body font-sans">
             <thead>
-              <tr className="border-b border-black/10 text-xs text-black/50 dark:border-white/[0.08] dark:text-zinc-500">
+              <tr className="border-b border-black/10 text-small text-fg-muted dark:border-white/[0.08]">
                 <th className="py-2 pr-4 font-medium">Model</th>
                 <th className="py-2 pr-4 font-medium">Laboratory</th>
                 <th className="py-2 pr-4 font-medium">Independent</th>
@@ -333,11 +333,11 @@ export default function ScorePage() {
                       {gap.model.name}
                     </Link>
                     {!gap.likeForLike && (
-                      <span className="ml-2 text-xs text-black/40 dark:text-zinc-500">version not stated</span>
+                      <span className="ml-2 text-small text-fg-muted">version not stated</span>
                     )}
                   </td>
-                  <td className="py-2.5 pr-4 tabular-nums text-black/70 dark:text-zinc-300">{gap.lab.toFixed(1)}%</td>
-                  <td className="py-2.5 pr-4 tabular-nums text-black/70 dark:text-zinc-300">{gap.independent.toFixed(1)}%</td>
+                  <td className="py-2.5 pr-4 tabular-nums text-fg">{gap.lab.toFixed(1)}%</td>
+                  <td className="py-2.5 pr-4 tabular-nums text-fg">{gap.independent.toFixed(1)}%</td>
                   <td className="py-2.5 tabular-nums font-medium text-black dark:text-white">
                     {gap.gap > 0 ? "+" : ""}
                     {gap.gap.toFixed(1)}
@@ -349,19 +349,19 @@ export default function ScorePage() {
         </div>
 
         {/* Cost of a point */}
-        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
           What a point costs
         </h2>
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-4 max-w-2xl">
+        <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
           The evaluator&rsquo;s Intelligence Index with the cost and time it took to run one task. A
           model is on the frontier when no other model scores higher for less money. Cost per task
           includes the reasoning tokens a model chooses to spend, so a cheap price per token does not
           always mean a cheap answer.
         </p>
         <div className="mb-12 overflow-x-auto">
-          <table className="w-full text-left text-sm font-sans">
+          <table className="w-full text-left text-body font-sans">
             <thead>
-              <tr className="border-b border-black/10 text-xs text-black/50 dark:border-white/[0.08] dark:text-zinc-500">
+              <tr className="border-b border-black/10 text-small text-fg-muted dark:border-white/[0.08]">
                 <th className="py-2 pr-4 font-medium">Model</th>
                 <th className="py-2 pr-4 font-medium">Index</th>
                 <th className="py-2 pr-4 font-medium">Cost / task</th>
@@ -377,12 +377,12 @@ export default function ScorePage() {
                       {row.model.name}
                     </Link>
                   </td>
-                  <td className="py-2.5 pr-4 tabular-nums text-black/70 dark:text-zinc-300">{row.index}</td>
-                  <td className="py-2.5 pr-4 tabular-nums text-black/70 dark:text-zinc-300">${row.costPerTask.toFixed(2)}</td>
-                  <td className="py-2.5 pr-4 tabular-nums text-black/70 dark:text-zinc-300">
+                  <td className="py-2.5 pr-4 tabular-nums text-fg">{row.index}</td>
+                  <td className="py-2.5 pr-4 tabular-nums text-fg">${row.costPerTask.toFixed(2)}</td>
+                  <td className="py-2.5 pr-4 tabular-nums text-fg">
                     {row.minutesPerTask === null ? "-" : row.minutesPerTask.toFixed(1)}
                   </td>
-                  <td className="py-2.5 text-xs text-black/60 dark:text-zinc-400">{row.onFrontier ? "Yes" : ""}</td>
+                  <td className="py-2.5 text-small text-fg-muted">{row.onFrontier ? "Yes" : ""}</td>
                 </tr>
               ))}
             </tbody>
@@ -392,10 +392,10 @@ export default function ScorePage() {
         {standing.singleTest.length > 0 && (
           <>
         {/* Single-test models */}
-        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
           Ranked on one test only
         </h2>
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-4 max-w-2xl">
+        <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
           These models report a single benchmark. Their position on it is a real measurement and is
           shown as rank out of cohort size. They receive no cross-test standing, because one exam
           cannot corroborate itself and averaging it with nothing would be an invention.
@@ -406,25 +406,25 @@ export default function ScorePage() {
               <tr className="border-b border-black/15 dark:border-white/[0.12]">
                 <th
                   scope="col"
-                  className="text-left py-2 pr-3 font-sans text-xs font-medium uppercase tracking-wide text-black/40 dark:text-zinc-500"
+                  className="text-left py-2 pr-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted"
                 >
                   Model
                 </th>
                 <th
                   scope="col"
-                  className="text-left py-2 px-3 font-sans text-xs font-medium uppercase tracking-wide text-black/40 dark:text-zinc-500"
+                  className="text-left py-2 px-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted"
                 >
                   Test
                 </th>
                 <th
                   scope="col"
-                  className="text-right py-2 px-3 font-sans text-xs font-medium uppercase tracking-wide text-black/40 dark:text-zinc-500"
+                  className="text-right py-2 px-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted"
                 >
                   Position
                 </th>
                 <th
                   scope="col"
-                  className="text-right py-2 pl-3 font-sans text-xs font-medium uppercase tracking-wide text-black/40 dark:text-zinc-500"
+                  className="text-right py-2 pl-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted"
                 >
                   Score
                 </th>
@@ -436,24 +436,24 @@ export default function ScorePage() {
                   <th scope="row" className="text-left py-2.5 pr-3 font-normal">
                     <Link
                       href={`/models/${row.model.id}`}
-                      className="text-sm font-sans font-medium text-black dark:text-white hover:text-accent-ink transition-colors"
+                      className="text-body font-sans font-medium text-black dark:text-white hover:text-accent-ink transition-colors"
                     >
                       {row.model.name}
                     </Link>
                   </th>
-                  <td className="py-2.5 px-3 text-sm font-sans text-black/55 dark:text-zinc-400 whitespace-nowrap">
+                  <td className="py-2.5 px-3 text-body font-sans text-fg-muted whitespace-nowrap">
                     {row.test}
                   </td>
                   <td
-                    className={`py-2.5 px-3 text-right text-sm font-sans tabular-nums ${
+                    className={`py-2.5 px-3 text-right text-body font-sans tabular-nums ${
                       row.rank === 1
                         ? "font-semibold text-black dark:text-white"
-                        : "text-black/60 dark:text-zinc-400"
+                        : "text-fg-muted"
                     }`}
                   >
                     {row.rank}/{row.of}
                   </td>
-                  <td className="py-2.5 pl-3 text-right text-sm font-sans tabular-nums text-black/60 dark:text-zinc-400">
+                  <td className="py-2.5 pl-3 text-right text-body font-sans tabular-nums text-fg-muted">
                     {row.score}
                   </td>
                 </tr>
@@ -468,11 +468,11 @@ export default function ScorePage() {
         {/* Superseded */}
         <h2
           id="superseded"
-          className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1 scroll-mt-24"
+          className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1 scroll-mt-24"
         >
           Superseded, kept for the record
         </h2>
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-4 max-w-2xl">
+        <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
           These records were replaced in their role by a later release from the same laboratory. They
           keep their dates, sources and readings, and they are not ranked against the current lineup:
           a reader choosing a model today cannot pick them, so a position among current models would
@@ -487,23 +487,23 @@ export default function ScorePage() {
             >
               <Link
                 href={`/models/${model.id}`}
-                className="text-sm font-sans font-medium text-black/70 dark:text-zinc-300 hover:text-accent-ink transition-colors"
+                className="text-body font-sans font-medium text-fg hover:text-accent-ink transition-colors"
               >
                 {model.name}
               </Link>
-              <span className="text-xs font-sans tabular-nums text-black/35 dark:text-zinc-600">
+              <span className="text-small font-sans tabular-nums text-fg-muted">
                 {model.releaseDate}
               </span>
-              <span className="text-xs font-sans text-black/40 dark:text-zinc-500">superseded by</span>
+              <span className="text-small font-sans text-fg-muted">superseded by</span>
               {successor ? (
                 <Link
                   href={`/models/${successor.id}`}
-                  className="text-sm font-sans text-accent-ink hover:underline underline-offset-2"
+                  className="text-body font-sans text-accent-ink hover:underline underline-offset-2"
                 >
                   {successor.name}
                 </Link>
               ) : (
-                <span className="text-sm font-sans text-black/40 dark:text-zinc-500">
+                <span className="text-body font-sans text-fg-muted">
                   a later release
                 </span>
               )}
@@ -513,15 +513,15 @@ export default function ScorePage() {
 
         {/* The raw tables are long: collapsed by default so the answer is not buried. */}
         <details className="mb-12 rounded-xl border border-black/10 dark:border-white/[0.08] p-4 sm:p-5">
-          <summary className="cursor-pointer list-none text-sm font-sans font-medium text-black dark:text-white">
+          <summary className="cursor-pointer list-none text-body font-sans font-medium text-black dark:text-white">
             Show the raw evidence: every test ranked on its own, and each model&rsquo;s position on every test
           </summary>
           <div className="mt-6">
         {/* Per-test tables */}
-        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
           Every test, ranked on its own
         </h2>
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-5 max-w-2xl">
+        <p className="text-body font-sans text-fg-muted mb-5 max-w-2xl">
           One test, one version, one table. This is the raw evidence the standing is computed from,
           and it is published so the standing can be checked rather than believed.
         </p>
@@ -530,17 +530,17 @@ export default function ScorePage() {
           {boards.map((board) => (
             <div key={board.id}>
               <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 mb-1">
-                <h3 className="text-base font-display font-semibold tracking-tight text-black dark:text-white">
+                <h3 className="text-title font-display font-semibold tracking-tight text-black dark:text-white">
                   {board.test}
                 </h3>
-                <span className="text-xs font-sans text-black/40 dark:text-zinc-500">
+                <span className="text-small font-sans text-fg-muted">
                   {board.domain}
                 </span>
-                <span className="ml-auto text-xs font-sans tabular-nums text-black/35 dark:text-zinc-500">
+                <span className="ml-auto text-small font-sans tabular-nums text-fg-muted">
                   {board.entries.length} models
                 </span>
               </div>
-              <p className="text-xs font-sans text-black/45 dark:text-zinc-500 mb-2.5">
+              <p className="text-small font-sans text-fg-muted mb-2.5">
                 {board.versionStated
                   ? "Every record in this cohort states the version it was measured on."
                   : "This benchmark is not versioned by the laboratories that report it."}
@@ -554,13 +554,13 @@ export default function ScorePage() {
                       href={`/models/${entry.model.id}`}
                       className="group flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5 border-b border-black/10 dark:border-white/[0.08]"
                     >
-                      <span className="text-xs font-sans tabular-nums text-black/30 dark:text-zinc-600 w-5 shrink-0">
+                      <span className="text-small font-sans tabular-nums text-fg-muted w-5 shrink-0">
                         {entry.rank}
                       </span>
-                      <span className="text-sm sm:text-base font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors">
+                      <span className="text-body sm:text-title font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors">
                         {entry.model.name}
                       </span>
-                      <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-sans text-black/45 dark:text-zinc-500">
+                      <span className="hidden sm:inline-flex items-center gap-1.5 text-small font-sans text-fg-muted">
                         <span
                           className="inline-block w-1.5 h-1.5 rounded-sm shrink-0"
                           style={{ backgroundColor: lab?.accentColor ?? "#888" }}
@@ -568,7 +568,7 @@ export default function ScorePage() {
                         />
                         {entry.model.companyName}
                       </span>
-                      <span className="ml-auto text-base font-sans font-semibold tabular-nums text-black dark:text-white shrink-0">
+                      <span className="ml-auto text-title font-sans font-semibold tabular-nums text-black dark:text-white shrink-0">
                         {entry.reading.score}
                       </span>
                     </Link>
@@ -582,10 +582,10 @@ export default function ScorePage() {
         {/* Cross-test matrix */}
         {multi.length > 0 && (
           <>
-            <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+            <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
               Position on each test
             </h2>
-            <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-4 max-w-2xl">
+            <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
               The evidence behind every standing, written as rank out of cohort size. A model that is
               strong everywhere looks different from one that leads a single exam, and this is where
               that difference is visible.
@@ -596,7 +596,7 @@ export default function ScorePage() {
                   <tr className="border-b border-black/15 dark:border-white/[0.12]">
                     <th
                       scope="col"
-                      className="text-left py-2 pr-3 font-sans text-xs font-medium uppercase tracking-wide text-black/40 dark:text-zinc-500"
+                      className="text-left py-2 pr-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted"
                     >
                       Model
                     </th>
@@ -604,7 +604,7 @@ export default function ScorePage() {
                       <th
                         key={board.id}
                         scope="col"
-                        className="text-right py-2 pl-3 font-sans text-xs font-medium text-black/40 dark:text-zinc-500 whitespace-nowrap"
+                        className="text-right py-2 pl-3 font-sans text-small font-medium text-fg-muted whitespace-nowrap"
                       >
                         {board.test}
                       </th>
@@ -617,7 +617,7 @@ export default function ScorePage() {
                       <th scope="row" className="text-left py-2.5 pr-3 font-normal">
                         <Link
                           href={`/models/${model.id}`}
-                          className="text-sm font-sans font-medium text-black dark:text-white hover:text-accent-ink transition-colors"
+                          className="text-body font-sans font-medium text-black dark:text-white hover:text-accent-ink transition-colors"
                         >
                           {model.name}
                         </Link>
@@ -627,12 +627,12 @@ export default function ScorePage() {
                         return (
                           <td
                             key={board.id}
-                            className={`py-2.5 pl-3 text-right text-sm font-sans tabular-nums ${
+                            className={`py-2.5 pl-3 text-right text-body font-sans tabular-nums ${
                               position
                                 ? position.rank === 1
                                   ? "font-semibold text-black dark:text-white"
-                                  : "text-black/60 dark:text-zinc-400"
-                                : "text-black/20 dark:text-zinc-700"
+                                  : "text-fg-muted"
+                                : "text-fg-muted"
                             }`}
                           >
                             {position ? `${position.rank}/${position.of}` : "·"}
@@ -647,7 +647,7 @@ export default function ScorePage() {
           </>
         )}
 
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 leading-6 max-w-2xl mb-12">
+        <p className="text-body font-sans text-fg-muted leading-6 max-w-2xl mb-12">
           {lineup.current.length - standing.ranked} of {lineup.current.length} current models have no independent
           result yet, because {INDEPENDENT_EVALUATOR.name} has not published one. Their laboratory-reported
           figures stay on each model page and are never mixed into this standing.
@@ -662,13 +662,13 @@ export default function ScorePage() {
         </details>
 
         {/* Rules */}
-        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-4">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-4">
           How the numbers are made
         </h2>
         <div className="border-t border-black/10 dark:border-white/[0.08] mb-12">
           <details className="group border-b border-black/10 dark:border-white/[0.08]">
             <summary className={summaryClass}>
-              <span className="text-sm font-sans font-medium text-black dark:text-white">
+              <span className="text-body font-sans font-medium text-black dark:text-white">
                 Per-test rank: cohort, version gate, ties
               </span>
               <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
@@ -692,14 +692,14 @@ export default function ScorePage() {
                 },
               ].map((step) => (
                 <li key={step.n} className="flex gap-3">
-                  <span className="text-xs font-sans tabular-nums text-black/30 dark:text-zinc-600 pt-1">
+                  <span className="text-small font-sans tabular-nums text-fg-muted pt-1">
                     {step.n}
                   </span>
                   <div>
-                    <h3 className="text-sm font-sans font-medium text-black dark:text-white mb-1">
+                    <h3 className="text-body font-sans font-medium text-black dark:text-white mb-1">
                       {step.title}
                     </h3>
-                    <p className="text-sm font-sans text-black/60 dark:text-zinc-400 leading-6">
+                    <p className="text-body font-sans text-fg-muted leading-6">
                       {step.body}
                     </p>
                   </div>
@@ -710,7 +710,7 @@ export default function ScorePage() {
 
           <details className="group border-b border-black/10 dark:border-white/[0.08]">
             <summary className={summaryClass}>
-              <span className="text-sm font-sans font-medium text-black dark:text-white">
+              <span className="text-body font-sans font-medium text-black dark:text-white">
                 Cross-test standing: equate, average, refuse, audit
               </span>
               <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
@@ -749,14 +749,14 @@ export default function ScorePage() {
                 },
               ].map((step) => (
                 <li key={step.n} className="flex gap-3">
-                  <span className="text-xs font-sans tabular-nums text-black/30 dark:text-zinc-600 pt-1">
+                  <span className="text-small font-sans tabular-nums text-fg-muted pt-1">
                     {step.n}
                   </span>
                   <div>
-                    <h3 className="text-sm font-sans font-medium text-black dark:text-white mb-1">
+                    <h3 className="text-body font-sans font-medium text-black dark:text-white mb-1">
                       {step.title}
                     </h3>
-                    <p className="text-sm font-sans text-black/60 dark:text-zinc-400 leading-6">
+                    <p className="text-body font-sans text-fg-muted leading-6">
                       {step.body}
                     </p>
                   </div>
@@ -767,7 +767,7 @@ export default function ScorePage() {
 
           <details className="group border-b border-black/10 dark:border-white/[0.08]">
             <summary className={summaryClass}>
-              <span className="text-sm font-sans font-medium text-black dark:text-white">
+              <span className="text-body font-sans font-medium text-black dark:text-white">
                 What the standing cannot do
               </span>
               <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
@@ -780,7 +780,7 @@ export default function ScorePage() {
                 "It cannot tell which exam you should trust for your workload. That is a question about your prompts.",
                 "It cannot reproduce a single score. Every number is laboratory-published.",
               ].map((line) => (
-                <li key={line} className="text-sm font-sans text-black/60 dark:text-zinc-400 leading-6">
+                <li key={line} className="text-body font-sans text-fg-muted leading-6">
                   {line}
                 </li>
               ))}
@@ -789,7 +789,7 @@ export default function ScorePage() {
 
           <details className="group border-b border-black/10 dark:border-white/[0.08]">
             <summary className={summaryClass}>
-              <span className="text-sm font-sans font-medium text-black dark:text-white">
+              <span className="text-body font-sans font-medium text-black dark:text-white">
                 Cohort audit: which tests link to which
               </span>
               <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
@@ -801,25 +801,25 @@ export default function ScorePage() {
                     <tr className="border-b border-black/10 dark:border-white/[0.08]">
                       <th
                         scope="col"
-                        className="text-left py-2 pr-3 font-sans text-xs font-medium text-black/40 dark:text-zinc-500"
+                        className="text-left py-2 pr-3 font-sans text-small font-medium text-fg-muted"
                       >
                         Cohort
                       </th>
                       <th
                         scope="col"
-                        className="text-right py-2 px-3 font-sans text-xs font-medium text-black/40 dark:text-zinc-500"
+                        className="text-right py-2 px-3 font-sans text-small font-medium text-fg-muted"
                       >
                         Models
                       </th>
                       <th
                         scope="col"
-                        className="text-right py-2 px-3 font-sans text-xs font-medium text-black/40 dark:text-zinc-500"
+                        className="text-right py-2 px-3 font-sans text-small font-medium text-fg-muted"
                       >
                         Spread
                       </th>
                       <th
                         scope="col"
-                        className="text-right py-2 pl-3 font-sans text-xs font-medium text-black/40 dark:text-zinc-500"
+                        className="text-right py-2 pl-3 font-sans text-small font-medium text-fg-muted"
                       >
                         Anchors
                       </th>
@@ -832,22 +832,22 @@ export default function ScorePage() {
                         className="border-b border-black/5 dark:border-white/[0.05]"
                       >
                         <th scope="row" className="text-left py-2 pr-3 font-normal">
-                          <span className="text-sm font-sans text-black/80 dark:text-zinc-200">
+                          <span className="text-body font-sans text-fg">
                             {cohort.test}
                           </span>
                           {cohort.weaklyLinked && (
-                            <span className="ml-2 inline-flex items-center rounded border border-amber-600/40 px-1.5 py-0.5 text-xs font-sans text-amber-700 dark:text-amber-400 dark:border-amber-400/30">
+                            <span className="ml-2 inline-flex items-center rounded border border-amber-600/40 px-1.5 py-0.5 text-small font-sans text-amber-700 dark:text-amber-400 dark:border-amber-400/30">
                               Single anchor
                             </span>
                           )}
                         </th>
-                        <td className="py-2 px-3 text-right text-sm font-sans tabular-nums text-black/55 dark:text-zinc-400">
+                        <td className="py-2 px-3 text-right text-body font-sans tabular-nums text-fg-muted">
                           {cohort.size}
                         </td>
-                        <td className="py-2 px-3 text-right text-sm font-sans tabular-nums text-black/55 dark:text-zinc-400">
+                        <td className="py-2 px-3 text-right text-body font-sans tabular-nums text-fg-muted">
                           {cohort.spread.toFixed(1)}pp
                         </td>
-                        <td className="py-2 pl-3 text-right text-sm font-sans tabular-nums text-black/55 dark:text-zinc-400">
+                        <td className="py-2 pl-3 text-right text-body font-sans tabular-nums text-fg-muted">
                           {cohort.anchors}
                         </td>
                       </tr>
@@ -855,7 +855,7 @@ export default function ScorePage() {
                   </tbody>
                 </table>
               </div>
-              <p className="mt-3 text-sm font-sans text-black/55 dark:text-zinc-500 leading-6 max-w-2xl">
+              <p className="mt-3 text-body font-sans text-fg-muted leading-6 max-w-2xl">
                 An anchor is a model in this cohort that also reports another test, which is what ties
                 the cohort&rsquo;s scale to the rest of the evidence. A cohort with one anchor cannot
                 fix its own level, and every row resting on it is marked. This is published because a
@@ -866,23 +866,23 @@ export default function ScorePage() {
         </div>
 
         {/* FAQ */}
-        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-4">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-4">
           Questions
         </h2>
         <div className="border-t border-black/10 dark:border-white/[0.08] mb-12">
           {faq.map((item) => (
             <div key={item.q} className="py-4 border-b border-black/10 dark:border-white/[0.08]">
-              <h3 className="text-base font-medium tracking-tight text-black dark:text-white mb-1.5">
+              <h3 className="text-title font-medium tracking-tight text-black dark:text-white mb-1.5">
                 {item.q}
               </h3>
-              <p className="text-sm font-sans text-black/60 dark:text-zinc-400 leading-6 max-w-2xl">
+              <p className="text-body font-sans text-fg-muted leading-6 max-w-2xl">
                 {item.a}
               </p>
             </div>
           ))}
         </div>
 
-        <p className="text-sm font-sans text-black/45 dark:text-zinc-500 leading-6">
+        <p className="text-body font-sans text-fg-muted leading-6">
           Standing v{STANDING_VERSION}, rank rule v{LEADERBOARD_VERSION}, minimum cohort{" "}
           {MIN_COHORT_SIZE}, data revised {datasetRevision.revisedAt}. Recompute every table from{" "}
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}

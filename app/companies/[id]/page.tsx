@@ -168,7 +168,7 @@ export default async function CompanyPage({ params }: Props) {
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         {/* Breadcrumb */}
         <TextWithBlur>
-          <div className="flex items-center gap-2.5 mb-7 text-xs font-sans leading-relaxed text-black/50 dark:text-zinc-400 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex items-center gap-2.5 mb-7 text-small font-sans leading-relaxed text-fg-muted overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             <Link
               href="/"
               className="inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150 shrink-0"
@@ -198,10 +198,10 @@ export default async function CompanyPage({ params }: Props) {
                   style={{ backgroundColor: lab.accentColor }}
                 />
                 <div>
-                  <h1 className="font-display text-2xl font-semibold tracking-tight text-black sm:text-3xl md:text-4xl dark:text-white">
+                  <h1 className="font-display text-heading font-semibold tracking-tight text-black sm:text-page dark:text-white">
                     {lab.name}
                   </h1>
-                  <p className="text-xs font-sans text-black/40 dark:text-zinc-400 mt-1.5">
+                  <p className="text-small font-sans text-fg-muted mt-1.5">
                     ({lab.headquarters})
                   </p>
                 </div>
@@ -211,7 +211,7 @@ export default async function CompanyPage({ params }: Props) {
                 href={lab.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1 text-xs font-sans text-black/50 dark:text-zinc-400 hover:text-accent-ink transition-colors duration-150 shrink-0 whitespace-nowrap pt-1"
+                className="group inline-flex items-center gap-1 text-small font-sans text-fg-muted hover:text-accent-ink transition-colors duration-150 shrink-0 whitespace-nowrap pt-1"
               >
                 <Globe size={12} />
                 <span>{new URL(lab.website).hostname}</span>
@@ -219,12 +219,12 @@ export default async function CompanyPage({ params }: Props) {
               </a>
             </div>
 
-            <p className="text-sm sm:text-[15px] font-normal text-black/65 dark:text-zinc-300 mt-3 leading-relaxed max-w-2xl">
+            <p className="text-body font-normal text-fg-muted mt-3 leading-relaxed max-w-2xl">
               {lab.description}
             </p>
 
             {/* Lab Stats Strip */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-4 pt-4 border-t border-black/5 dark:border-white/[0.06] text-[11px] font-sans text-black/45 dark:text-zinc-400 tabular-nums">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-4 pt-4 border-t border-black/5 dark:border-white/[0.06] text-small font-sans text-fg-muted tabular-nums">
               <span className="inline-flex items-center gap-1.5">
                 <Layers size={11} className="text-accent-ink" />
                 {labModels.length} model{labModels.length === 1 ? "" : "s"} tracked
@@ -248,10 +248,10 @@ export default async function CompanyPage({ params }: Props) {
         {/* Visible answer matching the FAQPage schema below */}
         <TextWithBlur delay={110}>
           <div className="mb-6 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4 sm:p-5">
-            <h2 className="text-sm font-medium tracking-tight text-black dark:text-white mb-1.5">
+            <h2 className="text-body font-medium tracking-tight text-black dark:text-white mb-1.5">
               What is the latest AI model from {lab.name}?
             </h2>
-            <p className="text-[13px] font-sans text-black/60 dark:text-zinc-400 leading-relaxed">
+            <p className="text-small font-sans text-fg-muted leading-relaxed">
               {faqAnswer}{" "}
               <Link
                 href="/methodology"
@@ -266,10 +266,10 @@ export default async function CompanyPage({ params }: Props) {
         {/* Release Timeline (month-grouped rail, mirrors /timeline) */}
         <TextWithBlur delay={140}>
           <div className="flex items-baseline justify-between gap-3 mb-5">
-            <h2 className="text-sm font-sans font-medium text-black/60 dark:text-zinc-300">
+            <h2 className="text-body font-sans font-medium text-fg-muted">
               Release Timeline
             </h2>
-            <span className="text-[11px] font-sans text-black/35 dark:text-zinc-500 tabular-nums">
+            <span className="text-small font-sans text-fg-muted tabular-nums">
               NEWEST FIRST
             </span>
           </div>
@@ -284,10 +284,10 @@ export default async function CompanyPage({ params }: Props) {
                   style={{ backgroundColor: lab.accentColor }}
                 />
 
-                <h3 className="text-base font-medium text-black dark:text-white mb-3.5 flex items-center gap-2 font-sans">
+                <h3 className="text-title font-medium text-black dark:text-white mb-3.5 flex items-center gap-2 font-sans">
                   <Calendar size={14} style={{ color: lab.accentColor }} />
                   <span>{monthYear}</span>
-                  <span className="text-xs text-black/40 dark:text-zinc-400 font-normal">
+                  <span className="text-small text-fg-muted font-normal">
                     [{group.length} {group.length === 1 ? "release" : "releases"}]
                   </span>
                 </h3>
@@ -300,33 +300,33 @@ export default async function CompanyPage({ params }: Props) {
                       className="group cursor-pointer block p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[var(--surface-field)] hover:border-accent/40 transition-colors duration-150 select-none"
                     >
                       <div className="mb-1.5">
-                        <div className="font-sans text-[15px] sm:text-base font-medium tracking-tight leading-snug text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
+                        <div className="font-sans text-body sm:text-title font-medium tracking-tight leading-snug text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
                           {model.name}
                         </div>
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mt-1.5 font-sans">
-                          <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03] whitespace-nowrap">
+                          <span className="text-small px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-fg-muted dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03] whitespace-nowrap">
                             {model.statusBadge}
                           </span>
                           {model.isCompanyFlagship && (
-                            <span className="text-[11px] tracking-tight text-accent-ink font-medium whitespace-nowrap">
+                            <span className="text-small tracking-tight text-accent-ink font-medium whitespace-nowrap">
                               • Flagship
                             </span>
                           )}
-                          <span className="ml-auto text-[11px] text-black/40 dark:text-zinc-400 tabular-nums whitespace-nowrap">
+                          <span className="ml-auto text-small text-fg-muted tabular-nums whitespace-nowrap">
                             {formatDate(model.releaseDate)}
                           </span>
                         </div>
                       </div>
 
-                      <p className="text-xs sm:text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-2 line-clamp-2">
+                      <p className="text-small sm:text-body font-normal text-fg-muted leading-relaxed mb-2 line-clamp-2">
                         {model.highlight}
                       </p>
 
-                      <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-3 text-xs pt-2 border-t border-black/5 dark:border-white/[0.06] font-sans">
-                        <span className="text-[11px] text-black/45 dark:text-zinc-400">
+                      <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-3 text-small pt-2 border-t border-black/5 dark:border-white/[0.06] font-sans">
+                        <span className="text-small text-fg-muted">
                           {model.categoryLabel}
                         </span>
-                        <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-zinc-400 group-hover:text-accent-ink transition-colors shrink-0">
+                        <span className="inline-flex items-center gap-1 text-small text-fg-muted group-hover:text-accent-ink transition-colors shrink-0">
                           OPEN DATASHEET <ArrowUpRight size={10} className="opacity-60" />
                         </span>
                       </div>

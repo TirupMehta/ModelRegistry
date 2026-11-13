@@ -28,7 +28,7 @@ export const revalidate = 900
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-lg sm:text-xl font-display font-semibold tracking-tight text-black dark:text-white mt-8 mb-3">
+    <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mt-8 mb-3">
       {children}
     </h2>
   )
@@ -36,7 +36,7 @@ function H2({ children }: { children: React.ReactNode }) {
 
 function P({ children }: { children: React.ReactNode }) {
   return (
-    <p className="max-w-[68ch] text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
+    <p className="max-w-[68ch] text-body text-fg leading-6 sm:leading-7 mb-3">
       {children}
     </p>
   )
@@ -65,7 +65,7 @@ function stamp(iso: string): string {
 /** Rows shared by the push list and the merged-PR list. */
 function listShell(children: React.ReactNode) {
   return (
-    <ul className="mb-4 divide-y divide-black/[0.06] dark:divide-white/[0.06] border-b border-black/[0.06] dark:border-white/[0.06] text-sm sm:text-[15px] leading-6 sm:leading-7">
+    <ul className="mb-4 divide-y divide-black/[0.06] dark:divide-white/[0.06] border-b border-black/[0.06] dark:border-white/[0.06] text-body leading-6 sm:leading-7">
       {children}
     </ul>
   )
@@ -79,7 +79,7 @@ function PushList({ pushes }: { pushes: RepoSnapshot["pushes"] }) {
           href={push.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="shrink-0 font-mono text-xs text-black/50 dark:text-zinc-400 hover:text-accent-ink"
+          className="shrink-0 font-mono text-small text-fg-muted hover:text-accent-ink"
         >
           {push.sha.slice(0, 7)}
         </a>
@@ -92,7 +92,7 @@ function PushList({ pushes }: { pushes: RepoSnapshot["pushes"] }) {
         >
           {push.message}
         </a>
-        <span className="shrink-0 text-xs text-black/40 dark:text-zinc-500 tabular-nums">
+        <span className="shrink-0 text-small text-fg-muted tabular-nums">
           {push.author} · {stamp(push.date)}
         </span>
       </li>
@@ -104,7 +104,7 @@ function MergedPullList({ pulls }: { pulls: NonNullable<RepoSnapshot["mergedPull
   return listShell(
     pulls.map((pull) => (
       <li key={pull.number} className="flex items-baseline gap-3 py-2">
-        <span className="shrink-0 font-mono text-xs text-black/50 dark:text-zinc-400">#{pull.number}</span>
+        <span className="shrink-0 font-mono text-small text-fg-muted">#{pull.number}</span>
         <a
           href={pull.url}
           target="_blank"
@@ -114,7 +114,7 @@ function MergedPullList({ pulls }: { pulls: NonNullable<RepoSnapshot["mergedPull
         >
           {pull.title}
         </a>
-        <span className="shrink-0 text-xs text-black/40 dark:text-zinc-500 tabular-nums">
+        <span className="shrink-0 text-small text-fg-muted tabular-nums">
           {pull.author} · {stamp(pull.mergedAt)}
         </span>
       </li>
@@ -131,10 +131,10 @@ function ContributorList({ contributors }: { contributors: NonNullable<RepoSnaps
           href={contributor.profileUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full border border-black/10 dark:border-white/[0.08] px-3 py-1 text-xs text-black/70 dark:text-zinc-300 hover:border-accent hover:text-accent-ink"
+          className="inline-flex items-center gap-1.5 rounded-full border border-black/10 dark:border-white/[0.08] px-3 py-1 text-small text-fg hover:border-accent hover:text-accent-ink"
         >
           {contributor.login}
-          <span className="text-black/35 dark:text-zinc-600 tabular-nums">{contributor.contributions}</span>
+          <span className="text-fg-muted tabular-nums">{contributor.contributions}</span>
         </a>
       ))}
     </div>
@@ -166,10 +166,10 @@ export default async function OpenSourcePage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-2">
+        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-2">
           Built in the open
         </h1>
-        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-sans text-black/50 dark:text-zinc-500">
+        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-small font-sans text-fg-muted">
           <A href={REPO_URL}>github.com/TirupMehta/ModelRegistry</A>
           <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
           <span>MIT licensed</span>
@@ -206,13 +206,13 @@ export default async function OpenSourcePage() {
         {pushes.length > 0 ? (
           <>
             <PushList pushes={pushes} />
-            <p className="text-xs font-sans text-black/45 dark:text-zinc-500 mb-3">
+            <p className="text-small font-sans text-fg-muted mb-3">
               The <A href={`${REPO_URL}/commits/main`}>full commit history</A> carries
               every revision the dataset and the site ever shipped.
             </p>
           </>
         ) : (
-          <p className="max-w-[68ch] text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
+          <p className="max-w-[68ch] text-body text-fg leading-6 sm:leading-7 mb-3">
             The live push feed is unavailable right now. Recent history is on GitHub:{" "}
             <A href={`${REPO_URL}/commits/main`}>commits on main</A>.
           </p>
@@ -225,7 +225,7 @@ export default async function OpenSourcePage() {
             {mergedPulls && mergedPulls.length > 0 && <MergedPullList pulls={mergedPulls} />}
           </>
         ) : (
-          <p className="max-w-[68ch] text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
+          <p className="max-w-[68ch] text-body text-fg leading-6 sm:leading-7 mb-3">
             The contributor feed is unavailable right now. Everyone who has contributed so
             far is on the{" "}
             <A href={`${REPO_URL}/graphs/contributors`}>contributor graph</A>, and merged

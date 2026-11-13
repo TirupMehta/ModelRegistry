@@ -140,7 +140,7 @@ function Dropdown({
 
   return (
     <div ref={rootRef} className={`relative ${className}`}>
-      <span id={`${id}-label`} className="mb-1.5 block text-[11px] font-sans font-medium uppercase tracking-wide text-black/40 dark:text-zinc-500">
+      <span id={`${id}-label`} className="mb-1.5 block text-caption font-sans font-medium uppercase tracking-wide text-fg-muted">
         {label}
       </span>
       <button
@@ -151,7 +151,7 @@ function Dropdown({
         aria-labelledby={`${id}-label ${id}-value`}
         onClick={() => (open ? setOpen(false) : openList())}
         onKeyDown={onKeyDown}
-        className="flex min-h-11 w-full items-center justify-between gap-3 rounded-xl border border-black/15 bg-white px-3.5 text-left text-sm font-sans text-black shadow-[0_1px_0_rgba(0,0,0,0.03)] transition-colors hover:border-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:border-white/20 dark:bg-[var(--surface-raised)] dark:text-white dark:hover:border-white/40"
+        className="flex min-h-11 w-full items-center justify-between gap-3 rounded-xl border border-black/15 bg-white px-3.5 text-left text-body font-sans text-black shadow-[0_1px_0_rgba(0,0,0,0.03)] transition-colors hover:border-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:border-white/20 dark:bg-[var(--surface-raised)] dark:text-white dark:hover:border-white/40"
       >
         <span id={`${id}-value`} className="truncate">
           {selected?.label}
@@ -159,7 +159,7 @@ function Dropdown({
         <ChevronDown
           size={16}
           aria-hidden="true"
-          className={`shrink-0 text-black/45 transition-transform duration-150 dark:text-zinc-400 ${open ? "rotate-180" : ""}`}
+          className={`shrink-0 text-fg-muted transition-transform duration-150 ${open ? "rotate-180" : ""}`}
         />
       </button>
 
@@ -182,9 +182,9 @@ function Dropdown({
                 aria-selected={isSelected}
                 onPointerEnter={() => setActive(index)}
                 onClick={() => choose(index)}
-                className={`flex min-h-10 cursor-pointer items-center justify-between gap-6 rounded-lg px-3 text-sm font-sans transition-colors ${
+                className={`flex min-h-10 cursor-pointer items-center justify-between gap-6 rounded-lg px-3 text-body font-sans transition-colors ${
                   index === active ? "bg-black/[0.05] dark:bg-white/[0.08]" : ""
-                } ${isSelected ? "font-medium text-black dark:text-white" : "text-black/70 dark:text-zinc-300"}`}
+                } ${isSelected ? "font-medium text-black dark:text-white" : "text-fg"}`}
               >
                 <span>{option.label}</span>
                 {isSelected && <Check size={15} aria-hidden="true" className="shrink-0 text-accent-ink" />}
@@ -199,7 +199,7 @@ function Dropdown({
             more ? "opacity-100" : "opacity-0"
           }`}
         >
-          <ChevronDown size={14} className="text-black/40 dark:text-zinc-400" />
+          <ChevronDown size={14} className="text-fg-muted" />
         </div>
         </div>
       )}
@@ -238,7 +238,7 @@ export default function ModelPicker({ tests, models }: { tests: PickerTest[]; mo
     >
       <h2
         id="picker-heading"
-        className="mb-4 font-display text-lg font-semibold tracking-tight text-black dark:text-white"
+        className="mb-4 font-display text-title font-semibold tracking-tight text-black dark:text-white"
       >
         Find a model for your job
       </h2>
@@ -256,7 +256,7 @@ export default function ModelPicker({ tests, models }: { tests: PickerTest[]; mo
           role="switch"
           aria-checked={openOnly}
           onClick={() => setOpenOnly((value) => !value)}
-          className="flex min-h-11 items-center gap-2.5 rounded-xl border border-black/15 px-3.5 text-sm font-sans text-black/80 transition-colors hover:border-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:border-white/20 dark:text-zinc-300 dark:hover:border-white/40"
+          className="flex min-h-11 items-center gap-2.5 rounded-xl border border-black/15 px-3.5 text-body font-sans text-fg transition-colors hover:border-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:border-white/20 dark:hover:border-white/40"
         >
           <span
             aria-hidden="true"
@@ -271,7 +271,7 @@ export default function ModelPicker({ tests, models }: { tests: PickerTest[]; mo
       </div>
 
       {picks.length === 0 ? (
-        <p className="mt-5 text-sm font-sans text-black/60 dark:text-zinc-400">
+        <p className="mt-5 text-body font-sans text-fg-muted">
           No current model with an independent result fits those limits. Loosen the budget or the open-weights filter.
         </p>
       ) : (
@@ -282,17 +282,17 @@ export default function ModelPicker({ tests, models }: { tests: PickerTest[]; mo
                 href={`/models/${model.id}`}
                 className="group flex items-baseline gap-3 border-b border-black/10 py-3 dark:border-white/[0.08]"
               >
-                <span className="w-5 shrink-0 text-xs font-sans tabular-nums text-black/30 dark:text-zinc-600">
+                <span className="w-5 shrink-0 text-small font-sans tabular-nums text-fg-muted">
                   {index + 1}
                 </span>
-                <span className="text-sm font-medium tracking-tight text-black transition-colors group-hover:text-accent-ink dark:text-white">
+                <span className="text-body font-medium tracking-tight text-black transition-colors group-hover:text-accent-ink dark:text-white">
                   {model.name}
                 </span>
-                <span className="hidden text-xs font-sans text-black/45 sm:inline dark:text-zinc-500">{model.lab}</span>
-                <span className="ml-auto text-sm font-sans font-semibold tabular-nums text-black dark:text-white">
+                <span className="hidden text-small font-sans text-fg-muted sm:inline">{model.lab}</span>
+                <span className="ml-auto text-body font-sans font-semibold tabular-nums text-black dark:text-white">
                   {show(test.unit, model.scores[test.key])}
                 </span>
-                <span className="w-20 shrink-0 text-right text-xs font-sans tabular-nums text-black/45 dark:text-zinc-500">
+                <span className="w-20 shrink-0 text-right text-small font-sans tabular-nums text-fg-muted">
                   {model.cost === null ? "cost n/a" : `$${model.cost.toFixed(2)}/task`}
                 </span>
               </Link>
@@ -300,7 +300,7 @@ export default function ModelPicker({ tests, models }: { tests: PickerTest[]; mo
           ))}
         </ol>
       )}
-      <p className="mt-3 text-xs font-sans text-black/45 dark:text-zinc-500">
+      <p className="mt-3 text-small font-sans text-fg-muted">
         {test.label}, independent results. Scores close together may be statistical ties; the tables below say which.
       </p>
     </section>

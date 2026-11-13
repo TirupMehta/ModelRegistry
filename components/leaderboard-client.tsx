@@ -96,9 +96,9 @@ export default function LeaderboardClient() {
     <>
 
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <div className="space-y-4 text-base md:text-[17px] font-normal text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
+        <div className="space-y-4 text-title font-normal text-fg leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
-            <h1 className="text-2xl sm:text-3xl font-medium tracking-tight text-black dark:text-white">
+            <h1 className="text-page font-medium tracking-tight text-black dark:text-white">
               Frontier AI Leaderboard
             </h1>
             <p>
@@ -141,10 +141,10 @@ export default function LeaderboardClient() {
                         <Icon size={16} />
                       </div>
                       <div>
-                        <h2 className="text-base sm:text-xl font-medium text-black dark:text-white">
+                        <h2 className="text-title sm:text-heading font-medium text-black dark:text-white">
                           {category.title}
                         </h2>
-                        <p className="text-xs sm:text-sm font-normal text-black/60 dark:text-zinc-400">
+                        <p className="text-small sm:text-body font-normal text-fg-muted">
                           {category.description}
                         </p>
                       </div>
@@ -166,11 +166,11 @@ export default function LeaderboardClient() {
                             openModel(model)
                           }
                         }}
-                        className="group cursor-pointer p-2.5 sm:p-3 rounded-xl border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[var(--surface-field)] hover:border-accent/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.995] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 flex items-center justify-between gap-2.5 sm:gap-3 text-xs"
+                        className="group cursor-pointer p-2.5 sm:p-3 rounded-xl border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[var(--surface-field)] hover:border-accent/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.995] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 flex items-center justify-between gap-2.5 sm:gap-3 text-small"
                       >
                         <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
                           {category.ordered ? (
-                            <span className="font-mono text-[11px] text-black/30 dark:text-zinc-600 w-5 shrink-0 tabular-nums transition-colors group-hover:text-accent-ink">
+                            <span className="font-mono text-small text-fg-muted w-5 shrink-0 tabular-nums transition-colors group-hover:text-accent-ink">
                               {String(mIndex + 1).padStart(2, "0")}
                             </span>
                           ) : (
@@ -179,16 +179,16 @@ export default function LeaderboardClient() {
                           <span className="font-medium text-black dark:text-zinc-100 truncate group-hover:text-accent-ink transition-colors duration-150">
                             {model.name}
                           </span>
-                          <span className="text-black/40 dark:text-zinc-400 font-sans text-[11px] shrink-0 hidden sm:inline">
+                          <span className="text-fg-muted font-sans text-small shrink-0 hidden sm:inline">
                             ({model.companyName})
                           </span>
                         </div>
 
                         <div className="flex items-center gap-2 sm:gap-3 shrink-0 font-sans">
-                          <span className="text-[11px] text-black/55 dark:text-zinc-400 hidden sm:inline tabular-nums">
+                          <span className="text-small text-fg-muted hidden sm:inline tabular-nums">
                             {model.contextWindow.replace(" tokens", "")}
                           </span>
-                          <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-accent/40 group-hover:text-accent-ink tabular-nums whitespace-nowrap">
+                          <span className="text-small px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-fg-muted transition-colors group-hover:border-accent/40 group-hover:text-accent-ink tabular-nums whitespace-nowrap">
                             {model.pricingUnit
                               ? formatPrice(model)
                               : model.pricing.input === 0
@@ -199,14 +199,14 @@ export default function LeaderboardClient() {
                         </div>
                       </div>
                     ))}
-                    {visibleModels.length === 0 && <p className="py-4 text-center text-xs text-black/50 dark:text-zinc-400">No models in this section match these filters.</p>}
+                    {visibleModels.length === 0 && <p className="py-4 text-center text-small text-fg-muted">No models in this section match these filters.</p>}
                   </div>
 
                   {/* Section methodology + evaluation date */}
-                  <div className="mt-4 pt-3 border-t border-black/5 dark:border-white/[0.06] text-[11px] font-sans text-black/45 dark:text-zinc-500 leading-relaxed">
+                  <div className="mt-4 pt-3 border-t border-black/5 dark:border-white/[0.06] text-small font-sans text-fg-muted leading-relaxed">
                     {category.methodKey && leaderboardMethodology[category.methodKey] ? (
                       <p>
-                        <span className="font-medium text-black/60 dark:text-zinc-400">How this is judged: </span>
+                        <span className="font-medium text-fg-muted">How this is judged: </span>
                         {leaderboardMethodology[category.methodKey].basis}{" "}
                         <span className="tabular-nums">Reviewed {leaderboardMethodology[category.methodKey].evaluatedAt}.</span>{" "}
                         {leaderboardMethodology[category.methodKey].sources.map((u) => (
@@ -217,7 +217,7 @@ export default function LeaderboardClient() {
                       </p>
                     ) : (
                       <p>
-                        <span className="font-medium text-black/60 dark:text-zinc-400">How this is judged: </span>
+                        <span className="font-medium text-fg-muted">How this is judged: </span>
                         Calculated from this registry snapshot. Values were last revised {datasetRevisedLabel}; provider data is not fetched on each visit.
                       </p>
                     )}
@@ -228,7 +228,7 @@ export default function LeaderboardClient() {
           })}
         </div>
 
-        <div className="mt-8 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.6] dark:bg-white/[0.02] p-4 sm:p-5 text-xs sm:text-sm font-sans text-black/60 dark:text-zinc-400 leading-relaxed">
+        <div className="mt-8 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.6] dark:bg-white/[0.02] p-4 sm:p-5 text-small sm:text-body font-sans text-fg-muted leading-relaxed">
           <p>
             This leaderboard is an editorial snapshot, not an objective ranking. Scores are
             lab-published figures that vendors measure with different harnesses and versions;

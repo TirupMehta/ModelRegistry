@@ -39,9 +39,9 @@ export default function TimelineClient() {
     <>
 
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <div className="space-y-4 text-base md:text-[17px] font-normal text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
+        <div className="space-y-4 text-title font-normal text-fg leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
-            <h1 className="text-2xl sm:text-3xl font-medium tracking-tight text-black dark:text-white">
+            <h1 className="text-page font-medium tracking-tight text-black dark:text-white">
               Release Timeline
             </h1>
             <p>
@@ -61,10 +61,10 @@ export default function TimelineClient() {
                 {/* Technical node indicator */}
                 <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-accent ring-4 ring-accent/15" />
 
-                <h2 className="text-base sm:text-lg font-medium text-black dark:text-white mb-4 flex items-center gap-2 font-sans">
+                <h2 className="text-title font-medium text-black dark:text-white mb-4 flex items-center gap-2 font-sans">
                   <Calendar size={14} className="text-accent-ink" />
                   <span>{monthYear}</span>
-                  <span className="text-xs text-black/40 dark:text-zinc-400 font-normal">
+                  <span className="text-small text-fg-muted font-normal">
                     [{models.length} {models.length === 1 ? "release" : "releases"}]
                   </span>
                 </h2>
@@ -94,33 +94,33 @@ export default function TimelineClient() {
                               className="w-2 h-2 rounded-[3px] ring-1 ring-black/10 dark:ring-white/10 shrink-0"
                               style={{ backgroundColor: company?.accentColor || "rgb(var(--accent-rgb))" }}
                             />
-                            <span className="text-black/55 dark:text-zinc-400 text-[11px] truncate">
+                            <span className="text-fg-muted text-small truncate">
                               {model.companyName}
                             </span>
-                            <span className="ml-auto text-[11px] text-black/40 dark:text-zinc-400 tabular-nums whitespace-nowrap shrink-0">
+                            <span className="ml-auto text-small text-fg-muted tabular-nums whitespace-nowrap shrink-0">
                               {formatDate(model.releaseDate)}
                             </span>
                           </div>
-                          <div className="mt-1 font-sans text-[15px] sm:text-base font-medium tracking-tight leading-snug text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
+                          <div className="mt-1 font-sans text-body sm:text-title font-medium tracking-tight leading-snug text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
                             {model.name}
                           </div>
                         </div>
 
-                        <p className="text-xs sm:text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed mb-2 line-clamp-2">
+                        <p className="text-small sm:text-body font-normal text-fg-muted leading-relaxed mb-2 line-clamp-2">
                           {model.highlight}
                         </p>
 
-                        <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-3 text-xs pt-2 border-t border-black/5 dark:border-white/[0.06] font-sans">
+                        <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-3 text-small pt-2 border-t border-black/5 dark:border-white/[0.06] font-sans">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-[11px] text-black/45 dark:text-zinc-400">
+                            <span className="text-small text-fg-muted">
                               {model.contextWindow}
                             </span>
-                            <span className="text-[11px] px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-black/60 dark:text-zinc-300 transition-colors group-hover:border-accent/40 group-hover:text-accent-ink">
+                            <span className="text-small px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-fg-muted transition-colors group-hover:border-accent/40 group-hover:text-accent-ink">
                               {model.statusBadge}
                             </span>
                           </div>
 
-                          <span className="inline-flex items-center gap-1 text-[11px] text-black/40 dark:text-zinc-400 group-hover:text-accent-ink transition-colors shrink-0">
+                          <span className="inline-flex items-center gap-1 text-small text-fg-muted group-hover:text-accent-ink transition-colors shrink-0">
                             INSPECT SPEC <ArrowUpRight size={10} className="opacity-60" />
                           </span>
                         </div>

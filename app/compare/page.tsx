@@ -113,7 +113,7 @@ export default function CompareIndexPage() {
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         <nav
           aria-label="Breadcrumb"
-          className="flex items-center gap-2.5 mb-7 text-xs font-sans leading-relaxed text-black/50 dark:text-zinc-400"
+          className="flex items-center gap-2.5 mb-7 text-small font-sans leading-relaxed text-fg-muted"
         >
           <Link
             href="/"
@@ -126,10 +126,10 @@ export default function CompareIndexPage() {
           <span className="font-medium text-accent-ink">Comparisons</span>
         </nav>
 
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           AI model comparisons
         </h1>
-        <p className="mb-5 flex items-center gap-2 text-xs font-sans text-black/50 dark:text-zinc-500">
+        <p className="mb-5 flex items-center gap-2 text-small font-sans text-fg-muted">
           <span>{pairs.length} cross-lab pairs</span>
           <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
           <span>Dataset revised</span>
@@ -137,7 +137,7 @@ export default function CompareIndexPage() {
             {datasetRevision.revisedAt}
           </time>
         </p>
-        <p className="mb-5 max-w-2xl text-sm leading-6 text-black/65 dark:text-zinc-300">
+        <p className="mb-5 max-w-2xl text-body leading-6 text-fg-muted">
           Pick two models to see them side by side.
         </p>
 
@@ -145,16 +145,16 @@ export default function CompareIndexPage() {
 
         {popular.length > 0 && (
           <div className="mt-7">
-            <h2 className="mb-2.5 text-sm font-semibold text-black dark:text-white">Popular comparisons</h2>
+            <h2 className="mb-2.5 text-body font-semibold text-black dark:text-white">Popular comparisons</h2>
             <ul className="grid gap-2 sm:grid-cols-2">
               {popular.map((pair) => (
                 <li key={`${pair.a.id}-${pair.b.id}`}>
                   <Link
                     href={compareHref(pair.a, pair.b)}
-                    className="group flex items-center justify-between gap-3 rounded-lg bg-black/[0.02] px-3.5 py-2.5 text-sm transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.07]"
+                    className="group flex items-center justify-between gap-3 rounded-lg bg-black/[0.02] px-3.5 py-2.5 text-body transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.07]"
                   >
                     <span className="min-w-0 truncate text-black dark:text-white">
-                      {pair.a.name} <span className="text-black/40 dark:text-zinc-500">vs</span> {pair.b.name}
+                      {pair.a.name} <span className="text-fg-muted">vs</span> {pair.b.name}
                     </span>
                     <ArrowUpRight size={14} className="shrink-0 opacity-40 transition-opacity group-hover:opacity-100" aria-hidden="true" />
                   </Link>
@@ -165,9 +165,9 @@ export default function CompareIndexPage() {
         )}
 
         <details className="group mt-7 rounded-lg border border-black/10 dark:border-white/[0.08]">
-          <summary className="flex cursor-pointer list-none items-center gap-2 px-3.5 py-2.5 text-sm [&::-webkit-details-marker]:hidden">
+          <summary className="flex cursor-pointer list-none items-center gap-2 px-3.5 py-2.5 text-body [&::-webkit-details-marker]:hidden">
             <span className="font-medium text-black dark:text-white">All {pairs.length} comparisons</span>
-            <ChevronDown size={14} className="ml-auto text-black/50 transition-transform group-open:rotate-180 dark:text-zinc-400" aria-hidden="true" />
+            <ChevronDown size={14} className="ml-auto text-fg-muted transition-transform group-open:rotate-180" aria-hidden="true" />
           </summary>
           <div className="border-t border-black/10 px-4 py-5 dark:border-white/[0.08]">
         <div className="space-y-9">
@@ -175,14 +175,14 @@ export default function CompareIndexPage() {
             const lab = companies[companyId]
             return (
               <div key={companyId}>
-                <h2 className="text-base font-sans font-semibold text-black dark:text-white mb-3 flex items-baseline gap-2">
+                <h2 className="text-title font-sans font-semibold text-black dark:text-white mb-3 flex items-baseline gap-2">
                   <span
                     className="inline-block w-2 h-2 rounded-sm shrink-0 translate-y-[-1px]"
                     style={{ backgroundColor: lab?.accentColor ?? "#888" }}
                     aria-hidden="true"
                   />
                   <span>{lab?.name ?? companyId}</span>
-                  <span className="text-xs font-normal text-black/35 dark:text-zinc-500 tabular-nums">
+                  <span className="text-small font-normal text-fg-muted tabular-nums">
                     {group.length}
                   </span>
                 </h2>
@@ -194,18 +194,18 @@ export default function CompareIndexPage() {
                     >
                       <Link
                         href={compareHref(pair.a, pair.b)}
-                        className="group flex flex-wrap items-baseline gap-x-2 gap-y-1 py-3 text-sm transition-colors duration-150"
+                        className="group flex flex-wrap items-baseline gap-x-2 gap-y-1 py-3 text-body transition-colors duration-150"
                       >
                         <span className="font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink">
                           {pair.a.name}
                         </span>
-                        <span className="text-xs font-sans text-black/35 dark:text-zinc-500">
+                        <span className="text-small font-sans text-fg-muted">
                           vs
                         </span>
                         <span className="font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink">
                           {pair.b.name}
                         </span>
-                        <span className="ml-auto text-xs font-sans text-black/40 dark:text-zinc-500">
+                        <span className="ml-auto text-small font-sans text-fg-muted">
                           {pair.b.companyName}
                         </span>
                         <ArrowUpRight

@@ -39,7 +39,7 @@ const summaryClass =
   "flex cursor-pointer list-none items-start gap-3 py-4 [&::-webkit-details-marker]:hidden"
 
 const chevronClass =
-  "mt-1 shrink-0 text-black/30 dark:text-zinc-600 transition-transform duration-200 group-open:rotate-180"
+  "mt-1 shrink-0 text-fg-muted transition-transform duration-200 group-open:rotate-180"
 
 export default function TrustPage() {
   const labs = Object.keys(companies).length
@@ -139,7 +139,7 @@ export default function TrustPage() {
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
         <nav
           aria-label="Breadcrumb"
-          className="flex items-center gap-2.5 mb-7 text-xs font-sans leading-relaxed text-black/50 dark:text-zinc-400"
+          className="flex items-center gap-2.5 mb-7 text-small font-sans leading-relaxed text-fg-muted"
         >
           <Link
             href="/"
@@ -152,10 +152,10 @@ export default function TrustPage() {
           <span className="font-medium text-accent-ink">Trust and sourcing</span>
         </nav>
 
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           Why you can trust ModelRegistry
         </h1>
-        <p className="mb-6 flex flex-wrap items-center gap-2 text-xs font-sans text-black/50 dark:text-zinc-500">
+        <p className="mb-6 flex flex-wrap items-center gap-2 text-small font-sans text-fg-muted">
           <span>Dataset revision {datasetRevision.datasetVersion}</span>
           <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
           <span>Revised</span>
@@ -166,10 +166,10 @@ export default function TrustPage() {
 
         {/* The claim, stated plainly */}
         <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-5 sm:p-6 mb-4">
-          <p className="font-display text-xl sm:text-2xl font-semibold tracking-tight text-black dark:text-white leading-snug mb-3">
+          <p className="font-display text-heading font-semibold tracking-tight text-black dark:text-white leading-snug mb-3">
             Every record is sourced, dated and checkable.
           </p>
-          <p className="text-base text-black/65 dark:text-zinc-400 leading-7">
+          <p className="text-title text-fg-muted leading-7">
             A model is published here only after each of its figures is traced to a document the
             laboratory itself publishes. The record links those documents, the date each was checked,
             and labels every benchmark as laboratory-published. You never have to take a number on
@@ -189,10 +189,10 @@ export default function TrustPage() {
               key={stat.label}
               className="p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]"
             >
-              <div className="text-2xl font-display font-semibold tracking-tight text-black dark:text-white tabular-nums">
+              <div className="text-heading font-display font-semibold tracking-tight text-black dark:text-white tabular-nums">
                 {stat.value}
               </div>
-              <div className="mt-1 text-xs font-sans text-black/50 dark:text-zinc-500 leading-snug">
+              <div className="mt-1 text-small font-sans text-fg-muted leading-snug">
                 {stat.label}
               </div>
             </div>
@@ -200,10 +200,10 @@ export default function TrustPage() {
         </div>
 
         {/* How a record gets published */}
-        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
           How a record gets published
         </h2>
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-4 max-w-2xl">
+        <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
           Three checks before a record appears, and the same three when it changes.
         </p>
         <div className="border-t border-black/10 dark:border-white/[0.08] mb-12">
@@ -228,13 +228,13 @@ export default function TrustPage() {
               key={row.n}
               className="flex flex-col sm:flex-row gap-1 sm:gap-6 py-4 border-b border-black/10 dark:border-white/[0.08]"
             >
-              <span className="text-xs font-sans tabular-nums text-black/30 dark:text-zinc-600 pt-1 sm:w-6 shrink-0">
+              <span className="text-small font-sans tabular-nums text-fg-muted pt-1 sm:w-6 shrink-0">
                 {row.n}
               </span>
-              <span className="text-sm font-sans font-medium text-black dark:text-white sm:w-36 shrink-0">
+              <span className="text-body font-sans font-medium text-black dark:text-white sm:w-36 shrink-0">
                 {row.label}
               </span>
-              <span className="text-sm font-sans text-black/60 dark:text-zinc-400 leading-6">
+              <span className="text-body font-sans text-fg-muted leading-6">
                 {row.text}
               </span>
             </div>
@@ -244,7 +244,7 @@ export default function TrustPage() {
         {/* The two rules */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-12">
           <div className="p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]">
-            <h2 className="text-sm font-sans font-semibold text-black dark:text-white mb-3">
+            <h2 className="text-body font-sans font-semibold text-black dark:text-white mb-3">
               What you can check
             </h2>
             <ul className="space-y-2">
@@ -256,7 +256,7 @@ export default function TrustPage() {
               ].map((item) => (
                 <li
                   key={item}
-                  className="flex gap-2 text-sm font-sans text-black/65 dark:text-zinc-400 leading-6"
+                  className="flex gap-2 text-body font-sans text-fg-muted leading-6"
                 >
                   <Check size={13} className="shrink-0 mt-1 text-accent-ink" aria-hidden="true" />
                   <span>{item}</span>
@@ -265,7 +265,7 @@ export default function TrustPage() {
             </ul>
           </div>
           <div className="p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]">
-            <h2 className="text-sm font-sans font-semibold text-black dark:text-white mb-3">
+            <h2 className="text-body font-sans font-semibold text-black dark:text-white mb-3">
               What this site will not do
             </h2>
             <ul className="space-y-2">
@@ -278,11 +278,11 @@ export default function TrustPage() {
               ].map((item) => (
                 <li
                   key={item}
-                  className="flex gap-2 text-sm font-sans text-black/65 dark:text-zinc-400 leading-6"
+                  className="flex gap-2 text-body font-sans text-fg-muted leading-6"
                 >
                   <Minus
                     size={13}
-                    className="shrink-0 mt-1 text-black/25 dark:text-zinc-600"
+                    className="shrink-0 mt-1 text-fg-muted"
                     aria-hidden="true"
                   />
                   <span>{item}</span>
@@ -293,10 +293,10 @@ export default function TrustPage() {
         </div>
 
         {/* Objections */}
-        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1">
           The hard questions
         </h2>
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-5">
+        <p className="text-body font-sans text-fg-muted mb-5">
           Each answer is a policy you can hold the site to. Open a row for the evidence behind it.
         </p>
 
@@ -379,19 +379,19 @@ export default function TrustPage() {
           ].map((item) => (
             <details key={item.n} className={rowClass}>
               <summary className={summaryClass}>
-                <span className="text-xs font-sans tabular-nums text-black/30 dark:text-zinc-600 pt-1 w-6 shrink-0">
+                <span className="text-small font-sans tabular-nums text-fg-muted pt-1 w-6 shrink-0">
                   {item.n}
                 </span>
                 <span className="flex-1 min-w-0">
                   <span className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-                    <span className="text-base font-medium tracking-tight text-black dark:text-white">
+                    <span className="text-title font-medium tracking-tight text-black dark:text-white">
                       {item.title}
                     </span>
-                    <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-xs font-sans text-black/50 dark:text-zinc-500">
+                    <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-small font-sans text-fg-muted">
                       {item.verdict}
                     </span>
                   </span>
-                  <span className="mt-1.5 block text-sm font-sans text-black/60 dark:text-zinc-400 leading-6">
+                  <span className="mt-1.5 block text-body font-sans text-fg-muted leading-6">
                     {item.answer}
                   </span>
                 </span>
@@ -401,7 +401,7 @@ export default function TrustPage() {
                 {item.details.map((line) => (
                   <li
                     key={line}
-                    className="text-sm font-sans text-black/55 dark:text-zinc-500 leading-6"
+                    className="text-body font-sans text-fg-muted leading-6"
                   >
                     {line}
                   </li>
@@ -414,11 +414,11 @@ export default function TrustPage() {
         {/* Cross-checking */}
         <h2
           id="evidence"
-          className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1 scroll-mt-24"
+          className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1 scroll-mt-24"
         >
           How much cross-checking each record has
         </h2>
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-5 max-w-2xl">
+        <p className="text-body font-sans text-fg-muted mb-5 max-w-2xl">
           Every record has at least one primary source. This is how many independent documents back
           each one: three or more means a field can be checked against a second page, one means the
           record rests on a single document. The counts are published so the depth is visible.
@@ -434,23 +434,23 @@ export default function TrustPage() {
               key={stat.label}
               className="p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]"
             >
-              <div className="text-2xl font-display font-semibold tracking-tight text-black dark:text-white tabular-nums">
+              <div className="text-heading font-display font-semibold tracking-tight text-black dark:text-white tabular-nums">
                 {stat.value}
               </div>
-              <div className="mt-1 text-xs font-sans text-black/50 dark:text-zinc-500 leading-snug">
+              <div className="mt-1 text-small font-sans text-fg-muted leading-snug">
                 {stat.label}
               </div>
             </div>
           ))}
         </div>
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-4">
+        <p className="text-body font-sans text-fg-muted mb-4">
           {audit.averageItems.toFixed(1)} documents per record on average. The {audit.grades.C}{" "}
           single-document records are listed below with the document that would strengthen each one.
         </p>
 
         <details className="border-t border-black/10 dark:border-white/[0.08] mb-12">
           <summary className={summaryClass}>
-            <span className="flex-1 text-sm font-sans font-medium text-black dark:text-white">
+            <span className="flex-1 text-body font-sans font-medium text-black dark:text-white">
               Show the {audit.grades.C} single-document records
             </span>
             <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
@@ -461,18 +461,18 @@ export default function TrustPage() {
               .map(({ model, summary }) => (
                 <div
                   key={model.id}
-                  className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 py-2 border-b border-black/5 dark:border-white/[0.05] text-sm font-sans"
+                  className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 py-2 border-b border-black/5 dark:border-white/[0.05] text-body font-sans"
                 >
                   <Link
                     href={`/models/${model.id}`}
-                    className="font-medium text-black/80 dark:text-zinc-200 hover:text-accent-ink transition-colors"
+                    className="font-medium text-fg hover:text-accent-ink transition-colors"
                   >
                     {model.name}
                   </Link>
-                  <span className="text-xs text-black/35 dark:text-zinc-600 tabular-nums">
+                  <span className="text-small text-fg-muted tabular-nums">
                     {summary.items.length} doc{summary.items.length === 1 ? "" : "s"}
                   </span>
-                  <span className="text-xs text-black/50 dark:text-zinc-500 leading-5 w-full sm:w-auto sm:flex-1">
+                  <span className="text-small text-fg-muted leading-5 w-full sm:w-auto sm:flex-1">
                     {summary.missing.join(" ")}
                   </span>
                 </div>
@@ -483,11 +483,11 @@ export default function TrustPage() {
         {/* Badges */}
         <h2
           id="badges"
-          className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-1 scroll-mt-24"
+          className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-1 scroll-mt-24"
         >
           Badges say what kind of claim they are
         </h2>
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 mb-4 max-w-2xl">
+        <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
           {badgeCount} labels in use, grouped by what backs them: a laboratory&rsquo;s own positioning,
           a published figure, or the curator&rsquo;s shorthand. Editorial labels carry no evidentiary
           weight and are never used to rank.
@@ -502,13 +502,13 @@ export default function TrustPage() {
               <details key={kind} className={rowClass}>
                 <summary className={summaryClass}>
                   <span className="flex-1 min-w-0">
-                    <span className="text-sm font-sans font-medium text-black dark:text-white">
+                    <span className="text-body font-sans font-medium text-black dark:text-white">
                       {info.label}{" "}
-                      <span className="font-normal tabular-nums text-black/35 dark:text-zinc-500">
+                      <span className="font-normal tabular-nums text-fg-muted">
                         ({badges.length})
                       </span>
                     </span>
-                    <span className="mt-1 block text-sm font-sans text-black/55 dark:text-zinc-500 leading-6">
+                    <span className="mt-1 block text-body font-sans text-fg-muted leading-6">
                       {info.detail}
                     </span>
                   </span>
@@ -518,7 +518,7 @@ export default function TrustPage() {
                   {badges.map((badge) => (
                     <span
                       key={badge}
-                      className="inline-flex items-center text-xs font-sans px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-black/60 dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03] whitespace-nowrap"
+                      className="inline-flex items-center text-small font-sans px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-fg-muted dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03] whitespace-nowrap"
                     >
                       {badge}
                     </span>
@@ -530,17 +530,17 @@ export default function TrustPage() {
         </div>
 
         {/* Cite */}
-        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-3">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           How to cite this registry
         </h2>
         <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4 mb-3">
-          <code className="block text-sm font-mono text-black/70 dark:text-zinc-300 leading-6 break-words">
+          <code className="block text-body font-mono text-fg leading-6 break-words">
             ModelRegistry, &ldquo;Model name&rdquo; datasheet, dataset revision{" "}
             {datasetRevision.datasetVersion}, revised {datasetRevision.revisedAt},
             https://modelregistry.tirup.in/models/model-id
           </code>
         </div>
-        <p className="text-sm font-sans text-black/55 dark:text-zinc-500 leading-6 mb-12 max-w-2xl">
+        <p className="text-body font-sans text-fg-muted leading-6 mb-12 max-w-2xl">
           Cite the record rather than the homepage: it carries the primary sources, so a reader can
           check the claim without trusting this site. Machine copy at{" "}
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
@@ -555,23 +555,23 @@ export default function TrustPage() {
         </p>
 
         {/* FAQ */}
-        <h2 className="text-xl sm:text-2xl font-display font-semibold tracking-tight text-black dark:text-white mb-4">
+        <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-4">
           Questions
         </h2>
         <div className="border-t border-black/10 dark:border-white/[0.08] mb-12">
           {faq.map((item) => (
             <div key={item.q} className="py-4 border-b border-black/10 dark:border-white/[0.08]">
-              <h3 className="text-base font-medium tracking-tight text-black dark:text-white mb-1.5">
+              <h3 className="text-title font-medium tracking-tight text-black dark:text-white mb-1.5">
                 {item.q}
               </h3>
-              <p className="text-sm font-sans text-black/60 dark:text-zinc-400 leading-6 max-w-2xl">
+              <p className="text-body font-sans text-fg-muted leading-6 max-w-2xl">
                 {item.a}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm font-sans">
+        <div className="flex flex-wrap gap-x-5 gap-y-2 text-body font-sans">
           {[
             { href: "/methodology", label: "Methodology" },
             { href: "/editorial-policy", label: "Editorial policy" },
@@ -582,7 +582,7 @@ export default function TrustPage() {
             <Link
               key={item.href}
               href={item.href}
-              className="inline-flex items-center gap-1 text-black/60 dark:text-zinc-400 hover:text-accent-ink transition-colors duration-150"
+              className="inline-flex items-center gap-1 text-fg-muted hover:text-accent-ink transition-colors duration-150"
             >
               {item.label}
               <ArrowUpRight size={12} className="opacity-50" aria-hidden="true" />

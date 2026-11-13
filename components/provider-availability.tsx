@@ -56,15 +56,15 @@ export function ProviderAvailability({ modelId }: { modelId: string }) {
   return (
     <section className="mb-6 sm:mb-8" aria-label="Other providers">
       <details className="group rounded-lg border border-black/10 dark:border-white/[0.08]">
-        <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm [&::-webkit-details-marker]:hidden">
+        <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-body [&::-webkit-details-marker]:hidden">
           <span className="font-medium text-black dark:text-white">Other providers</span>
-          <span className="tabular-nums text-black/55 dark:text-zinc-400">
+          <span className="tabular-nums text-fg-muted">
             {result.endpoints.length} listed{cheapest !== null ? ` · from ${price(cheapest)} in` : ""}
           </span>
-          <ChevronDown size={14} className="ml-auto text-black/50 transition-transform group-open:rotate-180 dark:text-zinc-400" aria-hidden="true" />
+          <ChevronDown size={14} className="ml-auto text-fg-muted transition-transform group-open:rotate-180" aria-hidden="true" />
         </summary>
 
-        <div className="border-t border-black/10 px-4 py-3 text-sm dark:border-white/[0.08]">
+        <div className="border-t border-black/10 px-4 py-3 text-body dark:border-white/[0.08]">
           <div className="mb-2 flex items-center justify-between gap-3">
             {result.endpoints.length > 5 ? (
               <input
@@ -73,11 +73,11 @@ export function ProviderAvailability({ modelId }: { modelId: string }) {
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Filter providers"
                 aria-label="Filter providers"
-                className="h-9 w-48 rounded-md border border-black/10 bg-transparent px-3 text-sm outline-none focus:border-black/30 dark:border-white/15 dark:focus:border-white/40"
+                className="h-9 w-48 rounded-md border border-black/10 bg-transparent px-3 text-body outline-none focus:border-black/30 dark:border-white/15 dark:focus:border-white/40"
               />
             ) : <span />}
             {result.providerModelId && (
-              <a href={`https://openrouter.ai/models/${result.providerModelId}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-black/60 hover:text-accent-ink dark:text-zinc-400">
+              <a href={`https://openrouter.ai/models/${result.providerModelId}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-fg-muted hover:text-accent-ink">
                 OpenRouter <ExternalLink size={12} />
               </a>
             )}
@@ -86,7 +86,7 @@ export function ProviderAvailability({ modelId }: { modelId: string }) {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[420px] border-collapse text-left">
               <thead>
-                <tr className="text-black/50 dark:text-zinc-400">
+                <tr className="text-fg-muted">
                   <th className="py-1.5 pr-3 font-normal">Provider</th>
                   <th className="py-1.5 pr-3 text-right font-normal">In /1M</th>
                   <th className="py-1.5 pr-3 text-right font-normal">Out /1M</th>
@@ -98,7 +98,7 @@ export function ProviderAvailability({ modelId }: { modelId: string }) {
                   <tr key={`${e.provider}-${e.tier ?? "default"}-${i}`} className="border-t border-black/10 dark:border-white/[0.08]">
                     <td className="py-2 pr-3 text-black dark:text-white">
                       {e.provider}
-                      {e.tier && <span className="ml-1.5 text-black/45 dark:text-zinc-500">{endpointLabel(e.tier)}</span>}
+                      {e.tier && <span className="ml-1.5 text-fg-muted">{endpointLabel(e.tier)}</span>}
                     </td>
                     <td className="py-2 pr-3 text-right tabular-nums">{price(e.inputUsdPerMillion)}</td>
                     <td className="py-2 pr-3 text-right tabular-nums">{price(e.outputUsdPerMillion)}</td>
@@ -106,12 +106,12 @@ export function ProviderAvailability({ modelId }: { modelId: string }) {
                   </tr>
                 ))}
                 {rows.length === 0 && (
-                  <tr><td colSpan={4} className="py-3 text-black/50 dark:text-zinc-400">No match.</td></tr>
+                  <tr><td colSpan={4} className="py-3 text-fg-muted">No match.</td></tr>
                 )}
               </tbody>
             </table>
           </div>
-          <p className="mt-2 text-black/45 dark:text-zinc-500">Checked {result.checkedAt ? new Date(result.checkedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "recently"}. Prices can differ from the lab.</p>
+          <p className="mt-2 text-fg-muted">Checked {result.checkedAt ? new Date(result.checkedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "recently"}. Prices can differ from the lab.</p>
         </div>
       </details>
     </section>

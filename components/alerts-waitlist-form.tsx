@@ -130,8 +130,8 @@ export default function AlertsWaitlistForm({
             <Check size={15} className="draw-check" />
           </span>
           <div className="min-w-0">
-            <p className="text-sm font-display font-semibold text-black dark:text-white">You are on the waitlist.</p>
-            <p className="mt-1 text-[13px] font-sans leading-6 text-black/65 dark:text-zinc-400">
+            <p className="text-body font-display font-semibold text-black dark:text-white">You are on the waitlist.</p>
+            <p className="mt-1 text-small font-sans leading-6 text-fg-muted">
               We will send one email to that address when Model Alerts opens. Nothing else, and no marketing.
             </p>
           </div>
@@ -151,7 +151,7 @@ export default function AlertsWaitlistForm({
       }
     >
       <div className="flex flex-col gap-1.5">
-        <label htmlFor={emailId} className="text-xs font-sans font-medium text-black/70 dark:text-zinc-300">
+        <label htmlFor={emailId} className="text-small font-sans font-medium text-fg">
           Email address
         </label>
         <input
@@ -173,10 +173,10 @@ export default function AlertsWaitlistForm({
           placeholder="name@example.com"
           disabled={submitting}
           style={{ outline: "none" }}
-          className="w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-3 py-2.5 text-sm font-sans text-black shadow-sm placeholder:text-black/35 transition-colors duration-150 focus:border-accent-ink focus:outline-none focus:ring-2 focus:ring-accent-ink/20 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white dark:placeholder:text-zinc-500"
+          className="w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-3 py-2.5 text-body font-sans text-black shadow-sm placeholder:text-fg-muted transition-colors duration-150 focus:border-accent-ink focus:outline-none focus:ring-2 focus:ring-accent-ink/20 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white dark:placeholder:text-zinc-500"
         />
         {!embedded && (
-          <p id={`${emailId}-hint`} className="text-xs font-sans text-black/45 dark:text-zinc-500">
+          <p id={`${emailId}-hint`} className="text-small font-sans text-fg-muted">
             Stored so we can send the launch email. Not shared, not sold.
           </p>
         )}
@@ -199,26 +199,26 @@ export default function AlertsWaitlistForm({
         <label
           id={`${consentId}-copy`}
           htmlFor={consentId}
-          className="text-[13px] font-sans leading-5 text-black/70 dark:text-zinc-300 cursor-pointer select-none"
+          className="text-small font-sans leading-5 text-fg cursor-pointer select-none"
         >
           Email me once when Model Alerts launches.
         </label>
       </div>
 
       {!embedded && (
-        <p className="mt-3 text-xs font-sans leading-5 text-black/45 dark:text-zinc-500">
+        <p className="mt-3 text-small font-sans leading-5 text-fg-muted">
           This is a one-time launch announcement, not a subscription. Joining the waitlist does not turn on model
           notifications, and you are not added to any mailing list beyond that single message.
         </p>
       )}
 
       {fieldError && (
-        <p id={errorId} role="alert" className="mt-3 text-xs font-sans text-red-600 dark:text-red-400">
+        <p id={errorId} role="alert" className="mt-3 text-small font-sans text-red-600 dark:text-red-400">
           {fieldError}
         </p>
       )}
       {formError && (
-        <p role="alert" className="mt-3 text-xs font-sans text-red-600 dark:text-red-400">
+        <p role="alert" className="mt-3 text-small font-sans text-red-600 dark:text-red-400">
           {formError}
         </p>
       )}
@@ -242,7 +242,7 @@ export default function AlertsWaitlistForm({
         disabled={submitting}
         className={`mt-5 inline-flex ${
           embedded ? "w-full" : "w-full sm:w-auto"
-        } items-center justify-center gap-1.5 h-9 px-4 text-xs font-sans font-medium tracking-wide bg-black text-white dark:bg-white dark:text-black hover:bg-accent dark:hover:bg-accent dark:hover:text-white border border-black dark:border-white hover:border-accent rounded-lg shadow-sm hover:shadow-md hover:shadow-accent/20 active:scale-[0.97] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 select-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-black dark:disabled:hover:bg-white disabled:active:scale-100`}
+        } items-center justify-center gap-1.5 h-9 px-4 text-small font-sans font-medium tracking-wide bg-black text-white dark:bg-white dark:text-black hover:bg-accent dark:hover:bg-accent dark:hover:text-white border border-black dark:border-white hover:border-accent rounded-lg shadow-sm hover:shadow-md hover:shadow-accent/20 active:scale-[0.97] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 select-none cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-black dark:disabled:hover:bg-white disabled:active:scale-100`}
       >
         {submitting ? (
           <>

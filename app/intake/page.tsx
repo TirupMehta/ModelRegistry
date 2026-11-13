@@ -41,7 +41,7 @@ export default async function IntakePreview({ searchParams }: { searchParams: Pr
   const report = read<Report>(`${id}/report.json`)
   if (!candidate || !report) {
     return (
-      <main className="p-10 text-sm">
+      <main className="p-10 text-body">
         No intake output for <code>{id}</code>. Run <code>node scripts/intake.mjs scripts/intake/{id}.facts.json</code>.
       </main>
     )
@@ -53,11 +53,11 @@ export default async function IntakePreview({ searchParams }: { searchParams: Pr
     <>
       <Header />
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 mb-8">
-        <div className="rounded-xl border border-amber-500/40 bg-amber-500/[0.06] p-5 text-sm leading-6 text-black/80 dark:text-zinc-200">
+        <div className="rounded-xl border border-amber-500/40 bg-amber-500/[0.06] p-5 text-body leading-6 text-fg">
           <p className="font-semibold text-black dark:text-white mb-1">
             Intake preview. Not published. Built by the intake script from the lab&apos;s own pages.
           </p>
-          <p className="mb-3 text-black/60 dark:text-zinc-400">
+          <p className="mb-3 text-fg-muted">
             Each fact below was found, as a sentence, on the live page at {report.ranAt.slice(0, 16).replace("T", " ")} UTC.
             A person only reads the diff and applies it. Fields still set by the maintainer: {report.maintainerDecided.join(", ")}.
           </p>
@@ -68,7 +68,7 @@ export default async function IntakePreview({ searchParams }: { searchParams: Pr
                   {c.status === "found" ? "found" : "FLAG"}
                 </span>
                 <span className="w-32 shrink-0">{c.field}</span>
-                <span className="text-black/60 dark:text-zinc-400">&quot;{c.quote}&quot;</span>
+                <span className="text-fg-muted">&quot;{c.quote}&quot;</span>
               </li>
             ))}
           </ul>

@@ -207,30 +207,30 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
         {/* Hero: the claim, one sentence, then the provenance that separates a
             cited registry from another list of models. */}
         <div>
-          <h1 className="max-w-[20ch] font-display text-[34px] sm:text-[44px] md:text-[52px] font-semibold leading-[1.05] tracking-[-0.03em] text-black dark:text-white">
+          <h1 className="max-w-[20ch] font-display text-display font-semibold leading-[1.05] tracking-[-0.03em] text-black dark:text-white">
             Every frontier model, with its sources.
           </h1>
-          <p className="mt-3 max-w-[52ch] text-[17px] font-normal leading-[1.55] text-black/70 sm:mt-4 sm:text-[19px] md:text-[20px] dark:text-zinc-300">
+          <p className="mt-3 max-w-[52ch] text-title font-normal leading-[1.55] text-fg sm:mt-4 sm:text-title">
             Specs, prices and context limits for {modelsData.length} models. Each record names the lab page it came from and the date it was checked.
           </p>
           {quickAnswers}
 
           <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 border-y border-black/10 py-4 sm:grid-cols-3 md:mt-7 dark:border-white/[0.08]">
             <div className="min-w-0">
-              <dt className="text-xs text-black/50 dark:text-zinc-500">Labs indexed</dt>
-              <dd className="mt-1 font-display text-xl font-semibold tabular-nums text-black dark:text-white">
+              <dt className="text-small text-fg-muted">Labs indexed</dt>
+              <dd className="mt-1 font-display text-heading font-semibold tabular-nums text-black dark:text-white">
                 {Object.keys(companies).length}
               </dd>
             </div>
             <div className="min-w-0">
-              <dt className="text-xs text-black/50 dark:text-zinc-500">Primary sources cited</dt>
-              <dd className="mt-1 font-display text-xl font-semibold tabular-nums text-black dark:text-white">
+              <dt className="text-small text-fg-muted">Primary sources cited</dt>
+              <dd className="mt-1 font-display text-heading font-semibold tabular-nums text-black dark:text-white">
                 {sourceCount}
               </dd>
             </div>
             <div className="col-span-2 min-w-0 sm:col-span-1">
-              <dt className="text-xs text-black/50 dark:text-zinc-500">Last revised</dt>
-              <dd className="mt-1 font-display text-xl font-semibold text-black dark:text-white">
+              <dt className="text-small text-fg-muted">Last revised</dt>
+              <dd className="mt-1 font-display text-heading font-semibold text-black dark:text-white">
                 {formatDate(datasetRevision.revisedAt)}
               </dd>
             </div>
@@ -248,59 +248,59 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
             <div className="grid h-9 w-full grid-cols-5 gap-0.5 rounded-lg border border-[var(--field-edge)] bg-[var(--surface-inset)] p-0.5 lg:flex lg:w-auto lg:items-center">
               <button
                 onClick={() => handleTab("flagships")}
-                className={`h-full min-w-0 md:flex-none px-1 md:px-2.5 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer truncate md:overflow-visible ${
+                className={`h-full min-w-0 md:flex-none px-1 md:px-2.5 rounded-md text-small font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "flagships"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
-                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
+                    : "text-fg-muted hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
                 }`}
               >
-                Flagships <span className="hidden sm:inline opacity-60 tabular-nums text-[11px]">{counts.flagships}</span>
+                Flagships <span className="hidden sm:inline opacity-60 tabular-nums text-caption">{counts.flagships}</span>
               </button>
 
               <button
                 onClick={() => handleTab("latest-drops")}
                 title={`Released in the last ${NEW_DROPS_WINDOW_DAYS} days, newest first`}
-                className={`h-full min-w-0 md:flex-none px-1 md:px-2.5 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer truncate md:overflow-visible ${
+                className={`h-full min-w-0 md:flex-none px-1 md:px-2.5 rounded-md text-small font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "latest-drops"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
-                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
+                    : "text-fg-muted hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
                 }`}
               >
-                <span className="sm:hidden">New</span><span className="hidden sm:inline">New Drops</span> <span className="hidden sm:inline opacity-60 tabular-nums text-[11px]">{counts.latestDrops}</span>
+                <span className="sm:hidden">New</span><span className="hidden sm:inline">New Drops</span> <span className="hidden sm:inline opacity-60 tabular-nums text-caption">{counts.latestDrops}</span>
               </button>
 
               <button
                 onClick={() => handleTab("open-weights")}
-                className={`h-full min-w-0 md:flex-none px-1 md:px-2.5 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer truncate md:overflow-visible ${
+                className={`h-full min-w-0 md:flex-none px-1 md:px-2.5 rounded-md text-small font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "open-weights"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
-                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
+                    : "text-fg-muted hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
                 }`}
               >
                 <span className="sm:hidden">Open</span>
-                <span className="hidden sm:inline">Open Weights</span> <span className="hidden sm:inline opacity-60 tabular-nums text-[11px]">{counts.openWeights}</span>
+                <span className="hidden sm:inline">Open Weights</span> <span className="hidden sm:inline opacity-60 tabular-nums text-caption">{counts.openWeights}</span>
               </button>
 
               <button
                 onClick={() => handleTab("visual")}
-                className={`h-full min-w-0 md:flex-none px-1 md:px-2.5 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer truncate md:overflow-visible ${
+                className={`h-full min-w-0 md:flex-none px-1 md:px-2.5 rounded-md text-small font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "visual"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
-                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
+                    : "text-fg-muted hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
                 }`}
               >
-                Visual <span className="hidden sm:inline opacity-60 tabular-nums text-[11px]">{counts.visual}</span>
+                Visual <span className="hidden sm:inline opacity-60 tabular-nums text-caption">{counts.visual}</span>
               </button>
 
               <button
                 onClick={() => handleTab("all")}
-                className={`h-full min-w-0 md:flex-none px-1 md:px-2.5 rounded-md text-xs font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer truncate md:overflow-visible ${
+                className={`h-full min-w-0 md:flex-none px-1 md:px-2.5 rounded-md text-small font-sans tracking-tight transition-colors duration-150 select-none cursor-pointer truncate md:overflow-visible ${
                   activeTab === "all"
                     ? "bg-black text-white dark:bg-white dark:text-black font-medium shadow-sm"
-                    : "text-black/60 dark:text-zinc-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
+                    : "text-fg-muted hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.05]"
                 }`}
               >
-                All <span className="hidden sm:inline opacity-60 tabular-nums text-[11px]">{counts.all}</span>
+                All <span className="hidden sm:inline opacity-60 tabular-nums text-caption">{counts.all}</span>
               </button>
             </div>
 
@@ -309,7 +309,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
               <Search
                 size={14}
                 aria-hidden="true"
-                className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-black/40 dark:text-zinc-500"
+                className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-fg-muted"
               />
               <input
                 id="models-search-input"
@@ -321,7 +321,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search models or labs"
-                className="h-9 w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] pl-8 pr-20 text-xs font-sans text-black transition-colors duration-150 placeholder:text-black/45 focus:border-accent-ink focus:outline-none focus:ring-2 focus:ring-accent-ink/20 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white dark:placeholder:text-zinc-400"
+                className="h-9 w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] pl-8 pr-20 text-small font-sans text-black transition-colors duration-150 placeholder:text-fg-muted focus:border-accent-ink focus:outline-none focus:ring-2 focus:ring-accent-ink/20 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white dark:placeholder:text-zinc-400"
               />
               <ModelFilterControls
                 filters={filters}
@@ -335,7 +335,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     setSearchQuery("")
                   }}
                   aria-label="Clear search"
-                  className="absolute right-11 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded text-black/40 transition-colors hover:bg-black/[0.06] hover:text-black dark:text-zinc-500 dark:hover:bg-white/[0.08] dark:hover:text-white"
+                  className="absolute right-11 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded text-fg-muted transition-colors hover:bg-black/[0.06] hover:text-black dark:hover:bg-white/[0.08] dark:hover:text-white"
                 >
                   <X size={12} />
                 </button>
@@ -343,7 +343,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
             </div>
           </div>
           <div className="mb-1 flex items-center justify-between border-b border-black/10 dark:border-white/[0.08] pb-3 pt-2">
-            <p className="text-xs font-sans tabular-nums text-black/55 dark:text-zinc-400">
+            <p className="text-small font-sans tabular-nums text-fg-muted">
               {filteredModels.length} {filteredModels.length === 1 ? "model" : "models"} shown
               {searchQuery.trim() && (
                 <span> for &ldquo;{searchQuery.trim()}&rdquo;</span>
@@ -356,15 +356,15 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
         <div className="list-hover-group flex flex-col gap-2.5 sm:gap-0 lg:divide-y lg:divide-black/10 lg:dark:divide-white/[0.06]">
           {filteredModels.length === 0 ? (
             <div className="py-14 px-6 text-center rounded-xl border border-dashed border-black/15 dark:border-white/15 bg-black/[0.015] dark:bg-white/[0.02]">
-              <div className="mx-auto mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/[0.04] dark:bg-white/[0.06] text-black/40 dark:text-zinc-400">
+              <div className="mx-auto mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/[0.04] dark:bg-white/[0.06] text-fg-muted">
                 <SearchX size={16} />
               </div>
-              <p className="text-sm font-medium text-black dark:text-white">
+              <p className="text-body font-medium text-black dark:text-white">
                 {activeTab === "latest-drops" && !searchQuery.trim()
                   ? "No new drops in the last 30 days"
                   : "No models match your filter"}
               </p>
-              <p className="mt-1 text-xs font-sans text-black/50 dark:text-zinc-400">
+              <p className="mt-1 text-small font-sans text-fg-muted">
                 {searchQuery.trim()
                   ? `Nothing found for "${searchQuery.trim()}". Try a lab, model, or capability.`
                   : "Try a different tab - the full index is one click away."}
@@ -377,7 +377,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     setFilters(DEFAULT_MODEL_FILTERS)
                     setActiveTab("all")
                   }}
-                  className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-black dark:text-white hover:border-accent/50 hover:text-accent-ink active:scale-[0.98] transition-[color,background-color,border-color,opacity,transform,box-shadow] cursor-pointer"
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/[0.04] px-3 py-1.5 text-small font-medium text-black dark:text-white hover:border-accent/50 hover:text-accent-ink active:scale-[0.98] transition-[color,background-color,border-color,opacity,transform,box-shadow] cursor-pointer"
                 >
                   <X size={12} />
                   Clear filter
@@ -414,7 +414,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     {/* Card layout below the wide ledger breakpoint */}
                     <div className="lg:hidden">
                       {/* Lab + date */}
-                      <div className="flex items-center gap-1.5 text-[11px] font-sans mb-1.5 min-w-0">
+                      <div className="flex items-center gap-1.5 text-caption font-sans mb-1.5 min-w-0">
                         <span
                           className="w-2 h-2 rounded-[3px] ring-1 ring-black/10 dark:ring-white/10 shrink-0"
                           style={{
@@ -422,12 +422,12 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                               companies[model.companyId]?.accentColor || "rgb(var(--accent-rgb))",
                           }}
                         />
-                        <span className="min-w-0 truncate font-semibold text-black/60 dark:text-zinc-300">
+                        <span className="min-w-0 truncate font-semibold text-fg-muted">
                           {model.companyName}
                         </span>
                         <time
                           dateTime={model.releaseDate}
-                          className="ml-auto tabular-nums text-black/40 dark:text-zinc-500 shrink-0"
+                          className="ml-auto tabular-nums text-fg-muted shrink-0"
                         >
                           {formatDate(model.releaseDate)}
                         </time>
@@ -435,51 +435,51 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
 
                       {/* Title + badge */}
                       <div className="flex items-start justify-between gap-2 mb-1">
-                        <span className="font-display font-semibold text-[17px] leading-snug tracking-tight text-black dark:text-white min-w-0">
+                        <span className="font-display font-semibold text-title leading-snug tracking-tight text-black dark:text-white min-w-0">
                           {model.name}
                         </span>
-                        <span className="inline-flex items-center gap-1 text-[11px] font-sans px-1.5 py-0.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-black/70 dark:text-zinc-300 shrink-0 whitespace-nowrap font-medium mt-0.5">
+                        <span className="inline-flex items-center gap-1 text-caption font-sans px-1.5 py-0.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.04] text-fg shrink-0 whitespace-nowrap font-medium mt-0.5">
                           {model.statusBadge}
                         </span>
                       </div>
 
-                      <p className="text-[13px] font-normal text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-2">
+                      <p className="text-small font-normal text-fg-muted leading-relaxed line-clamp-2">
                         {summarize(model.highlight)}
                       </p>
 
                       {/* Spec strip */}
                       <div className="mt-3 grid grid-cols-3 divide-x divide-black/[0.06] dark:divide-white/[0.06] rounded-xl bg-black/[0.025] dark:bg-white/[0.03] py-2">
                         <div className="px-2.5 min-w-0">
-                          <p className="text-[10px] font-sans font-medium text-black/50 dark:text-zinc-500">
+                          <p className="text-caption font-sans font-medium text-fg-muted">
                             Input / 1M
                           </p>
-                          <p className="text-xs font-sans font-semibold tabular-nums text-black dark:text-white mt-0.5 truncate">
+                          <p className="text-small font-sans font-semibold tabular-nums text-black dark:text-white mt-0.5 truncate">
                             {model.pricing.input === 0 ? "Free" : `$${model.pricing.input}`}
                           </p>
                         </div>
                         <div className="px-2.5 min-w-0">
-                          <p className="text-[10px] font-sans font-medium text-black/50 dark:text-zinc-500">
+                          <p className="text-caption font-sans font-medium text-fg-muted">
                             Context
                           </p>
-                          <p className="text-xs font-sans font-semibold tabular-nums text-black dark:text-white mt-0.5 truncate">
+                          <p className="text-small font-sans font-semibold tabular-nums text-black dark:text-white mt-0.5 truncate">
                             {model.contextWindow.replace(" tokens", "")}
                           </p>
                         </div>
                         <div className="px-2.5 min-w-0">
-                          <p className="text-[10px] font-sans font-medium text-black/50 dark:text-zinc-500">
+                          <p className="text-caption font-sans font-medium text-fg-muted">
                             Access
                           </p>
-                          <p className="text-xs font-sans font-semibold text-black dark:text-white mt-0.5 truncate">
+                          <p className="text-small font-sans font-semibold text-black dark:text-white mt-0.5 truncate">
                             {model.openWeights ? "Open" : "API"}
                           </p>
                         </div>
                       </div>
 
                       {specializedDrop && activeTab === "flagships" && (
-                        <div className="mt-2.5 text-xs font-sans text-black/50 dark:text-zinc-400">
+                        <div className="mt-2.5 text-small font-sans text-fg-muted">
                           <span className="block truncate" title={`${specializedDrop.name} (${specializedDrop.categoryLabel})`}>
                             Checkpoint:{" "}
-                            <span className="text-black/80 dark:text-zinc-200 underline underline-offset-2 font-normal">
+                            <span className="text-fg underline underline-offset-2 font-normal">
                               {specializedDrop.name}
                             </span>{" "}
                             ({specializedDrop.categoryLabel})
@@ -491,38 +491,38 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     {/* Desktop Ledger Row (lg and up) */}
                     <div className="hidden items-baseline gap-4 lg:flex">
                       {/* Monospace Ledger Index - compact */}
-                      <span className="font-mono tabular-nums text-[11px] text-black/40 dark:text-zinc-600 select-none w-5 shrink-0 transition-colors duration-150 group-hover:text-accent-ink">
+                      <span className="font-mono tabular-nums text-caption text-fg-muted select-none w-5 shrink-0 transition-colors duration-150 group-hover:text-accent-ink">
                         {String(index + 1).padStart(2, "0")}
                       </span>
 
                       {/* Content Column */}
                       <div className="flex-1 min-w-0">
                         {/* Title / Lab / Domain Header */}
-                        <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 text-base leading-snug mb-1">
-                          <span className="font-display font-semibold text-[17px] tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
+                        <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 text-title leading-snug mb-1">
+                          <span className="font-display font-semibold text-title tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
                             {model.name}
                           </span>
-                          <span className="text-black/25 dark:text-white/20 select-none font-sans text-xs">/</span>
-                          <span className="text-xs font-sans text-black/60 dark:text-zinc-400 font-medium">
+                          <span className="text-fg-muted dark:text-white/20 select-none font-sans text-small">/</span>
+                          <span className="text-small font-sans text-fg-muted font-medium">
                             {model.companyName}
                           </span>
-                          <span className="text-black/25 dark:text-white/20 select-none font-sans text-xs">/</span>
-                          <span className="text-[12px] font-sans text-black/45 dark:text-zinc-400 truncate max-w-xs">
+                          <span className="text-fg-muted dark:text-white/20 select-none font-sans text-small">/</span>
+                          <span className="text-caption font-sans text-fg-muted truncate max-w-xs">
                             {model.categoryLabel}
                           </span>
                         </div>
 
                         {/* Highlight Description */}
-                        <p className="text-sm font-normal leading-relaxed text-black/60 group-hover:text-black/90 dark:text-zinc-400 dark:group-hover:text-zinc-100 transition-colors duration-150">
+                        <p className="text-body font-normal leading-relaxed text-fg-muted group-hover:text-fg-strong dark:group-hover:text-zinc-100 transition-colors duration-150">
                           {summarize(model.highlight)}
                         </p>
 
                         {/* Checkpoint Callout */}
                         {specializedDrop && activeTab === "flagships" && (
-                          <div className="mt-1 text-xs font-sans text-black/50 dark:text-zinc-400">
+                          <div className="mt-1 text-small font-sans text-fg-muted">
                             <span className="block truncate" title={`${specializedDrop.name} (${specializedDrop.categoryLabel})`}>
                               Checkpoint drop:{" "}
-                              <span className="text-black/80 dark:text-zinc-200 underline underline-offset-2 font-normal">
+                              <span className="text-fg underline underline-offset-2 font-normal">
                                 {specializedDrop.name}
                               </span>{" "}
                               ({specializedDrop.categoryLabel})
@@ -533,17 +533,17 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
 
                       {/* Specs Readout */}
                       <div className="flex items-center gap-2.5 shrink-0 text-right">
-                        <span className="hidden font-sans text-xs tabular-nums text-black/50 md:inline dark:text-zinc-500">
+                        <span className="hidden font-sans text-small tabular-nums text-fg-muted md:inline">
                           ${model.pricing.input}/${model.pricing.output}
                         </span>
                         <time
                           dateTime={model.releaseDate}
                           title={formatDate(model.releaseDate)}
-                          className="font-sans text-xs text-black/45 dark:text-zinc-400 tabular-nums whitespace-nowrap"
+                          className="font-sans text-small text-fg-muted tabular-nums whitespace-nowrap"
                         >
                           {formatDate(model.releaseDate)}
                         </time>
-                        <span className="inline-flex items-center gap-1.5 rounded-md border border-black/10 bg-white px-2 py-1 text-xs font-sans text-black/70 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-zinc-300">
+                        <span className="inline-flex items-center gap-1.5 rounded-md border border-black/10 bg-white px-2 py-1 text-small font-sans text-fg dark:border-white/[0.08] dark:bg-white/[0.04]">
                           {model.statusBadge}
                         </span>
 
@@ -566,7 +566,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
         <TextWithBlur delay={300}>
           <div className="mt-12 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.6] dark:bg-white/[0.02] p-4 sm:p-5 shadow-sm">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <h2 className="flex items-center gap-2 font-display text-xl font-semibold tracking-tight text-black dark:text-white">
+              <h2 className="flex items-center gap-2 font-display text-heading font-semibold tracking-tight text-black dark:text-white">
                 <Terminal size={16} className="text-accent-ink" />
                 <span>Open telemetry and syndication</span>
               </h2>
@@ -578,7 +578,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                   setTimeout(() => setCurlCopied(false), 2000)
                 }}
                 title="Copy the terminal query"
-                className="hidden sm:inline-flex items-center gap-2 rounded-md border border-[var(--field-edge)] px-2.5 py-1.5 text-xs font-mono text-black/70 hover:border-accent hover:text-accent-ink transition-colors duration-150 dark:text-zinc-300"
+                className="hidden sm:inline-flex items-center gap-2 rounded-md border border-[var(--field-edge)] px-2.5 py-1.5 text-small font-mono text-fg hover:border-accent hover:text-accent-ink transition-colors duration-150"
               >
                 <span>curl -s …/latest</span>
                 {curlCopied ? (
@@ -589,19 +589,19 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
               </button>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs font-sans">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-small font-sans">
               <a
                 href="/api/v1/models"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-sunken)] hover:bg-white dark:hover:bg-[var(--surface-hover)] hover:border-accent/40 active:scale-[0.98] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out flex items-center justify-between gap-2 cursor-pointer select-none"
               >
-                <span className="font-mono text-xs sm:text-[13px] text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150 truncate min-w-0">
+                <span className="font-mono text-small text-fg group-hover:text-black dark:group-hover:text-white transition-colors duration-150 truncate min-w-0">
                   /api/v1/models
                 </span>
                 <ArrowUpRight
                   size={12}
-                  className="text-black/30 dark:text-zinc-500 group-hover:text-accent-ink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out shrink-0"
+                  className="text-fg-muted group-hover:text-accent-ink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out shrink-0"
                 />
               </a>
 
@@ -611,12 +611,12 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                 rel="noopener noreferrer"
                 className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-sunken)] hover:bg-white dark:hover:bg-[var(--surface-hover)] hover:border-accent/40 active:scale-[0.98] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out flex items-center justify-between gap-2 cursor-pointer select-none"
               >
-                <span className="font-mono text-xs sm:text-[13px] text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150 truncate min-w-0">
+                <span className="font-mono text-small text-fg group-hover:text-black dark:group-hover:text-white transition-colors duration-150 truncate min-w-0">
                   /rss.xml
                 </span>
                 <ArrowUpRight
                   size={12}
-                  className="text-black/30 dark:text-zinc-500 group-hover:text-accent-ink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out shrink-0"
+                  className="text-fg-muted group-hover:text-accent-ink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out shrink-0"
                 />
               </a>
 
@@ -626,12 +626,12 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                 rel="noopener noreferrer"
                 className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-sunken)] hover:bg-white dark:hover:bg-[var(--surface-hover)] hover:border-accent/40 active:scale-[0.98] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out flex items-center justify-between gap-2 cursor-pointer select-none"
               >
-                <span className="font-mono text-xs sm:text-[13px] text-black/70 dark:text-zinc-300 group-hover:text-black dark:group-hover:text-white transition-colors duration-150 truncate min-w-0">
+                <span className="font-mono text-small text-fg group-hover:text-black dark:group-hover:text-white transition-colors duration-150 truncate min-w-0">
                   /llms.txt
                 </span>
                 <ArrowUpRight
                   size={12}
-                  className="text-black/30 dark:text-zinc-500 group-hover:text-accent-ink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out shrink-0"
+                  className="text-fg-muted group-hover:text-accent-ink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out shrink-0"
                 />
               </a>
 
@@ -642,10 +642,10 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                 className="card-lift group p-3 rounded-xl border border-black dark:border-white bg-black dark:bg-white hover:bg-accent dark:hover:bg-accent hover:border-accent active:scale-[0.98] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out flex items-center justify-between gap-2 cursor-pointer select-none shadow-sm"
               >
                 <div className="flex flex-col min-w-0 pr-1">
-                  <span className="font-semibold text-xs text-white dark:text-black group-hover:text-white transition-colors">
+                  <span className="font-semibold text-small text-white dark:text-black group-hover:text-white transition-colors">
                     Contribute in 60s
                   </span>
-                  <span className="truncate text-[11px] text-white/60 dark:text-black/60 group-hover:text-white/80">
+                  <span className="truncate text-caption text-white/60 dark:text-fg-muted group-hover:text-white/80">
                     One file, auto-synced
                   </span>
                 </div>
@@ -662,12 +662,12 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
         <TextWithBlur delay={320}>
           <div className="mt-12">
             <div className="flex items-baseline justify-between gap-3 mb-2">
-              <h2 className="font-display text-xl font-semibold tracking-tight text-black dark:text-white">
+              <h2 className="font-display text-heading font-semibold tracking-tight text-black dark:text-white">
                 Latest flagship by lab
               </h2>
               <Link
                 href="/companies"
-                className="text-[11px] font-sans font-medium text-accent-ink hover:underline underline-offset-2 shrink-0"
+                className="text-caption font-sans font-medium text-accent-ink hover:underline underline-offset-2 shrink-0"
               >
                 All labs
               </Link>
@@ -684,22 +684,22 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                 return (
                   <div
                     key={company.id}
-                    className="flex items-baseline gap-2 py-2 border-b border-black/5 dark:border-white/[0.05] text-[13px] font-sans min-w-0"
+                    className="flex items-baseline gap-2 py-2 border-b border-black/5 dark:border-white/[0.05] text-small font-sans min-w-0"
                   >
                     <Link
                       href={`/companies/${company.id}`}
-                      className="text-black/50 dark:text-zinc-400 hover:text-accent-ink transition-colors duration-150 shrink-0"
+                      className="text-fg-muted hover:text-accent-ink transition-colors duration-150 shrink-0"
                     >
                       {company.shortName}
                     </Link>
-                    <span className="text-black/20 dark:text-white/20 select-none">→</span>
+                    <span className="text-fg-muted dark:text-white/20 select-none">→</span>
                     <Link
                       href={`/models/${flagship.id}`}
                       className="font-medium tracking-tight text-black dark:text-white hover:text-accent-ink transition-colors duration-150 truncate"
                     >
                       {flagship.name}
                     </Link>
-                    <span className="ml-auto text-[11px] tabular-nums text-black/35 dark:text-zinc-500 shrink-0">
+                    <span className="ml-auto text-caption tabular-nums text-fg-muted shrink-0">
                       {stamp}
                     </span>
                   </div>

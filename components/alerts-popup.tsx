@@ -193,7 +193,7 @@ export default function AlertsPopup() {
         >
           {/* Dossier-style control bar, matching the model datasheet. */}
           <div className="mb-4 flex items-center justify-between gap-2 border-b border-black/10 pb-3 dark:border-white/[0.08] sm:mb-5">
-            <div className="flex min-w-0 items-center gap-1.5 text-[11px] font-sans text-accent-ink sm:gap-2">
+            <div className="flex min-w-0 items-center gap-1.5 text-caption font-sans text-accent-ink sm:gap-2">
               <Bell size={13} className="shrink-0" aria-hidden="true" />
               <span className="truncate font-medium">
                 Model Alerts
@@ -207,7 +207,7 @@ export default function AlertsPopup() {
                 close()
               }}
               aria-label="Close waitlist popup"
-              className="inline-flex min-h-8 min-w-8 shrink-0 cursor-pointer items-center justify-center rounded-md p-1.5 text-black/50 transition-colors duration-150 hover:bg-black/5 hover:text-black active:scale-[0.985] dark:text-zinc-400 dark:hover:bg-white/[0.06] dark:hover:text-white"
+              className="inline-flex min-h-8 min-w-8 shrink-0 cursor-pointer items-center justify-center rounded-md p-1.5 text-fg-muted transition-colors duration-150 hover:bg-black/5 hover:text-black active:scale-[0.985] dark:hover:bg-white/[0.06] dark:hover:text-white"
             >
               <X size={16} aria-hidden="true" />
             </button>
@@ -215,11 +215,11 @@ export default function AlertsPopup() {
 
           <h2
             id="alerts-popup-title"
-            className="text-balance font-display text-xl font-semibold tracking-tight text-black dark:text-white sm:text-2xl"
+            className="text-balance font-display text-heading font-semibold tracking-tight text-black dark:text-white sm:text-heading"
           >
             Every AI model update that matters, in your inbox.
           </h2>
-          <p className="mt-2 text-pretty text-[13px] font-sans leading-6 text-black/60 dark:text-zinc-400">
+          <p className="mt-2 text-pretty text-small font-sans leading-6 text-fg-muted">
             New launches, price changes, deprecations.
           </p>
 
@@ -227,8 +227,8 @@ export default function AlertsPopup() {
             <AlertsWaitlistForm variant="embedded" />
           </div>
 
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-black/10 pt-3 text-[11px] font-sans dark:border-white/[0.08]">
-            <span className="text-black/45 dark:text-zinc-500">
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-black/10 pt-3 text-caption font-sans dark:border-white/[0.08]">
+            <span className="text-fg-muted">
               No account, no mailing list.
             </span>
             <Link

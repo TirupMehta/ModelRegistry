@@ -5,7 +5,7 @@ import Link from "next/link"
 export default function HeaderBrand() {
   return (
     <Link href="/" className="group inline-flex items-end gap-1.5 sm:gap-2 select-none">
-      <p className="text-xl sm:text-2xl md:text-3xl font-display font-medium tracking-tight text-black dark:text-white leading-none">
+      <p className="text-heading font-display font-medium tracking-tight text-black dark:text-white leading-none">
         Model<span className="font-bold text-accent-ink">Registry</span>
       </p>
     </Link>

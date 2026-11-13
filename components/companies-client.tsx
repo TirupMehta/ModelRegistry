@@ -26,9 +26,9 @@ export default function CompaniesClient() {
     <>
 
       <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <div className="space-y-4 text-base md:text-[17px] font-normal text-black/75 dark:text-zinc-300 leading-relaxed max-w-3xl mb-8">
+        <div className="space-y-4 text-title font-normal text-fg leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
-            <h1 className="text-2xl sm:text-3xl font-medium tracking-tight text-black dark:text-white">
+            <h1 className="text-page font-medium tracking-tight text-black dark:text-white">
               Frontier AI Laboratories
             </h1>
             <p>
@@ -72,11 +72,11 @@ export default function CompaniesClient() {
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                           <Link
                             href={`/companies/${company.id}`}
-                            className="text-lg sm:text-xl font-medium tracking-tight text-black dark:text-white hover:text-accent-ink transition-colors duration-150"
+                            className="text-heading font-medium tracking-tight text-black dark:text-white hover:text-accent-ink transition-colors duration-150"
                           >
                             {company.name}
                           </Link>
-                          <span className="text-[11px] sm:text-xs font-sans text-black/40 dark:text-zinc-400 whitespace-nowrap">
+                          <span className="text-small sm:text-small font-sans text-fg-muted whitespace-nowrap">
                             · {company.headquarters}
                           </span>
                         </div>
@@ -87,7 +87,7 @@ export default function CompaniesClient() {
                       href={company.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-1 text-[11px] sm:text-xs font-sans text-black/50 dark:text-zinc-400 hover:text-accent-ink transition-colors duration-150 shrink-0 whitespace-nowrap pt-[3px]"
+                      className="group inline-flex items-center gap-1 text-small sm:text-small font-sans text-fg-muted hover:text-accent-ink transition-colors duration-150 shrink-0 whitespace-nowrap pt-[3px]"
                     >
                       <Globe size={12} />
                       <span>{new URL(company.website).hostname}</span>
@@ -95,7 +95,7 @@ export default function CompaniesClient() {
                     </a>
                   </div>
 
-                  <p className="text-[13px] sm:text-sm font-normal text-black/60 dark:text-zinc-400 leading-relaxed max-w-xl mb-4">
+                  <p className="text-small sm:text-body font-normal text-fg-muted leading-relaxed max-w-xl mb-4">
                     {company.description}
                   </p>
 
@@ -116,22 +116,22 @@ export default function CompaniesClient() {
                         }}
                         className="cursor-pointer p-3.5 sm:p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-field)] hover:border-accent/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.99] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 select-none group"
                       >
-                        <div className="flex items-center justify-between gap-2 text-xs font-sans mb-1.5">
-                          <span className="text-accent-ink font-semibold text-[10px]">
+                        <div className="flex items-center justify-between gap-2 text-small font-sans mb-1.5">
+                          <span className="text-accent-ink font-semibold text-small">
                             Primary Flagship
                           </span>
-                          <span className="text-[11px] text-black/40 dark:text-zinc-400 tabular-nums shrink-0">
+                          <span className="text-small text-fg-muted tabular-nums shrink-0">
                             {flagshipModel.contextWindow.replace(" tokens", "")}
                           </span>
                         </div>
 
                         <div className="flex items-baseline gap-2 mb-1">
-                          <span className="text-[15px] sm:text-base font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
+                          <span className="text-body sm:text-title font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
                             {flagshipModel.name}
                           </span>
                         </div>
 
-                        <p className="text-xs font-normal text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-2">
+                        <p className="text-small font-normal text-fg-muted leading-relaxed line-clamp-2">
                           {flagshipModel.highlight}
                         </p>
                       </div>
@@ -152,8 +152,8 @@ export default function CompaniesClient() {
                         }}
                         className="cursor-pointer p-3.5 sm:p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-field)] hover:border-accent/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.99] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 select-none group"
                       >
-                        <div className="flex items-center justify-between gap-2 text-xs font-sans mb-1.5">
-                          <span className="font-semibold text-[10px] flex items-center gap-1">
+                        <div className="flex items-center justify-between gap-2 text-small font-sans mb-1.5">
+                          <span className="font-semibold text-small flex items-center gap-1">
                             {latestDrop ? (
                               <span className="flex items-center gap-1 text-accent-ink">
                                 <Sparkles size={11} /> Latest Checkpoint
@@ -164,27 +164,27 @@ export default function CompaniesClient() {
                               </span>
                             )}
                           </span>
-                          <span className="text-[11px] text-black/40 dark:text-zinc-400 shrink-0">
+                          <span className="text-small text-fg-muted shrink-0">
                             {formatDate(second.releaseDate)}
                           </span>
                         </div>
 
                         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 mb-1">
-                          <span className="text-[15px] sm:text-base font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
+                          <span className="text-body sm:text-title font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
                             {second.name}
                           </span>
-                          <span className="text-[11px] font-sans text-black/40 dark:text-zinc-500">
+                          <span className="text-small font-sans text-fg-muted">
                             {second.categoryLabel}
                           </span>
                         </div>
 
-                        <p className="text-xs font-normal text-black/60 dark:text-zinc-400 leading-relaxed line-clamp-2">
+                        <p className="text-small font-normal text-fg-muted leading-relaxed line-clamp-2">
                           {second.highlight}
                         </p>
                       </div>
                     ) : (
                       flagshipModel && (
-                        <div className="p-4 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[var(--surface-raised)] flex flex-col justify-center text-xs font-sans text-black/45 dark:text-zinc-400">
+                        <div className="p-4 rounded border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[var(--surface-raised)] flex flex-col justify-center text-small font-sans text-fg-muted">
                           <p>
                             {company.name}&apos;s reigning foundation flagship is also its newest deployed model.
                           </p>

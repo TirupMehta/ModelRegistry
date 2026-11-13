@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-lg sm:text-xl font-display font-semibold tracking-tight text-black dark:text-white mt-8 mb-3">
+    <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mt-8 mb-3">
       {children}
     </h2>
   )
@@ -35,7 +35,7 @@ function H2({ children }: { children: React.ReactNode }) {
 
 function P({ children }: { children: React.ReactNode }) {
   return (
-    <p className="max-w-[68ch] text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
+    <p className="max-w-[68ch] text-body text-fg leading-6 sm:leading-7 mb-3">
       {children}
     </p>
   )
@@ -122,10 +122,10 @@ export default function AboutPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdFaq) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }} />
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-2">
+        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-2">
           About ModelRegistry
         </h1>
-        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-sans text-black/50 dark:text-zinc-500">
+        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-small font-sans text-fg-muted">
           <span>
             Dataset <span className="font-mono tabular-nums">{datasetRevision.datasetVersion}</span>, revised{" "}
             <time dateTime={datasetRevision.revisedAt} className="tabular-nums">{datasetRevision.revisedAt}</time>
@@ -217,7 +217,7 @@ export default function AboutPage() {
         </P>
 
         <H2>Elsewhere</H2>
-        <ul className="flex flex-col gap-2 text-sm text-black/70 dark:text-zinc-300">
+        <ul className="flex flex-col gap-2 text-body text-fg">
           {PERSON_SAME_AS.map((url) => (
             <li key={url}>
               <A href={url}>{url.replace(/^https:\/\/(www\.)?/, "")}</A>

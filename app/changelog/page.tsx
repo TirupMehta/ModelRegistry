@@ -32,10 +32,10 @@ export default function ChangelogPage() {
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-2">
+        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-2">
           Changelog
         </h1>
-        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-sans text-black/50 dark:text-zinc-500">
+        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-small font-sans text-fg-muted">
           <span>Every record change, newest first.</span>
           <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
           <span className="tabular-nums">{entries.length} entries</span>

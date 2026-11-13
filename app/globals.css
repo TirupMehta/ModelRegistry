@@ -27,9 +27,27 @@
   --border-color: rgba(0, 0, 0, 0.08);
   /* A field outline needs 3:1 against paper to read as a field at all. */
   --field-edge: rgba(0, 0, 0, 0.46);
-  --text-muted: rgba(17, 18, 21, 0.45);
-  --text-secondary: rgba(17, 18, 21, 0.70);
-  --text-primary: rgba(17, 18, 21, 0.92);
+  --text-muted: rgba(17, 18, 21, 0.62);
+  --text-secondary: rgba(17, 18, 21, 0.78);
+  --text-primary: rgba(17, 18, 21, 0.94);
+  /* Type steps that grow on wider screens. */
+  --fs-heading: 1.25rem;
+  --lh-heading: 1.75rem;
+  --fs-page: 1.75rem;
+  --lh-page: 2.125rem;
+  --fs-display: 2.25rem;
+  --lh-display: 2.5rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --fs-heading: 1.375rem;
+    --lh-heading: 1.875rem;
+    --fs-page: 2.25rem;
+    --lh-page: 2.625rem;
+    --fs-display: 3.25rem;
+    --lh-display: 3.5rem;
+  }
 }
 
 html.dark {
@@ -44,8 +62,8 @@ html.dark {
   --surface-hover: #13161c;
   --border-color: rgba(255, 255, 255, 0.08);
   --field-edge: rgba(255, 255, 255, 0.22);
-  --text-muted: rgba(244, 245, 247, 0.42);
-  --text-secondary: rgba(244, 245, 247, 0.68);
+  --text-muted: rgba(244, 245, 247, 0.64);
+  --text-secondary: rgba(244, 245, 247, 0.80);
   --text-primary: rgba(244, 245, 247, 0.95);
   --accent-rgb: 255 93 46;
   --accent-ink-rgb: 255 138 99;
@@ -158,14 +176,8 @@ html {
   scrollbar-gutter: stable;
 }
 
-/* 110% root scale on tablet/desktop only - phones keep 100%.
-   All rem-based type, spacing, and containers render ~10% larger on
-   high-resolution displays. px values, borders, and breakpoints unaffected. */
-@media (min-width: 768px) {
-  html {
-    font-size: 110%;
-  }
-}
+/* Sizes are explicit tokens (see tailwind.config.ts). There is no root
+   scale multiplier, so rem and px mean the same thing on every screen. */
 
 body {
   overflow-x: hidden;

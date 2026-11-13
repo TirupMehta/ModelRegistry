@@ -30,18 +30,18 @@ export default function QuickAnswers() {
               href={`/models/${item.model.id}`}
               className="block rounded-xl border border-black/10 p-3 transition-colors hover:border-black/25 dark:border-white/[0.08] dark:hover:border-white/25"
             >
-              <span className="block text-xs font-sans text-black/50 dark:text-zinc-500">{item.label}</span>
-              <span className="mt-0.5 block text-sm font-medium tracking-tight text-black dark:text-white">
+              <span className="block text-small font-sans text-fg-muted">{item.label}</span>
+              <span className="mt-0.5 block text-body font-medium tracking-tight text-black dark:text-white">
                 {item.model.name}
               </span>
-              <span className="block text-xs font-sans tabular-nums text-black/45 dark:text-zinc-500">
+              <span className="block text-small font-sans tabular-nums text-fg-muted">
                 {item.value}
               </span>
             </Link>
           </li>
         ))}
       </ul>
-      <p className="mt-2 text-xs font-sans text-black/50 dark:text-zinc-500">
+      <p className="mt-2 text-small font-sans text-fg-muted">
         Independent results, one test at a time.{" "}
         <Link href="/best" className="text-accent-ink underline-offset-4 hover:underline">
           See the leader for every task

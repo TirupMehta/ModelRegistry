@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-lg sm:text-xl font-display font-semibold tracking-tight text-black dark:text-white mt-8 mb-3">
+    <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mt-8 mb-3">
       {children}
     </h2>
   )
@@ -20,7 +20,7 @@ function H2({ children }: { children: React.ReactNode }) {
 
 function P({ children }: { children: React.ReactNode }) {
   return (
-    <p className="max-w-[54ch] text-sm sm:text-[15px] text-black/70 dark:text-zinc-300 leading-6 sm:leading-7 mb-3">
+    <p className="max-w-[54ch] text-body text-fg leading-6 sm:leading-7 mb-3">
       {children}
     </p>
   )
@@ -54,10 +54,10 @@ export default function MethodologyPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }} />
       <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-semibold tracking-tight text-black dark:text-white mb-2">
+        <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-2">
           Methodology
         </h1>
-        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-sans text-black/50 dark:text-zinc-500">
+        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-small font-sans text-fg-muted">
           <span>Last updated 2026-11-03</span>
           <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
           <span>
@@ -89,7 +89,7 @@ export default function MethodologyPage() {
         </P>
 
         <H2>Verification and sources</H2>
-        <div className="mb-3 max-w-[54ch] space-y-2 text-sm leading-6 text-black/70 sm:text-[15px] sm:leading-7 dark:text-zinc-300">
+        <div className="mb-3 max-w-[54ch] space-y-2 text-body leading-6 text-fg sm:text-body sm:leading-7">
           <p>Every record cites the primary sources it was read from (announcement, model card, API docs, pricing page), with per-field citations showing which source supports which fact. Each record also carries a <strong className="text-black dark:text-white">last-verified date</strong> - the date those sources were reviewed. That date is a source-review date, not a live availability check.</p>
           <p>There is no &ldquo;partially verified&rdquo; badge on the site: a label that applies to almost every record says nothing. Instead, the sources and the last-checked date are shown directly, and every record has a &ldquo;Report an error&rdquo; link so readers can flag anything stale.</p>
           <p><strong className="text-black dark:text-white">Retired</strong> - explicitly marked as retired by the registry and kept for historical reference. This label describes availability, not verification depth, and it alone does not confirm provider availability.</p>
@@ -144,7 +144,7 @@ export default function MethodologyPage() {
         </P>
 
         <H2>Maintenance schedule</H2>
-        <div className="mb-3 max-w-[54ch] space-y-2 text-sm leading-6 text-black/70 sm:text-[15px] sm:leading-7 dark:text-zinc-300">
+        <div className="mb-3 max-w-[54ch] space-y-2 text-body leading-6 text-fg sm:text-body sm:leading-7">
           <p><strong className="text-black dark:text-white">Every 30 days</strong> - automated liveness check of all cited sources; dead links re-sourced or records downgraded.</p>
           <p><strong className="text-black dark:text-white">Every 60 days</strong> - pricing and context figures re-checked against official pricing/docs pages for all current flagships and latest checkpoints.</p>
           <p><strong className="text-black dark:text-white">Every 90 days</strong> - full freshness rotation: any flagship/latest label older than 90 days fails validation until re-verified; leaderboard comparisons re-evaluated and re-dated; a new dated audit note is published.</p>
