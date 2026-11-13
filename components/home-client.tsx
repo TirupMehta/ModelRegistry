@@ -480,6 +480,11 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     {/* Desktop ledger row (lg and up): name and facts on one line, summary below. */}
                     <div className="hidden lg:block">
                       <div className="flex items-baseline gap-3">
+                        <span
+                          aria-hidden="true"
+                          className="h-2 w-2 shrink-0 self-center rounded-[3px]"
+                          style={{ backgroundColor: companies[model.companyId]?.accentColor || "rgb(var(--accent-rgb))" }}
+                        />
                         <span className="min-w-0 truncate font-display text-title font-semibold tracking-tight text-fg-strong transition-colors duration-150 group-hover:text-accent-ink">
                           {model.name}
                         </span>
@@ -496,13 +501,13 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                           className="shrink-0 self-center text-fg-muted opacity-50 transition-[opacity,transform,color] duration-150 group-hover:translate-x-px group-hover:-translate-y-px group-hover:text-accent-ink group-hover:opacity-100"
                         />
                       </div>
-                      <p className="mt-1 truncate pr-8 text-small text-fg-muted">
+                      <p className="mt-1 truncate pl-5 pr-8 text-small text-fg-muted">
                         <span className="text-fg">{model.categoryLabel}</span>
                         <span aria-hidden="true"> · </span>
                         {summarize(model.highlight)}
                       </p>
                       {specializedDrop && activeTab === "flagships" && (
-                        <p className="mt-1 truncate text-small text-fg-muted">
+                        <p className="mt-1 truncate pl-5 text-small text-fg-muted">
                           Also from this lab: <span className="text-fg">{specializedDrop.name}</span> ({specializedDrop.categoryLabel})
                         </p>
                       )}
@@ -516,30 +521,75 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
           <div className="hidden border-t border-black/10 lg:block dark:border-white/[0.08]" />
         </div>
 
-        {/* Use the data: same list style as "Latest flagship by lab" below. */}
+        {/* Labs: a raised panel so it reads as its own section, one tile per lab. */}
         <TextWithBlur delay={300}>
-          <div className="mt-12">
-            <div className="mb-2 flex items-baseline justify-between gap-3">
-              <h2 className="font-display text-heading font-semibold tracking-tight text-fg-strong">Use the data</h2>
-              <Link href="/docs" className="shrink-0 text-small font-medium text-accent-ink underline-offset-4 hover:underline">
+          <section aria-labelledby="labs-heading" className="mt-20 rounded-2xl border border-black/10 bg-[var(--surface-raised)] p-5 shadow-sm sm:p-7 dark:border-white/[0.08]">
+            <div className="flex items-baseline justify-between gap-3">
+              <h2 id="labs-heading" className="font-display text-heading font-semibold tracking-tight text-fg-strong">
+                Latest flagship by lab
+              </h2>
+              <Link href="/companies" className="shrink-0 text-small font-medium text-accent-ink underline-offset-4 hover:underline">
+                All labs
+              </Link>
+            </div>
+            <p className="mt-1 text-small text-fg-muted">The model each lab currently leads with.</p>
+            <ul className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {Object.values(companies).map((company) => {
+                const flagship = modelsData.find((m) => m.companyId === company.id && m.isCompanyFlagship)
+                if (!flagship) return null
+                return (
+                  <li key={company.id}>
+                    <Link
+                      href={`/models/${flagship.id}`}
+                      className="group flex h-full items-start gap-3 rounded-lg bg-black/[0.025] px-3.5 py-3 transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-[3px]"
+                        style={{ backgroundColor: company.accentColor || "rgb(var(--accent-rgb))" }}
+                      />
+                      <span className="min-w-0">
+                        <span className="block text-small text-fg-muted">{company.shortName}</span>
+                        <span className="block truncate text-body font-semibold text-fg-strong transition-colors group-hover:text-accent-ink">
+                          {flagship.name}
+                        </span>
+                        <span className="block text-small tabular-nums text-fg-muted">{formatDate(flagship.releaseDate)}</span>
+                      </span>
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </section>
+        </TextWithBlur>
+
+        {/* Use the data: an inverse band closes the page and reads as a different kind of section. */}
+        <TextWithBlur delay={320}>
+          <section aria-labelledby="data-heading" className="mt-6 rounded-2xl bg-[#111215] p-5 text-white sm:p-7 dark:bg-white/[0.06]">
+            <div className="flex items-baseline justify-between gap-3">
+              <h2 id="data-heading" className="font-display text-heading font-semibold tracking-tight text-white">
+                Use the data
+              </h2>
+              <Link href="/docs" className="shrink-0 text-small font-medium text-white/80 underline-offset-4 hover:text-white hover:underline">
                 API docs
               </Link>
             </div>
-            <ul className="grid grid-cols-1 gap-x-8 border-t border-black/10 sm:grid-cols-2 dark:border-white/[0.08]">
+            <p className="mt-1 text-small text-white/70">Free, no key. The same records as this page.</p>
+            <ul className="mt-5 grid grid-cols-1 gap-x-8 border-t border-white/15 sm:grid-cols-2">
               {[
                 { label: "JSON API", path: "/api/v1/models" },
                 { label: "RSS feed", path: "/rss.xml" },
                 { label: "For AI agents", path: "/llms.txt" },
               ].map((item) => (
-                <li key={item.path} className="border-b border-black/10 dark:border-white/[0.08]">
-                  <a href={item.path} target="_blank" rel="noopener noreferrer" className="group flex items-baseline gap-3 py-2.5 text-small">
-                    <span className="font-medium text-fg-strong transition-colors group-hover:text-accent-ink">{item.label}</span>
-                    <span className="ml-auto truncate font-mono text-fg-muted">{item.path}</span>
-                    <ArrowUpRight size={13} aria-hidden="true" className="shrink-0 self-center text-fg-muted opacity-50 transition-[opacity,color] group-hover:text-accent-ink group-hover:opacity-100" />
+                <li key={item.path} className="border-b border-white/15">
+                  <a href={item.path} target="_blank" rel="noopener noreferrer" className="group flex items-baseline gap-3 py-3 text-small">
+                    <span className="font-medium text-white">{item.label}</span>
+                    <span className="ml-auto truncate font-mono text-white/70 group-hover:text-white">{item.path}</span>
+                    <ArrowUpRight size={13} aria-hidden="true" className="shrink-0 self-center text-white/60 group-hover:text-white" />
                   </a>
                 </li>
               ))}
-              <li className="border-b border-black/10 dark:border-white/[0.08]">
+              <li className="border-b border-white/15">
                 <button
                   type="button"
                   onClick={() => {
@@ -548,70 +598,19 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     setCurlCopied(true)
                     setTimeout(() => setCurlCopied(false), 2000)
                   }}
-                  className="group flex w-full cursor-pointer items-baseline gap-3 py-2.5 text-left text-small"
+                  className="group flex w-full cursor-pointer items-baseline gap-3 py-3 text-left text-small"
                 >
-                  <span className="font-medium text-fg-strong transition-colors group-hover:text-accent-ink">Terminal</span>
-                  <span className="ml-auto truncate font-mono text-fg-muted">{curlCopied ? "Copied" : "curl -s …/latest"}</span>
+                  <span className="font-medium text-white">Terminal</span>
+                  <span className="ml-auto truncate font-mono text-white/70 group-hover:text-white">{curlCopied ? "Copied" : "curl -s …/latest"}</span>
                   {curlCopied ? (
-                    <Check size={13} aria-hidden="true" className="shrink-0 self-center text-good" />
+                    <Check size={13} aria-hidden="true" className="shrink-0 self-center text-emerald-400" />
                   ) : (
-                    <Copy size={13} aria-hidden="true" className="shrink-0 self-center text-fg-muted opacity-50 transition-opacity group-hover:opacity-100" />
+                    <Copy size={13} aria-hidden="true" className="shrink-0 self-center text-white/60 group-hover:text-white" />
                   )}
                 </button>
               </li>
             </ul>
-          </div>
-        </TextWithBlur>
-
-        {/* Latest flagship by lab - compact quick-answer index */}
-        <TextWithBlur delay={320}>
-          <div className="mt-12">
-            <div className="flex items-baseline justify-between gap-3 mb-2">
-              <h2 className="font-display text-heading font-semibold tracking-tight text-black dark:text-white">
-                Latest flagship by lab
-              </h2>
-              <Link
-                href="/companies"
-                className="text-caption font-sans font-medium text-accent-ink hover:underline underline-offset-2 shrink-0"
-              >
-                All labs
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 border-y border-black/10 dark:border-white/[0.08]">
-              {Object.values(companies).map((company) => {
-                const flagship = modelsData.find(
-                  (m) => m.companyId === company.id && m.isCompanyFlagship
-                )
-                if (!flagship) return null
-                const stamp = new Date(
-                  `${flagship.releaseDate.slice(0, 7)}-02`
-                ).toLocaleDateString("en-US", { month: "short", year: "numeric" })
-                return (
-                  <div
-                    key={company.id}
-                    className="flex items-baseline gap-2 py-2 border-b border-black/5 dark:border-white/[0.05] text-small font-sans min-w-0"
-                  >
-                    <Link
-                      href={`/companies/${company.id}`}
-                      className="text-fg-muted hover:text-accent-ink transition-colors duration-150 shrink-0"
-                    >
-                      {company.shortName}
-                    </Link>
-                    <span className="text-fg-muted dark:text-white/20 select-none">→</span>
-                    <Link
-                      href={`/models/${flagship.id}`}
-                      className="font-medium tracking-tight text-black dark:text-white hover:text-accent-ink transition-colors duration-150 truncate"
-                    >
-                      {flagship.name}
-                    </Link>
-                    <span className="ml-auto text-caption tabular-nums text-fg-muted shrink-0">
-                      {stamp}
-                    </span>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
+          </section>
         </TextWithBlur>
       </section>
 
