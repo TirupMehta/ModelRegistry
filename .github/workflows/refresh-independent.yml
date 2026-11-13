@@ -1,0 +1,76 @@
+name: Refresh independent results
+
+# The standing and /best rest on independent results that move every few days.
+# This re-reads the evaluator's pages twice a week and, when anything changed,
+# opens a pull request with the diff. Nothing is published until a person merges
+# it, so a parsing slip can never reach the site on its own.
+on:
+  schedule:
+    - cron: "0 6 * * 2,5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: refresh-independent
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    name: Re-read Artificial Analysis and open a PR if values moved
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Refresh values from the evaluator
+        id: refresh
+        run: |
+          set +e
+          node scripts/refresh-independent.mjs --write | tee refresh.log
+          status=${PIPESTATUS[0]}
+          set -e
+          if [ "$status" -ne 0 ]; then
+            echo "The refresh script failed with exit $status" >&2
+            exit "$status"
+          fi
+          if git diff --quiet -- data/independent-benchmarks.ts; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Regenerate the dataset revision and run the tests
+        if: steps.refresh.outputs.changed == 'true'
+        run: |
+          node scripts/write-revision.js
+          pnpm test
+
+      - name: Open a pull request
+        if: steps.refresh.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          branch="refresh/independent-$(date -u +%Y%m%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add data/independent-benchmarks.ts data/revision.ts README.md
+          git commit -m "chore(data): refresh independent results"
+          git push origin "$branch"
+          gh pr create \
+            --title "Refresh independent results" \
+            --body "$(printf 'Automated re-read of the Artificial Analysis comparison pages.\n\nChanged values:\n\n%s\n\narena.ai blocks automated reads, so the Text Arena Elo is not part of this and must be refreshed by hand.' "$(grep '^  ' refresh.log | grep -- '->')")"

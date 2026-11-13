@@ -168,9 +168,16 @@ export const INDEPENDENT_EVALUATOR = {
   name: "Artificial Analysis",
   url: "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
   suite: "Intelligence Index v5.0.1",
-  retrievedAt: "2026-11-11",
+  retrievedAt: "2026-11-13",
   method:
     "Same suite, same harness, run by the evaluator through each provider's own API. Reasoning effort is the setting the evaluator reports for the model, which differs by model.",
+} as const
+
+/** arena.ai blocks automated reads, so this source is refreshed by hand; asOf is the board's own date. */
+export const ARENA_EVALUATOR = {
+  name: "arena.ai Text Arena",
+  url: "https://arena.ai/leaderboard/text",
+  asOf: "2026-11-09",
 } as const
 
 const ARENA = "https://arena.ai/leaderboard/text"
@@ -194,7 +201,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_FABLE,
     values: { intelligenceIndex: 65, aaBriefcase: 1785, automationBench: 76.4, terminalBench4: 59.6, frontierCode: 48.8, omniscience: 67, gdpPdf: 24.2, hleDiamond: 80.2, critPt: 76.5, terminalBenchScience: 73.3 },
     costPerTask: 26.54,
-    minutesPerTask: 45.2,
+    minutesPerTask: 46.8,
   },
   {
     modelId: "claude-opus-5-5",
@@ -202,7 +209,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_ASTRA,
     values: { intelligenceIndex: 59, aaBriefcase: 1801, automationBench: 69.5, terminalBench4: 59.6, frontierCode: 46.4, omniscience: 48, gdpPdf: 26.2, hleDiamond: 67.9, critPt: 68.0, terminalBenchScience: 59.0 },
     costPerTask: 10.04,
-    minutesPerTask: 25.0,
+    minutesPerTask: 25.2,
   },
   {
     modelId: "claude-sonnet-5-5",
@@ -210,7 +217,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_FABLE,
     values: { intelligenceIndex: 55, aaBriefcase: 1816, automationBench: 71.8, terminalBench4: 63.6, frontierCode: 41.7, omniscience: 30, gdpPdf: 25.8, hleDiamond: 53.3, critPt: 59.0, terminalBenchScience: 53.3 },
     costPerTask: 10.02,
-    minutesPerTask: 32.7,
+    minutesPerTask: 34.1,
   },
   {
     modelId: "claude-haiku-5-5",
@@ -218,7 +225,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_FABLE,
     values: { intelligenceIndex: 36, aaBriefcase: 1573, automationBench: 35.4, terminalBench4: 32.8, frontierCode: 34.9, omniscience: 12, gdpPdf: 20.8, hleDiamond: 29.6, critPt: 43.5, terminalBenchScience: 20.0 },
     costPerTask: 0.41,
-    minutesPerTask: 14.8,
+    minutesPerTask: 14.7,
   },
   {
     modelId: "gpt-6-astra",
@@ -226,7 +233,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_ASTRA,
     values: { intelligenceIndex: 57, aaBriefcase: 1569, automationBench: 68.5, terminalBench4: 59.1, frontierCode: 42.4, omniscience: 42, gdpPdf: 31.0, hleDiamond: 63.8, critPt: 70.5, terminalBenchScience: 63.3 },
     costPerTask: 6.24,
-    minutesPerTask: 22.9,
+    minutesPerTask: 24.2,
   },
   {
     modelId: "gpt-6-1-sol",
@@ -234,7 +241,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_FABLE,
     values: { intelligenceIndex: 55, aaBriefcase: 1555, automationBench: 64.9, terminalBench4: 56.1, frontierCode: 40.6, omniscience: 42, gdpPdf: 31.0, hleDiamond: 58.8, critPt: 69.5, terminalBenchScience: 58.1 },
     costPerTask: 1.27,
-    minutesPerTask: 20.2,
+    minutesPerTask: 23.3,
   },
   {
     modelId: "gpt-6-1-terra",
@@ -242,15 +249,15 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_TERRA,
     values: { intelligenceIndex: 51, aaBriefcase: 1403, automationBench: 60.2, terminalBench4: 55.6, frontierCode: 42.3, omniscience: 30, gdpPdf: 28.6, hleDiamond: 47.3, critPt: 68.0, terminalBenchScience: 57.6 },
     costPerTask: 0.96,
-    minutesPerTask: 13.5,
+    minutesPerTask: 14.6,
   },
   {
     modelId: "gemini-4-argon",
     evaluatedAs: "Gemini 4 Argon (High)",
     sourceUrl: G_TERRA,
     values: { intelligenceIndex: 50, aaBriefcase: 1484, automationBench: 77.5, terminalBench4: 57.1, frontierCode: 25.7, omniscience: 46, gdpPdf: 21.8, hleDiamond: 56.7, critPt: 52.5, terminalBenchScience: 52.9 },
-    costPerTask: 9.95,
-    minutesPerTask: 29.0,
+    costPerTask: 4.97,
+    minutesPerTask: 30,
   },
   {
     modelId: "gemini-4-carbon",
@@ -275,7 +282,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_ASTRA,
     values: { intelligenceIndex: 31, aaBriefcase: 1203, automationBench: 59.9, terminalBench4: 19.7, frontierCode: 18.7, omniscience: 23, gdpPdf: 21.0, hleDiamond: 33.1, critPt: 46.5, terminalBenchScience: 10.0 },
     costPerTask: 7.77,
-    minutesPerTask: 14.4,
+    minutesPerTask: 14.7,
   },
   {
     modelId: "grok-4-7",
@@ -283,15 +290,15 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_ASTRA,
     values: { intelligenceIndex: 35, aaBriefcase: 1636, automationBench: 65.6, terminalBench4: 25.8, frontierCode: 28.7, omniscience: 31, gdpPdf: 20.0, hleDiamond: 23.2, critPt: 33.5, terminalBenchScience: 11.4 },
     costPerTask: 7.77,
-    minutesPerTask: 27.4,
+    minutesPerTask: 27,
   },
   {
     modelId: "kimi-k3-1-pro",
     evaluatedAs: "Kimi K3.1 Pro",
     sourceUrl: G_KIMI,
-    values: { intelligenceIndex: 46, aaBriefcase: 1674, automationBench: 73.3, terminalBench4: 67.2, frontierCode: 25.5, omniscience: 30, gdpPdf: 31.4, hleDiamond: 37.3, critPt: 49.5, terminalBenchScience: 34.3 },
+    values: { intelligenceIndex: 46, aaBriefcase: 1675, automationBench: 73.3, terminalBench4: 67.2, frontierCode: 25.5, omniscience: 30, gdpPdf: 31.4, hleDiamond: 37.3, critPt: 49.5, terminalBenchScience: 34.3 },
     costPerTask: 3.68,
-    minutesPerTask: 37.2,
+    minutesPerTask: 38.4,
   },
   {
     modelId: "deepseek-v4-1-flash-1017",
@@ -299,7 +306,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_KIMI,
     values: { intelligenceIndex: 33, aaBriefcase: 1570, automationBench: 66.6, terminalBench4: 33.8, frontierCode: 28.5, omniscience: 1, gdpPdf: 17.2, hleDiamond: 25.3, critPt: 25.0, terminalBenchScience: 12.9 },
     costPerTask: 0.6,
-    minutesPerTask: 16.5,
+    minutesPerTask: 14.8,
   },
   {
     modelId: "mimo-v2-6-pro",
@@ -315,7 +322,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_KIMI,
     values: { intelligenceIndex: 27, aaBriefcase: 1487, automationBench: 64.1, terminalBench4: 22.7, frontierCode: 21.6, omniscience: -11, gdpPdf: 9.0, hleDiamond: 13.7, critPt: 29.5, terminalBenchScience: 4.3 },
     costPerTask: 0.13,
-    minutesPerTask: 64.5,
+    minutesPerTask: 54.4,
   },
   {
     modelId: "muse-ember",
@@ -323,7 +330,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_TERRA,
     values: { intelligenceIndex: 36, aaBriefcase: 1521, automationBench: 68.1, terminalBench4: 40.9, frontierCode: 27.2, omniscience: 7, gdpPdf: 22.8, hleDiamond: 25.1, critPt: 39.0, terminalBenchScience: 20.0 },
     costPerTask: 0.14,
-    minutesPerTask: 3.1,
+    minutesPerTask: 3.2,
   },
   {
     modelId: "muse-wonder",
@@ -331,7 +338,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_TERRA,
     values: { intelligenceIndex: 44, aaBriefcase: 1659, automationBench: 68.1, terminalBench4: 52.0, frontierCode: 27.9, omniscience: 25, gdpPdf: 30.6, hleDiamond: 39.0, critPt: 50.5, terminalBenchScience: 25.7 },
     costPerTask: 6.95,
-    minutesPerTask: 13.2,
+    minutesPerTask: 14.8,
   },
   {
     modelId: "muse-spark-open",
@@ -339,7 +346,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_SPARK,
     values: { intelligenceIndex: 25, aaBriefcase: 1279, automationBench: 49.7, terminalBench4: 8.1, frontierCode: 7.6, omniscience: 26, gdpPdf: 18.6, hleDiamond: 26.3, critPt: 29.5, terminalBenchScience: 1.9 },
     costPerTask: 2.02,
-    minutesPerTask: 5.6,
+    minutesPerTask: 7.9,
   },
   {
     modelId: "mistral-large-4",
@@ -347,7 +354,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_GLM,
     values: { intelligenceIndex: 26, aaBriefcase: 1348, automationBench: 57.8, terminalBench4: 24.7, frontierCode: 15.0, omniscience: 5, gdpPdf: 17.6, hleDiamond: 17.3, critPt: 27.0, terminalBenchScience: 4.3 },
     costPerTask: 2.06,
-    minutesPerTask: 11.5,
+    minutesPerTask: 12.1,
   },
   {
     modelId: "minimax-m3-1-flash",
@@ -355,7 +362,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_GLM,
     values: { intelligenceIndex: 29, aaBriefcase: 1474, automationBench: 72.5, terminalBench4: 25.8, frontierCode: 20.8, omniscience: -6, gdpPdf: 20.8, hleDiamond: 28.1, critPt: 32.5, terminalBenchScience: 3.3 },
     costPerTask: 0.49,
-    minutesPerTask: 14.4,
+    minutesPerTask: 16.6,
   },
   {
     modelId: "nemotron-3-5-super-vl",
@@ -371,7 +378,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_GLM,
     values: { intelligenceIndex: 32, aaBriefcase: 1503, automationBench: 62.2, terminalBench4: 41.9, frontierCode: 21.6, omniscience: 6, gdpPdf: 11.2, hleDiamond: 17.9, critPt: 33.5, terminalBenchScience: 9.5 },
     costPerTask: 5.01,
-    minutesPerTask: 28.6,
+    minutesPerTask: 27.7,
   },
   {
     modelId: "deepseek-v4-pro-0813",
@@ -379,7 +386,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_DSPRO,
     values: { intelligenceIndex: 23, aaBriefcase: 1253, automationBench: 56.7, terminalBench4: 14.1, frontierCode: 17.1, omniscience: -6, gdpPdf: 11.4, hleDiamond: 19.5, critPt: 23.5, terminalBenchScience: 5.7 },
     costPerTask: 1.77,
-    minutesPerTask: 23.7,
+    minutesPerTask: 21.4,
   },
   {
     modelId: "nemotron-3-ultra",
@@ -387,14 +394,14 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_DSPRO,
     values: { intelligenceIndex: 12, aaBriefcase: 877, automationBench: 3.0, terminalBench4: 0.5, frontierCode: 1.1, omniscience: 3, gdpPdf: 5.0, hleDiamond: 8.5, critPt: 15.0, terminalBenchScience: 0.0 },
     costPerTask: 2.23,
-    minutesPerTask: 4.5,
+    minutesPerTask: 4.4,
   },
   {
     modelId: "tencent-hy4",
     evaluatedAs: "Tencent Hy4",
     sourceUrl: G_HY4,
     rounded: true,
-    values: { intelligenceIndex: 35, aaBriefcase: 1447, automationBench: 66, terminalBench4: 37, frontierCode: 31, omniscience: 5, gdpPdf: 22, hleDiamond: 33, critPt: 39, terminalBenchScience: 13 },
+    values: { intelligenceIndex: 35, aaBriefcase: 1446, automationBench: 66, terminalBench4: 37, frontierCode: 31, omniscience: 5, gdpPdf: 22, hleDiamond: 33, critPt: 39, terminalBenchScience: 13 },
     costPerTask: 1.03,
     minutesPerTask: 13.9,
   },
@@ -412,7 +419,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_FLASH,
     values: { intelligenceIndex: 28, aaBriefcase: 1450, automationBench: 60.4, terminalBench4: 32.8, frontierCode: 17.6, omniscience: 1, gdpPdf: 15.4, hleDiamond: 18.2, critPt: 24.5, terminalBenchScience: 4.8 },
     costPerTask: 0.58,
-    minutesPerTask: 45.8,
+    minutesPerTask: 48.6,
   },
   {
     // The evaluator has run only part of its suite on this model: no index, no cost,

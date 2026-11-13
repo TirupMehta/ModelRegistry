@@ -35,3 +35,6 @@ Thumbs.db
 # local tooling
 .commandcode/
 .hallmark/
+
+# intake staging
+/.intake/

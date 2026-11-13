@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "validate": "node scripts/validate-registry.js",
     "links": "node scripts/check-links.js",
+    "refresh:independent": "node scripts/refresh-independent.mjs",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "node scripts/db-migrate.mjs",
     "db:verify": "node scripts/verify-db.mjs",
