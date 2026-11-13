@@ -1,253 +1,244 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
+import { ArrowUpRight, ChevronDown } from "lucide-react"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
-import { modelsData, ModelItem } from "@/data/models"
+import ModelFilterControls from "@/components/model-filter-controls"
+import { modelsData, type ModelItem } from "@/data/models"
+import { independentRecords } from "@/data/independent-benchmarks"
 import { leaderboardSpotlights, leaderboardMethodology } from "@/data/leaderboard"
 import { datasetRevision } from "@/data/revision"
 import { folioFor } from "@/lib/registry"
 import { isCurrent } from "@/lib/currency"
-import Link from "next/link"
 import { formatDate, formatPrice } from "@/lib/utils"
 import { tapFeedback } from "@/lib/feedback"
-import { Code, Brain, Maximize, Coins, Layers, ArrowUpRight } from "lucide-react"
-import ModelFilterControls from "@/components/model-filter-controls"
 import { DEFAULT_MODEL_FILTERS, filterModels, type ModelFilters } from "@/lib/model-filters"
 
-interface ComparisonCategory {
+interface Row {
+  model: ModelItem
+  /** The figure the section is ranked by, as shown. */
+  value: string
+  /** Numeric form of the same figure, for ordering. Higher ranks first unless `ascending`. */
+  sort: number
+}
+
+interface Section {
+  id: string
   title: string
-  icon: any
   description: string
-  models: ModelItem[]
-  // Only metric-sorted sections get ordinal positions.
-  ordered: boolean
-  // Key into leaderboardMethodology for editorial comparison sets.
+  rows: Row[]
+  /** What the shown figure is, in a few words. */
+  measure: string
+  ascending?: boolean
   methodKey?: "reasoning" | "coding" | "value"
+  basis?: string
+}
+
+const record = (id: string) => independentRecords.find((r) => r.modelId === id)
+
+function ranked(models: ModelItem[], score: (m: ModelItem) => Omit<Row, "model"> | null, ascending = false): Row[] {
+  return models
+    .map((model) => {
+      const s = score(model)
+      return s ? { model, ...s } : null
+    })
+    .filter((row): row is Row => row !== null)
+    .sort((a, b) => (ascending ? a.sort - b.sort : b.sort - a.sort))
+}
+
+function buildSections(): Section[] {
+  const current = modelsData.filter(isCurrent)
+  const spot = (ids: string[]) => modelsData.filter((m) => ids.includes(m.id))
+  const index = (m: ModelItem) => {
+    const v = record(m.id)?.values.intelligenceIndex
+    return typeof v === "number" ? { value: String(v), sort: v } : null
+  }
+  return [
+    {
+      id: "reasoning",
+      title: "Overall intelligence",
+      description: "Highest independent Intelligence Index among current models.",
+      measure: "Intelligence Index",
+      methodKey: "reasoning",
+      rows: ranked(spot(leaderboardSpotlights.reasoning), index),
+    },
+    {
+      id: "coding",
+      title: "Software engineering",
+      description: "Highest independent FrontierCode 2.0 score among current models.",
+      measure: "FrontierCode",
+      methodKey: "coding",
+      rows: ranked(spot(leaderboardSpotlights.coding), (m) => {
+        const v = record(m.id)?.values.frontierCode
+        return typeof v === "number" ? { value: `${v.toFixed(1)}%`, sort: v } : null
+      }),
+    },
+    {
+      id: "value",
+      title: "Best score per dollar",
+      description: "Nothing scores higher on the Intelligence Index for less cost per task.",
+      measure: "Cost per task",
+      methodKey: "value",
+      ascending: true,
+      rows: ranked(
+        spot(leaderboardSpotlights.value),
+        (m) => {
+          const r = record(m.id)
+          return typeof r?.costPerTask === "number" ? { value: `$${r.costPerTask.toFixed(2)}`, sort: r.costPerTask } : null
+        },
+        true,
+      ),
+    },
+    {
+      id: "open-weights",
+      title: "Open weights",
+      description: "Downloadable weights, ranked by independent Intelligence Index where measured.",
+      measure: "Intelligence Index",
+      rows: ranked(current.filter((m) => m.openWeights), index).slice(0, 5),
+    },
+    {
+      id: "context",
+      title: "Longest context",
+      description: "Largest stated context limits. A larger limit does not guarantee accurate recall.",
+      measure: "Context window",
+      basis: `Stated limits from each lab, as recorded on ${formatDate(datasetRevision.revisedAt)}.`,
+      rows: ranked(current, (m) =>
+        m.contextWindowTokens > 0
+          ? { value: `${(m.contextWindowTokens / 1_000_000).toFixed(m.contextWindowTokens % 1_000_000 ? 2 : 0)}M`, sort: m.contextWindowTokens }
+          : null,
+      ).slice(0, 5),
+    },
+    {
+      id: "price",
+      title: "Lowest input price",
+      description: "Cheapest listed input price per 1M tokens. Output, caching and provider fees change the total.",
+      measure: "Input / 1M",
+      ascending: true,
+      basis: `Lab list prices, as recorded on ${formatDate(datasetRevision.revisedAt)}.`,
+      rows: ranked(
+        current.filter((m) => !m.pricingUnit),
+        (m) => ({ value: m.pricing.input === 0 ? "Free" : `$${m.pricing.input}`, sort: m.pricing.input }),
+        true,
+      ).slice(0, 5),
+    },
+  ]
 }
 
 export default function LeaderboardClient() {
   const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
   const [filters, setFilters] = useState<ModelFilters>(DEFAULT_MODEL_FILTERS)
   const modalFolio = folioFor(activeModalModel, modelsData)
-
-  const datasetRevisedLabel = formatDate(datasetRevision.revisedAt)
+  const sections = buildSections()
 
   const openModel = (model: ModelItem) => {
     tapFeedback()
     setActiveModalModel(model)
   }
 
-  const categories: ComparisonCategory[] = [
-    {
-      title: "Reasoning & STEM Intelligence",
-      icon: Brain,
-      description: "The highest independent Intelligence Index scores among current models.",
-      ordered: false,
-      methodKey: "reasoning",
-      models: modelsData.filter((m) =>
-        leaderboardSpotlights.reasoning.includes(m.id)
-      ),
-    },
-    {
-      title: "Agentic Software Engineering & Coding",
-      icon: Code,
-      description: "The highest independent FrontierCode 2.0 scores among current models.",
-      ordered: false,
-      methodKey: "coding",
-      models: modelsData.filter((m) =>
-        leaderboardSpotlights.coding.includes(m.id)
-      ),
-    },
-    {
-      title: "Best Score Per Dollar",
-      icon: Layers,
-      description: "Current models on the cost frontier: nothing scores higher for less.",
-      ordered: false,
-      methodKey: "value",
-      models: modelsData.filter((m) =>
-        leaderboardSpotlights.value.includes(m.id)
-      ),
-    },
-    {
-      title: "Open Weights & Self-Hosting",
-      icon: Maximize,
-      description: "Models with published downloadable weights. License terms and hosting requirements vary by model.",
-      ordered: false,
-      models: modelsData.filter((m) => m.openWeights && isCurrent(m)).slice(0, 5),
-    },
-    {
-      title: "Context Window Capacity",
-      icon: Maximize,
-      description: "Largest stated context limits in this dataset. A larger limit does not guarantee accurate recall across the full context.",
-      ordered: true,
-      models: [...modelsData].filter(isCurrent).sort((a, b) => b.contextWindowTokens - a.contextWindowTokens).slice(0, 5),
-    },
-    {
-      title: "Inference Cost & Value",
-      icon: Coins,
-      description: "Lowest listed input prices per 1M tokens among token-priced models. Output, caching, and provider fees affect total cost.",
-      ordered: true,
-      models: [...modelsData].filter((m) => !m.pricingUnit && isCurrent(m)).sort((a, b) => a.pricing.input - b.pricing.input).slice(0, 5),
-    },
-  ]
-
   return (
     <>
+      <section className="section mx-auto w-full max-w-4xl px-4 pb-20 sm:px-6 md:px-20">
+        <TextWithBlur delay={120}>
+          <div className="mb-8 flex items-start justify-between gap-4">
+            <div className="max-w-2xl">
+              <h1 className="text-page font-semibold tracking-tight text-fg-strong">Leaderboard</h1>
+              <p className="mt-2 text-body text-fg">
+                Who leads on each measure, from independent results where they exist.{" "}
+                <Link href="/methodology" className="text-accent-ink underline-offset-4 hover:underline">
+                  How it works
+                </Link>
+              </p>
+            </div>
+            <ModelFilterControls filters={filters} onChange={setFilters} className="relative z-30 flex justify-end" />
+          </div>
+        </TextWithBlur>
 
-      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <div className="space-y-4 text-title font-normal text-fg leading-relaxed max-w-3xl mb-8">
-          <TextWithBlur delay={120}>
-            <h1 className="text-page font-medium tracking-tight text-black dark:text-white">
-              Frontier AI Leaderboard
-            </h1>
-            <p>
-              Editorial snapshots comparing foundation models domain by domain
-              {datasetRevisedLabel ? `, using the dataset revised ${datasetRevisedLabel}` : ""}. Leaders hold the
-              highest <em>published</em> score in each comparison - not a universal “best model”
-              title. <Link href="/methodology" className="text-accent-ink hover:underline underline-offset-2">Methodology</Link>
-            </p>
-          </TextWithBlur>
-        </div>
-
-        <ModelFilterControls
-          filters={filters}
-          onChange={setFilters}
-          alwaysOpen
-          className="relative z-10 mb-6 h-[392px] w-full min-[390px]:h-[366px] sm:h-[292px] md:h-[276px]"
-        />
-        {/* Categories Stack with Sibling Dimming */}
-        <div className="flex flex-col list-hover-group space-y-6">
-          {categories.map((category, index) => {
-            const Icon = category.icon
-            // Each category has a metric-defined rank; shared filters must not
-            // replace that order with a global sort unrelated to its heading.
-            const visibleModels = filterModels(category.models, filters, true)
-            const anchorId = category.title
-              .toLowerCase()
-              .replace(/[^a-z0-9]+/g, "-")
-              .replace(/(^-|-$)/g, "")
+        <div className="grid gap-x-10 gap-y-12 md:grid-cols-2">
+          {sections.map((section, sectionIndex) => {
+            const visibleIds = new Set(filterModels(section.rows.map((r) => r.model), filters, true).map((m) => m.id))
+            const rows = section.rows.filter((r) => visibleIds.has(r.model.id))
+            const method = section.methodKey ? leaderboardMethodology[section.methodKey] : undefined
 
             return (
-              <TextWithBlur key={category.title} delay={index * 35}>
-                <div
-                  id={anchorId}
-                  className="card-lift scroll-mt-24 p-4 sm:p-6 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[var(--surface-raised)] shadow-sm [transition:border-color,background-color_120ms_ease-out]"
-                >
-                  {/* Category Header */}
-                  <div className="flex items-start justify-between gap-4 mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded flex items-center justify-center bg-black/5 dark:bg-[var(--surface-hover)] border border-black/10 dark:border-white/[0.08] text-accent-ink shrink-0">
-                        <Icon size={16} />
-                      </div>
-                      <div>
-                        <h2 className="text-title sm:text-heading font-medium text-black dark:text-white">
-                          {category.title}
-                        </h2>
-                        <p className="text-small sm:text-body font-normal text-fg-muted">
-                          {category.description}
-                        </p>
-                      </div>
-                    </div>
+              <TextWithBlur key={section.id} delay={sectionIndex * 35}>
+                <section id={section.id} aria-labelledby={`${section.id}-title`} className="scroll-mt-24">
+                  <h2 id={`${section.id}-title`} className="text-heading font-semibold tracking-tight text-fg-strong">
+                    {section.title}
+                  </h2>
+                  <p className="mt-1 text-small text-fg-muted">{section.description}</p>
+
+                  <div className="mt-4 flex items-baseline justify-between border-b border-black/10 pb-2 text-small text-fg-muted dark:border-white/[0.08]">
+                    <span>Model</span>
+                    <span>{section.measure}</span>
                   </div>
 
-                  {/* Model set; ordinals appear only where rows use a stated metric sort. */}
-                  <div className="space-y-2">
-                    {visibleModels.map((model, mIndex) => (
-                      <div
-                        key={model.id}
-                        onClick={() => openModel(model)}
-                        role="button"
-                        tabIndex={0}
-                        aria-label={`View details for ${model.name}`}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault()
-                            openModel(model)
-                          }
-                        }}
-                        className="group cursor-pointer p-2.5 sm:p-3 rounded-xl border border-black/5 dark:border-white/[0.06] bg-black/[0.01] dark:bg-[var(--surface-field)] hover:border-accent/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.995] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 flex items-center justify-between gap-2.5 sm:gap-3 text-small"
-                      >
-                        <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-                          {category.ordered ? (
-                            <span className="font-mono text-small text-fg-muted w-5 shrink-0 tabular-nums transition-colors group-hover:text-accent-ink">
-                              {String(mIndex + 1).padStart(2, "0")}
+                  <ol>
+                    {rows.map((row, i) => (
+                      <li key={row.model.id} className="border-b border-black/10 dark:border-white/[0.08]">
+                        <button
+                          type="button"
+                          onClick={() => openModel(row.model)}
+                          className="group flex w-full cursor-pointer items-baseline gap-3 py-3 text-left"
+                        >
+                          <span className="w-5 shrink-0 text-small tabular-nums text-fg-muted">{i + 1}</span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-body font-medium text-fg-strong transition-colors group-hover:text-accent-ink">
+                              {row.model.name}
                             </span>
-                          ) : (
-                            <span className="w-1 h-1 rounded-full bg-black/25 dark:bg-white/25 shrink-0" aria-hidden="true" />
-                          )}
-                          <span className="font-medium text-black dark:text-zinc-100 truncate group-hover:text-accent-ink transition-colors duration-150">
-                            {model.name}
+                            <span className="block truncate text-small text-fg-muted">
+                              {row.model.companyName}
+                              {row.model.pricingUnit ? ` · ${formatPrice(row.model)}` : ""}
+                            </span>
                           </span>
-                          <span className="text-fg-muted font-sans text-small shrink-0 hidden sm:inline">
-                            ({model.companyName})
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-2 sm:gap-3 shrink-0 font-sans">
-                          <span className="text-small text-fg-muted hidden sm:inline tabular-nums">
-                            {model.contextWindow.replace(" tokens", "")}
-                          </span>
-                          <span className="text-small px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-fg-muted transition-colors group-hover:border-accent/40 group-hover:text-accent-ink tabular-nums whitespace-nowrap">
-                            {model.pricingUnit
-                              ? formatPrice(model)
-                              : model.pricing.input === 0
-                                ? "Free"
-                                : `$${model.pricing.input}/M`}
-                          </span>
-                          <ArrowUpRight size={12} className="opacity-30 group-hover:opacity-100 group-hover:translate-x-px group-hover:-translate-y-px text-black dark:text-white group-hover:text-accent-ink transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150" />
-                        </div>
-                      </div>
+                          <span className="shrink-0 text-body font-semibold tabular-nums text-fg-strong">{row.value}</span>
+                          <ArrowUpRight
+                            size={14}
+                            aria-hidden="true"
+                            className="shrink-0 self-center text-fg-muted opacity-40 transition-[opacity,color] group-hover:text-accent-ink group-hover:opacity-100"
+                          />
+                        </button>
+                      </li>
                     ))}
-                    {visibleModels.length === 0 && <p className="py-4 text-center text-small text-fg-muted">No models in this section match these filters.</p>}
-                  </div>
+                  </ol>
+                  {rows.length === 0 && (
+                    <p className="py-4 text-small text-fg-muted">No model in this list matches the filters.</p>
+                  )}
 
-                  {/* Section methodology + evaluation date */}
-                  <div className="mt-4 pt-3 border-t border-black/5 dark:border-white/[0.06] text-small font-sans text-fg-muted leading-relaxed">
-                    {category.methodKey && leaderboardMethodology[category.methodKey] ? (
-                      <p>
-                        <span className="font-medium text-fg-muted">How this is judged: </span>
-                        {leaderboardMethodology[category.methodKey].basis}{" "}
-                        <span className="tabular-nums">Reviewed {leaderboardMethodology[category.methodKey].evaluatedAt}.</span>{" "}
-                        {leaderboardMethodology[category.methodKey].sources.map((u) => (
-                          <a key={u} href={u} target="_blank" rel="noopener noreferrer" className="text-accent-ink hover:underline underline-offset-2 mr-2">
-                            {new URL(u).hostname.replace(/^www\./, "")}
-                          </a>
-                        ))}
-                      </p>
-                    ) : (
-                      <p>
-                        <span className="font-medium text-fg-muted">How this is judged: </span>
-                        Calculated from this registry snapshot. Values were last revised {datasetRevisedLabel}; provider data is not fetched on each visit.
-                      </p>
-                    )}
-                  </div>
-                </div>
+                  <details className="group mt-3">
+                    <summary className="flex w-fit cursor-pointer list-none items-center gap-1 text-small text-fg-muted hover:text-fg [&::-webkit-details-marker]:hidden">
+                      How this is judged
+                      <ChevronDown size={13} aria-hidden="true" className="transition-transform group-open:rotate-180" />
+                    </summary>
+                    <p className="mt-2 text-small leading-6 text-fg">
+                      {method ? (
+                        <>
+                          {method.basis} Reviewed {formatDate(method.evaluatedAt)}.{" "}
+                          {method.sources.map((u) => (
+                            <a key={u} href={u} target="_blank" rel="noopener noreferrer" className="mr-2 text-accent-ink underline-offset-4 hover:underline">
+                              {new URL(u).hostname.replace(/^www\./, "")}
+                            </a>
+                          ))}
+                        </>
+                      ) : (
+                        section.basis
+                      )}
+                    </p>
+                  </details>
+                </section>
               </TextWithBlur>
             )
           })}
         </div>
-
-        <div className="mt-8 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.6] dark:bg-white/[0.02] p-4 sm:p-5 text-small sm:text-body font-sans text-fg-muted leading-relaxed">
-          <p>
-            This leaderboard is an editorial snapshot, not an objective ranking. Scores are
-            lab-published figures that vendors measure with different harnesses and versions;
-            usage stats reflect observed public routing share. Full rules:{" "}
-            <Link href="/methodology" className="text-accent-ink hover:underline underline-offset-2">/methodology</Link>
-            {" "}· Record-level sources:{" "}
-            <Link href="/changelog" className="text-accent-ink hover:underline underline-offset-2">/changelog</Link>
-          </p>
-        </div>
       </section>
 
-      {/* Model Details Modal */}
       <ModelDetailsModal
         model={activeModalModel}
         onClose={() => setActiveModalModel(null)}
         folio={modalFolio.folio}
         folioId={modalFolio.folioId}
       />
-
     </>
   )
 }
