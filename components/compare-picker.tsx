@@ -94,7 +94,7 @@ function Combo({
               setOpen(false)
             }
           }}
-          className="h-9 w-full rounded-md border border-black/10 bg-white pl-8 pr-8 text-body text-black outline-none transition-colors placeholder:text-fg-muted focus:border-black/30 disabled:cursor-not-allowed disabled:bg-black/[0.03] disabled:text-fg-muted dark:border-white/15 dark:bg-[var(--surface-raised)] dark:text-white dark:placeholder:text-zinc-500 dark:focus:border-white/40"
+          className="h-10 w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] pl-8 pr-8 text-small text-black outline-none transition-colors placeholder:text-fg-muted hover:border-black/60 focus-visible:ring-2 focus-visible:ring-accent-ink/30 disabled:cursor-not-allowed disabled:opacity-50 dark:text-white dark:hover:border-white/40"
         />
         <ChevronDown size={15} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-fg-muted" aria-hidden="true" />
       </div>
@@ -103,7 +103,7 @@ function Combo({
         <ul
           id={listId}
           role="listbox"
-          className="absolute z-20 mt-1.5 max-h-72 w-full min-w-[15rem] overflow-y-auto rounded-md border border-black/10 bg-white p-1 shadow-lg [scrollbar-width:none] dark:border-white/15 dark:bg-[var(--surface-raised)] [&::-webkit-scrollbar]:hidden"
+          className="absolute z-20 mt-1.5 max-h-72 w-full min-w-[15rem] overflow-y-auto rounded-xl border border-black/10 bg-white p-1 shadow-lg [scrollbar-width:none] dark:border-white/15 dark:bg-[var(--surface-raised)] [&::-webkit-scrollbar]:hidden"
         >
           {shown.length === 0 && <li className="px-2.5 py-2 text-small text-fg-muted">No match. Comparisons cover each lab&apos;s current flagship and newest release.</li>}
           {shown.map((model, index) => (
@@ -174,7 +174,7 @@ export default function ComparePicker({ models, partners }: Props) {
           type="button"
           disabled={!a || !b}
           onClick={() => a && b && go(a, b)}
-          className="inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-md bg-black px-4 text-body font-medium text-white transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-black dark:bg-white dark:text-black dark:hover:bg-accent dark:hover:text-white dark:disabled:hover:bg-white"
+          className="inline-flex h-10 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-black px-4 text-small font-medium text-white transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-black dark:bg-white dark:text-black dark:hover:bg-accent dark:hover:text-white dark:disabled:hover:bg-white"
         >
           Compare <ArrowRight size={16} aria-hidden="true" />
         </button>

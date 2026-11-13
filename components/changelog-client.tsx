@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { companies } from "@/data/companies"
+import Select from "@/components/select"
 import { Rss, RotateCcw } from "lucide-react"
 
 export interface ChangelogEntry {
@@ -15,7 +16,6 @@ export interface ChangelogEntry {
 }
 
 const LAST_VISIT_KEY = "modelregistry.changelog.lastVisit"
-const controlClass = "rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-2.5 py-2 text-small text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-accent-ink/20"
 
 type Period = "all" | "7" | "30" | "visit"
 
@@ -46,26 +46,27 @@ export default function ChangelogClient({ entries }: { entries: ChangelogEntry[]
   return (
     <>
       <div className="mb-6 flex flex-wrap items-end gap-3">
-        <label className="grid gap-1 text-small text-fg-muted">
-          Lab
-          <select className={controlClass} value={lab} onChange={(e) => setLab(e.target.value)}>
-            <option value="all">All labs</option>
-            {Object.values(companies).map((company) => (
-              <option key={company.id} value={company.id}>
-                {company.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="grid gap-1 text-small text-fg-muted">
-          Period
-          <select className={controlClass} value={period} onChange={(e) => setPeriod(e.target.value as Period)}>
-            <option value="all">All time</option>
-            <option value="7">Last 7 days</option>
-            <option value="30">Last 30 days</option>
-            {lastVisit && <option value="visit">Since my last visit ({lastVisit})</option>}
-          </select>
-        </label>
+        <Select
+          id="changelog-lab"
+          label="Lab"
+          value={lab}
+          onChange={setLab}
+          className="w-48"
+          options={[["all", "All labs"], ...Object.values(companies).map((company): [string, string] => [company.id, company.name])]}
+        />
+        <Select
+          id="changelog-period"
+          label="Period"
+          value={period}
+          onChange={(value) => setPeriod(value as Period)}
+          className="w-56"
+          options={[
+            ["all", "All time"],
+            ["7", "Last 7 days"],
+            ["30", "Last 30 days"],
+            ...(lastVisit ? ([["visit", `Since my last visit (${lastVisit})`]] as [string, string][]) : []),
+          ]}
+        />
         {filtered && (
           <button
             type="button"

@@ -37,6 +37,7 @@ const rules = [
   ["no arbitrary pixel font sizes (use caption, small, body, title, heading, page, display)", /(^|[\s"'`:])text-\[\d+(\.\d+)?(px|rem)\]/],
   ["no Tailwind default font size names (xs, sm, base, lg, xl, 2xl ...)", /(^|[\s"'`:])text-(xs|sm|base|lg|xl|[2-9]xl)(?=[\s"'`]|$)/],
   ["no raw opacity greys for text (use text-fg-strong, text-fg, text-fg-muted)", /text-black\/\d+/],
+  ["no native select element (use components/select.tsx so every dropdown looks the same)", /<select[\s>]/],
 ]
 
 for (const [name, re] of rules) {
