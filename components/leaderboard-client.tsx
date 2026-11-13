@@ -160,6 +160,11 @@ export default function LeaderboardClient() {
             const visibleIds = new Set(filterModels(section.rows.map((r) => r.model), filters, true).map((m) => m.id))
             const rows = section.rows.filter((r) => visibleIds.has(r.model.id))
             const method = section.methodKey ? leaderboardMethodology[section.methodKey] : undefined
+            // Bar length: the share of the best figure in this list (for "lower is better" lists, best / own).
+            const sorts = rows.map((r) => r.sort)
+            const best = section.ascending ? Math.min(...sorts) : Math.max(...sorts)
+            const share = (sort: number) =>
+              sort <= 0 || best <= 0 ? 1 : section.ascending ? best / sort : sort / best
 
             return (
               <TextWithBlur key={section.id} delay={sectionIndex * 35}>
@@ -190,6 +195,12 @@ export default function LeaderboardClient() {
                             <span className="block truncate text-small text-fg-muted">
                               {row.model.companyName}
                               {row.model.pricingUnit ? ` · ${formatPrice(row.model)}` : ""}
+                            </span>
+                            <span aria-hidden="true" className="mt-2 block h-1 overflow-hidden rounded-full bg-black/[0.06] dark:bg-white/[0.08]">
+                              <span
+                                className={`block h-full rounded-full ${i === 0 ? "bg-accent" : "bg-accent/40"}`}
+                                style={{ width: `${Math.max(4, Math.round(share(row.sort) * 100))}%` }}
+                              />
                             </span>
                           </span>
                           <span className="shrink-0 text-body font-semibold tabular-nums text-fg-strong">{row.value}</span>
