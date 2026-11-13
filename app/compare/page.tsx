@@ -6,7 +6,9 @@ import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import { breadcrumbList, comparisonPairs, compareHref, SITE } from "@/lib/seo"
-import { ArrowLeft, ArrowUpRight } from "lucide-react"
+import { independentFor } from "@/lib/independent"
+import ComparePicker, { type PickerModel } from "@/components/compare-picker"
+import { ArrowLeft, ArrowUpRight, ChevronDown } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "AI model comparisons: head-to-head specs, price and context",
@@ -35,6 +37,22 @@ export default function CompareIndexPage() {
     if (bucket) bucket.push(pair)
     else grouped.set(key, [pair])
   }
+
+  // Data for the picker: who can be compared with whom. Only real pair pages are offered.
+  const pickerModels = new Map<string, PickerModel>()
+  const partners: Record<string, string[]> = {}
+  for (const { a, b } of pairs) {
+    for (const m of [a, b]) pickerModels.set(m.id, { id: m.id, name: m.name, lab: m.companyName })
+    ;(partners[a.id] ??= []).push(b.id)
+    ;(partners[b.id] ??= []).push(a.id)
+  }
+  const pickerList = [...pickerModels.values()].sort((x, y) => x.name.localeCompare(y.name))
+  // The strongest independently measured models first: a pair is as notable as its weaker member.
+  const index = (id: string) => independentFor(id)?.values.intelligenceIndex ?? 0
+  const popular = pairs
+    .filter((p) => index(p.a.id) > 0 && index(p.b.id) > 0)
+    .sort((x, y) => Math.min(index(y.a.id), index(y.b.id)) - Math.min(index(x.a.id), index(x.b.id)) || (index(y.a.id) + index(y.b.id)) - (index(x.a.id) + index(x.b.id)))
+    .slice(0, 6)
 
   const sections = [...grouped.entries()].sort((x, y) => {
     const xName = companies[x[0]]?.name ?? x[0]
@@ -119,12 +137,39 @@ export default function CompareIndexPage() {
             {datasetRevision.revisedAt}
           </time>
         </p>
-        <p className="text-base text-black/70 dark:text-zinc-300 leading-7 mb-8 max-w-2xl">
-          Two models from different laboratories on the same axes: context window, output limit, list
-          price, licence, release date and benchmarks both laboratories published for the same test.
-          Nothing is ranked. Where the evidence cannot support a comparison, the page says so.
+        <p className="mb-5 max-w-2xl text-sm leading-6 text-black/65 dark:text-zinc-300">
+          Pick two models to see them side by side.
         </p>
 
+        <ComparePicker models={pickerList} partners={partners} />
+
+        {popular.length > 0 && (
+          <div className="mt-7">
+            <h2 className="mb-2.5 text-sm font-semibold text-black dark:text-white">Popular comparisons</h2>
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {popular.map((pair) => (
+                <li key={`${pair.a.id}-${pair.b.id}`}>
+                  <Link
+                    href={compareHref(pair.a, pair.b)}
+                    className="group flex items-center justify-between gap-3 rounded-lg bg-black/[0.02] px-3.5 py-2.5 text-sm transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.07]"
+                  >
+                    <span className="min-w-0 truncate text-black dark:text-white">
+                      {pair.a.name} <span className="text-black/40 dark:text-zinc-500">vs</span> {pair.b.name}
+                    </span>
+                    <ArrowUpRight size={14} className="shrink-0 opacity-40 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <details className="group mt-7 rounded-lg border border-black/10 dark:border-white/[0.08]">
+          <summary className="flex cursor-pointer list-none items-center gap-2 px-3.5 py-2.5 text-sm [&::-webkit-details-marker]:hidden">
+            <span className="font-medium text-black dark:text-white">All {pairs.length} comparisons</span>
+            <ChevronDown size={14} className="ml-auto text-black/50 transition-transform group-open:rotate-180 dark:text-zinc-400" aria-hidden="true" />
+          </summary>
+          <div className="border-t border-black/10 px-4 py-5 dark:border-white/[0.08]">
         <div className="space-y-9">
           {sections.map(([companyId, group]) => {
             const lab = companies[companyId]
@@ -176,6 +221,8 @@ export default function CompareIndexPage() {
             )
           })}
         </div>
+          </div>
+        </details>
       </section>
     </main>
   )

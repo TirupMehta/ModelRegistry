@@ -2,7 +2,7 @@ import { ExternalLink } from "lucide-react"
 import type { ModelItem, SourcedField } from "@/data/models"
 import { formatDate } from "@/lib/utils"
 
-const fieldLabels: Record<SourcedField, string> = {
+export const fieldLabels: Record<SourcedField, string> = {
   releaseDate: "Release date",
   contextWindow: "Context window",
   maxOutputTokens: "Maximum output",

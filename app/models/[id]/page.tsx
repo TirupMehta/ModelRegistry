@@ -9,7 +9,7 @@ import { measuredProperties } from "@/lib/seo"
 import { safeJsonLd } from "@/lib/utils"
 import Header from "@/components/header"
 import ModelPageView from "@/components/model-page-view"
-import { ModelComparisons, ModelEvidence, ModelFaq, ModelPositions, ModelProvenance } from "@/components/model-dossier"
+import { ModelComparisons, ModelFaq, ModelPositions, ModelProvenance } from "@/components/model-dossier"
 
 interface Props {
   params: Promise<{ id: string }>
@@ -160,10 +160,8 @@ export default async function ModelPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }}
       />
       <Header />
-      <ModelPageView model={model} siblings={siblings} folio={folio} folioId={folioId}>
-        <ModelProvenance model={model} />
+      <ModelPageView model={model} siblings={siblings} folio={folio} folioId={folioId} footer={<ModelProvenance model={model} />}>
         <ModelPositions model={model} />
-        <ModelEvidence model={model} />
         <ModelFaq model={model} />
         <ModelComparisons model={model} />
       </ModelPageView>

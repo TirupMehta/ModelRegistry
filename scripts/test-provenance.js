@@ -74,7 +74,7 @@ check("no dishonest/trust-inflating copy in repo", hits.length === 0, hits.slice
 // 2. Every model page surface renders the Verification section.
 const pageView = read("components/model-page-view.tsx")
 const modal = read("components/model-details-modal.tsx")
-check("model page renders VerificationSection", pageView.includes("<VerificationSection model={model} />"))
+check("model page links the report-error form and renders the sources strip", pageView.includes("reportIssueUrl(model.id)") && pageView.includes("{footer}") && read("app/models/[id]/page.tsx").includes("footer={<ModelProvenance model={model} />}"))
 check("model modal renders VerificationSection", modal.includes("<VerificationSection model={model} />"))
 check(
   "report-error link points at data-correction template",

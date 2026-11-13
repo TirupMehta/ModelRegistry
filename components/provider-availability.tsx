@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { ExternalLink } from "lucide-react"
+import { ChevronDown, ExternalLink } from "lucide-react"
 
 type Endpoint = {
   provider: string
@@ -25,11 +25,6 @@ function price(value: number | null) {
   return `$${new Intl.NumberFormat("en-US", { maximumFractionDigits: 4 }).format(value)}`
 }
 
-function tokens(value: number | null) {
-  if (value === null) return "Not listed"
-  return `${new Intl.NumberFormat("en-US").format(value)} tokens`
-}
-
 function endpointLabel(value: string) {
   if (value === "default") return "Standard"
   return value.split(/[-_/]/).map((part) => part.toLowerCase() === "us" ? "US" : part.charAt(0).toUpperCase() + part.slice(1)).join(" ")
@@ -37,7 +32,7 @@ function endpointLabel(value: string) {
 
 export function ProviderAvailability({ modelId }: { modelId: string }) {
   const [result, setResult] = useState<ProviderResult | null>(null)
-  const [requestFailed, setRequestFailed] = useState(false)
+  const [query, setQuery] = useState("")
 
   useEffect(() => {
     const controller = new AbortController()
@@ -47,45 +42,78 @@ export function ProviderAvailability({ modelId }: { modelId: string }) {
         return response.json()
       })
       .then((data) => { if (data) setResult(data as ProviderResult) })
-      .catch(() => { if (!controller.signal.aborted) setRequestFailed(true) })
+      .catch(() => {})
     return () => controller.abort()
   }, [modelId])
 
-  return (
-    <section className="mb-6 border-t border-black/10 pt-5 sm:mb-8 dark:border-white/[0.08]" aria-labelledby="provider-listings-title">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h2 id="provider-listings-title" className="font-display text-lg font-semibold tracking-tight text-black dark:text-white">OpenRouter provider listings</h2>
-          <p className="mt-1 text-xs leading-relaxed text-black/50 dark:text-zinc-500">Current endpoint offers. Prices and limits can vary by provider and service tier; they do not replace the lab’s official specs above.</p>
-        </div>
-        {result?.providerModelId && <a href={`https://openrouter.ai/models/${result.providerModelId}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-black/55 hover:text-accent-ink dark:text-zinc-400">
-          OpenRouter <ExternalLink size={12} />
-        </a>}
-      </div>
+  // Nothing to show means nothing is shown: no loading text, no "not found" notes.
+  if (result?.status !== "listed") return null
 
-      {!result && !requestFailed && <p className="mt-4 text-xs text-black/50 dark:text-zinc-500">Checking the current OpenRouter listing…</p>}
-      {!result && requestFailed && <p className="mt-4 text-xs text-black/55 dark:text-zinc-400">The current OpenRouter listing could not be loaded. The registry’s official specs and pricing above are unchanged.</p>}
-      {result?.status === "unmapped" && <p className="mt-4 text-xs text-black/55 dark:text-zinc-400">No exact OpenRouter listing is mapped for this record. Availability through other providers has not been checked.</p>}
-      {result?.status === "no_endpoints" && <p className="mt-4 text-xs text-black/55 dark:text-zinc-400">The mapped OpenRouter ID returned no provider endpoints. Availability through other providers has not been checked.</p>}
-      {result?.status === "lookup_failed" && <p className="mt-4 text-xs text-black/55 dark:text-zinc-400">OpenRouter details could not be retrieved right now. The registry’s official specs and pricing above are unchanged.</p>}
-      {result?.status === "listed" && <>
-        <p className="mt-3 text-xs text-black/50 dark:text-zinc-500">Showing {result.endpoints.length}{result.endpointCount && result.endpointCount > result.endpoints.length ? ` of ${result.endpointCount}` : ""} listed endpoint{result.endpointCount === 1 ? "" : "s"}{result.checkedAt ? `, checked ${new Date(result.checkedAt).toLocaleString()}` : ""}</p>
-        <div className="mt-3 grid gap-2 sm:grid-cols-2">
-          {result.endpoints.map((endpoint, index) => <article key={`${endpoint.provider}-${endpoint.tier ?? "default"}-${index}`} className="rounded-md border border-black/[0.08] bg-white p-3 text-xs dark:border-white/[0.07] dark:bg-[var(--surface-raised)]">
-            <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-              <h3 className="font-semibold">{endpoint.provider}</h3>
-              {endpoint.tier && <span className="text-xs text-black/50 dark:text-zinc-500">{endpointLabel(endpoint.tier)}</span>}
-            </div>
-            <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs text-black/55 dark:text-zinc-400">
-              <div><dt>Input / 1M</dt><dd className="font-medium text-black/80 dark:text-zinc-200">{price(endpoint.inputUsdPerMillion)}</dd></div>
-              <div><dt>Output / 1M</dt><dd className="font-medium text-black/80 dark:text-zinc-200">{price(endpoint.outputUsdPerMillion)}</dd></div>
-              <div><dt>Context</dt><dd className="font-medium text-black/80 dark:text-zinc-200">{tokens(endpoint.contextTokens)}</dd></div>
-              <div><dt>Max output</dt><dd className="font-medium text-black/80 dark:text-zinc-200">{tokens(endpoint.maxOutputTokens)}</dd></div>
-            </dl>
-          </article>)}
+  const rows = result.endpoints.filter((e) => `${e.provider} ${e.tier ?? ""}`.toLowerCase().includes(query.trim().toLowerCase()))
+  const inputs = result.endpoints.map((e) => e.inputUsdPerMillion).filter((v): v is number => v !== null)
+  const cheapest = inputs.length ? Math.min(...inputs) : null
+
+  return (
+    <section className="mb-6 sm:mb-8" aria-label="Other providers">
+      <details className="group rounded-lg border border-black/10 dark:border-white/[0.08]">
+        <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-sm [&::-webkit-details-marker]:hidden">
+          <span className="font-medium text-black dark:text-white">Other providers</span>
+          <span className="tabular-nums text-black/55 dark:text-zinc-400">
+            {result.endpoints.length} listed{cheapest !== null ? ` · from ${price(cheapest)} in` : ""}
+          </span>
+          <ChevronDown size={14} className="ml-auto text-black/50 transition-transform group-open:rotate-180 dark:text-zinc-400" aria-hidden="true" />
+        </summary>
+
+        <div className="border-t border-black/10 px-4 py-3 text-sm dark:border-white/[0.08]">
+          <div className="mb-2 flex items-center justify-between gap-3">
+            {result.endpoints.length > 5 ? (
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Filter providers"
+                aria-label="Filter providers"
+                className="h-9 w-48 rounded-md border border-black/10 bg-transparent px-3 text-sm outline-none focus:border-black/30 dark:border-white/15 dark:focus:border-white/40"
+              />
+            ) : <span />}
+            {result.providerModelId && (
+              <a href={`https://openrouter.ai/models/${result.providerModelId}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-black/60 hover:text-accent-ink dark:text-zinc-400">
+                OpenRouter <ExternalLink size={12} />
+              </a>
+            )}
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[420px] border-collapse text-left">
+              <thead>
+                <tr className="text-black/50 dark:text-zinc-400">
+                  <th className="py-1.5 pr-3 font-normal">Provider</th>
+                  <th className="py-1.5 pr-3 text-right font-normal">In /1M</th>
+                  <th className="py-1.5 pr-3 text-right font-normal">Out /1M</th>
+                  <th className="py-1.5 text-right font-normal">Context</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((e, i) => (
+                  <tr key={`${e.provider}-${e.tier ?? "default"}-${i}`} className="border-t border-black/10 dark:border-white/[0.08]">
+                    <td className="py-2 pr-3 text-black dark:text-white">
+                      {e.provider}
+                      {e.tier && <span className="ml-1.5 text-black/45 dark:text-zinc-500">{endpointLabel(e.tier)}</span>}
+                    </td>
+                    <td className="py-2 pr-3 text-right tabular-nums">{price(e.inputUsdPerMillion)}</td>
+                    <td className="py-2 pr-3 text-right tabular-nums">{price(e.outputUsdPerMillion)}</td>
+                    <td className="py-2 text-right tabular-nums">{e.contextTokens ? `${Math.round(e.contextTokens / 1000).toLocaleString("en-US")}K` : "Not listed"}</td>
+                  </tr>
+                ))}
+                {rows.length === 0 && (
+                  <tr><td colSpan={4} className="py-3 text-black/50 dark:text-zinc-400">No match.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-2 text-black/45 dark:text-zinc-500">Checked {result.checkedAt ? new Date(result.checkedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "recently"}. Prices can differ from the lab.</p>
         </div>
-        <p className="mt-3 text-xs leading-relaxed text-black/40 dark:text-zinc-600">Provider listings can change without a registry revision. Check the source before making a purchasing or deployment decision.</p>
-      </>}
+      </details>
     </section>
   )
 }

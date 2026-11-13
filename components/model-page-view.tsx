@@ -7,7 +7,7 @@ import { companies } from "@/data/companies"
 import { independentRecords } from "@/data/independent-benchmarks"
 import { formatPrice, formatDate } from "@/lib/utils"
 import { ShareCardModal } from "@/components/share-card-modal"
-import VerificationSection from "@/components/verification-section"
+import { reportIssueUrl } from "@/components/verification-section"
 import { ProviderAvailability } from "@/components/provider-availability"
 import {
   ExternalLink,
@@ -36,9 +36,53 @@ interface ModelPageViewProps {
   // Passed as children so their copy ships in the initial HTML at zero client
   // cost, while still rendering inside the datasheet's <main> landmark.
   children?: React.ReactNode
+  // Sources strip, rendered as the last row inside the datasheet card.
+  footer?: React.ReactNode
 }
 
-export default function ModelPageView({ model, siblings, folio, folioId, children }: ModelPageViewProps) {
+/** "57.0% (Terminal-Bench 4.1, cheating-adjusted)" -> headline "57.0%", note "Terminal-Bench 4.1, cheating-adjusted". */
+function splitValue(text: string): { head: string; note: string } {
+  const open = text.indexOf(" (")
+  if (open < 0) return { head: text, note: "" }
+  return { head: text.slice(0, open), note: text.slice(open + 2).replace(/[)]$/, "") }
+}
+
+function Bar({ label, value, tone }: { label: string; value: string; tone: "lab" | "independent" }) {
+  const pct = Math.max(0, Math.min(100, parseFloat(value)))
+  const isPercent = value.trim().endsWith("%") && Number.isFinite(pct)
+  return (
+    <div className="grid grid-cols-[5.5rem_1fr_3rem] items-center gap-3 text-xs sm:grid-cols-[6rem_1fr_3.5rem]">
+      <span className="text-black/55 dark:text-zinc-400">{label}</span>
+      <span className="h-2 overflow-hidden rounded-full bg-black/[0.06] dark:bg-white/[0.08]" aria-hidden="true">
+        {isPercent && (
+          <span
+            className={`block h-full rounded-full ${tone === "independent" ? "bg-black dark:bg-white" : "bg-accent"}`}
+            style={{ width: `${pct}%` }}
+          />
+        )}
+      </span>
+      <span className="text-right text-sm font-semibold tabular-nums text-black dark:text-white">{value}</span>
+    </div>
+  )
+}
+
+function BenchRow({ label, value, independent }: { label: string; value?: string; independent?: string }) {
+  const { head, note } = value ? splitValue(value) : { head: "", note: "" }
+  return (
+    <div className="rounded-lg bg-black/[0.02] p-3.5 dark:bg-white/[0.03] sm:p-4">
+      <div>
+        <div className="text-base font-semibold leading-snug text-black dark:text-white">{label}</div>
+        {note && <div className="mt-0.5 text-xs leading-4 text-black/50 dark:text-zinc-400">{note}</div>}
+      </div>
+      <div className="mt-3 space-y-2">
+        {head && <Bar label="Lab reported" value={head} tone="lab" />}
+        {independent && <Bar label="Independent" value={independent} tone="independent" />}
+      </div>
+    </div>
+  )
+}
+
+export default function ModelPageView({ model, siblings, folio, folioId, children, footer }: ModelPageViewProps) {
   const independentTerminalBench = independentRecords.find((record) => record.modelId === model.id)?.values.terminalBench4
   const [copiedLink, setCopiedLink] = useState(false)
   const [copiedCode, setCopiedCode] = useState(false)
@@ -245,7 +289,8 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                 <span>Context</span>
               </div>
               <div className="text-base font-semibold leading-6 text-black dark:text-white">
-                {model.contextWindow}
+                {splitValue(model.contextWindow).head}
+                {splitValue(model.contextWindow).note && <span className="mt-1 block text-sm font-normal text-black/60 dark:text-zinc-400">{splitValue(model.contextWindow).note}</span>}
               </div>
             </div>
 
@@ -255,7 +300,8 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                 <span>Architecture</span>
               </div>
               <div className="break-words text-base font-medium leading-6 text-black dark:text-white">
-                {model.parameters}
+                {splitValue(model.parameters).head}
+                {splitValue(model.parameters).note && <span className="mt-1 block text-sm font-normal text-black/60 dark:text-zinc-400">{splitValue(model.parameters).note}</span>}
               </div>
             </div>
 
@@ -295,46 +341,34 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
               <h2 className="mb-1 font-display text-lg font-semibold tracking-tight text-black dark:text-white">
                 Published benchmarks, lab reported
               </h2>
-              <p className="-mt-1 mb-4 text-xs font-sans text-black/50 dark:text-zinc-500">
-                Vendor-published figures, not independently reproduced. Source links are listed below.
+              <p className="-mt-1 mb-4 text-sm font-sans text-black/60 dark:text-zinc-500">
+                Figures published by the lab, not reproduced independently.
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 font-sans text-xs">
-                {model.benchmarks.sweBench && (
-                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[var(--surface-raised)] leading-relaxed">
-                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1">SWE-BENCH</div>
-                    <div className="text-base font-semibold text-accent-ink tracking-wide">{model.benchmarks.sweBench}</div>
-                  </div>
-                )}
-                {model.benchmarks.terminalBench && (
-                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[var(--surface-raised)] leading-relaxed">
-                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1">TERMINAL-BENCH</div>
-                    <div className="text-base font-semibold text-black dark:text-white tracking-wide">{model.benchmarks.terminalBench}</div>
-                    {independentTerminalBench !== undefined && (
-                      <div className="mt-1.5 text-[11px] leading-snug text-black/55 dark:text-zinc-400">
-                        Independent run: <strong className="font-semibold text-black dark:text-white">{independentTerminalBench.toFixed(1)}%</strong> on Terminal-Bench 4.0
-                      </div>
+              {(() => {
+                const rows: { key: string; label: string; value?: string; independent?: string }[] = [
+                  { key: "swe", label: "SWE-bench", value: model.benchmarks.sweBench },
+                  { key: "tb", label: "Terminal-Bench", value: model.benchmarks.terminalBench, independent: independentTerminalBench !== undefined ? `${independentTerminalBench.toFixed(1)}%` : undefined },
+                  { key: "aime", label: "AIME 2024", value: model.benchmarks.aime2024 },
+                  { key: "mmlu", label: "MMLU-Pro", value: model.benchmarks.mmluPro },
+                  { key: "gpqa", label: "GPQA Diamond", value: model.benchmarks.gpqa },
+                ]
+                const visible = rows.filter((r) => r.value || r.independent)
+                const showIndependent = visible.some((r) => r.independent)
+                return (
+                  <div className="font-sans">
+                    <div className="space-y-2.5">
+                      {visible.map((r) => (
+                        <BenchRow key={r.key} label={r.label} value={r.value} independent={r.independent} />
+                      ))}
+                    </div>
+                    {showIndependent && (
+                      <p className="mt-2.5 text-xs text-black/50 dark:text-zinc-400">
+                        Independent runs by Artificial Analysis on Terminal-Bench 4.0.
+                      </p>
                     )}
                   </div>
-                )}
-                {model.benchmarks.aime2024 && (
-                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[var(--surface-raised)] leading-relaxed">
-                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1">AIME 2024</div>
-                    <div className="text-base font-semibold text-black dark:text-white tracking-wide">{model.benchmarks.aime2024}</div>
-                  </div>
-                )}
-                {model.benchmarks.mmluPro && (
-                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[var(--surface-raised)] leading-relaxed">
-                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1">MMLU-PRO</div>
-                    <div className="text-base font-semibold text-black dark:text-white tracking-wide">{model.benchmarks.mmluPro}</div>
-                  </div>
-                )}
-                {model.benchmarks.gpqa && (
-                  <div className="border border-black/10 dark:border-white/[0.08] rounded p-3.5 bg-white dark:bg-[var(--surface-raised)] leading-relaxed">
-                    <div className="text-[11px] text-black/40 dark:text-zinc-400 mb-1">GPQA DIAMOND</div>
-                    <div className="text-base font-semibold text-black dark:text-white tracking-wide">{model.benchmarks.gpqa}</div>
-                  </div>
-                )}
-              </div>
+                )
+              })()}
             </div>
           )}
 
@@ -440,7 +474,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
               </div>
             </div>
 
-            <pre className="p-3.5 sm:p-5 bg-black/[0.02] dark:bg-[var(--surface-bar)] text-xs sm:text-[13px] font-sans overflow-x-auto text-black/80 dark:text-zinc-200 leading-6 sm:leading-7 tracking-wide">
+            <pre className="p-4 sm:p-5 bg-black/[0.02] dark:bg-[var(--surface-bar)] text-sm sm:text-[15px] font-mono overflow-x-auto text-black/80 dark:text-zinc-200 leading-6 sm:leading-7 tracking-wide">
               <code className={activeSnippetTab === "curl" ? "whitespace-pre-wrap break-all" : "whitespace-pre"}>
                 {activeSnippetTab === "curl"
                   ? curlCommand
@@ -505,16 +539,17 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
               )}
             </div>
 
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1 text-black/50 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors duration-150"
+            <a
+              href={reportIssueUrl(model.id)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-black/45 transition-colors duration-150 hover:text-accent-ink dark:text-zinc-500"
             >
-              <span>Back to ledger</span>
-              <ChevronRight size={13} />
-            </Link>
+              Report an error
+            </a>
           </div>
 
-          <VerificationSection model={model} />
+          {footer}
         </div>
 
         {children}
