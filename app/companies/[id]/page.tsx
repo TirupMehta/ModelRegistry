@@ -6,7 +6,7 @@ import TextWithBlur from "@/components/text-with-blur"
 import { companies } from "@/data/companies"
 import { modelsData } from "@/data/models"
 import { formatDate, getRelativeTimeString, parseLocalDate, safeJsonLd } from "@/lib/utils"
-import { ArrowLeft, ArrowUpRight, Globe, Layers, Boxes, Sparkles, Calendar } from "lucide-react"
+import { ArrowLeft, ArrowUpRight, ChevronDown } from "lucide-react"
 
 interface Props {
   params: Promise<{ id: string }>
@@ -94,9 +94,9 @@ export default async function CompanyPage({ params }: Props) {
   })
 
   const faqAnswer = flagship
-    ? `${lab.name}'s primary flagship model is ${flagship.name} (${flagship.parameters}, ${flagship.contextWindow} context). ${flagship.highlight}${
+    ? `${lab.name}'s primary flagship model is ${flagship.name}. ${flagship.highlight}${
         newest && newest.id !== flagship.id
-          ? ` Their latest release is ${newest.name} (${newest.categoryLabel}, released ${newest.releaseDate}).`
+          ? ` Its latest release is ${newest.name} (${newest.categoryLabel}, released ${newest.releaseDate}).`
           : ""
       }`
     : `ModelRegistry tracks verified releases from ${lab.name} in its open technical index.`
@@ -188,152 +188,83 @@ export default async function CompanyPage({ params }: Props) {
           </div>
         </TextWithBlur>
 
-        {/* Lab Hero */}
+        {/* Lab header: name, where, link, one line of counts, then the description. */}
         <TextWithBlur delay={80}>
-          <div className="p-4 sm:p-6 rounded-lg border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[var(--surface-raised)] mb-6">
-            <div className="flex items-start justify-between gap-3 sm:gap-4">
-              <div className="flex items-start gap-3 min-w-0">
-                <div
-                  className="w-4 h-4 rounded-sm shrink-0 shadow-sm mt-1 sm:mt-2"
-                  style={{ backgroundColor: lab.accentColor }}
-                />
-                <div>
-                  <h1 className="font-display text-heading font-semibold tracking-tight text-black sm:text-page dark:text-white">
-                    {lab.name}
-                  </h1>
-                  <p className="text-small font-sans text-fg-muted mt-1.5">
-                    ({lab.headquarters})
-                  </p>
-                </div>
-              </div>
-
+          <header className="mb-10">
+            <h1 className="font-display text-page font-semibold tracking-tight text-fg-strong">{lab.name}</h1>
+            <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-small text-fg-muted">
+              <span>{lab.headquarters}</span>
               <a
                 href={lab.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1 text-small font-sans text-fg-muted hover:text-accent-ink transition-colors duration-150 shrink-0 whitespace-nowrap pt-1"
+                className="inline-flex items-center gap-1 transition-colors hover:text-accent-ink"
               >
-                <Globe size={12} />
-                <span>{new URL(lab.website).hostname}</span>
-                <ArrowUpRight size={11} className="opacity-60" />
+                {new URL(lab.website).hostname}
+                <ArrowUpRight size={12} aria-hidden="true" />
               </a>
-            </div>
-
-            <p className="text-body font-normal text-fg-muted mt-3 leading-relaxed max-w-2xl">
-              {lab.description}
             </p>
-
-            {/* Lab Stats Strip */}
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-4 pt-4 border-t border-black/5 dark:border-white/[0.06] text-small font-sans text-fg-muted tabular-nums">
-              <span className="inline-flex items-center gap-1.5">
-                <Layers size={11} className="text-accent-ink" />
-                {labModels.length} model{labModels.length === 1 ? "" : "s"} tracked
-              </span>
-              {openCount > 0 && (
-                <span className="inline-flex items-center gap-1.5">
-                  <Boxes size={11} className="text-accent-ink" />
-                  {openCount} open weights
-                </span>
-              )}
-              {newest && (
-                <span className="inline-flex items-center gap-1.5">
-                  <Sparkles size={11} className="text-accent-ink" />
-                  Newest: {newest.name}, {getRelativeTimeString(newest.releaseDate)}
-                </span>
-              )}
-            </div>
-          </div>
+            <p className="mt-4 max-w-2xl text-body leading-7 text-fg">{lab.description}</p>
+            <p className="mt-4 text-small tabular-nums text-fg-muted">
+              {labModels.length} model{labModels.length === 1 ? "" : "s"} tracked
+              {openCount > 0 ? ` · ${openCount} open weights` : ""}
+              {newest ? ` · newest: ${newest.name}, ${getRelativeTimeString(newest.releaseDate).toLowerCase()}` : ""}
+            </p>
+          </header>
         </TextWithBlur>
 
-        {/* Visible answer matching the FAQPage schema below */}
+        {/* Visible answer matching the FAQPage schema; folded so it does not repeat the description. */}
         <TextWithBlur delay={110}>
-          <div className="mb-6 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4 sm:p-5">
-            <h2 className="text-body font-medium tracking-tight text-black dark:text-white mb-1.5">
-              What is the latest AI model from {lab.name}?
-            </h2>
-            <p className="text-small font-sans text-fg-muted leading-relaxed">
+          <details className="group mb-10 rounded-lg bg-black/[0.025] px-4 py-3 dark:bg-white/[0.03]">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-small font-medium text-fg-strong [&::-webkit-details-marker]:hidden">
+              <h2 className="text-small font-medium">What is the latest AI model from {lab.name}?</h2>
+              <ChevronDown size={14} aria-hidden="true" className="shrink-0 text-fg-muted transition-transform group-open:rotate-180" />
+            </summary>
+            <p className="mt-3 text-small leading-6 text-fg">
               {faqAnswer}{" "}
-              <Link
-                href="/methodology"
-                className="text-accent-ink hover:underline underline-offset-2 whitespace-nowrap"
-              >
-                How we define “latest”
+              <Link href="/methodology" className="whitespace-nowrap text-accent-ink underline-offset-4 hover:underline">
+                How we define &ldquo;latest&rdquo;
               </Link>
             </p>
-          </div>
+          </details>
         </TextWithBlur>
 
-        {/* Release Timeline (month-grouped rail, mirrors /timeline) */}
         <TextWithBlur delay={140}>
-          <div className="flex items-baseline justify-between gap-3 mb-5">
-            <h2 className="text-body font-sans font-medium text-fg-muted">
-              Release Timeline
-            </h2>
-            <span className="text-small font-sans text-fg-muted tabular-nums">
-              NEWEST FIRST
-            </span>
-          </div>
+          <h2 className="mb-5 font-display text-heading font-semibold tracking-tight text-fg-strong">Releases</h2>
         </TextWithBlur>
 
-        <div className="flex flex-col space-y-7">
+        <div className="space-y-8">
           {Object.entries(groupedTimeline).map(([monthYear, group], gIndex) => (
             <TextWithBlur key={monthYear} delay={Math.min(gIndex * 40, 160)}>
-              <div className="border-l-2 border-black/10 dark:border-white/[0.08] pl-3.5 sm:pl-6 ml-1.5 sm:ml-2 relative">
-                <div
-                  className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-sm"
-                  style={{ backgroundColor: lab.accentColor }}
-                />
-
-                <h3 className="text-title font-medium text-black dark:text-white mb-3.5 flex items-center gap-2 font-sans">
-                  <Calendar size={14} style={{ color: lab.accentColor }} />
-                  <span>{monthYear}</span>
-                  <span className="text-small text-fg-muted font-normal">
-                    [{group.length} {group.length === 1 ? "release" : "releases"}]
-                  </span>
+              <section aria-label={monthYear}>
+                <h3 className="mb-3 text-small font-medium text-fg-muted">
+                  {monthYear} <span className="font-normal">· {group.length} {group.length === 1 ? "release" : "releases"}</span>
                 </h3>
-
-                <div className="space-y-3">
+                <ul className="space-y-2.5">
                   {group.map((model) => (
-                    <Link
-                      key={model.id}
-                      href={`/models/${model.id}`}
-                      className="group cursor-pointer block p-3.5 sm:p-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-[var(--surface-field)] hover:border-accent/40 transition-colors duration-150 select-none"
-                    >
-                      <div className="mb-1.5">
-                        <div className="font-sans text-body sm:text-title font-medium tracking-tight leading-snug text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
-                          {model.name}
-                        </div>
-                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mt-1.5 font-sans">
-                          <span className="text-small px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-fg-muted dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03] whitespace-nowrap">
-                            {model.statusBadge}
+                    <li key={model.id}>
+                      <Link
+                        href={`/models/${model.id}`}
+                        className="group block rounded-xl bg-black/[0.025] p-4 transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06] sm:p-5"
+                      >
+                        <div className="flex items-baseline gap-3">
+                          <span className="min-w-0 truncate font-display text-title font-semibold tracking-tight text-fg-strong transition-colors group-hover:text-accent-ink">
+                            {model.name}
                           </span>
-                          {model.isCompanyFlagship && (
-                            <span className="text-small tracking-tight text-accent-ink font-medium whitespace-nowrap">
-                              • Flagship
-                            </span>
-                          )}
-                          <span className="ml-auto text-small text-fg-muted tabular-nums whitespace-nowrap">
+                          {model.isCompanyFlagship && <span className="shrink-0 text-small font-medium text-accent-ink">Flagship</span>}
+                          <time dateTime={model.releaseDate} className="ml-auto shrink-0 text-small tabular-nums text-fg-muted">
                             {formatDate(model.releaseDate)}
-                          </span>
+                          </time>
                         </div>
-                      </div>
-
-                      <p className="text-small sm:text-body font-normal text-fg-muted leading-relaxed mb-2 line-clamp-2">
-                        {model.highlight}
-                      </p>
-
-                      <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-3 text-small pt-2 border-t border-black/5 dark:border-white/[0.06] font-sans">
-                        <span className="text-small text-fg-muted">
-                          {model.categoryLabel}
-                        </span>
-                        <span className="inline-flex items-center gap-1 text-small text-fg-muted group-hover:text-accent-ink transition-colors shrink-0">
-                          OPEN DATASHEET <ArrowUpRight size={10} className="opacity-60" />
-                        </span>
-                      </div>
-                    </Link>
+                        <p className="mt-0.5 text-small text-fg-muted">
+                          {model.categoryLabel} · {model.statusBadge}
+                        </p>
+                        <p className="mt-2 line-clamp-2 text-body leading-6 text-fg">{model.highlight}</p>
+                      </Link>
+                    </li>
                   ))}
-                </div>
-              </div>
+                </ul>
+              </section>
             </TextWithBlur>
           ))}
         </div>
