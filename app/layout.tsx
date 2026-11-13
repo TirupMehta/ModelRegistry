@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { sans, display } from "./fonts"
 import "./globals.css"
-import AmbientShader from "@/components/ambient-shader"
 import FeedbackInit from "@/components/feedback-init"
 import Footer from "@/components/footer"
 import { modelsData } from "@/data/models"
@@ -176,9 +175,6 @@ export default function RootLayout({
         className={`${sans.variable} ${display.variable} font-sans antialiased bg-[var(--bg)] text-[var(--fg)] transition-colors duration-200 relative min-h-screen flex flex-col`}
         suppressHydrationWarning
       >
-        {/* Procedural Canvas Architectural Lighting Shader */}
-        <AmbientShader />
-
         {/* Rich SEO & GEO Structured Data Matrix */}
         <script
           type="application/ld+json"

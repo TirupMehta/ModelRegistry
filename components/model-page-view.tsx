@@ -271,7 +271,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
             <h1 className="text-page font-display font-semibold tracking-tight leading-snug sm:leading-tight text-fg-strong">
               {model.name}
             </h1>
-            <span className="text-caption font-sans px-2.5 py-1 rounded border border-accent/40 text-accent-ink bg-accent/5 font-medium leading-relaxed">
+            <span className="chip !px-2.5 !py-1 font-medium">
               {model.statusBadge}
             </span>
           </div>
