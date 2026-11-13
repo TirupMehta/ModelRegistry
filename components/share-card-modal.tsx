@@ -848,7 +848,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
         onClick={(e) => e.stopPropagation()}
       >
         {/* Left Side: Canvas Preview */}
-        <div className="shrink-0 md:shrink flex flex-col items-center justify-center p-3 sm:p-6 bg-black/[0.02] dark:bg-[var(--bg)] border-b md:border-b-0 md:border-r border-black/10 dark:border-white/[0.08] min-h-[200px] md:min-h-[300px] md:flex-1 overflow-hidden">
+        <div className="shrink-0 md:shrink flex flex-col items-center justify-center p-3 sm:p-6 bg-[var(--tile)] dark:bg-[var(--bg)] border-b md:border-b-0 md:border-r border-black/10 dark:border-white/[0.08] min-h-[200px] md:min-h-[300px] md:flex-1 overflow-hidden">
           <div
             onClick={openZoom}
             onKeyDown={(e) => {
@@ -888,7 +888,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
         <div className="w-full md:w-80 p-4 sm:p-6 pb-[max(1rem,env(safe-area-inset-bottom))] flex flex-col justify-between bg-white dark:bg-[var(--surface-field)] md:overflow-y-auto md:overscroll-contain md:max-h-none touch-scroll">
           <div>
             {/* Header */}
-            <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/[0.08] mb-4 sm:mb-5">
+            <div className="flex items-center justify-between pb-3 sm:pb-4 rule-b mb-4 sm:mb-5">
               <div className="flex items-center gap-2">
                 <Sparkles size={16} className="text-accent-ink" />
                 <h3 className="text-body font-medium tracking-tight text-black dark:text-white">
@@ -985,7 +985,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
           </div>
 
           {/* Export Action Buttons */}
-          <div className="space-y-2 pt-4 border-t border-black/10 dark:border-white/[0.08]">
+          <div className="space-y-2 pt-4 rule-t">
             {/* Copy Image Button */}
             <button
               onClick={handleCopyImage}
@@ -1009,7 +1009,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
             <button
               onClick={handleDownload}
               disabled={isRendering}
-              className="w-full py-2.5 px-3.5 rounded-md border border-black/10 dark:border-white/[0.09] text-black dark:text-zinc-200 font-sans text-small font-medium hover:border-accent hover:text-accent-ink transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer bg-black/[0.015] dark:bg-white/[0.03]"
+              className="w-full py-2.5 px-3.5 rounded-md border border-black/10 dark:border-white/[0.09] text-black dark:text-zinc-200 font-sans text-small font-medium hover:border-accent hover:text-accent-ink transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer bg-[var(--tile)] dark:bg-white/[0.03]"
             >
               <Download size={14} />
               <span>DOWNLOAD PNG ({ratio.toUpperCase()})</span>

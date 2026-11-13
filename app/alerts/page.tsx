@@ -66,7 +66,7 @@ export default function AlertsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }} />
 
-      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="page">
         <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-2">
           Model Alerts
         </h1>
@@ -96,7 +96,7 @@ export default function AlertsPage() {
           {BENEFITS.map((benefit) => (
             <div
               key={benefit.title}
-              className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[var(--surface-raised)] p-4 shadow-sm"
+              className="tile p-4"
             >
               <div className="flex items-center gap-2 mb-1.5">
                 <benefit.icon size={13} className="text-accent-ink shrink-0" aria-hidden="true" />

@@ -17,8 +17,8 @@ export default function Header() {
   return (
     <>
       {/* ── Top Telemetry Readout Bar ────────────────────────────────────── */}
-      <div className="w-full bg-black/[0.02] dark:bg-[var(--surface-bar)] border-b border-black/5 dark:border-white/[0.06] py-2 text-caption font-sans text-fg-muted">
-        <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 flex items-center justify-between gap-3">
+      <div className="w-full bg-[var(--tile)] rule-b py-2 text-caption font-sans text-fg-muted">
+        <div className="page-x flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-2">
             <span className="block min-w-0 truncate">
               <span className="font-medium text-fg">Curated dataset</span>
@@ -58,7 +58,7 @@ export default function Header() {
       </div>
 
       {/* ── Industrial Header Unit ────────────────────────────────────────── */}
-      <header className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pt-5 sm:pt-6 md:pt-8 pb-0">
+      <header className="page-x pt-5 sm:pt-6 md:pt-8 pb-0">
         <TextWithBlur>
           <div className="flex items-center justify-between gap-3 mb-4 md:mb-6">
             <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">

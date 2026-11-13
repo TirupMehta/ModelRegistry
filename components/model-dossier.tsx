@@ -176,9 +176,9 @@ export function ModelFaq({ model }: { model: ModelItem }) {
       >
         Common questions
       </h2>
-      <div id="model-faq" className="border-t border-black/10 dark:border-white/[0.08]">
+      <div id="model-faq" className="rule-t">
         {faq.map((item) => (
-          <details key={item.q} className="group border-b border-black/10 dark:border-white/[0.08]">
+          <details key={item.q} className="group rule-b">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-3 text-body font-medium text-black dark:text-white [&::-webkit-details-marker]:hidden">
               <h3 className="text-body font-medium">{item.q}</h3>
               <ChevronDown size={14} className="shrink-0 text-fg-muted transition-transform group-open:rotate-180" aria-hidden="true" />
@@ -227,12 +227,12 @@ export function ModelComparisons({ model }: { model: ModelItem }) {
       >
         Head-to-head comparisons
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 border-t border-black/10 dark:border-white/[0.08]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 rule-t">
         {rivals.map(({ opponent, pair }) => (
           <Link
             key={opponent.id}
             href={compareHref(pair.a, pair.b)}
-            className="group flex items-baseline gap-2 py-2.5 border-b border-black/10 dark:border-white/[0.08] text-body font-sans"
+            className="group flex items-baseline gap-2 py-2.5 rule-b text-body font-sans"
           >
             <span className="text-fg group-hover:text-accent-ink transition-colors truncate">
               {model.name} vs {opponent.name}
@@ -271,7 +271,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
         >
           Availability
         </h2>
-        <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4">
+        <div className="tile p-4">
           <p className="text-body font-sans text-fg leading-6">
             Superseded by{" "}
             {successor ? (
@@ -332,7 +332,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
         >
           Independent results
         </h2>
-        <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4">
+        <div className="tile p-4">
           {rated && (
             <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 pb-3 mb-3 border-b border-black/5 dark:border-white/[0.06]">
               <span className="text-body font-sans text-fg-muted">Cross-test standing</span>
@@ -423,7 +423,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
         >
           Where it ranks
         </h2>
-        <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4">
+        <div className="tile p-4">
           <p className="text-body font-sans text-fg leading-6">
             Not ranked yet.{" "}
             {reasons.length === 0
@@ -462,7 +462,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
       >
         Where it ranks
       </h2>
-      <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4">
+      <div className="tile p-4">
         {standing && (
           <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 pb-3 mb-3 border-b border-black/5 dark:border-white/[0.06]">
             <span className="text-body font-sans text-fg-muted">

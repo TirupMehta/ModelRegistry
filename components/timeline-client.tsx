@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import TextWithBlur from "@/components/text-with-blur"
+import { PageHeader } from "@/components/ui"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, ModelItem } from "@/data/models"
 import { parseLocalDate, withoutReleasePrefix } from "@/lib/utils"
@@ -35,12 +36,9 @@ export default function TimelineClient() {
 
   return (
     <>
-      <section className="section mx-auto w-full max-w-4xl px-4 pb-20 sm:px-6 md:px-20">
+      <section className="section page">
         <TextWithBlur delay={120}>
-          <h1 className="font-display text-page font-semibold tracking-tight text-fg-strong">Release timeline</h1>
-          <p className="mt-2 mb-10 max-w-2xl text-body text-fg">
-            Every tracked model checkpoint, newest first. Select a row for the full record.
-          </p>
+          <PageHeader title="Release timeline" lead="Every tracked model checkpoint, newest first. Select a row for the full record." />
         </TextWithBlur>
 
         <div className="space-y-10">
@@ -54,9 +52,9 @@ export default function TimelineClient() {
                   </span>
                 </h2>
 
-                <ul className="border-t border-black/10 dark:border-white/[0.08]">
+                <ul className="rule-t">
                   {models.map((model) => (
-                    <li key={model.id} className="border-b border-black/10 dark:border-white/[0.08]">
+                    <li key={model.id} className="rule-b">
                       <button
                         type="button"
                         onClick={() => openModel(model)}

@@ -165,7 +165,7 @@ export default async function OpenSourcePage() {
     <main className="relative min-h-screen">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
-      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="page">
         <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-2">
           Built in the open
         </h1>

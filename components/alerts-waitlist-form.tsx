@@ -147,7 +147,7 @@ export default function AlertsWaitlistForm({
       className={
         embedded
           ? ""
-          : "rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[var(--surface-raised)] p-4 sm:p-6 shadow-sm"
+          : "tile p-4 sm:p-6"
       }
     >
       <div className="flex flex-col gap-1.5">

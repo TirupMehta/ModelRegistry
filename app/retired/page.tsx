@@ -26,7 +26,7 @@ export default function RetiredPage() {
     <main className="relative min-h-screen">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
-      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="page">
         <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           Retired &amp; archived
         </h1>
@@ -57,9 +57,9 @@ export default function RetiredPage() {
             </p>
           </div>
         ) : (
-          <div className="border-t border-black/10 dark:border-white/[0.08]">
+          <div className="rule-t">
             {retired.map((m) => (
-              <div key={m.id} className="py-3 border-b border-black/10 dark:border-white/[0.08] text-body">
+              <div key={m.id} className="py-3 rule-b text-body">
                 <Link href={`/models/${m.id}`} className="font-medium tracking-tight text-black dark:text-white hover:text-accent-ink">
                   {m.name}
                 </Link>

@@ -169,7 +169,7 @@ export default function ScorePage() {
         }}
       />
 
-      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="page">
         <nav
           aria-label="Breadcrumb"
           className="flex items-center gap-2.5 mb-7 text-small font-sans leading-relaxed text-fg-muted"
@@ -218,7 +218,7 @@ export default function ScorePage() {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]"
+              className="tile p-4"
             >
               <div className="text-heading font-display font-semibold tracking-tight text-black dark:text-white tabular-nums">
                 {stat.value}
@@ -240,14 +240,14 @@ export default function ScorePage() {
           tests, not a result.
         </p>
 
-        <div className="border-t border-black/10 dark:border-white/[0.08] mb-3">
+        <div className="rule-t mb-3">
           {standing.rows.map((row) => {
             const lab = companies[row.model.companyId]
             return (
               <Link
                 key={row.model.id}
                 href={`/models/${row.model.id}`}
-                className="group flex flex-wrap items-baseline gap-x-3 gap-y-1.5 py-3 border-b border-black/10 dark:border-white/[0.08]"
+                className="group flex flex-wrap items-baseline gap-x-3 gap-y-1.5 py-3 rule-b"
               >
                 <span className="text-small font-sans tabular-nums text-fg-muted w-7 shrink-0">
                   T{row.tier}
@@ -327,7 +327,7 @@ export default function ScorePage() {
             </thead>
             <tbody>
               {gaps.map((gap) => (
-                <tr key={gap.model.id} className="border-b border-black/10 dark:border-white/[0.08]">
+                <tr key={gap.model.id} className="rule-b">
                   <td className="py-2.5 pr-4">
                     <Link href={`/models/${gap.model.id}`} className="font-medium text-black hover:text-accent-ink dark:text-white">
                       {gap.model.name}
@@ -371,7 +371,7 @@ export default function ScorePage() {
             </thead>
             <tbody>
               {value.map((row) => (
-                <tr key={row.model.id} className="border-b border-black/10 dark:border-white/[0.08]">
+                <tr key={row.model.id} className="rule-b">
                   <td className="py-2.5 pr-4">
                     <Link href={`/models/${row.model.id}`} className="font-medium text-black hover:text-accent-ink dark:text-white">
                       {row.model.name}
@@ -432,7 +432,7 @@ export default function ScorePage() {
             </thead>
             <tbody>
               {standing.singleTest.map((row) => (
-                <tr key={row.model.id} className="border-b border-black/10 dark:border-white/[0.08]">
+                <tr key={row.model.id} className="rule-b">
                   <th scope="row" className="text-left py-2.5 pr-3 font-normal">
                     <Link
                       href={`/models/${row.model.id}`}
@@ -479,11 +479,11 @@ export default function ScorePage() {
           be a claim about a product nobody can buy. Superseded is not retired. No laboratory has
           withdrawn these.
         </p>
-        <div className="border-t border-black/10 dark:border-white/[0.08] mb-12">
+        <div className="rule-t mb-12">
           {lineup.superseded.map(({ model, successor }) => (
             <div
               key={model.id}
-              className="flex flex-wrap items-baseline gap-x-3 gap-y-1 py-2.5 border-b border-black/10 dark:border-white/[0.08]"
+              className="flex flex-wrap items-baseline gap-x-3 gap-y-1 py-2.5 rule-b"
             >
               <Link
                 href={`/models/${model.id}`}
@@ -545,14 +545,14 @@ export default function ScorePage() {
                   ? "Every record in this cohort states the version it was measured on."
                   : "This benchmark is not versioned by the laboratories that report it."}
               </p>
-              <div className="border-t border-black/10 dark:border-white/[0.08]">
+              <div className="rule-t">
                 {board.entries.map((entry) => {
                   const lab = companies[entry.model.companyId]
                   return (
                     <Link
                       key={entry.model.id}
                       href={`/models/${entry.model.id}`}
-                      className="group flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5 border-b border-black/10 dark:border-white/[0.08]"
+                      className="group flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5 rule-b"
                     >
                       <span className="text-small font-sans tabular-nums text-fg-muted w-5 shrink-0">
                         {entry.rank}
@@ -613,7 +613,7 @@ export default function ScorePage() {
                 </thead>
                 <tbody>
                   {multi.map(({ model, positions }) => (
-                    <tr key={model.id} className="border-b border-black/10 dark:border-white/[0.08]">
+                    <tr key={model.id} className="rule-b">
                       <th scope="row" className="text-left py-2.5 pr-3 font-normal">
                         <Link
                           href={`/models/${model.id}`}
@@ -665,8 +665,8 @@ export default function ScorePage() {
         <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-4">
           How the numbers are made
         </h2>
-        <div className="border-t border-black/10 dark:border-white/[0.08] mb-12">
-          <details className="group border-b border-black/10 dark:border-white/[0.08]">
+        <div className="rule-t mb-12">
+          <details className="group rule-b">
             <summary className={summaryClass}>
               <span className="text-body font-sans font-medium text-black dark:text-white">
                 Per-test rank: cohort, version gate, ties
@@ -708,7 +708,7 @@ export default function ScorePage() {
             </ol>
           </details>
 
-          <details className="group border-b border-black/10 dark:border-white/[0.08]">
+          <details className="group rule-b">
             <summary className={summaryClass}>
               <span className="text-body font-sans font-medium text-black dark:text-white">
                 Cross-test standing: equate, average, refuse, audit
@@ -765,7 +765,7 @@ export default function ScorePage() {
             </ol>
           </details>
 
-          <details className="group border-b border-black/10 dark:border-white/[0.08]">
+          <details className="group rule-b">
             <summary className={summaryClass}>
               <span className="text-body font-sans font-medium text-black dark:text-white">
                 What the standing cannot do
@@ -787,7 +787,7 @@ export default function ScorePage() {
             </ul>
           </details>
 
-          <details className="group border-b border-black/10 dark:border-white/[0.08]">
+          <details className="group rule-b">
             <summary className={summaryClass}>
               <span className="text-body font-sans font-medium text-black dark:text-white">
                 Cohort audit: which tests link to which
@@ -798,7 +798,7 @@ export default function ScorePage() {
               <div className="overflow-x-auto -mx-1 px-1">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="border-b border-black/10 dark:border-white/[0.08]">
+                    <tr className="rule-b">
                       <th
                         scope="col"
                         className="text-left py-2 pr-3 font-sans text-small font-medium text-fg-muted"
@@ -869,9 +869,9 @@ export default function ScorePage() {
         <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-4">
           Questions
         </h2>
-        <div className="border-t border-black/10 dark:border-white/[0.08] mb-12">
+        <div className="rule-t mb-12">
           {faq.map((item) => (
-            <div key={item.q} className="py-4 border-b border-black/10 dark:border-white/[0.08]">
+            <div key={item.q} className="py-4 rule-b">
               <h3 className="text-title font-medium tracking-tight text-black dark:text-white mb-1.5">
                 {item.q}
               </h3>

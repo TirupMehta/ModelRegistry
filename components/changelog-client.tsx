@@ -92,7 +92,7 @@ export default function ChangelogClient({ entries }: { entries: ChangelogEntry[]
       <p className="mb-3 text-small tabular-nums text-fg-muted" aria-live="polite">
         {visible.length === entries.length ? `${entries.length} changes` : `${visible.length} of ${entries.length} changes`}
       </p>
-      <ol className="border-t border-black/10 dark:border-white/[0.08]">
+      <ol className="rule-t">
         {visible.map((entry, index) => (
           <li
             key={`${entry.date}-${entry.modelId}-${index}`}

@@ -27,7 +27,7 @@ export default function ModalitiesPage() {
     <main className="relative min-h-screen">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
-      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="page">
         <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           Capability &amp; modality matrix
         </h1>
@@ -44,7 +44,7 @@ export default function ModalitiesPage() {
         <div className="border border-black/10 dark:border-white/[0.08] rounded-xl overflow-x-auto">
           <table className="w-full text-body min-w-[560px]">
             <thead>
-              <tr className="border-b border-black/10 dark:border-white/[0.08] text-caption font-sans text-fg-muted">
+              <tr className="rule-b text-caption font-sans text-fg-muted">
                 <th className="text-left font-medium px-4 py-3">Model</th>
                 {MODS.map((mod) => (
                   <th key={mod} className="font-medium px-2 py-3 text-center">{mod}</th>

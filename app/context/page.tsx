@@ -32,7 +32,7 @@ export default function ContextPage() {
     <main className="relative min-h-screen">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
-      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="page">
         <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           Context window comparison
         </h1>
@@ -46,9 +46,9 @@ export default function ContextPage() {
           quality; per-record citations are on each{" "}
           <Link href="/methodology" className="text-accent-ink hover:underline underline-offset-2">model page</Link>.
         </p>
-        <div className="border-t border-black/10 dark:border-white/[0.08]">
+        <div className="rule-t">
           {ranked.map((m, i) => (
-            <div key={m.id} className="flex items-baseline gap-2 sm:gap-3 py-2.5 border-b border-black/10 dark:border-white/[0.08] text-body">
+            <div key={m.id} className="flex items-baseline gap-2 sm:gap-3 py-2.5 rule-b text-body">
               <span className="font-mono tabular-nums text-caption text-fg-muted w-6 shrink-0">
                 {String(i + 1).padStart(2, "0")}
               </span>

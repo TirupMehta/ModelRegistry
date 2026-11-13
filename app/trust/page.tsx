@@ -33,7 +33,7 @@ const BADGE_ORDER: BadgeKind[] = ["lab", "measured", "editorial"]
 
 const link = "text-accent-ink hover:underline underline-offset-2"
 
-const rowClass = "group border-b border-black/10 dark:border-white/[0.08]"
+const rowClass = "group rule-b"
 
 const summaryClass =
   "flex cursor-pointer list-none items-start gap-3 py-4 [&::-webkit-details-marker]:hidden"
@@ -136,7 +136,7 @@ export default function TrustPage() {
         }}
       />
 
-      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="page">
         <nav
           aria-label="Breadcrumb"
           className="flex items-center gap-2.5 mb-7 text-small font-sans leading-relaxed text-fg-muted"
@@ -165,7 +165,7 @@ export default function TrustPage() {
         </p>
 
         {/* The claim, stated plainly */}
-        <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-5 sm:p-6 mb-4">
+        <div className="tile p-5 sm:p-6 mb-4">
           <p className="font-display text-heading font-semibold tracking-tight text-black dark:text-white leading-snug mb-3">
             Every record is sourced, dated and checkable.
           </p>
@@ -187,7 +187,7 @@ export default function TrustPage() {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]"
+              className="tile p-4"
             >
               <div className="text-heading font-display font-semibold tracking-tight text-black dark:text-white tabular-nums">
                 {stat.value}
@@ -206,7 +206,7 @@ export default function TrustPage() {
         <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
           Three checks before a record appears, and the same three when it changes.
         </p>
-        <div className="border-t border-black/10 dark:border-white/[0.08] mb-12">
+        <div className="rule-t mb-12">
           {[
             {
               n: "01",
@@ -226,7 +226,7 @@ export default function TrustPage() {
           ].map((row) => (
             <div
               key={row.n}
-              className="flex flex-col sm:flex-row gap-1 sm:gap-6 py-4 border-b border-black/10 dark:border-white/[0.08]"
+              className="flex flex-col sm:flex-row gap-1 sm:gap-6 py-4 rule-b"
             >
               <span className="text-small font-sans tabular-nums text-fg-muted pt-1 sm:w-6 shrink-0">
                 {row.n}
@@ -243,7 +243,7 @@ export default function TrustPage() {
 
         {/* The two rules */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-12">
-          <div className="p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]">
+          <div className="tile p-4">
             <h2 className="text-body font-sans font-semibold text-black dark:text-white mb-3">
               What you can check
             </h2>
@@ -264,7 +264,7 @@ export default function TrustPage() {
               ))}
             </ul>
           </div>
-          <div className="p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]">
+          <div className="tile p-4">
             <h2 className="text-body font-sans font-semibold text-black dark:text-white mb-3">
               What this site will not do
             </h2>
@@ -300,7 +300,7 @@ export default function TrustPage() {
           Each answer is a policy you can hold the site to. Open a row for the evidence behind it.
         </p>
 
-        <div className="border-t border-black/10 dark:border-white/[0.08] mb-12">
+        <div className="rule-t mb-12">
           {[
             {
               n: "01",
@@ -432,7 +432,7 @@ export default function TrustPage() {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]"
+              className="tile p-4"
             >
               <div className="text-heading font-display font-semibold tracking-tight text-black dark:text-white tabular-nums">
                 {stat.value}
@@ -448,7 +448,7 @@ export default function TrustPage() {
           single-document records are listed below with the document that would strengthen each one.
         </p>
 
-        <details className="border-t border-black/10 dark:border-white/[0.08] mb-12">
+        <details className="rule-t mb-12">
           <summary className={summaryClass}>
             <span className="flex-1 text-body font-sans font-medium text-black dark:text-white">
               Show the {audit.grades.C} single-document records
@@ -493,7 +493,7 @@ export default function TrustPage() {
           weight and are never used to rank.
         </p>
 
-        <div className="border-t border-black/10 dark:border-white/[0.08] mb-12">
+        <div className="rule-t mb-12">
           {BADGE_ORDER.map((kind) => {
             const info = BADGE_KINDS[kind]
             const badges = inventory[kind]
@@ -518,7 +518,7 @@ export default function TrustPage() {
                   {badges.map((badge) => (
                     <span
                       key={badge}
-                      className="inline-flex items-center text-small font-sans px-1.5 py-0.5 rounded border border-black/10 dark:border-white/10 text-fg-muted dark:text-white/60 bg-black/[0.02] dark:bg-white/[0.03] whitespace-nowrap"
+                      className="chip inline-flex items-center whitespace-nowrap"
                     >
                       {badge}
                     </span>
@@ -533,7 +533,7 @@ export default function TrustPage() {
         <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           How to cite this registry
         </h2>
-        <div className="rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] p-4 mb-3">
+        <div className="tile p-4 mb-3">
           <code className="block text-body font-mono text-fg leading-6 break-words">
             ModelRegistry, &ldquo;Model name&rdquo; datasheet, dataset revision{" "}
             {datasetRevision.datasetVersion}, revised {datasetRevision.revisedAt},
@@ -558,9 +558,9 @@ export default function TrustPage() {
         <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-4">
           Questions
         </h2>
-        <div className="border-t border-black/10 dark:border-white/[0.08] mb-12">
+        <div className="rule-t mb-12">
           {faq.map((item) => (
-            <div key={item.q} className="py-4 border-b border-black/10 dark:border-white/[0.08]">
+            <div key={item.q} className="py-4 rule-b">
               <h3 className="text-title font-medium tracking-tight text-black dark:text-white mb-1.5">
                 {item.q}
               </h3>

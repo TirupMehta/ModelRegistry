@@ -146,7 +146,7 @@ export default function ComparePicker({ models, partners }: Props) {
   }
 
   return (
-    <div className="rounded-xl border border-black/10 bg-black/[0.02] p-3.5 dark:border-white/[0.08] dark:bg-white/[0.03] sm:p-4">
+    <div className="tile p-3.5 sm:p-4">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
         <Combo
           label="First model"

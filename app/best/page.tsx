@@ -9,7 +9,8 @@ import { INDEPENDENT_EVALUATOR, buildIndependentBoards } from "@/lib/independent
 import { modelsData } from "@/data/models"
 import ModelPicker, { type PickerModel, type PickerTest } from "@/components/model-picker"
 import RankingsSwitcher from "@/components/rankings-switcher"
-import { ArrowLeft, ArrowUpRight, ChevronDown } from "lucide-react"
+import { ArrowLeft, ArrowUpRight } from "lucide-react"
+import { Disclosure, PageHeader } from "@/components/ui"
 
 export const metadata: Metadata = {
   title: "Best AI model by task: coding, science, price, context",
@@ -114,7 +115,7 @@ export default function BestPage() {
         }}
       />
 
-      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="page">
         <nav
           aria-label="Breadcrumb"
           className="flex items-center gap-2.5 mb-7 text-small font-sans leading-relaxed text-fg-muted"
@@ -132,12 +133,7 @@ export default function BestPage() {
 
         <RankingsSwitcher current="/best" />
 
-        <h1 className="mb-2 font-display text-page font-semibold tracking-tight text-fg-strong">
-          Which AI model is best for what?
-        </h1>
-        <p className="mb-6 max-w-2xl text-title leading-7 text-fg">
-          Pick a job and get the leader, from independent test results.
-        </p>
+        <PageHeader title="Which AI model is best for what?" lead="Pick a job and get the leader, from independent test results." className="mb-6" />
 
         <ModelPicker tests={pickerTests} models={[...pickerModels.values()]} />
 
@@ -153,12 +149,8 @@ export default function BestPage() {
           ))}
         </nav>
 
-        <details className="group mb-10 rounded-lg bg-black/[0.025] px-4 py-3 dark:bg-white/[0.03]">
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-small font-medium text-fg-strong [&::-webkit-details-marker]:hidden">
-            How these answers are chosen
-            <ChevronDown size={14} aria-hidden="true" className="text-fg-muted transition-transform group-open:rotate-180" />
-          </summary>
-          <div className="mt-3 space-y-2 text-small leading-6 text-fg">
+        <Disclosure summary="How these answers are chosen" className="mb-10">
+          <div className="space-y-2">
             <p>
               Each answer is the highest score on one named test, among current models that all took that test, run by one
               independent evaluator with the same tasks and harness. No laboratory chose the test or the settings. Where the number
@@ -173,14 +165,14 @@ export default function BestPage() {
               .
             </p>
           </div>
-        </details>
+        </Disclosure>
 
         <div className="space-y-4">
           {answers.map((answer) => (
             <article
               key={answer.id}
               id={answer.id.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}
-              className="scroll-mt-24 rounded-xl bg-black/[0.025] p-5 sm:p-6 dark:bg-white/[0.03]"
+              className="tile scroll-mt-24 p-5 sm:p-6"
             >
               <h2 className="mb-1.5 font-display text-heading font-semibold tracking-tight text-fg-strong">
                 {answer.question}
@@ -189,7 +181,7 @@ export default function BestPage() {
                 {answer.answer}
               </p>
 
-              <ol className="mb-3 border-t border-black/10 dark:border-white/[0.08]">
+              <ol className="mb-3 rule-t">
                 {answer.entries.map((entry) => (
                   <li key={entry.model.id}>
                     <Link

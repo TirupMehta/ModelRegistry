@@ -39,7 +39,7 @@ export function DocsIndexChips() {
           type="button"
           onClick={() => scrollToSection(item.id)}
           aria-controls={item.id}
-          className="shrink-0 px-3 py-1.5 rounded-full border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] text-small font-sans text-fg-muted hover:border-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-ink cursor-pointer"
+          className="chip shrink-0 !rounded-full px-3 py-1.5 text-small font-sans hover:border-accent/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-ink cursor-pointer"
         >
           {item.label}
         </button>

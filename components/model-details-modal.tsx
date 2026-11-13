@@ -96,7 +96,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar */}
-        <div className="flex items-center justify-between gap-2 border-b border-black/10 dark:border-white/[0.08] pb-3 mb-4 sm:mb-5">
+        <div className="flex items-center justify-between gap-2 rule-b pb-3 mb-4 sm:mb-5">
           <div className="flex items-center gap-1.5 sm:gap-2 text-caption font-sans text-accent-ink min-w-0">
             <Terminal size={13} className="shrink-0" />
             <span className="font-medium sm:hidden">Datasheet</span>
@@ -167,7 +167,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
 
         {/* Model Title & SOTA Badge */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
-          <h2 id="modal-title" className="text-heading font-display font-semibold tracking-tight text-black dark:text-white">
+          <h2 id="modal-title" className="text-headline font-display font-semibold tracking-tight text-black dark:text-white">
             {model.name}
           </h2>
           <span className="text-caption font-sans px-2 py-0.5 rounded border border-accent/40 text-accent-ink bg-accent/5 font-medium">
@@ -182,7 +182,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
 
         {/* Key Hardware Specs Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 mb-5 sm:mb-6 text-small font-sans">
-          <div className="p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-hover)] shadow-sm hover:border-accent/40 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 cursor-default min-w-0">
+          <div className="tile p-3 min-w-0">
             <div className="flex items-center gap-1.5 text-fg-muted mb-1.5 text-caption font-medium min-w-0">
               <Layers size={12} className="text-accent-ink shrink-0" />
               <span className="truncate">Context</span>
@@ -192,7 +192,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
             </p>
           </div>
 
-          <div className="p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-hover)] shadow-sm hover:border-accent/40 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 cursor-default min-w-0">
+          <div className="tile p-3 min-w-0">
             <div className="flex items-center gap-1.5 text-fg-muted mb-1.5 text-caption font-medium min-w-0">
               <Cpu size={12} className="text-accent-ink shrink-0" />
               <span className="truncate">Architecture</span>
@@ -202,7 +202,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
             </p>
           </div>
 
-          <div className="p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-hover)] col-span-2 sm:col-span-1 shadow-sm hover:border-accent/40 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 cursor-default min-w-0">
+          <div className="tile p-3 col-span-2 sm:col-span-1 min-w-0">
             <div className="flex items-center gap-1.5 text-fg-muted mb-1.5 text-caption font-medium min-w-0">
               <DollarSign size={12} className="text-accent-ink shrink-0" />
               <span className="truncate">{model.pricingUnit ? "Official API" : "Official API / 1M"}</span>
@@ -222,7 +222,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
 
         {/* Verified Benchmarks Section */}
         {Object.keys(model.benchmarks).length > 0 && (
-          <div className="mb-6 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-black/20 p-3 sm:p-4">
+          <div className="tile mb-6 p-3 sm:p-4">
             <h3 className="text-caption font-sans text-fg-muted font-semibold mb-1">
               Published benchmarks · lab-reported
             </h3>
@@ -280,7 +280,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
               {model.variants.map((variant) => (
                 <div
                   key={variant.name}
-                  className="p-2.5 rounded-lg border border-black/5 dark:border-white/[0.06] bg-black/[0.015] dark:bg-[var(--surface-hover)] hover:border-accent/30 transition-colors duration-150 cursor-default"
+                  className="tile-link p-2.5 duration-150 cursor-default"
                 >
                   <div className="flex flex-wrap items-center gap-1.5 mb-1">
                     <span className="text-small font-sans font-medium text-black dark:text-white">
@@ -303,14 +303,14 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
         )}
 
         {/* Modalities & License */}
-        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pt-3.5 border-t border-black/10 dark:border-white/[0.08] mb-6 text-small font-sans text-fg-muted">
+        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pt-3.5 rule-t mb-6 text-small font-sans text-fg-muted">
           <div className="flex flex-wrap items-center gap-1.5 min-w-0">
             <span className="text-fg-muted shrink-0">MODALITIES:</span>
             <div className="flex flex-wrap gap-1">
               {model.modalities.map((m) => (
                 <span
                   key={m}
-                  className="px-1.5 py-0.5 rounded border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.04] text-caption text-fg whitespace-nowrap"
+                  className="chip whitespace-nowrap"
                 >
                   {m}
                 </span>

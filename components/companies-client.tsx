@@ -25,7 +25,7 @@ export default function CompaniesClient() {
   return (
     <>
 
-      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="section page">
         <div className="space-y-4 text-title font-normal text-fg leading-relaxed max-w-3xl mb-8">
           <TextWithBlur delay={120}>
             <h1 className="text-page font-medium tracking-tight text-black dark:text-white">
@@ -59,7 +59,7 @@ export default function CompaniesClient() {
               <TextWithBlur key={company.id} delay={index * 35}>
                 <div
                   id={company.id}
-                  className="card-lift scroll-mt-24 p-4 sm:p-6 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[var(--surface-raised)] shadow-sm [transition:border-color,background-color_120ms_ease-out]"
+                  className="tile scroll-mt-24 p-4 sm:p-6 [transition:border-color,background-color_120ms_ease-out]"
                 >
                   {/* Lab Header */}
                   <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 mb-2.5 sm:mb-4">
@@ -114,7 +114,7 @@ export default function CompaniesClient() {
                             openModel(flagshipModel)
                           }
                         }}
-                        className="cursor-pointer p-3.5 sm:p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-field)] hover:border-accent/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.99] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 select-none group"
+                        className="tile-link cursor-pointer p-3.5 sm:p-4"
                       >
                         <div className="flex items-center justify-between gap-2 text-small font-sans mb-1.5">
                           <span className="text-accent-ink font-semibold text-small">
@@ -150,7 +150,7 @@ export default function CompaniesClient() {
                             openModel(second)
                           }
                         }}
-                        className="cursor-pointer p-3.5 sm:p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-field)] hover:border-accent/40 hover:shadow-sm hover:bg-white dark:hover:bg-white/[0.03] active:scale-[0.99] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 select-none group"
+                        className="tile-link cursor-pointer p-3.5 sm:p-4"
                       >
                         <div className="flex items-center justify-between gap-2 text-small font-sans mb-1.5">
                           <span className="font-semibold text-small flex items-center gap-1">

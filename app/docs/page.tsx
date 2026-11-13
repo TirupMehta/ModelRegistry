@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 function CodeBlock({ code }: { code: string }) {
   return (
-    <pre className="px-4 py-3.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-black/40 text-small font-mono leading-relaxed text-fg overflow-x-auto [scrollbar-width:thin] whitespace-pre">
+    <pre className="well px-4 py-3.5 text-small font-mono leading-relaxed text-fg overflow-x-auto [scrollbar-width:thin] whitespace-pre">
       {code}
     </pre>
   )
@@ -66,7 +66,7 @@ function FieldRow({ name, type, desc }: { name: string; type: string; desc: stri
 
 function Note({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-md border border-accent/25 bg-black/[0.02] dark:bg-white/[0.02] px-5 py-3.5 text-small font-sans text-fg-muted leading-relaxed">
+    <div className="tile px-5 py-3.5 text-small font-sans text-fg-muted leading-relaxed">
       {children}
     </div>
   )
@@ -141,7 +141,7 @@ export default function DocsPage() {
         <DocsSidebar />
       </aside>
 
-      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20 min-w-0 min-[1440px]:col-start-2 min-[1440px]:mx-0">
+      <section className="section page min-w-0 min-[1440px]:col-start-2 min-[1440px]:mx-0">
         {/* Breadcrumb */}
         <TextWithBlur>
           <div className="mb-5 flex items-center gap-2.5 overflow-x-auto whitespace-nowrap text-small font-sans leading-relaxed text-fg-muted [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
@@ -224,7 +224,7 @@ export default function DocsPage() {
                 response advertises the advisory budget so an agent can
                 self-throttle instead of discovering it through a 429:
               </p>
-              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] mb-4">
+              <div className="tile mb-4">
                 <ParamRow name="RateLimit" type="header" desc={'"default";r=600;t=60 - 600 requests per 60-second window.'} />
                 <ParamRow name="X-RateLimit-Limit · X-RateLimit-Window" type="header" desc="600 and 60, for clients that only read the X-RateLimit-* family." />
                 <ParamRow name="Retry-After" type="header" desc="Seconds to wait, sent with any 429. The waitlist form returns a real 429 with this header when its throttler trips." />
@@ -264,7 +264,7 @@ export default function DocsPage() {
   "docs": "${SITE_URL}/docs#errors"
 }`}
               />
-              <div className="mt-4 rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]">
+              <div className="tile mt-4">
                 <ParamRow name="200 + empty list" type="filters" desc="?company=unknownlab or a category with no matches. status stays “success”, total is 0." />
                 <ParamRow name="bad_request" type="400 · 422" desc="Missing or malformed input. The error field says what to fix." />
                 <ParamRow name="invalid_date · invalid_limit" type="400" desc="/api/v1/changes rejects malformed dates and limits with these codes." />
@@ -291,7 +291,7 @@ export default function DocsPage() {
                 specifications - plus a per-laboratory rollup. All parameters are optional
                 and combinable.
               </p>
-              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] mb-3">
+              <div className="tile mb-3">
                 <ParamRow name="company" type="string" desc={`Lab id - ${labList.map((l) => l.id).join(", ")}.`} />
                 <ParamRow name="category" type="string" desc="flagship · reasoning · open-weights · code · multimodal · audio · image · video" />
                 <ParamRow name="openWeights" type="string" desc="“true” for downloadable weights, “false” for proprietary API models." />
@@ -357,7 +357,7 @@ export default function DocsPage() {
                 Unknown model/company filters return 200 with an empty list; malformed
                 dates return 400.
               </p>
-              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] mb-3">
+              <div className="tile mb-3">
                 <ParamRow name="since" type="date" desc="Inclusive lower bound, YYYY-MM-DD - e.g. 2026-10-01." />
                 <ParamRow name="until" type="date" desc="Inclusive upper bound, YYYY-MM-DD." />
                 <ParamRow name="model" type="string" desc="Filter to one record id (case-insensitive)." />
@@ -379,7 +379,7 @@ export default function DocsPage() {
                 Every entry in <code className="font-mono text-small">models[]</code> follows this
                 shape. Fields marked conditional appear only where they apply.
               </p>
-              <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)]">
+              <div className="tile">
                 <FieldRow name="id" type="string" desc="Stable kebab-case identifier. Never reused; suitable as a long-lived foreign key." />
                 <FieldRow name="companyId · companyName" type="string" desc="Owning laboratory. companyId matches ?company= and /companies/:id." />
                 <FieldRow name="name · version" type="string" desc="Display name and lab version string (e.g. “6.0-Astra”, “V4.1-Flash-Beta”)." />
@@ -459,7 +459,7 @@ const { total, models } = await (
                   ].map((s) => (
                     <div
                       key={s.n}
-                      className="flex items-center gap-2.5 rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02] px-3 py-2.5"
+                      className="tile flex items-center gap-2.5 px-3 py-2.5"
                     >
                       <span className="font-mono text-caption text-accent-ink shrink-0">
                         {s.n}
@@ -492,7 +492,7 @@ const { total, models } = await (
                   </a>
                   .
                 </p>
-                <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] mb-3">
+                <div className="tile mb-3">
                   <ParamRow name="Accept: text/markdown" type="header" desc="Any HTML page, including /, returns Markdown with Content-Type: text/markdown and Vary: Accept. HTML is unchanged for text/html." />
                   <ParamRow name="GET /api/markdown?path=/…" type="endpoint" desc="Direct Markdown view without relying on negotiation. Unknown paths return a Markdown 404 with a recovery block." />
                   <ParamRow name="GET /llms.txt · /llms-full.txt" type="text" desc="Compact site guide, then the exhaustive field matrix." />
@@ -672,7 +672,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}
                     href={f.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center justify-between gap-3 px-4 py-3 hover:bg-black/[0.025] dark:hover:bg-white/[0.025] transition-colors"
+                    className="tile-link group flex items-center justify-between gap-3 px-4 py-3"
                   >
                     <code className="font-mono text-small text-fg">{f.cmd}</code>
                     <span className="flex items-center gap-2 text-small text-fg-muted min-w-0">

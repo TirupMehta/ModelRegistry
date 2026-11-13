@@ -212,7 +212,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
         </article>
       </noscript>
 
-      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-0">
+      <section className="section page-x pb-0">
         {/* Hero: the claim, one sentence, then the provenance that separates a
             cited registry from another list of models. */}
         <div>
@@ -230,7 +230,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
         </div>
       </section>
 
-      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="section page">
         {/* Index: search, filters, then the ledger itself. */}
         <TextWithBlur delay={180}>
           <div className="mb-2 mt-8 flex flex-col gap-3 md:mt-10 lg:flex-row lg:items-center lg:justify-between">
@@ -334,7 +334,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
               )}
             </div>
           </div>
-          <div className="mb-1 flex items-center justify-between border-b border-black/10 dark:border-white/[0.08] pb-3 pt-2">
+          <div className="mb-1 flex items-center justify-between rule-b pb-3 pt-2">
             <p className="text-small font-sans tabular-nums text-fg-muted">
               {filteredModels.length} {filteredModels.length === 1 ? "model" : "models"} shown
               {searchQuery.trim() && (
@@ -347,7 +347,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
         {/* Technical Ledger Manifest */}
         <div className="list-hover-group flex flex-col gap-2.5 sm:gap-0 lg:divide-y lg:divide-black/10 lg:dark:divide-white/[0.06]">
           {filteredModels.length === 0 ? (
-            <div className="py-14 px-6 text-center rounded-xl border border-dashed border-black/15 dark:border-white/15 bg-black/[0.015] dark:bg-white/[0.02]">
+            <div className="py-14 px-6 text-center tile">
               <div className="mx-auto mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/[0.04] dark:bg-white/[0.06] text-fg-muted">
                 <SearchX size={16} />
               </div>
@@ -400,7 +400,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                       // Desktop ledger row only where there is room for the
                       // summary and the specs side by side.
                       "lg:rounded-xl lg:border-0 lg:shadow-none lg:bg-transparent lg:dark:bg-transparent lg:p-0 lg:mx-0 lg:px-3 lg:py-4 lg:active:border-transparent",
-                      "lg:hover:bg-black/[0.025] lg:dark:hover:bg-white/[0.035] lg:hover:shadow-sm",
+                      "lg:hover:bg-[var(--tile)] lg:hover:shadow-sm",
                     ].join(" ")}
                   >
                     {/* Card layout below the wide ledger breakpoint */}
@@ -437,7 +437,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                       </p>
 
                       {/* Spec strip */}
-                      <div className="mt-3 grid grid-cols-3 divide-x divide-black/[0.06] dark:divide-white/[0.06] rounded-xl bg-black/[0.025] dark:bg-white/[0.03] py-2">
+                      <div className="tile mt-3 grid grid-cols-3 divide-x divide-black/[0.06] dark:divide-white/[0.06] py-2">
                         <div className="px-2.5 min-w-0">
                           <p className="text-caption font-sans font-medium text-fg-muted">
                             Input / 1M
@@ -535,7 +535,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                   <li key={company.id}>
                     <Link
                       href={`/models/${flagship.id}`}
-                      className="group flex h-full items-center gap-3 rounded-lg bg-black/[0.025] px-3.5 py-3 transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
+                      className="tile-link group flex h-full items-center gap-3 px-3.5 py-3"
                     >
                       <span className="min-w-0">
                         <span className="block truncate text-body font-semibold text-fg-strong transition-colors group-hover:text-accent-ink">
@@ -576,7 +576,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     href={item.path}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group block h-full rounded-lg bg-black/[0.025] px-3.5 py-3 transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
+                    className="tile-link group block h-full px-3.5 py-3"
                   >
                     <span className="flex items-center justify-between gap-2 text-body font-semibold text-fg-strong transition-colors group-hover:text-accent-ink">
                       {item.label}
@@ -595,7 +595,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     setCurlCopied(true)
                     setTimeout(() => setCurlCopied(false), 2000)
                   }}
-                  className="group block h-full w-full cursor-pointer rounded-lg bg-black/[0.025] px-3.5 py-3 text-left transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
+                  className="tile-link group block h-full w-full cursor-pointer px-3.5 py-3 text-left"
                 >
                   <span className="flex items-center justify-between gap-2 text-body font-semibold text-fg-strong transition-colors group-hover:text-accent-ink">
                     Terminal

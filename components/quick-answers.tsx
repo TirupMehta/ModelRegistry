@@ -28,7 +28,7 @@ export default function QuickAnswers() {
           <li key={item.id}>
             <Link
               href={`/models/${item.model.id}`}
-              className="group grid h-full grid-cols-[1fr_auto] items-end gap-x-3 rounded-xl border border-black/10 bg-[var(--surface-raised)] px-4 py-3.5 transition-colors hover:border-black/25 dark:border-white/[0.08] dark:hover:border-white/25"
+              className="tile-link group grid h-full grid-cols-[1fr_auto] items-end gap-x-3 px-4 py-3.5"
             >
               <span className="min-w-0">
                 <span className="block text-small text-fg-muted">{item.label}</span>

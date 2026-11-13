@@ -21,8 +21,8 @@ export default function PromptBlock({ title, text, previewLines = 3 }: PromptBlo
   const hiddenCount = Math.max(lines.length - previewLines, 0)
 
   return (
-    <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-black/40 overflow-hidden">
-      <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-5 py-2.5 border-b border-black/10 dark:border-white/[0.08]">
+    <div className="well overflow-hidden">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-5 py-2.5 rule-b">
         <p className="font-mono text-caption sm:text-small text-accent-ink">
           {title}
         </p>
@@ -40,7 +40,7 @@ export default function PromptBlock({ title, text, previewLines = 3 }: PromptBlo
           type="button"
           onClick={() => setExpanded((v) => !v)}
           aria-expanded={expanded}
-          className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 border-t border-black/10 dark:border-white/[0.08] text-caption sm:text-small font-sans text-fg-muted hover:text-accent-ink transition-colors cursor-pointer"
+          className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rule-t text-caption sm:text-small font-sans text-fg-muted hover:text-accent-ink transition-colors cursor-pointer"
         >
           <span>{expanded ? "SHOW LESS" : `READ MORE (+${hiddenCount} LINES)`}</span>
           <ChevronDown

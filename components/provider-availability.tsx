@@ -95,7 +95,7 @@ export function ProviderAvailability({ modelId }: { modelId: string }) {
               </thead>
               <tbody>
                 {rows.map((e, i) => (
-                  <tr key={`${e.provider}-${e.tier ?? "default"}-${i}`} className="border-t border-black/10 dark:border-white/[0.08]">
+                  <tr key={`${e.provider}-${e.tier ?? "default"}-${i}`} className="rule-t">
                     <td className="py-2 pr-3 text-black dark:text-white">
                       {e.provider}
                       {e.tier && <span className="ml-1.5 text-fg-muted">{endpointLabel(e.tier)}</span>}

@@ -163,7 +163,7 @@ export default async function ComparePage({ params }: Props) {
         }}
       />
 
-      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="page">
         <nav
           aria-label="Breadcrumb"
           className="flex items-center gap-2.5 mb-7 text-small font-sans leading-relaxed text-fg-muted overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
@@ -201,7 +201,7 @@ export default async function ComparePage({ params }: Props) {
 
         {/* Answer - the passage an answer engine should quote, built from the
             differences rather than from the fact that both records exist. */}
-        <div className="mb-8 rounded-xl bg-black/[0.025] p-5 dark:bg-white/[0.03] sm:p-6">
+        <div className="tile mb-8 p-5 sm:p-6">
           <h2 className="sr-only">Answer</h2>
           <p className="text-title leading-7 text-fg-strong">{comparison.summary}</p>
           {comparison.identical.length > 0 && (
@@ -237,7 +237,7 @@ export default async function ComparePage({ params }: Props) {
             </thead>
             <tbody>
               {comparison.differences.map((row) => (
-                <tr key={row.label} className="border-b border-black/10 dark:border-white/[0.08] align-top">
+                <tr key={row.label} className="rule-b align-top">
                   <th scope="row" className="text-left py-3 pr-3 font-normal">
                     <span className="block text-body font-sans text-fg">
                       {row.label}
@@ -276,7 +276,7 @@ export default async function ComparePage({ params }: Props) {
             <Link
               key={model.id}
               href={`/models/${model.id}`}
-              className="group block rounded-xl bg-black/[0.025] p-5 transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06]"
+              className="tile-link group block p-5"
             >
               <div className="text-small text-fg-muted">{model.companyName}</div>
               <div className="mt-0.5 font-display text-heading font-semibold tracking-tight text-fg-strong transition-colors group-hover:text-accent-ink">
@@ -311,7 +311,7 @@ export default async function ComparePage({ params }: Props) {
             </thead>
             <tbody>
               {comparison.facts.map((fact) => (
-                <tr key={fact.label} className="border-b border-black/10 dark:border-white/[0.08] align-top">
+                <tr key={fact.label} className="rule-b align-top">
                   <th
                     scope="row"
                     className="text-left py-2.5 pr-3 font-sans text-small font-normal text-fg-muted whitespace-nowrap"
@@ -367,7 +367,7 @@ export default async function ComparePage({ params }: Props) {
               </thead>
               <tbody>
                 {comparison.benchmarks.map((row) => (
-                  <tr key={row.label} className="border-b border-black/10 dark:border-white/[0.08]">
+                  <tr key={row.label} className="rule-b">
                     <th
                       scope="row"
                       className="text-left py-2.5 pr-3 font-sans text-small font-normal text-fg-muted whitespace-nowrap"
@@ -405,7 +405,7 @@ export default async function ComparePage({ params }: Props) {
         )}
 
         {comparison.withheld.length > 0 && (
-          <details className="group mb-9 border-t border-b border-black/10 dark:border-white/[0.08]">
+          <details className="group mb-9 border-t rule-b">
             <summary className="flex cursor-pointer list-none items-center gap-2 py-3 [&::-webkit-details-marker]:hidden">
               <span className="text-body font-sans font-medium text-black dark:text-white">
                 {comparison.withheld.length} benchmarks withheld
@@ -442,7 +442,7 @@ export default async function ComparePage({ params }: Props) {
           ].map(({ model, reasons }) => (
             <div
               key={model.id}
-              className="p-4 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.015] dark:bg-white/[0.02]"
+              className="tile p-4"
             >
               <h2 className="text-title font-display font-semibold tracking-tight text-black dark:text-white mb-2.5">
                 Where {model.name} leads
@@ -463,9 +463,9 @@ export default async function ComparePage({ params }: Props) {
         <h2 className="mb-3 font-display text-heading font-semibold tracking-tight text-fg-strong">
           Common questions
         </h2>
-        <div className="border-t border-black/10 dark:border-white/[0.08] mb-9">
+        <div className="rule-t mb-9">
           {comparison.faq.map((item) => (
-            <div key={item.q} className="py-4 border-b border-black/10 dark:border-white/[0.08]">
+            <div key={item.q} className="py-4 rule-b">
               <h3 className="text-body font-medium tracking-tight text-black dark:text-white mb-1.5">
                 {item.q}
               </h3>
@@ -482,12 +482,12 @@ export default async function ComparePage({ params }: Props) {
             <h2 className="mb-3 font-display text-heading font-semibold tracking-tight text-fg-strong">
               Related comparisons
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-0 border-t border-black/10 dark:border-white/[0.08] mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-0 rule-t mb-8">
               {related.map((candidate) => (
                 <Link
                   key={`${candidate.a.id}-${candidate.b.id}`}
                   href={compareHref(candidate.a, candidate.b)}
-                  className="group flex items-baseline gap-2 py-2.5 border-b border-black/10 dark:border-white/[0.08] text-body font-sans"
+                  className="group flex items-baseline gap-2 py-2.5 rule-b text-body font-sans"
                 >
                   <span className="text-fg group-hover:text-accent-ink transition-colors truncate">
                     {candidate.a.name} vs {candidate.b.name}

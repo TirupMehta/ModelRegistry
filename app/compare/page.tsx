@@ -110,7 +110,7 @@ export default function CompareIndexPage() {
         }}
       />
 
-      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="page">
         <nav
           aria-label="Breadcrumb"
           className="flex items-center gap-2.5 mb-7 text-small font-sans leading-relaxed text-fg-muted"
@@ -151,7 +151,7 @@ export default function CompareIndexPage() {
                 <li key={`${pair.a.id}-${pair.b.id}`}>
                   <Link
                     href={compareHref(pair.a, pair.b)}
-                    className="group flex items-center justify-between gap-3 rounded-lg bg-black/[0.02] px-3.5 py-2.5 text-body transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.07]"
+                    className="tile-link group flex items-center justify-between gap-3 px-3.5 py-2.5 text-body"
                   >
                     <span className="min-w-0 truncate text-black dark:text-white">
                       {pair.a.name} <span className="text-fg-muted">vs</span> {pair.b.name}
@@ -186,11 +186,11 @@ export default function CompareIndexPage() {
                     {group.length}
                   </span>
                 </h2>
-                <ul className="border-t border-black/10 dark:border-white/[0.08]">
+                <ul className="rule-t">
                   {group.map((pair) => (
                     <li
                       key={`${pair.a.id}-${pair.b.id}`}
-                      className="border-b border-black/10 dark:border-white/[0.08]"
+                      className="rule-b"
                     >
                       <Link
                         href={compareHref(pair.a, pair.b)}

@@ -9,7 +9,7 @@ export default function LeaderboardPage() {
   return (
     <main className="relative min-h-screen">
       <Header />
-      <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20">
+      <div className="page-x">
         <RankingsSwitcher current="/leaderboard" />
       </div>
       <LeaderboardClient />

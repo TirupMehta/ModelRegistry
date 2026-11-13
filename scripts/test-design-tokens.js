@@ -38,6 +38,9 @@ const rules = [
   ["no Tailwind default font size names (xs, sm, base, lg, xl, 2xl ...)", /(^|[\s"'`:])text-(xs|sm|base|lg|xl|[2-9]xl)(?=[\s"'`]|$)/],
   ["no raw opacity greys for text (use text-fg-strong, text-fg, text-fg-muted)", /text-black\/\d+/],
   ["no native select element (use components/select.tsx so every dropdown looks the same)", /<select[\s>]/],
+  ["no hand-written divider lines (use the rule-t / rule-b classes in globals.css)", /border-[tb] border-black\/10 dark:border-white\/\[0\.08\]/],
+  ["no hand-written soft panels (use the tile / tile-link classes in globals.css)", /bg-black\/\[0\.0(15|2|25)\]/],
+  ["no hand-written page column (use the page class in globals.css)", /max-w-4xl mx-auto w-full px-4|mx-auto w-full max-w-4xl px-4/],
 ]
 
 for (const [name, re] of rules) {
@@ -50,6 +53,17 @@ for (const [name, re] of rules) {
   }
   check(name, offenders)
 }
+
+// Elements that must keep their size. A size change here is a regression, not a cleanup.
+const KEEP = [
+  ["components/header-brand.tsx", "text-headline", "the ModelRegistry wordmark (33px on desktop)"],
+  ["components/model-details-modal.tsx", "text-headline", "the model modal title"],
+  ["components/home-client.tsx", "text-display", "the home hero headline"],
+]
+check(
+  "key titles keep their size token",
+  KEEP.filter(([file, token]) => !fs.readFileSync(path.join(ROOT, file), "utf8").includes(token)).map(([file, , what]) => file + ": " + what),
+)
 
 if (failures) {
   console.error(`\n❌ test-design-tokens failed with ${failures} failure(s).`)

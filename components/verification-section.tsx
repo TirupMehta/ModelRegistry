@@ -30,7 +30,7 @@ export default function VerificationSection({ model }: { model: ModelItem }) {
   return (
     <section
       aria-label={`Sources for ${model.name}`}
-      className="mt-6 sm:mt-8 border-t border-black/10 dark:border-white/[0.08] pt-4"
+      className="mt-6 sm:mt-8 rule-t pt-4"
     >
       <h3 className="mb-2 text-body font-medium text-fg">
         Sources and verification

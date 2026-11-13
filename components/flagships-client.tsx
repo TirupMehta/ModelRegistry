@@ -19,8 +19,8 @@ export default function FlagshipsClient() {
   return <>
     <ModelFilterControls filters={filters} onChange={setFilters} />
     <p className="mb-3 text-caption tabular-nums text-fg-muted" aria-live="polite">{flagships.length} {flagships.length === 1 ? "lab" : "labs"} shown</p>
-    <div className="border-t border-black/10 dark:border-white/[0.08]">
-      {flagships.map((model) => <div key={model.id} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 py-3 border-b border-black/10 dark:border-white/[0.08] text-body">
+    <div className="rule-t">
+      {flagships.map((model) => <div key={model.id} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 py-3 rule-b text-body">
         <span className="flex items-center gap-2 min-w-0 sm:w-64 shrink-0">
           <Link href={`/models/${model.id}`} className="font-medium tracking-tight text-black dark:text-white hover:text-accent-ink truncate">{model.name}</Link>
         </span>

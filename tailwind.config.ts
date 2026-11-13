@@ -33,6 +33,8 @@ const config: Config = {
         small: ["0.875rem", { lineHeight: "1.25rem" }],
         body: ["0.9375rem", { lineHeight: "1.5rem" }],
         title: ["1.0625rem", { lineHeight: "1.5rem" }],
+        // Brand wordmark and modal titles: the old 3xl step, kept so the logo does not shrink.
+        headline: ["var(--fs-headline)", { lineHeight: "1.1" }],
         heading: ["var(--fs-heading)", { lineHeight: "var(--lh-heading)" }],
         page: ["var(--fs-page)", { lineHeight: "var(--lh-page)" }],
         display: ["var(--fs-display)", { lineHeight: "var(--lh-display)" }],

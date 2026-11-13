@@ -60,7 +60,7 @@ export default function ModelPicker({ tests, models }: { tests: PickerTest[]; mo
   return (
     <section
       aria-labelledby="picker-heading"
-      className="mb-10 rounded-xl bg-black/[0.025] p-5 sm:p-6 dark:bg-white/[0.03]"
+      className="tile mb-10 p-5 sm:p-6"
     >
       <h2
         id="picker-heading"

@@ -4,7 +4,8 @@ import Header from "@/components/header"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
-import { ArrowUpRight, ChevronDown } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
+import { Disclosure, PageHeader } from "@/components/ui"
 
 export const metadata: Metadata = {
   title: "AI model pricing comparison with sources",
@@ -33,22 +34,20 @@ export default function PricingPage() {
     <main className="relative min-h-screen">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
-      <section className="mx-auto w-full max-w-4xl px-4 pb-20 sm:px-6 md:px-20">
-        <h1 className="mb-2 font-display text-page font-semibold tracking-tight text-fg-strong">Pricing comparison</h1>
-        <p className="max-w-2xl text-body leading-7 text-fg">
-          Official list prices for each model, per 1M tokens. Check the linked source before budgeting: providers change prices.
-        </p>
-        <details className="group mt-4 mb-10 w-fit max-w-2xl">
-          <summary className="flex w-fit cursor-pointer list-none items-center gap-1 text-small text-fg-muted hover:text-fg [&::-webkit-details-marker]:hidden">
-            What is and is not included
-            <ChevronDown size={13} aria-hidden="true" className="transition-transform group-open:rotate-180" />
-          </summary>
-          <p className="mt-2 text-small leading-6 text-fg">
+      <section className="page">
+        <PageHeader
+          title="Pricing comparison"
+          lead="Official list prices for each model, per 1M tokens. Check the linked source before budgeting: providers change prices."
+          className="mb-6"
+        />
+        <Disclosure summary="What is and is not included" className="mb-10">
+          <p>
             Hosted list prices only, with no reseller or volume-tier figures. Token-billed and per-second-billed models are never
-            mixed in one ranking. Per-record citations live on each <Link href="/methodology" className="text-accent-ink underline-offset-4 hover:underline">model page</Link>.
-            Dataset revised <time dateTime={datasetRevision.revisedAt} className="tabular-nums">{datasetRevision.revisedAt}</time>.
+            mixed in one ranking. Per-record citations live on each{" "}
+            <Link href="/methodology" className="text-accent-ink underline-offset-4 hover:underline">model page</Link>. Dataset
+            revised <time dateTime={datasetRevision.revisedAt} className="tabular-nums">{datasetRevision.revisedAt}</time>.
           </p>
-        </details>
+        </Disclosure>
 
         <h2 className="mb-1 font-display text-heading font-semibold tracking-tight text-fg-strong">Billed per token</h2>
         <p className="mb-3 text-small text-fg-muted">Cheapest input first.</p>
@@ -66,7 +65,7 @@ export default function PricingPage() {
               {tokenModels.map((m) => {
                 const source = (m.fieldSources.pricing?.[0] || m.sources[0])?.url
                 return (
-                  <tr key={m.id} className="border-b border-black/10 dark:border-white/[0.08]">
+                  <tr key={m.id} className="rule-b">
                     <th scope="row" className="py-3 pr-3 font-normal">
                       <Link href={`/models/${m.id}`} className="block truncate text-body font-medium text-fg-strong hover:text-accent-ink">
                         {m.name}
@@ -99,7 +98,7 @@ export default function PricingPage() {
           <div className="mt-12">
             <h2 className="mb-1 font-display text-heading font-semibold tracking-tight text-fg-strong">Billed by another unit</h2>
             <p className="mb-3 text-small text-fg-muted">Separate units, so these are not comparable with the table above.</p>
-            <ul className="border-t border-black/10 dark:border-white/[0.08]">
+            <ul className="rule-t">
               {unitModels.map((m) => (
                 <li key={m.id} className="flex items-baseline gap-3 border-b border-black/10 py-3 dark:border-white/[0.08]">
                   <span className="min-w-0">

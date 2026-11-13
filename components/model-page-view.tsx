@@ -69,7 +69,7 @@ function Bar({ label, value, tone }: { label: string; value: string; tone: "lab"
 function BenchRow({ label, value, independent }: { label: string; value?: string; independent?: string }) {
   const { head, note } = value ? splitValue(value) : { head: "", note: "" }
   return (
-    <div className="rounded-lg bg-black/[0.02] p-3.5 dark:bg-white/[0.03] sm:p-4">
+    <div className="tile p-3.5 sm:p-4">
       <div>
         <div className="text-title font-semibold leading-snug text-black dark:text-white">{label}</div>
         {note && <div className="mt-0.5 text-small leading-4 text-fg-muted">{note}</div>}
@@ -192,7 +192,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
   return (
     <div className="min-h-screen bg-[var(--bg)] dark:bg-[var(--bg)] text-[var(--fg)] dark:text-[var(--fg)] transition-colors duration-150">
-      <main className="max-w-4xl mx-auto w-full px-4 pb-10 sm:px-6 md:px-20">
+      <main className="page-x pb-10">
         {/* Breadcrumb Navigation */}
         <div className="mb-5 flex items-center gap-2.5 overflow-x-auto whitespace-nowrap text-small font-sans leading-relaxed text-fg-muted [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <Link
@@ -214,9 +214,9 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
         </div>
 
         {/* Datasheet Container */}
-        <div className="bg-white dark:bg-[var(--surface-raised)] border border-black/10 dark:border-white/[0.08] rounded-2xl shadow-sm ring-1 ring-black/5 dark:ring-white/5 p-4 sm:p-9 mb-6 sm:mb-8 leading-relaxed">
+        <div className="card ring-1 ring-black/5 dark:ring-white/5 p-4 sm:p-9 mb-6 sm:mb-8 leading-relaxed">
           {/* Top Control Bar */}
-          <div className="flex items-center justify-between gap-3 border-b border-black/10 dark:border-white/[0.08] pb-4 mb-6">
+          <div className="flex items-center justify-between gap-3 rule-b pb-4 mb-6">
             <div className="flex items-center gap-1.5 sm:gap-2 text-caption font-sans text-accent-ink min-w-0">
               <Terminal size={13} className="shrink-0" />
               <span className="truncate text-body font-medium">Datasheet</span>
@@ -304,7 +304,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
             return (
               <dl className="mb-6 grid grid-cols-2 gap-2.5 font-sans sm:mb-8 sm:grid-cols-4 sm:gap-3">
                 {specs.map(({ icon: Icon, label, value, note }) => (
-                  <div key={label} className="min-w-0 rounded-lg bg-black/[0.02] p-3.5 dark:bg-white/[0.03] sm:p-4">
+                  <div key={label} className="min-w-0 tile p-3.5 sm:p-4">
                     <dt className="flex items-center gap-1.5 text-small text-fg-muted">
                       <Icon size={13} aria-hidden="true" />
                       {label}
@@ -366,13 +366,13 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                 {model.variants.map((variant) => (
                   <div
                     key={variant.name}
-                    className="border border-black/10 dark:border-white/[0.08] rounded-lg p-4 sm:p-[18px] bg-white dark:bg-[var(--surface-raised)] leading-relaxed flex flex-col"
+                    className="tile p-4 sm:p-[18px] leading-relaxed flex flex-col"
                   >
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-2">
                       <span className="text-small sm:text-body font-semibold text-black dark:text-white tracking-wide">
                         {variant.name}
                       </span>
-                      <span className="rounded border border-black/10 bg-black/[0.02] px-1.5 py-0.5 text-caption text-fg-muted dark:border-white/10 dark:bg-white/[0.03] dark:text-white/60">
+                      <span className="chip">
                         {variant.role}
                       </span>
                     </div>
@@ -401,7 +401,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
           {/* Quickstart Developer Code Snippet */}
           <div className="mb-6 sm:mb-8 border border-black/10 dark:border-white/[0.08] rounded-xl overflow-hidden shadow-sm">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 bg-black/[0.03] dark:bg-[var(--surface-hover)] px-3.5 sm:px-4 py-2.5 border-b border-black/10 dark:border-white/[0.08]">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 bg-black/[0.03] dark:bg-[var(--surface-hover)] px-3.5 sm:px-4 py-2.5 rule-b">
               <div className="flex items-center justify-between gap-2 min-w-0">
                 <span className="inline-flex items-center gap-2.5">
                   <span className="shrink-0 text-body font-medium text-fg">
@@ -458,7 +458,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
               </div>
             </div>
 
-            <pre className="p-4 sm:p-5 bg-black/[0.02] dark:bg-[var(--surface-bar)] text-body font-mono overflow-x-auto text-fg leading-6 sm:leading-7 tracking-wide">
+            <pre className="p-4 sm:p-5 bg-[var(--tile)] text-body font-mono overflow-x-auto text-fg leading-6 sm:leading-7 tracking-wide">
               <code className={activeSnippetTab === "curl" ? "whitespace-pre-wrap break-all" : "whitespace-pre"}>
                 {activeSnippetTab === "curl"
                   ? curlCommand
@@ -468,14 +468,14 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
               </code>
             </pre>
             {!isSnippetVerified && (
-              <p className="px-3.5 sm:px-5 py-2 text-caption font-sans tracking-wide text-fg-muted border-t border-black/10 dark:border-white/[0.08]">
+              <p className="px-3.5 sm:px-5 py-2 text-caption font-sans tracking-wide text-fg-muted rule-t">
                 Template - adapt repo, model name, and endpoint to your provider before running.
               </p>
             )}
           </div>
 
           {/* External Links Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-5 border-t border-black/10 dark:border-white/[0.08] text-small font-sans tracking-wide leading-relaxed">
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-5 rule-t text-small font-sans tracking-wide leading-relaxed">
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5">
               {model.links?.announcement && (
                 <a
@@ -552,7 +552,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                 <Link
                   key={sibling.id}
                   href={`/models/${sibling.id}`}
-                  className="group block p-3.5 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] hover:border-accent/40 transition-colors duration-150"
+                  className="tile-link group block p-3.5 transition-colors duration-150"
                 >
                   <div className="text-body font-medium tracking-tight text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150 truncate">
                     {sibling.name}

@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 function Code({ children }: { children: string }) {
   return (
-    <pre className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] overflow-x-auto p-3.5 mb-4">
+    <pre className="tile overflow-x-auto p-3.5 mb-4">
       <code className="font-mono text-caption leading-5 text-fg whitespace-pre">
         {children}
       </code>
@@ -73,7 +73,7 @@ export default function CliPage() {
     <main className="relative min-h-screen">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
-      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="page">
         <h1 className="text-page font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           ModelRegistry CLI
         </h1>
@@ -108,7 +108,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}</Code>
         <h2 className="text-heading font-display font-semibold tracking-tight text-black dark:text-white mb-3">
           Commands
         </h2>
-        <div className="rounded-md border border-black/10 dark:border-white/[0.08] bg-white dark:bg-[var(--surface-raised)] mb-4">
+        <div className="tile mb-4">
           <Row name="models" desc="List tracked models. Filters: --company, --category, --open-weights, --flagship-only, --latest-only." />
           <Row name="model <id>" desc="One record: specs, pricing, license, verification status, lab-reported benchmarks, sources." />
           <Row name="changes" desc="Changelog entries newest first. Filters: --since, --until, --model, --company, --limit." />

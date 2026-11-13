@@ -52,7 +52,7 @@ export default async function IntakePreview({ searchParams }: { searchParams: Pr
   return (
     <>
       <Header />
-      <section className="max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 mb-8">
+      <section className="page-x mb-8">
         <div className="rounded-xl border border-amber-500/40 bg-amber-500/[0.06] p-5 text-body leading-6 text-fg">
           <p className="font-semibold text-black dark:text-white mb-1">
             Intake preview. Not published. Built by the intake script from the lab&apos;s own pages.

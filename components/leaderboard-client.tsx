@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { ArrowUpRight, ChevronDown } from "lucide-react"
 import TextWithBlur from "@/components/text-with-blur"
+import { PageHeader } from "@/components/ui"
 import ModelDetailsModal from "@/components/model-details-modal"
 import ModelFilterControls from "@/components/model-filter-controls"
 import { modelsData, type ModelItem } from "@/data/models"
@@ -139,18 +140,21 @@ export default function LeaderboardClient() {
 
   return (
     <>
-      <section className="section mx-auto w-full max-w-4xl px-4 pb-20 sm:px-6 md:px-20">
+      <section className="section page">
         <TextWithBlur delay={120}>
-          <div className="mb-8 flex items-start justify-between gap-4">
-            <div className="max-w-2xl">
-              <h1 className="text-page font-semibold tracking-tight text-fg-strong">Leaderboard</h1>
-              <p className="mt-2 text-body text-fg">
-                Who leads on each measure, from independent results where they exist.{" "}
-                <Link href="/methodology" className="text-accent-ink underline-offset-4 hover:underline">
-                  How it works
-                </Link>
-              </p>
-            </div>
+          <div className="mb-10 flex items-start justify-between gap-4">
+            <PageHeader
+              className="mb-0"
+              title="Leaderboard"
+              lead={
+                <>
+                  Who leads on each measure, from independent results where they exist.{" "}
+                  <Link href="/methodology" className="text-accent-ink underline-offset-4 hover:underline">
+                    How it works
+                  </Link>
+                </>
+              }
+            />
             <ModelFilterControls filters={filters} onChange={setFilters} className="relative z-30 flex justify-end" />
           </div>
         </TextWithBlur>
@@ -181,7 +185,7 @@ export default function LeaderboardClient() {
 
                   <ol>
                     {rows.map((row, i) => (
-                      <li key={row.model.id} className="border-b border-black/10 dark:border-white/[0.08]">
+                      <li key={row.model.id} className="rule-b">
                         <button
                           type="button"
                           onClick={() => openModel(row.model)}

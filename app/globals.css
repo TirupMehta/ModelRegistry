@@ -30,7 +30,12 @@
   --text-muted: rgba(17, 18, 21, 0.62);
   --text-secondary: rgba(17, 18, 21, 0.78);
   --text-primary: rgba(17, 18, 21, 0.94);
+  /* Surfaces and lines. Change these to restyle every tile and divider at once. */
+  --tile: rgba(0, 0, 0, 0.025);
+  --tile-hover: rgba(0, 0, 0, 0.05);
+  --rule: rgba(0, 0, 0, 0.1);
   /* Type steps that grow on wider screens. */
+  --fs-headline: 1.25rem;
   --fs-heading: 1.25rem;
   --lh-heading: 1.75rem;
   --fs-page: 1.75rem;
@@ -41,12 +46,19 @@
 
 @media (min-width: 640px) {
   :root {
+    --fs-headline: 1.5rem;
     --fs-heading: 1.375rem;
     --lh-heading: 1.875rem;
     --fs-page: 2.25rem;
     --lh-page: 2.625rem;
     --fs-display: 3.25rem;
     --lh-display: 3.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --fs-headline: 1.875rem;
   }
 }
 
@@ -65,6 +77,9 @@ html.dark {
   --text-muted: rgba(244, 245, 247, 0.64);
   --text-secondary: rgba(244, 245, 247, 0.80);
   --text-primary: rgba(244, 245, 247, 0.95);
+  --tile: rgba(255, 255, 255, 0.03);
+  --tile-hover: rgba(255, 255, 255, 0.06);
+  --rule: rgba(255, 255, 255, 0.08);
   --accent-rgb: 255 93 46;
   --accent-ink-rgb: 255 138 99;
   --good-rgb: 52 211 153;
@@ -268,6 +283,61 @@ body {
   background-clip: padding-box;
 }
 
+/*
+ * The site's building blocks. Pages compose these instead of repeating colours,
+ * radii and spacing, so one edit here changes every page.
+ *   .page       page column: width, side gutters, bottom space (.page-x: without the bottom space)
+ *   .chip       small label pill
+ *   .well       inset block for code
+ *   .card       the one big white sheet (model datasheet)
+ *   .tile       soft panel (the one card style inside a page)
+ *   .tile-link  a tile that is a link or button
+ *   .rule-t/b   the thin divider line
+ */
+@layer components {
+  .page-x {
+    @apply mx-auto w-full max-w-4xl px-4 sm:px-6 md:px-20;
+  }
+  .page {
+    @apply page-x pb-20;
+  }
+  /* Small label pill: status, tag, filter chip. */
+  .chip {
+    @apply rounded-md px-1.5 py-0.5 text-caption text-fg-muted;
+    background-color: var(--tile);
+    border: 1px solid var(--rule);
+  }
+  /* Inset block for code and commands. */
+  .well {
+    @apply rounded-lg;
+    background-color: var(--tile);
+    border: 1px solid var(--rule);
+  }
+  .tile {
+    @apply rounded-xl;
+    background-color: var(--tile);
+  }
+  /* The primary container: a white sheet on the page, for the one big card on a page. */
+  .card {
+    @apply rounded-2xl shadow-sm;
+    background-color: var(--surface-raised);
+    border: 1px solid var(--rule);
+  }
+  .tile-link {
+    @apply rounded-xl transition-colors;
+    background-color: var(--tile);
+  }
+  .tile-link:hover {
+    background-color: var(--tile-hover);
+  }
+  .rule-t {
+    border-top: 1px solid var(--rule);
+  }
+  .rule-b {
+    border-bottom: 1px solid var(--rule);
+  }
+}
+
 /* Shared finished-product card hover - use via `card-lift` class */
 @layer components {
   .card-lift {
@@ -286,7 +356,7 @@ body {
   }
 }
 
-/* 
+/*
  * Responsive Screen & Mobile Ergonomics
  */
 html,

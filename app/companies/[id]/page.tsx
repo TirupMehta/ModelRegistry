@@ -165,7 +165,7 @@ export default async function CompanyPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }}
       />
 
-      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
+      <section className="section page">
         {/* Breadcrumb */}
         <TextWithBlur>
           <div className="flex items-center gap-2.5 mb-7 text-small font-sans leading-relaxed text-fg-muted overflow-x-auto whitespace-nowrap [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
@@ -215,7 +215,7 @@ export default async function CompanyPage({ params }: Props) {
 
         {/* Visible answer matching the FAQPage schema; folded so it does not repeat the description. */}
         <TextWithBlur delay={110}>
-          <details className="group mb-10 rounded-lg bg-black/[0.025] px-4 py-3 dark:bg-white/[0.03]">
+          <details className="tile group mb-10 px-4 py-3">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-small font-medium text-fg-strong [&::-webkit-details-marker]:hidden">
               <h2 className="text-small font-medium">What is the latest AI model from {lab.name}?</h2>
               <ChevronDown size={14} aria-hidden="true" className="shrink-0 text-fg-muted transition-transform group-open:rotate-180" />
@@ -245,7 +245,7 @@ export default async function CompanyPage({ params }: Props) {
                     <li key={model.id}>
                       <Link
                         href={`/models/${model.id}`}
-                        className="group block rounded-xl bg-black/[0.025] p-4 transition-colors hover:bg-black/[0.05] dark:bg-white/[0.03] dark:hover:bg-white/[0.06] sm:p-5"
+                        className="tile-link group block p-4 sm:p-5"
                       >
                         <div className="flex items-baseline gap-3">
                           <span className="min-w-0 truncate font-display text-title font-semibold tracking-tight text-fg-strong transition-colors group-hover:text-accent-ink">
