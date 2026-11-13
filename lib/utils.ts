@@ -87,3 +87,9 @@ export function getRelativeTimeString(dateString: string): string {
     return ''
   }
 }
+
+/** A summary that opens with "Released Nov 9, 2026;" repeats the date shown beside it. Drop that lead-in. */
+export function withoutReleasePrefix(text: string): string {
+  const stripped = text.replace(/^(released|rolled out|shipped|launched)[^;:]{0,40}[;:]\s*/i, "")
+  return stripped ? stripped.charAt(0).toUpperCase() + stripped.slice(1) : text
+}

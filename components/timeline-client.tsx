@@ -4,11 +4,9 @@ import { useState } from "react"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, ModelItem } from "@/data/models"
-import { companies } from "@/data/companies"
-import { formatDate, parseLocalDate } from "@/lib/utils"
+import { parseLocalDate, withoutReleasePrefix } from "@/lib/utils"
 import { folioFor } from "@/lib/registry"
 import { tapFeedback } from "@/lib/feedback"
-import { ArrowUpRight, Calendar } from "lucide-react"
 
 export default function TimelineClient() {
   const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
@@ -37,98 +35,53 @@ export default function TimelineClient() {
 
   return (
     <>
+      <section className="section mx-auto w-full max-w-4xl px-4 pb-20 sm:px-6 md:px-20">
+        <TextWithBlur delay={120}>
+          <h1 className="font-display text-page font-semibold tracking-tight text-fg-strong">Release timeline</h1>
+          <p className="mt-2 mb-10 max-w-2xl text-body text-fg">
+            Every tracked model checkpoint, newest first. Select a row for the full record.
+          </p>
+        </TextWithBlur>
 
-      <section className="section max-w-4xl mx-auto w-full px-4 sm:px-6 md:px-20 pb-20">
-        <div className="space-y-4 text-title font-normal text-fg leading-relaxed max-w-3xl mb-8">
-          <TextWithBlur delay={120}>
-            <h1 className="text-page font-medium tracking-tight text-black dark:text-white">
-              Release Timeline
-            </h1>
-            <p>
-              The chronological release log of major foundation model checkpoints and research breakthroughs.
-            </p>
-          </TextWithBlur>
-        </div>
-
-        {/* Timeline Months with Sibling Dimming */}
-        <div className="flex flex-col list-hover-group space-y-8">
+        <div className="space-y-10">
           {Object.entries(groupedTimeline).map(([monthYear, models], gIndex) => (
             <TextWithBlur key={monthYear} delay={gIndex * 40}>
-              <div
-                id={monthYear.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
-                className="border-l border-black/10 dark:border-white/[0.08] pl-3.5 sm:pl-6 ml-1.5 sm:ml-2 relative scroll-mt-24"
-              >
-                {/* Technical node indicator */}
-                <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-accent ring-4 ring-accent/15" />
-
-                <h2 className="text-title font-medium text-black dark:text-white mb-4 flex items-center gap-2 font-sans">
-                  <Calendar size={14} className="text-accent-ink" />
-                  <span>{monthYear}</span>
-                  <span className="text-small text-fg-muted font-normal">
-                    [{models.length} {models.length === 1 ? "release" : "releases"}]
+              <section id={monthYear.toLowerCase().replace(/[^a-z0-9]+/g, "-")} aria-label={monthYear} className="scroll-mt-24">
+                <h2 className="mb-1 font-display text-heading font-semibold tracking-tight text-fg-strong">
+                  {monthYear}
+                  <span className="ml-2 text-small font-normal text-fg-muted">
+                    {models.length} {models.length === 1 ? "release" : "releases"}
                   </span>
                 </h2>
 
-                <div className="space-y-3">
-                  {models.map((model) => {
-                    const company = companies[model.companyId]
-
-                    return (
-                      <div
-                        key={model.id}
+                <ul className="border-t border-black/10 dark:border-white/[0.08]">
+                  {models.map((model) => (
+                    <li key={model.id} className="border-b border-black/10 dark:border-white/[0.08]">
+                      <button
+                        type="button"
                         onClick={() => openModel(model)}
-                        role="button"
-                        tabIndex={0}
-                        aria-label={`View details for ${model.name}`}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault()
-                            openModel(model)
-                          }
-                        }}
-                        className="card-lift cursor-pointer p-3.5 sm:p-4 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.7] dark:bg-[var(--surface-field)] shadow-sm hover:border-accent/40 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 select-none group"
+                        className="group grid w-full cursor-pointer grid-cols-[3.5rem_1fr] items-baseline gap-x-4 py-3.5 text-left sm:grid-cols-[4rem_1fr_auto]"
                       >
-                        <div className="mb-1.5">
-                          <div className="flex items-center gap-2 font-sans min-w-0">
-                            <span
-                              className="w-2 h-2 rounded-[3px] ring-1 ring-black/10 dark:ring-white/10 shrink-0"
-                              style={{ backgroundColor: company?.accentColor || "rgb(var(--accent-rgb))" }}
-                            />
-                            <span className="text-fg-muted text-small truncate">
-                              {model.companyName}
-                            </span>
-                            <span className="ml-auto text-small text-fg-muted tabular-nums whitespace-nowrap shrink-0">
-                              {formatDate(model.releaseDate)}
-                            </span>
-                          </div>
-                          <div className="mt-1 font-sans text-body sm:text-title font-medium tracking-tight leading-snug text-black dark:text-white group-hover:text-accent-ink transition-colors duration-150">
+                        <time dateTime={model.releaseDate} className="text-small tabular-nums text-fg-muted">
+                          {parseLocalDate(model.releaseDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                        </time>
+                        <span className="min-w-0">
+                          <span className="block truncate font-display text-title font-semibold tracking-tight text-fg-strong transition-colors group-hover:text-accent-ink">
                             {model.name}
-                          </div>
-                        </div>
-
-                        <p className="text-small sm:text-body font-normal text-fg-muted leading-relaxed mb-2 line-clamp-2">
-                          {model.highlight}
-                        </p>
-
-                        <div className="flex flex-wrap items-center justify-between gap-y-1.5 gap-x-3 text-small pt-2 border-t border-black/5 dark:border-white/[0.06] font-sans">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="text-small text-fg-muted">
-                              {model.contextWindow}
-                            </span>
-                            <span className="text-small px-1.5 py-0.5 rounded border border-black/5 dark:border-white/[0.08] bg-black/5 dark:bg-white/[0.04] text-fg-muted transition-colors group-hover:border-accent/40 group-hover:text-accent-ink">
-                              {model.statusBadge}
-                            </span>
-                          </div>
-
-                          <span className="inline-flex items-center gap-1 text-small text-fg-muted group-hover:text-accent-ink transition-colors shrink-0">
-                            INSPECT SPEC <ArrowUpRight size={10} className="opacity-60" />
                           </span>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
+                          <span className="block truncate text-small text-fg-muted">
+                            {model.companyName} · {model.categoryLabel}
+                          </span>
+                          <span className="mt-1 line-clamp-2 text-body leading-6 text-fg">{withoutReleasePrefix(model.highlight)}</span>
+                        </span>
+                        <span className="hidden text-small tabular-nums text-fg-muted sm:block">
+                          {model.contextWindowTokens > 0 ? `${(model.contextWindowTokens / 1_000_000).toFixed(model.contextWindowTokens % 1_000_000 ? 2 : 0)}M context` : ""}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
             </TextWithBlur>
           ))}
         </div>
