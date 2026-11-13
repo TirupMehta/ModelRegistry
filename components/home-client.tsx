@@ -10,7 +10,7 @@ import { datasetRevision } from "@/data/revision"
 import { formatDate } from "@/lib/utils"
 import { folioFor, newestReleaseMonth } from "@/lib/registry"
 import { selectFeedback, tapFeedback, successFeedback } from "@/lib/feedback"
-import { ArrowUpRight, Terminal, Copy, Check, X, Search, SearchX } from "lucide-react"
+import { ArrowUpRight, Copy, Check, X, Search, SearchX } from "lucide-react"
 import ModelFilterControls from "@/components/model-filter-controls"
 import { DEFAULT_MODEL_FILTERS, filterModels, type ModelFilters } from "@/lib/model-filters"
 
@@ -30,6 +30,12 @@ function summarize(raw: string, max = 84): string {
   if (text.length <= max) return text
   const cut = text.slice(0, max)
   return `${cut.slice(0, Math.max(cut.lastIndexOf(" "), 60)).trimEnd()}…`
+}
+
+/** List price per 1M tokens: two decimals, more only when the price is under a dime. */
+function usd(n: number): string {
+  if (n === 0) return "Free"
+  return n < 0.1 ? `$${n}` : `$${n.toFixed(2)}`
 }
 
 function isNewDrop(releaseDate: string, now: number = Date.now()): boolean {
@@ -479,7 +485,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                         </span>
                         <span className="shrink-0 text-small text-fg-muted">{model.companyName}</span>
                         <span className="ml-auto shrink-0 text-small tabular-nums text-fg">
-                          {model.pricingUnit ? model.pricingUnit : `$${model.pricing.input} / $${model.pricing.output}`}
+                          {model.pricingUnit ? model.pricingUnit : `${usd(model.pricing.input)} / ${usd(model.pricing.output)}`}
                         </span>
                         <time dateTime={model.releaseDate} className="w-28 shrink-0 text-right text-small tabular-nums text-fg-muted">
                           {formatDate(model.releaseDate)}
@@ -510,99 +516,50 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
           <div className="hidden border-t border-black/10 lg:block dark:border-white/[0.08]" />
         </div>
 
-        {/* Direct Technical Endpoints */}
+        {/* Use the data: same list style as "Latest flagship by lab" below. */}
         <TextWithBlur delay={300}>
-          <div className="mt-12 rounded-2xl border border-black/10 dark:border-white/[0.08] bg-white/[0.6] dark:bg-white/[0.02] p-4 sm:p-5 shadow-sm">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <h2 className="flex items-center gap-2 font-display text-heading font-semibold tracking-tight text-black dark:text-white">
-                <Terminal size={16} className="text-accent-ink" />
-                <span>Open telemetry and syndication</span>
-              </h2>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText("curl -s https://modelregistry.tirup.in/latest")
-                  successFeedback()
-                  setCurlCopied(true)
-                  setTimeout(() => setCurlCopied(false), 2000)
-                }}
-                title="Copy the terminal query"
-                className="hidden sm:inline-flex items-center gap-2 rounded-md border border-[var(--field-edge)] px-2.5 py-1.5 text-small font-mono text-fg hover:border-accent hover:text-accent-ink transition-colors duration-150"
-              >
-                <span>curl -s …/latest</span>
-                {curlCopied ? (
-                  <Check size={12} className="text-good" />
-                ) : (
-                  <Copy size={12} className="opacity-50" />
-                )}
-              </button>
+          <div className="mt-12">
+            <div className="mb-2 flex items-baseline justify-between gap-3">
+              <h2 className="font-display text-heading font-semibold tracking-tight text-fg-strong">Use the data</h2>
+              <Link href="/docs" className="shrink-0 text-small font-medium text-accent-ink underline-offset-4 hover:underline">
+                API docs
+              </Link>
             </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-small font-sans">
-              <a
-                href="/api/v1/models"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-sunken)] hover:bg-white dark:hover:bg-[var(--surface-hover)] hover:border-accent/40 active:scale-[0.98] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out flex items-center justify-between gap-2 cursor-pointer select-none"
-              >
-                <span className="font-mono text-small text-fg group-hover:text-black dark:group-hover:text-white transition-colors duration-150 truncate min-w-0">
-                  /api/v1/models
-                </span>
-                <ArrowUpRight
-                  size={12}
-                  className="text-fg-muted group-hover:text-accent-ink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out shrink-0"
-                />
-              </a>
-
-              <a
-                href="/rss.xml"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-sunken)] hover:bg-white dark:hover:bg-[var(--surface-hover)] hover:border-accent/40 active:scale-[0.98] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out flex items-center justify-between gap-2 cursor-pointer select-none"
-              >
-                <span className="font-mono text-small text-fg group-hover:text-black dark:group-hover:text-white transition-colors duration-150 truncate min-w-0">
-                  /rss.xml
-                </span>
-                <ArrowUpRight
-                  size={12}
-                  className="text-fg-muted group-hover:text-accent-ink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out shrink-0"
-                />
-              </a>
-
-              <a
-                href="/llms.txt"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="card-lift group p-3 rounded-xl border border-black/10 dark:border-white/[0.08] bg-black/[0.02] dark:bg-[var(--surface-sunken)] hover:bg-white dark:hover:bg-[var(--surface-hover)] hover:border-accent/40 active:scale-[0.98] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out flex items-center justify-between gap-2 cursor-pointer select-none"
-              >
-                <span className="font-mono text-small text-fg group-hover:text-black dark:group-hover:text-white transition-colors duration-150 truncate min-w-0">
-                  /llms.txt
-                </span>
-                <ArrowUpRight
-                  size={12}
-                  className="text-fg-muted group-hover:text-accent-ink group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out shrink-0"
-                />
-              </a>
-
-              <a
-                href="https://github.com/TirupMehta/ModelRegistry/blob/main/CONTRIBUTING.md"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="card-lift group p-3 rounded-xl border border-black dark:border-white bg-black dark:bg-white hover:bg-accent dark:hover:bg-accent hover:border-accent active:scale-[0.98] transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out flex items-center justify-between gap-2 cursor-pointer select-none shadow-sm"
-              >
-                <div className="flex flex-col min-w-0 pr-1">
-                  <span className="font-semibold text-small text-white dark:text-black group-hover:text-white transition-colors">
-                    Contribute in 60s
-                  </span>
-                  <span className="truncate text-caption text-white/60 dark:text-fg-muted group-hover:text-white/80">
-                    One file, auto-synced
-                  </span>
-                </div>
-                <ArrowUpRight
-                  size={13}
-                  className="text-white dark:text-black group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-[color,background-color,border-color,opacity,transform,box-shadow] duration-150 ease-out shrink-0"
-                />
-              </a>
-            </div>
+            <ul className="grid grid-cols-1 gap-x-8 border-t border-black/10 sm:grid-cols-2 dark:border-white/[0.08]">
+              {[
+                { label: "JSON API", path: "/api/v1/models" },
+                { label: "RSS feed", path: "/rss.xml" },
+                { label: "For AI agents", path: "/llms.txt" },
+              ].map((item) => (
+                <li key={item.path} className="border-b border-black/10 dark:border-white/[0.08]">
+                  <a href={item.path} target="_blank" rel="noopener noreferrer" className="group flex items-baseline gap-3 py-2.5 text-small">
+                    <span className="font-medium text-fg-strong transition-colors group-hover:text-accent-ink">{item.label}</span>
+                    <span className="ml-auto truncate font-mono text-fg-muted">{item.path}</span>
+                    <ArrowUpRight size={13} aria-hidden="true" className="shrink-0 self-center text-fg-muted opacity-50 transition-[opacity,color] group-hover:text-accent-ink group-hover:opacity-100" />
+                  </a>
+                </li>
+              ))}
+              <li className="border-b border-black/10 dark:border-white/[0.08]">
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText("curl -s https://modelregistry.tirup.in/latest")
+                    successFeedback()
+                    setCurlCopied(true)
+                    setTimeout(() => setCurlCopied(false), 2000)
+                  }}
+                  className="group flex w-full cursor-pointer items-baseline gap-3 py-2.5 text-left text-small"
+                >
+                  <span className="font-medium text-fg-strong transition-colors group-hover:text-accent-ink">Terminal</span>
+                  <span className="ml-auto truncate font-mono text-fg-muted">{curlCopied ? "Copied" : "curl -s …/latest"}</span>
+                  {curlCopied ? (
+                    <Check size={13} aria-hidden="true" className="shrink-0 self-center text-good" />
+                  ) : (
+                    <Copy size={13} aria-hidden="true" className="shrink-0 self-center text-fg-muted opacity-50 transition-opacity group-hover:opacity-100" />
+                  )}
+                </button>
+              </li>
+            </ul>
           </div>
         </TextWithBlur>
 
