@@ -17,13 +17,14 @@ export interface ChangelogEntry {
 const LAST_VISIT_KEY = "modelregistry.changelog.lastVisit"
 const controlClass = "rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-2.5 py-2 text-small text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-accent-ink/20"
 
+type Period = "all" | "7" | "30" | "visit"
+
+const daysAgo = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString().slice(0, 10)
+
 export default function ChangelogClient({ entries }: { entries: ChangelogEntry[] }) {
   const [lab, setLab] = useState("all")
-  const [from, setFrom] = useState("")
-  const [until, setUntil] = useState("")
-  const [sinceLastVisit, setSinceLastVisit] = useState(false)
+  const [period, setPeriod] = useState<Period>("all")
   const [lastVisit, setLastVisit] = useState<string | null>(null)
-  const [ready, setReady] = useState(false)
 
   useEffect(() => {
     try {
@@ -33,52 +34,85 @@ export default function ChangelogClient({ entries }: { entries: ChangelogEntry[]
     } catch {
       setLastVisit(null)
     }
-    setReady(true)
   }, [])
 
-  const visible = useMemo(() => entries.filter((entry) =>
-    (lab === "all" || entry.companyId === lab) &&
-    (!from || entry.date >= from) && (!until || entry.date <= until) &&
-    (!sinceLastVisit || !lastVisit || entry.date >= lastVisit)
-  ), [entries, lab, from, until, sinceLastVisit, lastVisit])
+  const since = period === "7" ? daysAgo(7) : period === "30" ? daysAgo(30) : period === "visit" && lastVisit ? lastVisit : ""
+  const visible = useMemo(
+    () => entries.filter((entry) => (lab === "all" || entry.companyId === lab) && (!since || entry.date >= since)),
+    [entries, lab, since],
+  )
+  const filtered = lab !== "all" || period !== "all"
 
-  const reset = () => { setLab("all"); setFrom(""); setUntil(""); setSinceLastVisit(false) }
-
-  return <>
-    <div className="mb-5 flex flex-wrap items-end gap-2.5 rounded-xl border border-black/10 dark:border-white/[0.08] bg-white/50 dark:bg-white/[0.02] p-3">
-      <label className="grid gap-1 text-small text-fg-muted">Lab
-        <select className={controlClass} value={lab} onChange={(e) => setLab(e.target.value)}>
-          <option value="all">All labs</option>
-          {Object.values(companies).map((company) => <option key={company.id} value={company.id}>{company.name}</option>)}
-        </select>
-      </label>
-      <label className="grid gap-1 text-small text-fg-muted">From
-        <input className={controlClass} type="date" value={from} max={until || undefined} onChange={(e) => setFrom(e.target.value)} />
-      </label>
-      <label className="grid gap-1 text-small text-fg-muted">Through
-        <input className={controlClass} type="date" value={until} min={from || undefined} onChange={(e) => setUntil(e.target.value)} />
-      </label>
-      <label className={`inline-flex min-h-9 items-center gap-2 rounded-lg px-2 text-small ${!ready || !lastVisit ? "text-fg-muted" : "text-fg"}`}>
-        <input type="checkbox" checked={sinceLastVisit} disabled={!ready || !lastVisit} onChange={(e) => setSinceLastVisit(e.target.checked)} className="accent-accent" />
-        Since my last visit{lastVisit ? ` (${lastVisit})` : ""}
-      </label>
-      <button type="button" onClick={reset} className="inline-flex min-h-9 items-center gap-1 text-small text-accent-ink hover:underline"><RotateCcw size={12} /> Clear</button>
-      <div className="ml-auto flex items-center gap-3 text-small">
-        <a href="/rss.xml" className="inline-flex items-center gap-1 text-fg-muted hover:text-accent-ink"><Rss size={13} /> RSS</a>
-        <a href="/feed.json" className="text-fg-muted hover:text-accent-ink">JSON Feed</a>
-      </div>
-    </div>
-    <p className="mb-3 text-small tabular-nums text-fg-muted" aria-live="polite">Showing {visible.length} of {entries.length} changes</p>
-    <ol className="border-t border-black/10 dark:border-white/[0.08]">
-      {visible.map((entry, index) => <li key={`${entry.date}-${entry.modelId}-${index}`} className="flex flex-col gap-1 border-b border-black/10 dark:border-white/[0.08] py-3 text-body sm:flex-row sm:items-baseline sm:gap-3">
-        <time dateTime={entry.date} className="shrink-0 text-small tabular-nums text-fg-muted sm:w-24">{entry.date}</time>
-        <div className="min-w-0">
-          <Link href={`/models/${entry.modelId}`} className="font-medium tracking-tight text-black dark:text-white hover:text-accent-ink transition-colors">{entry.modelName}</Link>
-          <span className="ml-2 text-small text-fg-muted">{entry.companyName}</span>
-          <p className="text-small leading-relaxed text-fg-muted">{entry.summary}</p>
+  return (
+    <>
+      <div className="mb-6 flex flex-wrap items-end gap-3">
+        <label className="grid gap-1 text-small text-fg-muted">
+          Lab
+          <select className={controlClass} value={lab} onChange={(e) => setLab(e.target.value)}>
+            <option value="all">All labs</option>
+            {Object.values(companies).map((company) => (
+              <option key={company.id} value={company.id}>
+                {company.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="grid gap-1 text-small text-fg-muted">
+          Period
+          <select className={controlClass} value={period} onChange={(e) => setPeriod(e.target.value as Period)}>
+            <option value="all">All time</option>
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+            {lastVisit && <option value="visit">Since my last visit ({lastVisit})</option>}
+          </select>
+        </label>
+        {filtered && (
+          <button
+            type="button"
+            onClick={() => {
+              setLab("all")
+              setPeriod("all")
+            }}
+            className="inline-flex min-h-9 items-center gap-1 text-small text-accent-ink underline-offset-4 hover:underline"
+          >
+            <RotateCcw size={12} aria-hidden="true" /> Clear
+          </button>
+        )}
+        <div className="ml-auto flex items-center gap-4 pb-2 text-small">
+          <a href="/rss.xml" className="inline-flex items-center gap-1 text-fg-muted hover:text-accent-ink">
+            <Rss size={13} aria-hidden="true" /> RSS
+          </a>
+          <a href="/feed.json" className="text-fg-muted hover:text-accent-ink">
+            JSON Feed
+          </a>
         </div>
-      </li>)}
-    </ol>
-    {visible.length === 0 && <p className="py-12 text-center text-body text-fg-muted">No changes match these filters. Try widening the date range or clearing a filter.</p>}
-  </>
+      </div>
+
+      <p className="mb-3 text-small tabular-nums text-fg-muted" aria-live="polite">
+        {visible.length === entries.length ? `${entries.length} changes` : `${visible.length} of ${entries.length} changes`}
+      </p>
+      <ol className="border-t border-black/10 dark:border-white/[0.08]">
+        {visible.map((entry, index) => (
+          <li
+            key={`${entry.date}-${entry.modelId}-${index}`}
+            className="flex flex-col gap-1 border-b border-black/10 py-4 sm:flex-row sm:items-baseline sm:gap-5 dark:border-white/[0.08]"
+          >
+            <time dateTime={entry.date} className="shrink-0 text-small tabular-nums text-fg-muted sm:w-24">
+              {entry.date}
+            </time>
+            <div className="min-w-0">
+              <Link href={`/models/${entry.modelId}`} className="font-display text-title font-semibold tracking-tight text-fg-strong transition-colors hover:text-accent-ink">
+                {entry.modelName}
+              </Link>
+              <span className="ml-2 text-small text-fg-muted">{entry.companyName}</span>
+              <p className="mt-1 text-body leading-6 text-fg">{entry.summary}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      {visible.length === 0 && (
+        <p className="py-12 text-center text-body text-fg-muted">No changes match. Try a longer period or clear the filter.</p>
+      )}
+    </>
+  )
 }
