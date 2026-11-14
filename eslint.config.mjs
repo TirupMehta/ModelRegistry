@@ -22,7 +22,7 @@ const eslintConfig = [
     },
   },
   {
-    ignores: [".next/**", "node_modules/**", "next-env.d.ts"],
+    ignores: [".next/**", ".intake/**", "node_modules/**", "next-env.d.ts"],
   },
 ]
 

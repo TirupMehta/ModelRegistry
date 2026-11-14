@@ -1,5 +1,5 @@
 import { type ModelItem } from "@/data/models"
-import { buildLeaderboards, type Leaderboard } from "./leaderboards"
+import { buildLeaderboards } from "./leaderboards"
 
 /**
  * Cross-test standing.
