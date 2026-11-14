@@ -3,7 +3,6 @@
  * Keeps the type and colour system from drifting back into one-off values.
  * Fails on: arbitrary pixel font sizes, Tailwind's default size names, raw
  * opacity greys for text, and any text size below the caption token.
- * See docs/design-audit.md for the scale and the reasons.
  */
 const fs = require("fs")
 const path = require("path")
