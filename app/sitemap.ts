@@ -206,11 +206,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
   //    Only flagship pairs that both have independent results are listed. The rest stay reachable and
   //    canonical, but advertising hundreds of near-identical tables on a young
   //    subdomain pushes Google toward "Discovered - currently not indexed".
+  // Only the 12 newest flagships are paired: those are the comparisons people
+  // actually search for, and a short list gets crawled where a long one stalls.
+  const topFlagshipIds = new Set(
+    modelsData
+      .filter((m) => m.isCompanyFlagship)
+      .slice()
+      .sort((x, y) => y.releaseDate.localeCompare(x.releaseDate))
+      .slice(0, 12)
+      .map((m) => m.id),
+  );
   const compareRoutes: MetadataRoute.Sitemap = comparisonPairs(modelsData)
     .filter(
       ({ a, b }) =>
-        a.isCompanyFlagship &&
-        b.isCompanyFlagship &&
+        topFlagshipIds.has(a.id) &&
+        topFlagshipIds.has(b.id) &&
         independentFor(a.id) &&
         independentFor(b.id),
     )
@@ -247,7 +257,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 6. Alternatives pages ("X alternatives"): one per token-priced text model with at least three real options.
   const alternativeRoutes: MetadataRoute.Sitemap = modelsData
     .filter(
-      (m) => hasAlternatives(m) && (buildAlternatives(m)?.total ?? 0) >= 3,
+      (m) =>
+        m.isCompanyFlagship &&
+        hasAlternatives(m) &&
+        (buildAlternatives(m)?.total ?? 0) >= 3,
     )
     .map((m) => ({
       url: `${baseUrl}/alternatives/${m.id}`,
