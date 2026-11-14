@@ -52,6 +52,7 @@ export default function Footer() {
             <nav aria-label="Registry resources" className="flex flex-col items-start gap-2 text-small">
               <h2 className="mb-1 text-caption font-medium text-fg-muted">Registry</h2>
               <Link href="/pricing" className={linkClass}>Pricing</Link>
+              <Link href="/insights" className={linkClass}>Insights</Link>
               <Link href="/context" className={linkClass}>Context windows</Link>
               <Link href="/licenses" className={linkClass}>Licenses</Link>
               <Link href="/modalities" className={linkClass}>Modalities</Link>

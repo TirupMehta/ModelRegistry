@@ -124,7 +124,9 @@ An MLOps model registry (MLflow, SageMaker, Vertex AI) stores the artifacts a te
 
 ## Where things live
 
-- Best model by task: ${siteUrl}/best
+- Best model by task: ${siteUrl}/best (one page per question, e.g. ${siteUrl}/best/coding, ${siteUrl}/best/cheapest, ${siteUrl}/best/longest-context)
+- Alternatives to any model: ${siteUrl}/alternatives/{model-id}
+- Data stories with CSV downloads: ${siteUrl}/insights
 - Per-test results and overall ranking: ${siteUrl}/score
 - Head-to-head comparisons: ${siteUrl}/compare
 - Trust, scope and limits: ${siteUrl}/trust

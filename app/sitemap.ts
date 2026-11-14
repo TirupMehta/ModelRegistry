@@ -3,6 +3,8 @@ import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
 import { comparisonPairs } from "@/lib/seo"
+import { bestSlug, buildBestAnswers } from "@/lib/best"
+import { buildAlternatives, hasAlternatives } from "@/lib/alternatives"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://modelregistry.tirup.in"
@@ -203,7 +205,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  // 5. Machine-readable & agent discovery feeds (/llms.txt, /llms-full.txt,
+  // 5a. Data stories: the pages most likely to be linked to and cited.
+  const insightRoutes: MetadataRoute.Sitemap = ["/insights", "/insights/lab-claims-vs-independent", "/insights/cost-of-intelligence"].map((path) => ({
+    url: `${baseUrl}${path}`,
+    lastModified: revisedAt,
+    changeFrequency: "weekly" as const,
+    priority: path === "/insights" ? 0.7 : 0.8,
+  }))
+
+  // 5. One page per best-by-task question: each targets its own search intent
+  //    ("best AI model for coding", "cheapest AI model API", ...).
+  const bestRoutes: MetadataRoute.Sitemap = buildBestAnswers().map((answer) => ({
+    url: `${baseUrl}/best/${bestSlug(answer.id)}`,
+    lastModified: revisedAt,
+    changeFrequency: "daily",
+    priority: 0.85,
+  }))
+
+  // 6. Alternatives pages ("X alternatives"): one per token-priced text model with at least three real options.
+  const alternativeRoutes: MetadataRoute.Sitemap = modelsData
+    .filter((m) => hasAlternatives(m) && (buildAlternatives(m)?.total ?? 0) >= 3)
+    .map((m) => ({
+      url: `${baseUrl}/alternatives/${m.id}`,
+      lastModified: revisedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    }))
+
+  // 7. Machine-readable & agent discovery feeds (/llms.txt, /llms-full.txt,
   // /rss.xml, /feed.json) are intentionally NOT listed here. A sitemap must
   // advertise canonical HTML pages you want indexed; feeding plain-text and
   // JSON endpoints into it spends this subdomain's crawl budget on documents
@@ -211,5 +240,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // not indexed" on the pages that do matter. They stay discoverable through
   // robots.txt, llms.txt, and the page footers.
 
-  return [...coreRoutes, ...labRoutes, ...modelRoutes, ...compareRoutes]
+  return [...coreRoutes, ...insightRoutes, ...bestRoutes, ...labRoutes, ...modelRoutes, ...alternativeRoutes, ...compareRoutes]
 }

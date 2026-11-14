@@ -1,11 +1,13 @@
 import { notFound, redirect } from "next/navigation"
 import { Metadata } from "next"
+import Link from "next/link"
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { resolveCompanyFallback } from "@/lib/model-fallback"
 import { modelSiblings, modelFolio } from "@/lib/registry"
 import { ORGANIZATION_ID, PERSON_ID, WEBSITE_ID } from "@/lib/entities"
 import { measuredProperties } from "@/lib/seo"
+import { buildAlternatives } from "@/lib/alternatives"
 import { safeJsonLd } from "@/lib/utils"
 import Header from "@/components/header"
 import ModelPageView from "@/components/model-page-view"
@@ -164,6 +166,13 @@ export default async function ModelPage({ params }: Props) {
         <ModelPositions model={model} />
         <ModelFaq model={model} />
         <ModelComparisons model={model} />
+        {(buildAlternatives(model)?.total ?? 0) >= 3 && (
+          <p className="mb-8 text-body">
+            <Link href={`/alternatives/${model.id}`} className="text-accent-ink underline-offset-4 hover:underline">
+              Alternatives to {model.name}: cheaper, stronger and open-weight options
+            </Link>
+          </p>
+        )}
       </ModelPageView>
     </>
   )

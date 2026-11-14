@@ -4,7 +4,7 @@ import Header from "@/components/header"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import { SITE, breadcrumbList, faqPage } from "@/lib/seo"
-import { buildBestAnswers } from "@/lib/best"
+import { bestSlug, buildBestAnswers } from "@/lib/best"
 import { INDEPENDENT_EVALUATOR, buildIndependentBoards } from "@/lib/independent"
 import { modelsData } from "@/data/models"
 import ModelPicker, { type PickerModel, type PickerTest } from "@/components/model-picker"
@@ -226,6 +226,9 @@ export default function BestPage() {
                 >
                   Full table
                   <ArrowUpRight size={11} aria-hidden="true" />
+                </Link>{" "}
+                <Link href={`/best/${bestSlug(answer.id)}`} className="text-accent-ink underline-offset-4 hover:underline">
+                  Open this answer
                 </Link>
               </p>
             </article>

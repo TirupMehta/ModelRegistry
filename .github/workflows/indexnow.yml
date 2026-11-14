@@ -1,0 +1,34 @@
+name: Ping search engines after a deploy
+
+# Bing, Yandex, Seznam and Naver accept IndexNow, and ChatGPT search, Copilot
+# and several answer engines read the Bing index. Telling them the moment the
+# site changes is the cheapest way to be found fast after a model launch.
+# Vercel deploys on push to main; this waits for it, then submits the sitemap.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/**"
+      - "app/**"
+      - "components/**"
+      - "lib/**"
+  workflow_dispatch:
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: true
+
+jobs:
+  ping:
+    name: Submit sitemap URLs to IndexNow
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Wait for the deploy
+        run: sleep 240
+      - name: Submit
+        run: node scripts/indexnow.mjs

@@ -264,3 +264,30 @@ function valueAnswer(): BestAnswer | null {
     href: "/score",
   }
 }
+
+/** URL slug for a best-by-task page, e.g. /best/coding. Stable: slugs are part of the public URL. */
+const BEST_SLUGS: Record<string, { slug: string; title: string }> = {
+  "independent::intelligenceIndex": { slug: "overall", title: "Best AI model overall" },
+  "independent::arenaText": { slug: "chat", title: "Best AI model for chat" },
+  "independent::frontierCode": { slug: "coding", title: "Best AI model for coding" },
+  "independent::terminalBench4": { slug: "agents", title: "Best AI model for AI agents and terminal work" },
+  "independent::hleDiamond": { slug: "reasoning", title: "Best AI model for hard reasoning questions" },
+  "independent::critPt": { slug: "physics", title: "Best AI model for physics" },
+  "independent::terminalBenchScience": { slug: "science", title: "Best AI model for scientific computing" },
+  "independent::automationBench": { slug: "automation", title: "Best AI model for business automation" },
+  "independent::omniscience": { slug: "factual-accuracy", title: "Most factually reliable AI model" },
+  "independent::aaBriefcase": { slug: "knowledge-work", title: "Best AI model for knowledge work" },
+  "independent::gdpPdf": { slug: "documents", title: "Best AI model for long documents" },
+  value: { slug: "value", title: "Best value AI model" },
+  price: { slug: "cheapest", title: "Cheapest AI model API" },
+  context: { slug: "longest-context", title: "AI model with the longest context window" },
+}
+
+export function bestSlug(answerId: string): string {
+  return BEST_SLUGS[answerId]?.slug ?? answerId.replace(/^independent::/, "").replace(/[^a-z0-9]+/gi, "-").toLowerCase()
+}
+
+/** The search-intent title for the page, before the date and leader are added. */
+export function bestPageTitle(answer: Pick<BestAnswer, "id" | "question">): string {
+  return BEST_SLUGS[answer.id]?.title ?? answer.question
+}
