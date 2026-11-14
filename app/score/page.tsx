@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Header from "@/components/header"
-import { companies } from "@/data/companies"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
@@ -9,7 +8,6 @@ import { SITE, breadcrumbList, faqPage } from "@/lib/seo"
 import {
   LEADERBOARD_VERSION,
   MIN_COHORT_SIZE,
-  leaderboardStats,
   positionsFor,
 } from "@/lib/leaderboards"
 import { AGREEMENT_LABEL, CORROBORATED_SPREAD, CONTESTED_SPREAD, MIN_TESTS_FOR_STANDING, STANDING_VERSION } from "@/lib/standing"
@@ -242,7 +240,6 @@ export default function ScorePage() {
 
         <div className="rule-t mb-3">
           {standing.rows.map((row) => {
-            const lab = companies[row.model.companyId]
             return (
               <Link
                 key={row.model.id}
@@ -256,11 +253,6 @@ export default function ScorePage() {
                   {row.model.name}
                 </span>
                 <span className="hidden sm:inline-flex items-center gap-1.5 text-small font-sans text-fg-muted">
-                  <span
-                    className="inline-block w-1.5 h-1.5 rounded-sm shrink-0"
-                    style={{ backgroundColor: lab?.accentColor ?? "#888" }}
-                    aria-hidden="true"
-                  />
                   {row.model.companyName}
                 </span>
                 <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-small font-sans text-fg-muted">
@@ -547,7 +539,6 @@ export default function ScorePage() {
               </p>
               <div className="rule-t">
                 {board.entries.map((entry) => {
-                  const lab = companies[entry.model.companyId]
                   return (
                     <Link
                       key={entry.model.id}
@@ -561,11 +552,6 @@ export default function ScorePage() {
                         {entry.model.name}
                       </span>
                       <span className="hidden sm:inline-flex items-center gap-1.5 text-small font-sans text-fg-muted">
-                        <span
-                          className="inline-block w-1.5 h-1.5 rounded-sm shrink-0"
-                          style={{ backgroundColor: lab?.accentColor ?? "#888" }}
-                          aria-hidden="true"
-                        />
                         {entry.model.companyName}
                       </span>
                       <span className="ml-auto text-title font-sans font-semibold tabular-nums text-fg-strong shrink-0">

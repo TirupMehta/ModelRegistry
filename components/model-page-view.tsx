@@ -3,7 +3,6 @@
 import { useState } from "react"
 import Link from "next/link"
 import { type ModelItem } from "@/data/models"
-import { companies } from "@/data/companies"
 import { independentRecords } from "@/data/independent-benchmarks"
 import { formatPrice, formatDate } from "@/lib/utils"
 import { ShareCardModal } from "@/components/share-card-modal"
@@ -89,7 +88,6 @@ export default function ModelPageView({ model, siblings, folio, folioId, childre
   const [isShareStudioOpen, setIsShareStudioOpen] = useState(false)
   const [activeSnippetTab, setActiveSnippetTab] = useState<"curl" | "python" | "local">("curl")
 
-  const company = companies[model.companyId]
 
   const handleCopyLink = () => {
     try {
@@ -253,10 +251,6 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
           {/* Lab info & Release Stamp */}
           <div className="mb-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-small font-sans leading-relaxed">
-            <span
-              className="w-2.5 h-2.5 rounded-sm shrink-0"
-              style={{ backgroundColor: company?.accentColor || "rgb(var(--accent-rgb))" }}
-            />
             <span className="whitespace-nowrap font-medium text-fg">
               {model.companyName}
             </span>

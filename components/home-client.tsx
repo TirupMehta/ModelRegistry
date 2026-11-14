@@ -407,13 +407,6 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                     <div className="lg:hidden">
                       {/* Lab + date */}
                       <div className="flex items-center gap-1.5 text-caption font-sans mb-1.5 min-w-0">
-                        <span
-                          className="w-2 h-2 rounded-[3px] ring-1 ring-black/10 dark:ring-white/10 shrink-0"
-                          style={{
-                            backgroundColor:
-                              companies[model.companyId]?.accentColor || "rgb(var(--accent-rgb))",
-                          }}
-                        />
                         <span className="min-w-0 truncate font-semibold text-fg-muted">
                           {model.companyName}
                         </span>

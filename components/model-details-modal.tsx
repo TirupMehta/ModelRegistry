@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { type ModelItem } from "@/data/models"
-import { companies } from "@/data/companies"
 import { formatPrice, formatDate } from "@/lib/utils"
 import {
   X,
@@ -63,7 +62,6 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
 
   if (!model) return null
 
-  const company = companies[model.companyId]
 
   const handleCopyLink = () => {
     try {
@@ -152,10 +150,6 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
 
         {/* Lab info & Release Stamp */}
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2.5 text-small font-sans">
-          <span
-            className="w-2.5 h-2.5 rounded-[4px] ring-1 ring-black/10 dark:ring-white/10 shrink-0"
-            style={{ backgroundColor: company?.accentColor || "rgb(var(--accent-rgb))" }}
-          />
           <span className="font-medium text-fg">
             {model.companyName}
           </span>

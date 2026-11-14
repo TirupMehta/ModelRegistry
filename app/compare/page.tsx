@@ -176,11 +176,6 @@ export default function CompareIndexPage() {
             return (
               <div key={companyId}>
                 <h2 className="text-title font-sans font-semibold text-fg-strong mb-3 flex items-baseline gap-2">
-                  <span
-                    className="inline-block w-2 h-2 rounded-sm shrink-0 translate-y-[-1px]"
-                    style={{ backgroundColor: lab?.accentColor ?? "#888" }}
-                    aria-hidden="true"
-                  />
                   <span>{lab?.name ?? companyId}</span>
                   <span className="text-small font-normal text-fg-muted tabular-nums">
                     {group.length}

@@ -743,10 +743,6 @@ ${SITE_URL}/api/check-updates`}
                     href={`/companies/${lab.id}`}
                     className="group flex items-center gap-2 px-3 py-2.5 rounded-md border border-black/10 dark:border-white/[0.08] hover:border-accent/40 transition-colors"
                   >
-                    <span
-                      className="w-2 h-2 rounded-sm shrink-0"
-                      style={{ backgroundColor: lab.accentColor }}
-                    />
                     <span className="text-small font-sans text-fg group-hover:text-accent-ink transition-colors truncate">
                       {lab.name}
                     </span>
