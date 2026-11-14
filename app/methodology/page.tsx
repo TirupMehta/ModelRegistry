@@ -59,13 +59,6 @@ export default function MethodologyPage() {
         </h1>
         <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-small font-sans text-fg-muted">
           <span>Last updated 2026-11-03</span>
-          <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
-          <span>
-            Full source audit:{" "}
-            <Link href="https://github.com/TirupMehta/ModelRegistry/blob/main/docs/audit-2026-10-07.md" className="text-accent-ink hover:underline underline-offset-2">
-              docs/audit-2026-10-07.md
-            </Link>
-          </span>
         </p>
 
         <H2>Inclusion standard</H2>

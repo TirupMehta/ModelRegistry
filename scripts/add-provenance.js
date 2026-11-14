@@ -6,7 +6,7 @@
  *
  * Method:
  *  - Every URL in `links` was live-checked on 2026-10-07 (see
- *    docs/audit-2026-10-07.md). Dead (HTTP 404/400) URLs are never cited.
+ *    the audit). Dead (HTTP 404/400) URLs are never cited.
  *  - Bot-gated URLs (HTTP 403/405 on automation, host alive) are cited with
  *    an explicit access note and live:false.
  *  - `verified` is reserved for records whose core fields were read and
@@ -110,7 +110,7 @@ const EXTRA_SOURCES = {
 // Fully verified in-session against live primary sources (fields read, not inferred).
 const VERIFIED_IDS = new Set(["mistral-large-4"])
 
-// Content corrections applied with changelog entries (see docs/audit-2026-10-07.md).
+// Content corrections applied with changelog entries.
 const CORRECTION_NOTES = {
   "meta-muse-voice-transcribe":
     "Corrected billing to per-second audio pricing ($3.00/1,000 min), removed unsupported token-context figures and open-weights claim, re-sourced to live Meta Research + Model API pages.",

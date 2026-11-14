@@ -14,7 +14,6 @@ export async function GET() {
     license: "MIT (Open Data)",
     methodology: "https://modelregistry.tirup.in/methodology",
     changelog: "https://modelregistry.tirup.in/changelog",
-    sourceAudit: `https://github.com/TirupMehta/ModelRegistry/blob/main/${datasetRevision.sourceAudit}`,
     counts: {
       models: modelsData.length,
       companies: Object.keys(companies).length,

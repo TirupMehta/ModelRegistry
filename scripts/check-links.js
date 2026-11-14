@@ -3,7 +3,7 @@
  * Verifies every cited URL still resolves: model `links.*`, `sources`,
  * `fieldSources`, variant links, company websites, and leaderboard
  * methodology sources. The registry's whole value is that its citations are
- * live - this is the automation the manual source audit (docs/audit-*.md)
+ * live - this is the automation the manual source audit
  * implies but never had.
  *
  * Classification:

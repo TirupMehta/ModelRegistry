@@ -66,7 +66,6 @@ export const datasetRevision = {
   datasetVersion: ${JSON.stringify(datasetVersion)},
   revisedAt: ${JSON.stringify(todayUTC())},
   contentHash: ${JSON.stringify(contentHash)},
-  sourceAudit: "docs/audit-2026-10-07.md",
 } as const
 `
   fs.writeFileSync(OUT_PATH, out)

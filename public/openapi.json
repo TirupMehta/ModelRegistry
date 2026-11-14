@@ -820,7 +820,6 @@
           "license": { "type": "string" },
           "methodology": { "type": "string", "format": "uri" },
           "changelog": { "type": "string", "format": "uri" },
-          "sourceAudit": { "type": "string", "format": "uri" },
           "counts": {
             "type": "object",
             "properties": {
