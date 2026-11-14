@@ -321,22 +321,6 @@ for (const [companyId, company] of Object.entries(companies)) {
   }
 }
 
-// Every leaderboard section must be rendered by the leaderboard page,
-// so config keys can never go stale unnoticed in the other direction.
-// The page is a server shell; rendering lives in its client island, so
-// both sources are checked together.
-const leaderboardPageSource = [
-  "../app/leaderboard/page.tsx",
-  "../components/leaderboard-client.tsx",
-]
-  .map((f) => fs.readFileSync(path.resolve(__dirname, f), "utf8"))
-  .join("\n")
-for (const section of Object.keys(leaderboardSpotlights)) {
-  if (!leaderboardPageSource.includes(`leaderboardSpotlights.${section}`)) {
-    errors.push(`Leaderboard section '${section}' is configured but not rendered by the leaderboard page or its client island.`)
-  }
-}
-
 // Verify that each company has at least one flagship model
 for (const companyId of validCompanyIds) {
   const count = companyFlagshipCounts[companyId] || 0

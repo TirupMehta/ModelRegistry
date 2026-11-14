@@ -14,7 +14,7 @@ const NAV_ITEMS = [
     label: "Rankings",
     short: "Rankings",
     href: "/best",
-    match: ["/best", "/score", "/leaderboard", "/compare"],
+    match: ["/best", "/score", "/compare"],
   },
   { label: "Release timeline", short: "Timeline", href: "/timeline", match: ["/timeline"] },
 ] as const

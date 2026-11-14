@@ -576,7 +576,7 @@ export default function TrustPage() {
             { href: "/methodology", label: "Methodology" },
             { href: "/editorial-policy", label: "Editorial policy" },
             { href: "/changelog", label: "Changelog" },
-            { href: "/score", label: "Standing" },
+            { href: "/score", label: "Overall ranking" },
             { href: "/contact", label: "Report an error" },
           ].map((item) => (
             <Link

@@ -209,7 +209,7 @@ function contextAnswer(models: ModelItem[]): BestAnswer | null {
     tied: leaders.length > 1,
     caveat:
       "A larger window is not better recall. The listed size is an input limit, and accuracy across a long prompt is not measured by this figure.",
-    href: "/leaderboard",
+    href: "/context",
   }
 }
 

@@ -17,6 +17,10 @@ const RATE_LIMIT_HEADERS = [
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // The leaderboard was folded into /best, which answers the same questions by task.
+  async redirects() {
+    return [{ source: "/leaderboard", destination: "/best", permanent: true }]
+  },
   async headers() {
     return [
       {

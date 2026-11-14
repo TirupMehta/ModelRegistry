@@ -1,9 +1,8 @@
 import Link from "next/link"
 
 const VIEWS = [
-  { href: "/best", label: "Leaders by task" },
-  { href: "/score", label: "Standing" },
-  { href: "/leaderboard", label: "Leaderboard" },
+  { href: "/best", label: "Best by task" },
+  { href: "/score", label: "Overall ranking" },
 ] as const
 
 /**

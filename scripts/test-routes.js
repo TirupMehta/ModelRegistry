@@ -153,7 +153,7 @@ async function main() {
   await expectStatus("/companies/nope", 404)
   await expectStatus(`/models/${EXPECTED.openaiFlagship}`, 200)
   await expectStatus(`/models/${EXPECTED.newestId}`, 200)
-  await expectStatus("/leaderboard", 200)
+  await expectStatus("/best", 200)
   await expectStatus("/timeline", 200)
   await expectStatus("/docs", 200)
   await expectStatus("/cli", 200)

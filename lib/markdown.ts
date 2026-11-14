@@ -148,7 +148,7 @@ All of the above are free, unauthenticated, and read-only. Send
 
 - Flagships: ${SITE_URL}/flagships
 - Laboratories: ${SITE_URL}/companies
-- Leaderboard: ${SITE_URL}/leaderboard
+- Best model by task: ${SITE_URL}/best
 - Pricing comparison: ${SITE_URL}/pricing
 - Context windows: ${SITE_URL}/context
 - Open weights and licenses: ${SITE_URL}/licenses
@@ -775,26 +775,6 @@ laboratory's current flagship.`,
           m.supersededBy ? `[${m.supersededBy}](${SITE_URL}/models/${m.supersededBy})` : "n/a",
         ])
     ),
-  "/leaderboard": () => {
-    const withBench = modelsData.filter((m) => Object.keys(m.benchmarks ?? {}).length > 0)
-    return listDocument(
-      "/leaderboard",
-      "Benchmark leaderboard",
-      `Lab-reported scores, grouped by benchmark. Figures come from different
-harnesses and dates, so this is a reading aid, not a universal ranking. Check
-each model page for the source and test conditions before comparing.`,
-      ["Model", "Laboratory", "Benchmarks"],
-      [...withBench]
-        .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
-        .map((m) => [
-          `[${m.name}](${SITE_URL}/models/${m.id})`,
-          m.companyName,
-          Object.entries(m.benchmarks)
-            .map(([k, v]) => `${k} ${v}`)
-            .join("; "),
-        ])
-    )
-  },
   "/companies": () =>
     listDocument(
       "/companies",

@@ -40,9 +40,8 @@ export default function Footer() {
             <nav aria-label="Explore models" className="flex flex-col items-start gap-2 text-small">
               <h2 className="mb-1 text-caption font-medium text-fg-muted">Explore</h2>
               <Link href="/flagships" className={linkClass}>Flagships</Link>
-              <Link href="/best" className={linkClass}>Leaders by task</Link>
-              <Link href="/score" className={linkClass}>Standing</Link>
-              <Link href="/leaderboard" className={linkClass}>Leaderboard</Link>
+              <Link href="/best" className={linkClass}>Best by task</Link>
+              <Link href="/score" className={linkClass}>Overall ranking</Link>
               <Link href="/compare" className={linkClass}>Comparisons</Link>
               <Link href="/companies" className={linkClass}>Laboratories</Link>
               <Link href="/timeline" className={linkClass}>Release timeline</Link>

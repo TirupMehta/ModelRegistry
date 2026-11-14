@@ -42,7 +42,7 @@ for the head term.
 | frontier AI model index | `/` | H1 + description |
 | public / open model registry | `/` | Keywords |
 | AI model database | `/` | Keywords |
-| model registry comparison | `/leaderboard` | Needs an intro paragraph on that page |
+| model registry comparison | `/best` | Needs an intro paragraph on that page |
 | registry of AI models vs MLOps | `/about` | "What ModelRegistry is not" section |
 
 ## 3. Data comparison (highest intent, strongest pages)
@@ -52,7 +52,7 @@ the intro copy that names the query in visible text.
 
 | Query | Page that answers it | Status |
 |---|---|---|
-| AI model leaderboard | `/leaderboard` | Page exists; h1 only |
+| AI model leaderboard | `/best` | Page exists; h1 only |
 | context window comparison | `/context` | Page exists |
 | AI model pricing comparison | `/pricing` | Page exists |
 | open weights models list | `/licenses` | Page exists |

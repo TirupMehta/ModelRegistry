@@ -98,14 +98,11 @@ check(
     read("app/companies/[id]/page.tsx").includes("FAQPage")
 )
 
-// 4. Leaderboard is framed as editorial with methodology + dates.
-// The page is a server shell; copy lives in its client island, so both
-// sources are checked together.
-const lb = read("app/leaderboard/page.tsx") + "\n" + read("components/leaderboard-client.tsx")
-check("leaderboard avoids 'state of the art'", !/state of the art/i.test(lb))
-check("leaderboard avoids 'Domain SOTA'", !lb.includes("Domain SOTA"))
-check("leaderboard links methodology", lb.includes('href="/methodology"'))
-check("leaderboard shows evaluation basis per section", lb.includes("How this is judged"))
+// 4. The best-by-task page is framed as independent evidence with its method stated.
+const best = read("app/best/page.tsx")
+check("best page avoids 'state of the art'", !/state of the art/i.test(best))
+check("best page names its evaluator and read date", best.includes("INDEPENDENT_EVALUATOR.retrievedAt"))
+check("best page explains how answers are chosen", best.includes("How these answers are chosen"))
 
 // 5. Health endpoint honesty.
 const health = read("app/api/check-updates/route.ts")
