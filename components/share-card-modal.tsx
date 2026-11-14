@@ -214,7 +214,8 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
     }
 
     // Brand logo mark - blocks grid with one flagship lit coral.
-    // Matches public/logo-blocks.svg proportions (32-unit grid).
+    // Matches public/logo-blocks.svg exactly (32-unit grid, #ff5d2e block).
+    // Canvas cannot read CSS variables, so the colour is written out.
     function drawLogoMark(x: number, y: number, size: number) {
       const logoBorder = isDark ? "rgba(255, 255, 255, 0.16)" : "rgba(0, 0, 0, 0.15)"
       roundRect(x, y, size, size, size * 0.22, "#090a0d", logoBorder)
@@ -227,7 +228,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
       roundRect(bx, by, block, block, r, "#ffffff")
       roundRect(bx + block + gap, by, block, block, r, "rgba(255, 255, 255, 0.45)")
       roundRect(bx, by + block + gap, block, block, r, "rgba(255, 255, 255, 0.45)")
-      roundRect(bx + block + gap, by + block + gap, block, block, r, "rgb(var(--accent-rgb))")
+      roundRect(bx + block + gap, by + block + gap, block, block, r, "#ff5d2e")
     }
 
     // Publication masthead: brand mark plus quiet wordmark left, folio
@@ -240,10 +241,11 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
       drawLogoMark(padding, top - logoSize + Math.round(wordPx * 0.3), logoSize)
       const wx = padding + logoSize + logoGap
       setTracking(TRACK_TITLE_LETTER, "0px")
-      ctx!.font = `300 ${wordPx}px ${F_DISPLAY}`
+      ctx!.font = `500 ${wordPx}px ${F_DISPLAY}`
       ctx!.fillStyle = ink
       ctx!.fillText("Model", wx, top)
       const wW = ctx!.measureText("Model").width
+      ctx!.font = `700 ${wordPx}px ${F_DISPLAY}`
       ctx!.fillStyle = ACCENT
       ctx!.fillText("Registry", wx + wW, top)
       setTracking("0px", "0px")
