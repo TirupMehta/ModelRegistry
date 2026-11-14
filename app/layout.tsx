@@ -72,18 +72,6 @@ export const metadata: Metadata = {
       "application/feed+json": "/feed.json",
     },
   },
-  other: {
-    // Discovery hints some engines still read; mirrors what the sibling sites publish.
-    "ICBM": "23.0225, 72.5714",
-    "geo.position": "23.0225;72.5714",
-    "geo.region": "IN-GJ",
-    "geo.placename": "Gujarat, India",
-    "DC.title": SITE_TITLE,
-    "DC.creator": "Tirup Mehta",
-    "DC.subject": "AI model registry, frontier LLMs, model specifications, benchmarks",
-    "DC.description": SITE_DESCRIPTION,
-    "DC.language": "en",
-  },
 }
 
 export default function RootLayout({
