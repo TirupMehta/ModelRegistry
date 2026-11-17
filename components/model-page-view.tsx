@@ -290,10 +290,40 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
               {
                 icon: DollarSign,
                 label: "Lab price",
-                value: model.pricingUnit ? formatPrice(model) : `$${model.pricing.input.toFixed(2)} / $${model.pricing.output.toFixed(2)}`,
-                note: [model.pricingUnit ? "" : "per 1M tokens, in / out", model.openWeights ? "weights free to self-host" : ""].filter(Boolean).join("; "),
+                // Input and output each get a line; "$2.00 / $10.00" broke after the slash in a narrow tile.
+                value: model.pricingUnit ? (
+                  formatPrice(model)
+                ) : (
+                  <>
+                    <span className="block whitespace-nowrap">
+                      ${model.pricing.input.toFixed(2)} <span className="text-small font-normal text-fg-muted">in</span>
+                    </span>
+                    <span className="block whitespace-nowrap">
+                      ${model.pricing.output.toFixed(2)} <span className="text-small font-normal text-fg-muted">out</span>
+                    </span>
+                  </>
+                ),
+                note: [model.pricingUnit ? "" : "per 1M tokens", model.openWeights ? "weights free to self-host" : ""].filter(Boolean).join("; "),
               },
-              { icon: ShieldCheck, label: "License", value: model.license, note: "" },
+              {
+                icon: ShieldCheck,
+                label: "License",
+                // Each alternative starts its own line, so a wrap never strands a slash at the end of one.
+                value:
+                  model.license.includes(" / ") ? (
+                    <>
+                      {model.license.split(" / ").map((part, index) => (
+                        <span key={part} className="block">
+                          {index > 0 && "/ "}
+                          {part}
+                        </span>
+                      ))}
+                    </>
+                  ) : (
+                    model.license
+                  ),
+                note: "",
+              },
             ]
             return (
               <dl className="mb-6 grid grid-cols-2 gap-2.5 font-sans sm:mb-8 sm:grid-cols-4 sm:gap-3">
