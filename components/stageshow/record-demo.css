@@ -1,0 +1,211 @@
+/* The record demo, in the site's own look. Everything is scoped under .rd so
+   nothing here reaches the rest of the page. Colours come from the same warm
+   paper the site uses; the kit's tokens are pointed at them. */
+
+.rd .ss-stage {
+  --ss-font: var(--font-sans), system-ui, -apple-system, sans-serif;
+  --ss-canvas: #f3f0e9;
+  --ss-surface: #faf8f3;
+  --ss-chrome: #faf8f3;
+  --ss-raised: #faf8f3;
+  --ss-well: #ebe7dd;
+  --ss-line: rgba(60, 45, 20, 0.1);
+  --ss-line-faint: rgba(60, 45, 20, 0.06);
+  --ss-text-strong: #26231f;
+  --ss-text: #5f5a52;
+  --ss-text-faint: #77726a;
+  --ss-icon: #6b665e;
+  --ss-icon-faint: #bdb7ab;
+  --ss-accent: #d65c34;
+  --ss-accent-soft: rgba(214, 92, 52, 0.12);
+  --ss-accent-text: #aa3e18;
+  --ss-shadow-hero: 0 0 0 1px rgba(60, 45, 20, 0.1), 0 24px 48px -16px rgba(60, 45, 20, 0.3);
+  --ss-shadow-window: var(--ss-shadow-hero);
+  background: var(--ss-well);
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.rd .ss-stage[data-theme="dark"] {
+  --ss-canvas: #151515;
+  --ss-surface: #191919;
+  --ss-chrome: #1e1e1e;
+  --ss-raised: #222222;
+  --ss-well: #1c1c1c;
+  --ss-line: rgba(255, 255, 255, 0.09);
+  --ss-line-faint: rgba(255, 255, 255, 0.06);
+  --ss-text-strong: #eeeeee;
+  --ss-text: #b8b8b8;
+  --ss-text-faint: #8c8c8c;
+  --ss-icon: #a3a3a3;
+  --ss-icon-faint: #4a4a4a;
+  --ss-accent: #f76b15;
+  --ss-accent-soft: rgba(247, 107, 21, 0.16);
+  --ss-accent-text: #ffa057;
+  --ss-shadow-hero: 0 0 0 1px rgba(255, 255, 255, 0.09), 0 24px 48px -16px rgba(0, 0, 0, 0.7);
+}
+
+/* Corner bleed: the window starts a gutter in from the top and left and runs
+   off the right and bottom edges. */
+.rd .rd-window {
+  position: absolute;
+  left: 32px;
+  top: 32px;
+  width: 724px;
+  height: 420px;
+  box-shadow: var(--ss-shadow-hero);
+}
+.rd .ss-stage[data-layout="compact"] .rd-window {
+  left: 16px;
+  top: 16px;
+  width: 400px;
+  height: 470px;
+}
+
+.rd .rd-body {
+  display: flex;
+  background: var(--ss-surface);
+}
+.rd .ss-stage[data-layout="compact"] .rd-body {
+  flex-direction: column;
+}
+
+/* The list */
+.rd .rd-list {
+  flex: none;
+  width: 372px;
+  padding: 12px 8px 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rd .ss-stage[data-layout="compact"] .rd-list {
+  width: auto;
+  /* The window runs off the right edge, so the rows' trailing words stay inside the crop. */
+  padding: 8px 66px 0 8px;
+  gap: 0;
+}
+.rd .rd-search {
+  flex: none;
+}
+.rd .rd-rows {
+  display: flex;
+  flex-direction: column;
+}
+.rd .rd-ctx {
+  font-variant-numeric: tabular-nums;
+}
+
+/* The record */
+.rd .rd-pane {
+  flex: 1;
+  min-width: 0;
+  border-left: 1px solid var(--ss-line);
+  padding: 20px 0 0 24px;
+}
+.rd .ss-stage[data-layout="compact"] .rd-pane {
+  flex: none;
+  border-left: 0;
+  border-top: 1px solid var(--ss-line);
+  padding: 14px 16px 0;
+}
+.rd .rd-pane-in {
+  width: 260px;
+}
+.rd .ss-stage[data-layout="compact"] .rd-pane-in {
+  width: 296px;
+}
+.rd .rd-title {
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ss-text-strong);
+}
+.rd .rd-sub {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ss-text-faint);
+}
+.rd .rd-specs {
+  margin: 16px 0 0;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: space-between;
+  gap: 12px;
+}
+.rd .rd-specs dt {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ss-text-faint);
+}
+.rd .rd-specs dd {
+  margin: 2px 0 0;
+  font-size: 19px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ss-text-strong);
+  font-variant-numeric: tabular-nums;
+}
+.rd .rd-source {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ss-line);
+}
+.rd .rd-source-label {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ss-text-faint);
+}
+.rd .rd-link {
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--ss-accent-text);
+}
+.rd .rd-link svg {
+  flex: none;
+  color: var(--ss-accent-text);
+}
+.rd .rd-link[data-hover] {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.rd .rd-checked {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ss-text-faint);
+}
+
+.rd .rd-rest {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+}
+
+.rd-host {
+  margin-top: 2rem;
+}
+
+/* Phone column: one screen, trimmed to what the story needs. */
+.rd .ss-stage[data-layout="compact"] .rd-specs {
+  margin-top: 12px;
+}
+.rd .ss-stage[data-layout="compact"] .rd-source {
+  margin-top: 12px;
+  padding-top: 10px;
+}
+.rd .ss-stage[data-layout="compact"] .rd-source-label {
+  display: none;
+}
+.rd .ss-stage[data-layout="compact"] .rd-link {
+  margin-top: 0;
+}

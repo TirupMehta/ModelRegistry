@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react"
 import Link from "next/link"
 import Select from "@/components/select"
+import { Roll } from "@/components/stageshow/kit/motion/Roll"
 
 export interface PickerTest {
   key: string
@@ -103,8 +104,9 @@ export default function ModelPicker({ tests, models }: { tests: PickerTest[]; mo
         </p>
       ) : (
         <ol className="mt-5">
+          {/* Keyed by rank, so a changed filter rolls the name, score and cost in place instead of swapping the row. */}
           {picks.map((model, index) => (
-            <li key={model.id}>
+            <li key={index}>
               <Link
                 href={`/models/${model.id}`}
                 className="group flex items-baseline gap-3 border-b border-black/10 py-3 dark:border-white/[0.08]"
@@ -113,14 +115,16 @@ export default function ModelPicker({ tests, models }: { tests: PickerTest[]; mo
                   {index + 1}
                 </span>
                 <span className="text-body font-medium tracking-tight text-black transition-colors group-hover:text-accent-ink dark:text-white">
-                  {model.name}
+                  <Roll>{model.name}</Roll>
                 </span>
-                <span className="hidden text-small font-sans text-fg-muted sm:inline">{model.lab}</span>
+                <span className="hidden text-small font-sans text-fg-muted sm:inline">
+                  <Roll>{model.lab}</Roll>
+                </span>
                 <span className="ml-auto text-body font-sans font-semibold tabular-nums text-fg-strong">
-                  {show(test.unit, model.scores[test.key])}
+                  <Roll>{show(test.unit, model.scores[test.key])}</Roll>
                 </span>
                 <span className="w-20 shrink-0 text-right text-small font-sans tabular-nums text-fg-muted">
-                  {model.cost === null ? "cost n/a" : `$${model.cost.toFixed(2)}/task`}
+                  <Roll>{model.cost === null ? "cost n/a" : `$${model.cost.toFixed(2)}/task`}</Roll>
                 </span>
               </Link>
             </li>

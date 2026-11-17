@@ -12,6 +12,7 @@ import { folioFor, newestReleaseMonth } from "@/lib/registry"
 import { selectFeedback, tapFeedback, successFeedback } from "@/lib/feedback"
 import { ArrowUpRight, Copy, Check, X, Search, SearchX } from "lucide-react"
 import ModelFilterControls from "@/components/model-filter-controls"
+import RecordDemo from "@/components/stageshow/record-demo"
 import { DEFAULT_MODEL_FILTERS, filterModels, type ModelFilters } from "@/lib/model-filters"
 
 type ViewTab = "flagships" | "latest-drops" | "open-weights" | "visual" | "all"
@@ -19,6 +20,11 @@ type ViewTab = "flagships" | "latest-drops" | "open-weights" | "visual" | "all"
 // New Drops is purely date-driven: models released within this window,
 // sorted newest-first. No per-lab flags involved.
 const NEW_DROPS_WINDOW_DAYS = 30
+
+// The ledger opens on this many rows; the rest are one tap away. Search and
+// filters always show every match, and a list only just over the limit is not
+// worth hiding.
+const COLLAPSED_COUNT = 8
 
 // The index is a scanning surface; the full summary lives on the model page.
 // Truncate in the string (not with a CSS clamp) so the row stays one line and
@@ -52,12 +58,14 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
   const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
   const modalFolio = folioFor(activeModalModel, modelsData)
   const [curlCopied, setCurlCopied] = useState(false)
+  const [showAll, setShowAll] = useState(false)
 
   const handleTab = (tab: ViewTab) => {
     // Fire on every tap, even re-tapping the active tab - a button that
     // sometimes silently does nothing feels broken.
     selectFeedback()
     setActiveTab(tab)
+    setShowAll(false)
   }
 
   const openModel = (model: ModelItem) => {
@@ -155,6 +163,12 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
     return refined
   }, [activeTab, searchQuery, filters])
 
+  // Searching or filtering means the visitor asked for matches, so show them all.
+  const narrowed =
+    searchQuery.trim() !== "" ||
+    Object.values(filters).some((value) => value !== "all" && value !== "" && value !== "default")
+  const collapsed = !showAll && !narrowed && filteredModels.length > COLLAPSED_COUNT + 2
+
   // The hero states how much of the dataset can be traced back to a source.
   const sourceCount = useMemo(
     () => modelsData.reduce((total, model) => total + (model.sources?.length ?? 0), 0),
@@ -226,7 +240,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
             {Object.keys(companies).length} labs · {sourceCount} primary sources · <span className="whitespace-nowrap">revised {formatDate(datasetRevision.revisedAt)}</span>
           </p>
           {quickAnswers}
-
+          <RecordDemo />
         </div>
       </section>
 
@@ -334,9 +348,12 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
               )}
             </div>
           </div>
-          <div className="mb-1 flex items-center justify-between rule-b pb-3 pt-2">
+          {/* The rule closes the count only where the list is a ledger; above lg the rows are cards, and a rule a few pixels over a rounded card looks like a mistake. */}
+          <div className="mb-1 flex items-center justify-between pb-2 pt-2 lg:rule-b lg:pb-3">
             <p className="text-small font-sans tabular-nums text-fg-muted">
-              {filteredModels.length} {filteredModels.length === 1 ? "model" : "models"} shown
+              {collapsed
+                ? `Showing ${COLLAPSED_COUNT} of ${filteredModels.length} models`
+                : `${filteredModels.length} ${filteredModels.length === 1 ? "model" : "models"} shown`}
               {searchQuery.trim() && (
                 <span> for &ldquo;{searchQuery.trim()}&rdquo;</span>
               )}
@@ -381,7 +398,8 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
               const specializedDrop = getSpecializedDrop(model.companyId, model.id)
 
               return (
-                <TextWithBlur key={model.id} delay={Math.min(index * 20, 200)}>
+                // Rows past the limit stay in the page (so find-in-page and crawlers still see them) but are not shown.
+                <TextWithBlur key={model.id} delay={Math.min(index * 20, 200)} className={collapsed && index >= COLLAPSED_COUNT ? "hidden" : ""}>
                   <div
                     onClick={() => openModel(model)}
                     role="button"
@@ -505,46 +523,24 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
               )
             })
           )}
+          {!narrowed && filteredModels.length > COLLAPSED_COUNT + 2 && (
+            <div className="flex justify-center pt-3 lg:pb-3">
+              <button
+                type="button"
+                aria-expanded={!collapsed}
+                onClick={() => {
+                  tapFeedback()
+                  setShowAll((value) => !value)
+                }}
+                className="inline-flex h-9 cursor-pointer items-center rounded-lg border border-[var(--field-edge)] bg-[var(--surface-raised)] px-4 text-small font-medium text-fg-strong transition-[color,border-color,transform] hover:border-accent/50 hover:text-accent-ink active:scale-[0.98]"
+              >
+                {collapsed ? `Show all ${filteredModels.length}` : "Show fewer"}
+              </button>
+            </div>
+          )}
           {/* Bottom ledger rule (desktop only - narrower screens use cards) */}
           <div className="hidden border-t border-black/10 lg:block dark:border-white/[0.08]" />
         </div>
-
-        {/* Labs: soft tiles, the same surface as the spec tiles on a model page. */}
-        <TextWithBlur delay={300}>
-          <section aria-labelledby="labs-heading" className="mt-16">
-            <div className="flex items-baseline justify-between gap-3">
-              <h2 id="labs-heading" className="font-display text-heading font-semibold tracking-tight text-fg-strong">
-                Latest flagship by lab
-              </h2>
-              <Link href="/companies" className="shrink-0 text-small font-medium text-accent-ink underline-offset-4 hover:underline">
-                All labs
-              </Link>
-            </div>
-            <ul className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
-              {Object.values(companies).map((company) => {
-                const flagship = modelsData.find((m) => m.companyId === company.id && m.isCompanyFlagship)
-                if (!flagship) return null
-                return (
-                  <li key={company.id}>
-                    <Link
-                      href={`/models/${flagship.id}`}
-                      className="tile-link group flex h-full items-center gap-3 px-3.5 py-3"
-                    >
-                      <span className="min-w-0">
-                        <span className="block truncate text-body font-semibold text-fg-strong transition-colors group-hover:text-accent-ink">
-                          {flagship.name}
-                        </span>
-                        <span className="block truncate text-small text-fg-muted">
-                          {company.shortName} · {formatDate(flagship.releaseDate)}
-                        </span>
-                      </span>
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
-          </section>
-        </TextWithBlur>
 
         {/* Use the data: the same tile surface, laid out as four endpoints. */}
         <TextWithBlur delay={320}>
