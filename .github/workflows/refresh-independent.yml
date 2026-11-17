@@ -40,7 +40,7 @@ jobs:
         id: refresh
         run: |
           set +e
-          node scripts/refresh-independent.mjs --write | tee refresh.log
+          node scripts/refresh-independent.mjs --write | tee "$RUNNER_TEMP/refresh.log"
           status=${PIPESTATUS[0]}
           set -e
           if [ "$status" -ne 0 ]; then
@@ -52,6 +52,26 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+
+      # The log is the only record of which pages could not be re-read, so it
+      # belongs on the run page whether or not any value moved. A failed pull
+      # request used to leave it invisible.
+      - name: Put the read on the run page
+        if: always()
+        run: |
+          log="$RUNNER_TEMP/refresh.log"
+          [ -f "$log" ] || exit 0
+          {
+            echo "### Independent results refresh"
+            echo
+            echo "<details><summary>Full report</summary>"
+            echo
+            echo '```'
+            cat "$log"
+            echo '```'
+            echo
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Regenerate the dataset revision and run the tests
         if: steps.refresh.outputs.changed == 'true'
@@ -67,10 +87,34 @@ jobs:
           branch="refresh/independent-$(date -u +%Y%m%d)"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$branch"
+          # -B so a second run on the same day updates the branch instead of
+          # dying on "branch already exists"; the push below force-updates it.
+          git checkout -B "$branch"
           git add data/independent-benchmarks.ts data/revision.ts README.md
           git commit -m "chore(data): refresh independent results"
-          git push origin "$branch"
-          gh pr create \
-            --title "Refresh independent results" \
-            --body "$(printf 'Automated re-read of the Artificial Analysis comparison pages.\n\nChanged values:\n\n%s\n\narena.ai blocks automated reads, so the Text Arena Elo is not part of this and must be refreshed by hand.' "$(grep '^  ' refresh.log | grep -- '->')")"
+          git push --force origin "$branch"
+
+          # Only real value moves, not the "Not refreshed:" lines below them.
+          {
+            echo "Automated re-read of the Artificial Analysis comparison pages."
+            echo
+            grep -m1 'pages read,' "$RUNNER_TEMP/refresh.log" || true
+            echo
+            echo "Changed values:"
+            echo
+            grep -E '^  [a-z0-9-]+\.[a-zA-Z]+: .* -> .*$' "$RUNNER_TEMP/refresh.log" | sed 's/^  /- /' || true
+            echo
+            echo "Records that could not be re-read are listed in the run summary; their values are unchanged, not re-verified."
+            echo
+            echo "arena.ai blocks automated reads, so the Text Arena Elo is not part of this and must be refreshed by hand."
+          } > "$RUNNER_TEMP/pr-body.md"
+
+          if [ -n "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
+            gh pr comment "$branch" --body "Refresh re-run at $(date -u +%FT%TZ); the branch and diff above carry the newer read."
+            exit 0
+          fi
+
+          gh pr create --title "Refresh independent results" --body-file "$RUNNER_TEMP/pr-body.md" || {
+            echo "::error::GITHUB_TOKEN cannot open pull requests in this repository. Enable Settings -> Actions -> General -> Workflow permissions -> 'Allow GitHub Actions to create and approve pull requests'. The refreshed branch $branch is pushed, so the PR can still be opened by hand: https://github.com/${GITHUB_REPOSITORY}/compare/main...${branch}"
+            exit 1
+          }
