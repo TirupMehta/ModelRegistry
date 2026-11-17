@@ -168,7 +168,7 @@ export const INDEPENDENT_EVALUATOR = {
   name: "Artificial Analysis",
   url: "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
   suite: "Intelligence Index v5.0.1",
-  retrievedAt: "2026-11-13",
+  retrievedAt: "2026-11-17",
   method:
     "Same suite, same harness, run by the evaluator through each provider's own API. Reasoning effort is the setting the evaluator reports for the model, which differs by model.",
 } as const
@@ -344,9 +344,9 @@ export const independentRecords: IndependentRecord[] = [
     modelId: "muse-spark-open",
     evaluatedAs: "Muse Spark Open (Xhigh)",
     sourceUrl: G_SPARK,
-    values: { intelligenceIndex: 25, aaBriefcase: 1279, automationBench: 49.7, terminalBench4: 8.1, frontierCode: 7.6, omniscience: 26, gdpPdf: 18.6, hleDiamond: 26.3, critPt: 29.5, terminalBenchScience: 1.9 },
+    values: { intelligenceIndex: 25, aaBriefcase: 1280, automationBench: 49.7, terminalBench4: 8.1, frontierCode: 7.6, omniscience: 26, gdpPdf: 18.6, hleDiamond: 26.3, critPt: 29.5, terminalBenchScience: 1.9 },
     costPerTask: 2.02,
-    minutesPerTask: 7.9,
+    minutesPerTask: 6.1,
   },
   {
     modelId: "mistral-large-4",
@@ -386,7 +386,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_DSPRO,
     values: { intelligenceIndex: 23, aaBriefcase: 1253, automationBench: 56.7, terminalBench4: 14.1, frontierCode: 17.1, omniscience: -6, gdpPdf: 11.4, hleDiamond: 19.5, critPt: 23.5, terminalBenchScience: 5.7 },
     costPerTask: 1.77,
-    minutesPerTask: 21.4,
+    minutesPerTask: 17.3,
   },
   {
     modelId: "nemotron-3-ultra",
