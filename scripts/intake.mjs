@@ -29,8 +29,17 @@ const UA = "Mozilla/5.0 (compatible; ModelRegistryIntake/1.0; +https://modelregi
 const today = new Date().toISOString().slice(0, 10)
 
 const args = process.argv.slice(2)
-const factsPath = args.find((a) => !a.startsWith("--") && a !== args[args.indexOf("--base") + 1])
-const baseRef = args.includes("--base") ? args[args.indexOf("--base") + 1] : null
+// The facts file is the first argument that is neither a flag nor the value of --base.
+// (The old test compared against args[indexOf("--base") + 1], which is args[0] when
+// --base is absent, so the facts file itself was thrown away without the flag.)
+const baseIndex = args.indexOf("--base")
+const baseValueIndex = baseIndex >= 0 ? baseIndex + 1 : -1
+const factsPath = args.find((a, i) => !a.startsWith("--") && i !== baseValueIndex)
+const baseRef = baseIndex >= 0 ? args[baseIndex + 1] : null
+if (baseIndex >= 0 && (!baseRef || baseRef.startsWith("--"))) {
+  console.error("--base needs a git ref, e.g. --base HEAD")
+  process.exit(2)
+}
 if (!factsPath) {
   console.error("usage: node scripts/intake.mjs <facts.json> [--base <git-ref>]")
   process.exit(2)
@@ -69,15 +78,35 @@ function ser(value, ind, key) {
 }
 
 // ---------------------------------------------------------------- 1. verify
+/**
+ * Reads one page. Some hosts (openai.com among them) answer Node's HTTP client with
+ * 403 whatever headers it sends, yet serve the same page to curl. A refusal is
+ * therefore retried once with curl before the page is reported unreadable, so a
+ * source is never marked blocked when a plain client can read it.
+ */
+async function readPage(url) {
+  try {
+    const res = await fetch(url, { headers: { "user-agent": UA }, redirect: "follow" })
+    if (res.ok) return { ok: true, status: res.status, html: await res.text() }
+    if (![403, 429, 503].includes(res.status)) return { ok: false, status: res.status, html: "" }
+  } catch {
+    // fall through to curl
+  }
+  try {
+    const out = execFileSync("curl", ["-sL", "--max-time", "30", "-A", UA, "-w", "\n%{http_code}", url], { encoding: "utf8", maxBuffer: 64 << 20 })
+    const cut = out.lastIndexOf("\n")
+    const status = Number(out.slice(cut + 1))
+    const ok = status >= 200 && status < 300
+    return { ok, status, html: ok ? out.slice(0, cut) : "" }
+  } catch {
+    return { ok: false, status: 0, html: "" }
+  }
+}
+
 const pages = {}
 for (const [key, src] of Object.entries(spec.sources)) {
-  try {
-    const res = await fetch(src.url, { headers: { "user-agent": UA }, redirect: "follow" })
-    const html = res.ok ? await res.text() : ""
-    pages[key] = { ok: res.ok, status: res.status, html, text: toText(html) }
-  } catch {
-    pages[key] = { ok: false, status: 0, html: "", text: "" }
-  }
+  const page = await readPage(src.url)
+  pages[key] = { ...page, text: toText(page.html) }
 }
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -132,7 +161,10 @@ const price = get("pricing", { input: 0, output: 0 })
 const money = (n) => (Number.isInteger(n) ? `$${n}` : `$${n.toFixed(2)}`)
 const releaseDate = get("releaseDate")
 const isLatestCheckpoint = labModels.every((x) => x.releaseDate < releaseDate)
-const everyFieldSourced = Object.keys(spec.fields).every((f) => verified[f].length === spec.fields[f].evidence.length)
+// "verified" means every core field was read against a live primary source. A field with no
+// evidence at all (a parameter count the lab never states, benchmarks it never publishes) is
+// not sourced, so it keeps the record at partially_verified instead of passing as complete.
+const everyFieldSourced = Object.keys(spec.fields).every((f) => spec.fields[f].evidence.length > 0 && verified[f].length === spec.fields[f].evidence.length)
 
 const highlight = `Released ${new Date(`${releaseDate}T00:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })} by ${spec.lab.companyName}; ${get("contextWindow")} of context, ${money(price.input)} in and ${money(price.output)} out per 1M tokens, ${get("parameters").toLowerCase()}.`
 const links = Object.fromEntries(Object.entries(m.links).map(([k, v]) => [k, spec.sources[v]?.url ?? v]))
