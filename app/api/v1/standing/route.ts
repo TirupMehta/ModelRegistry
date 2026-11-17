@@ -2,7 +2,9 @@ import { NextResponse } from "next/server"
 import { createHash } from "crypto"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
-import { STANDING_VERSION } from "@/lib/standing"
+import { CONTESTED_SPREAD, CORROBORATED_SPREAD, MIN_TESTS_FOR_STANDING, STABILITY_TOLERANCE, STANDING_VERSION } from "@/lib/standing"
+import { PRIOR_TESTS, SOFT_LIMIT } from "@/lib/meridian"
+import { meridianCalibration } from "@/data/meridian-calibration"
 import { INDEPENDENT_EVALUATOR, buildIndependentStanding } from "@/lib/independent"
 import { splitLineup } from "@/lib/currency"
 import { leaderboardStats, LEADERBOARD_VERSION, MIN_COHORT_SIZE } from "@/lib/leaderboards"
@@ -11,15 +13,17 @@ import { SITE_URL } from "@/lib/site"
 export const dynamic = "force-dynamic"
 
 /**
- * Cross-test standing as machine-readable data.
+ * The Meridian score as machine-readable data. The calibration constants are
+ * published in full, so every score here can be recomputed from the evaluator's
+ * own readings without trusting this endpoint.
  *
  * The HTML page (/score) and the Markdown view (/api/markdown/score) are the
  * readable versions of this. This endpoint exists so an agent or a third party
  * can cite, reproduce or diff the standing without scraping HTML, which is the
  * only way the numbers can be checked against the method.
  *
- * Versioned: STANDING_VERSION changes when the equating, weighting, refusal rule
- * or audit changes. Dataset revision changes when the data changes. A consumer
+ * Versioned: STANDING_VERSION changes when the scale, the calibration, the
+ * weighting, the refusal rule or the audit changes. Dataset revision changes when the data changes. A consumer
  * can pin both and know exactly which standing it received.
  */
 export async function GET() {
@@ -30,6 +34,7 @@ export async function GET() {
   const body = {
     status: "success",
     standingVersion: STANDING_VERSION,
+    meridianVersion: STANDING_VERSION,
     leaderboardVersion: LEADERBOARD_VERSION,
     updatedAt: datasetRevision.revisedAt,
     datasetVersion: datasetRevision.datasetVersion,
@@ -45,16 +50,29 @@ export async function GET() {
       method: INDEPENDENT_EVALUATOR.method,
       laboratoryReportedScoresIncluded: false,
     },
-    rules: {
-      minTestsForStanding: 2,
-      minCohortSize: MIN_COHORT_SIZE,
-      corroborationSpread: 20,
-      contestedSpread: 50,
-      stabilityTolerance: 2,
-      midrank: "Hazen plotting position (below + (equal-1)/2 + 0.5) / n",
-      weights: "equal per cohort",
-      audit: "leave one cohort out; test dependent when the model moves more than 2 places",
+    scale: {
+      name: "Meridian",
+      referenceAverage: 500,
+      pointsPerReferenceStandardDeviation: 100,
+      ceiling: null,
+      note: "Scores are measured against a frozen reference, so adding, removing or superseding any other model never changes a score.",
     },
+    rules: {
+      minTestsForStanding: MIN_TESTS_FOR_STANDING,
+      minCohortSize: MIN_COHORT_SIZE,
+      corroborationSpread: CORROBORATED_SPREAD,
+      contestedSpread: CONTESTED_SPREAD,
+      stabilityTolerance: STABILITY_TOLERANCE,
+      transform: "percentage tests on a logit scale (readings kept 0.25 points inside 0 and 100); index, Elo and net tests as printed",
+      standardise: "z = (reading - location) / scale, with the frozen median and 1.4826 x MAD of the reference field",
+      influenceLimit: `z is linear to ${SOFT_LIMIT}, then ${SOFT_LIMIT} + ln(1 + |z| - ${SOFT_LIMIT}); never clipped`,
+      combine: `sum of per-test z / (tests + ${PRIOR_TESTS}), equal weight per test`,
+      place: "meridian = 500 + 100 x (composite - mean) / sd, with the frozen reference mean and sd",
+      band: "95% band from the pooled disagreement between a model's own tests: 1.96 x noise x sqrt(tests) / (tests + prior) on the same scale",
+      tiers: "a row joins the tier of the row above unless its gap to the tier leader exceeds 1.96 x the combined standard error",
+      audit: "leave one test out; test dependent when the model moves more than 2 places",
+    },
+    calibration: meridianCalibration,
     betweenTest: {
       sd: standing.betweenTestSd,
       pooledVariance: standing.betweenTest,
@@ -81,7 +99,11 @@ export async function GET() {
       model: row.model.name,
       id: row.model.id,
       laboratory: row.model.companyName,
-      standing: Number(row.standing.toFixed(1)),
+      standing: row.standing,
+      meridian: row.standing,
+      standardError: row.se,
+      band95: row.band,
+      perTest: row.perTest,
       cohorts: row.cohorts,
       spread: Math.round(row.spread),
       agreement: row.agreement,

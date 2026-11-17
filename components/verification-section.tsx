@@ -55,8 +55,10 @@ export default function VerificationSection({ model }: { model: ModelItem }) {
             Sources by detail, {sourcedFieldCount} fields
           </summary>
           <ul className="mt-2 space-y-1.5">
-            {fieldSources.map(({ field, source }) => (
-              <li key={`${field}-${source.url}`} className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            {fieldSources.map(({ field, source }, index) => (
+              // Two citations for one field can share a page (an announcement that states both the
+              // license and the availability), so the position keeps every key unique.
+              <li key={`${field}-${source.url}-${index}`} className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                 <span className="font-medium text-fg">{fieldLabels[field]}</span>
                 <a
                   href={source.url}

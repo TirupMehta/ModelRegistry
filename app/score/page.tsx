@@ -24,14 +24,14 @@ import RankingsSwitcher from "@/components/rankings-switcher"
 import { ArrowLeft, ChevronDown } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "AI model standing across benchmarks, and why it is not one number",
+  title: "Meridian: AI model score across benchmarks, and why it is not one number",
   description:
-    "A cross-test standing built from per-test percentiles, with the disagreement between tests published next to it. Models measured on one test are ranked on that test only.",
+    "Meridian is a fixed-reference cross-test score with a 95% band, and the disagreement between tests published next to it. Models measured on one test are ranked on that test only.",
   alternates: { canonical: `${SITE}/score` },
   openGraph: {
-    title: "AI model standing across benchmarks",
+    title: "Meridian: AI model score across benchmarks",
     description:
-      "Rank equating, coverage refusal, and the spread between tests published as a first-class number.",
+      "A fixed reference scale, 95% bands, coverage refusal, and the spread between tests published as a first-class number.",
     url: `${SITE}/score`,
     siteName: "ModelRegistry",
     type: "article",
@@ -72,7 +72,7 @@ export default function ScorePage() {
         Math.min(...a.positions.map((p) => p.rank)) - Math.min(...b.positions.map((p) => p.rank)),
     )
 
-  const disagreementPoints = Math.round(standing.betweenTestSd * 100)
+  const disagreementPoints = Math.round(standing.betweenTestSd)
   const contested = standing.rows.filter((row) => row.agreement === "contested").length
   const unstable = standing.rows.filter((row) => row.auditable && !row.stable).length
   const unaudited = standing.rows.filter((row) => !row.auditable).length
@@ -80,11 +80,11 @@ export default function ScorePage() {
   const faq = [
     {
       q: "What is the best AI model right now?",
-      a: `No model leads every test, so none is called best overall; the leader on each test is on the best-by-task page (${SITE}/best). On this page, ${standing.rated} of ${standing.ranked} ranked models report more than one test, and those ${standing.rated} are ordered by the mean of their per-test percentiles. Where two models sit a few points apart, the gap is smaller than the ${disagreementPoints} point spread between tests, and the page does not pretend otherwise.`,
+      a: `No model leads every test, so none is called best overall; the leader on each test is on the best-by-task page (${SITE}/best). On this page, ${standing.rated} of ${standing.ranked} ranked models report more than one test, and those ${standing.rated} are ordered by their Meridian score. Where two models sit a few points apart, the gap is smaller than the error band on each score, and the page does not pretend otherwise.`,
     },
     {
-      q: "How is the cross-test standing calculated?",
-      a: "Each score is turned into its percentile inside its own cohort, so a hard exam and an easy exam count on the same footing. Those percentiles are averaged with equal weight per test. A model needs at least two cohorts to receive a standing. The spread between its best and worst percentile is published next to the result.",
+      q: "How is the Meridian score calculated?",
+      a: "Each result is measured against a frozen reference for its own test, so a hard exam and an easy exam count on the same footing, and a score never changes because another model was added. The per-test results are combined with equal weight and a small pull toward the reference average for models that report few tests. 500 is the reference average and 100 points is one reference standard deviation. A model needs at least two tests to receive a score, and the spread between its best and worst test is published next to it.",
     },
     {
       q: "Why are most models ranked on one test only?",
@@ -92,7 +92,7 @@ export default function ScorePage() {
     },
     {
       q: "Can a laboratory game this by publishing only the tests it wins?",
-      a: "Only partly, and the page shows where. A model that reports one exam can hold a high position on that exam but cannot receive a cross-test standing. A model that reports several exams and only wins one gets its standing pulled toward the middle by the exams it did not win, and is labelled contested when the spread exceeds fifty percentile points.",
+      a: `Only partly, and the page shows where. A model that reports one exam can hold a high position on that exam but cannot receive a cross-test standing. A model that reports several exams and only wins one gets its standing pulled toward the middle by the exams it did not win, and is labelled contested when the spread between its best and worst test exceeds ${CONTESTED_SPREAD} Meridian points.`,
     },
     {
       q: "Why are older models not on the board?",
@@ -108,9 +108,9 @@ export default function ScorePage() {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "@id": `${SITE}/score#article`,
-    headline: `AI model standing v${STANDING_VERSION}`,
+    headline: `Meridian v${STANDING_VERSION}: AI model score across benchmarks`,
     description:
-      "Cross-test standing computed from per-test percentiles, with the disagreement between tests published alongside it.",
+      "Cross-test score on a fixed reference scale, with a 95% band and the disagreement between tests published alongside it.",
     url: `${SITE}/score`,
     dateModified: datasetRevision.revisedAt,
     author: { "@id": `${SITE}/#organization` },
@@ -195,7 +195,7 @@ export default function ScorePage() {
           below with its replacement instead of being placed against current models.
         </p>
         <p className="mb-8 flex flex-wrap items-center gap-2 text-small font-sans text-fg-muted">
-          <span>Standing v{STANDING_VERSION}</span>
+          <span>Meridian v{STANDING_VERSION}</span>
           <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
           <span>{standing.rated} rated</span>
           <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
@@ -210,7 +210,7 @@ export default function ScorePage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
           {[
             { value: `${standing.rated}`, label: "models rated across tests" },
-            { value: `${disagreementPoints}`, label: "percentile points between tests" },
+            { value: `${disagreementPoints}`, label: "Meridian points between tests" },
             { value: `${standing.singleTest.length}`, label: "models on one test only" },
             { value: `${lineup.superseded.length}`, label: "superseded, not ranked here" },
           ].map((stat) => (
@@ -230,12 +230,13 @@ export default function ScorePage() {
 
         {/* Standing table */}
         <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
-          Cross-test standing
+          Meridian score
         </h2>
         <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
-          The equal-weight mean of a model&rsquo;s per-test percentiles. The spread column is the disagreement behind that mean, in percentile
-          points. Read them together: a high standing with a wide spread is a compromise between
-          tests, not a result.
+          Each model&rsquo;s results against a fixed reference, combined with equal weight per test. The
+          figure after &plusmn; is the 95% error band, and the spread column is the disagreement between
+          the model&rsquo;s own tests, in Meridian points. Read them together: a high score with a wide spread is a
+          compromise between tests, not a result.
         </p>
 
         <div className="rule-t mb-3">
@@ -244,39 +245,45 @@ export default function ScorePage() {
               <Link
                 key={row.model.id}
                 href={`/models/${row.model.id}`}
-                className="group flex flex-wrap items-baseline gap-x-3 gap-y-1.5 py-3 rule-b"
+                className="group flex items-baseline gap-x-3 py-3 rule-b"
               >
                 <span className="text-small font-sans tabular-nums text-fg-muted w-7 shrink-0">
                   T{row.tier}
                 </span>
-                <span className="text-body sm:text-title font-medium tracking-tight text-fg-strong group-hover:text-accent-ink transition-colors">
-                  {row.model.name}
-                </span>
-                <span className="hidden sm:inline-flex items-center gap-1.5 text-small font-sans text-fg-muted">
-                  {row.model.companyName}
-                </span>
-                <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-small font-sans text-fg-muted">
-                  {row.cohorts} tests
-                </span>
-                <span className={`inline-flex items-center rounded border px-1.5 py-0.5 text-small font-sans ${AGREEMENT_CLASS[row.agreement]}`}>
-                  {AGREEMENT_LABEL[row.agreement]}
-                </span>
-                {row.auditable && !row.stable && (
-                  <span className="inline-flex items-center rounded border border-amber-600/40 px-1.5 py-0.5 text-small font-sans text-amber-700 dark:text-amber-400 dark:border-amber-400/30">
-                    Test dependent
+                {/* The name and chips wrap inside their own column; the score stays on the right of the first line. */}
+                <span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-3 gap-y-1.5">
+                  <span className="text-body sm:text-title font-medium tracking-tight text-fg-strong group-hover:text-accent-ink transition-colors">
+                    {row.model.name}
                   </span>
-                )}
-                {!row.auditable && (
+                  <span className="hidden sm:inline-flex items-center gap-1.5 text-small font-sans text-fg-muted">
+                    {row.model.companyName}
+                  </span>
                   <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-small font-sans text-fg-muted">
-                    Not auditable
+                    {row.cohorts} tests
                   </span>
-                )}
-                <span className="ml-auto flex items-baseline gap-2 shrink-0">
-                  <span className="text-small font-sans tabular-nums text-fg-muted">
+                  <span className={`inline-flex items-center rounded border px-1.5 py-0.5 text-small font-sans ${AGREEMENT_CLASS[row.agreement]}`}>
+                    {AGREEMENT_LABEL[row.agreement]}
+                  </span>
+                  {row.auditable && !row.stable && (
+                    <span className="inline-flex items-center rounded border border-amber-600/40 px-1.5 py-0.5 text-small font-sans text-amber-700 dark:text-amber-400 dark:border-amber-400/30">
+                      Test dependent
+                    </span>
+                  )}
+                  {!row.auditable && (
+                    <span className="inline-flex items-center rounded border border-black/10 dark:border-white/15 px-1.5 py-0.5 text-small font-sans text-fg-muted">
+                      Not auditable
+                    </span>
+                  )}
+                </span>
+                <span className="flex items-baseline gap-2 shrink-0">
+                  <span className="hidden sm:inline text-small font-sans tabular-nums text-fg-muted">
                     spread {row.spread.toFixed(0)}
                   </span>
+                  <span className="text-small font-sans tabular-nums text-fg-muted">
+                    &plusmn;{Math.round((row.band[1] - row.band[0]) / 2)}
+                  </span>
                   <span className="text-title font-sans font-semibold tabular-nums text-fg-strong">
-                    {row.standing.toFixed(1)}
+                    {row.standing}
                   </span>
                 </span>
               </Link>
@@ -285,11 +292,11 @@ export default function ScorePage() {
         </div>
 
         <p className="text-body font-sans text-fg-muted leading-6 max-w-2xl mb-12">
-          Standing runs 1 to 99 and is an expected percentile, not a percentage correct. The
-          disagreement figure of {disagreementPoints} points is the pooled spread between tests across
-          the rated models. Rows are grouped into tiers: a row starts a new tier only when it sits more
-          than that figure below the top of the tier above, so models in the same tier (T1, T2) are not
-          ranked against each other. Rows inside a tier are listed by standing, which is not a claim that one is ahead. {contested} of {standing.rated} rated models have tests that disagree by more
+          500 is the reference average and 100 points is one reference standard deviation. The scale
+          has no ceiling, and a score never moves because another model was added. A model&rsquo;s own tests
+          disagree by about {disagreementPoints} points, which is what the error band is built from. Rows are
+          grouped into tiers: a row joins a tier unless it sits further below that tier&rsquo;s leader than
+          the two error bands allow, so models in the same tier (T1, T2) are not ranked against each other. Rows inside a tier are listed by standing, which is not a claim that one is ahead. {contested} of {standing.rated} rated models have tests that disagree by more
           than {CONTESTED_SPREAD} points, and each is labelled contested rather than described as
           strong.{unstable > 0 ? ` ${unstable} rows move more than two places when a single test is removed and are labelled test dependent.` : ""}{unaudited > 0 ? ` ${unaudited} rows report exactly two tests; removing either leaves no standing, so the leave-one-test-out audit cannot run on them and they are labelled not auditable rather than stable.` : ""}
         </p>
@@ -697,7 +704,7 @@ export default function ScorePage() {
           <details className="group rule-b">
             <summary className={summaryClass}>
               <span className="text-body font-sans font-medium text-fg-strong">
-                Cross-test standing: equate, average, refuse, audit
+                Meridian: anchor, combine, refuse, audit
               </span>
               <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
             </summary>
@@ -705,13 +712,13 @@ export default function ScorePage() {
               {[
                 {
                   n: "1",
-                  title: "Equate",
-                  body: "A score becomes its percentile inside its own cohort. A percentile is scale free, so a hard exam and an easy exam contribute on the same footing and one outlier cannot move a cohort's scale. This is the whole of the difficulty correction: a two-way difficulty fit on top of a rank transform is unidentified, because the rank transform has already absorbed it.",
+                  title: "Anchor",
+                  body: "Each result is measured against a frozen reference for its own test: percentages on a logit scale, then centred and scaled by the reference field's median and robust spread. A hard exam and an easy exam land on the same footing, one outlier cannot move the reference, and the constants never change when models are added. A result far beyond the field grows only logarithmically, so one extreme test cannot decide a score, and nothing is ever clipped.",
                 },
                 {
                   n: "2",
-                  title: "Average",
-                  body: "Every test counts equally. Weighting a test by the spread of its raw scores would bring the raw scale back into a number built to remove it, and one outlier could set that weight. The spread of each test is published beside it instead.",
+                  title: "Combine",
+                  body: "Every test counts equally, and the sum is divided by the number of tests plus one, which pulls a model that reports few tests toward the reference average, so showing only your best tests never helps. The result is placed on a scale where 500 is the reference average and 100 points is one reference standard deviation. It has no ceiling, so a future frontier model stays separable.",
                 },
                 {
                   n: "3",
@@ -721,7 +728,7 @@ export default function ScorePage() {
                 {
                   n: "4",
                   title: "Publish the disagreement",
-                  body: `The spread between a model's best and worst percentile is printed next to its standing. Up to ${CORROBORATED_SPREAD} points the tests agree, up to ${CONTESTED_SPREAD} they partly agree, beyond that they disagree and the row is labelled contested.`,
+                  body: `The spread between a model's best and worst test, in Meridian points, is printed next to its score, with a 95% band built from how far a model's own tests disagree. Up to ${CORROBORATED_SPREAD} points the tests agree, up to ${CONTESTED_SPREAD} they partly agree, beyond that they disagree and the row is labelled contested.`,
                 },
                 {
                   n: "5",
@@ -730,8 +737,8 @@ export default function ScorePage() {
                 },
                 {
                   n: "6",
-                  title: "Check the link",
-                  body: "Each cohort records how many of its models also report another test. A cohort linked to the rest of the evidence by a single model cannot fix its own level, and every row resting on it is marked.",
+                  title: "Check the ruler",
+                  body: "Every test must have a frozen calibration for the evaluator's current suite, built from at least eight reference readings. A test without one is not scored and is listed, a reading that is not a finite number stops the build, and every published score is recorded in a ledger so no number can change unless its evidence does.",
                 },
               ].map((step) => (
                 <li key={step.n} className="flex gap-3">
@@ -869,7 +876,7 @@ export default function ScorePage() {
         </div>
 
         <p className="text-body font-sans text-fg-muted leading-6">
-          Standing v{STANDING_VERSION}, rank rule v{LEADERBOARD_VERSION}, minimum cohort{" "}
+          Meridian v{STANDING_VERSION}, rank rule v{LEADERBOARD_VERSION}, minimum cohort{" "}
           {MIN_COHORT_SIZE}, data revised {datasetRevision.revisedAt}. Recompute every table from{" "}
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a href="/api/v1/models" className="text-accent-ink hover:underline underline-offset-2">
