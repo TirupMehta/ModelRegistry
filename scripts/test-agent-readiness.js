@@ -14,6 +14,18 @@ const vm = require("vm")
 
 console.log("🤖 Verifying agent-readiness contracts...")
 
+// Repo modules that a stub map does not list are resolved and loaded on demand, so a
+// new import in lib/ or data/ never breaks this test. The stub maps below only need to
+// name what must be replaced (network code, for example), not everything that is used.
+const moduleCache = new Map()
+function resolveRepoModule(fromFile, spec) {
+  const base = spec.startsWith("@/") ? path.resolve(__dirname, "..", spec.slice(2)) : path.resolve(path.dirname(fromFile), spec)
+  for (const candidate of [base, `${base}.ts`, `${base}.tsx`, path.join(base, "index.ts")]) {
+    if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate
+  }
+  return null
+}
+
 function loadTsModule(relPath, registry = {}) {
   const fullPath = path.resolve(__dirname, relPath)
   const source = fs.readFileSync(fullPath, "utf8")
@@ -27,6 +39,13 @@ function loadTsModule(relPath, registry = {}) {
     exports: mod.exports,
     require: (spec) => {
       if (spec in registry) return registry[spec]
+      if (spec.startsWith("@/") || spec.startsWith(".")) {
+        const file = resolveRepoModule(fullPath, spec)
+        if (file) {
+          if (!moduleCache.has(file)) moduleCache.set(file, loadTsModule(file, registry))
+          return moduleCache.get(file)
+        }
+      }
       return require(spec)
     },
     console,
