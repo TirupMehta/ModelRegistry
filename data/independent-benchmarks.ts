@@ -188,6 +188,7 @@ const AA = "https://artificialanalysis.ai/models/comparisons/"
 const AA_PAGE = "https://artificialanalysis.ai/models/"
 const G_FLASH = `${AA}glm-5-3-flash-vs-qwen3-8-2-4t-a95b`
 const G_BEAM = `${AA}reflection-beam-vs-gpt-6-2-astra`
+const G_GPT62 = `${AA}gpt-6-2-sol-vs-gpt-6-2-astra`
 const G_OPUS = `${AA}claude-opus-5-5-vs-claude-fable-5-2`
 const G_GROK = `${AA}grok-4-7-vs-gpt-6-2-astra`
 const G_FABLE = `${AA}claude-fable-5-2-vs-claude-sonnet-5-5`
@@ -236,6 +237,22 @@ export const independentRecords: IndependentRecord[] = [
     values: { intelligenceIndex: 36, aaBriefcase: 1572, automationBench: 35.4, terminalBench4: 32.8, frontierCode: 34.9, omniscience: 12, gdpPdf: 20.8, hleDiamond: 29.6, critPt: 43.5, terminalBenchScience: 20.0 },
     costPerTask: 0.41,
     minutesPerTask: 14.7,
+  },
+  {
+    modelId: "gpt-6-2-astra",
+    evaluatedAs: "GPT-6.2 Astra (Max)",
+    sourceUrl: G_GPT62,
+    values: { intelligenceIndex: 62, aaBriefcase: 1643, automationBench: 77.2, terminalBench4: 64.1, frontierCode: 45.4, omniscience: 50, gdpPdf: 29.8, hleDiamond: 72.2, critPt: 71.5, terminalBenchScience: 78.1 },
+    costPerTask: 4.0,
+    minutesPerTask: 10.4,
+  },
+  {
+    modelId: "gpt-6-2-sol",
+    evaluatedAs: "GPT-6.2 Sol (Max)",
+    sourceUrl: G_GPT62,
+    values: { intelligenceIndex: 57, aaBriefcase: 1612, automationBench: 71.3, terminalBench4: 60.1, frontierCode: 44.4, omniscience: 40, gdpPdf: 30.0, hleDiamond: 64.0, critPt: 62.5, terminalBenchScience: 67.6 },
+    costPerTask: 1.01,
+    minutesPerTask: 7.9,
   },
   {
     modelId: "gpt-6-astra",

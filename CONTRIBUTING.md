@@ -75,6 +75,13 @@ Open `data/models.ts` and add your model to the `modelsData` array:
 
 > **🚧 The Popularity Bar**: This registry is curated, not exhaustive. A model belongs here only if it meets at least one: top-15 OpenRouter weekly volume, primary flagship of a major lab, or a genuinely frontier capability (SOTA benchmark, new modality). Obscure checkpoints and minor variants will be rejected - they turn the index into slop. When in doubt, merge variants into one family entry instead of adding new ones.
 
+> **✅ The Completeness Standard (STRICT)**: a new record is finished only when nothing is blank and every figure is accurate. `pnpm test` runs `scripts/test-completeness.js`, which fails the build unless the record has:
+> - every identity field (name, version, release date, context window, max output, parameters, license, highlight, category label, status badge) filled, and an official `links.announcement`;
+> - a citation in `fieldSources` for the release date, license, pricing and modalities, plus the context window, max output and parameter count unless the lab does not state them. An unstated figure is written as `"Undisclosed"` (and says so in its source note), never left empty and never guessed;
+> - for text models, **our own score**: a row in `data/independent-benchmarks.ts` for the evaluator's (Artificial Analysis) published result, with all ten tests, the cost per task and the time per task copied exactly as printed, and a comparison page that lists the model's configuration. If the evaluator has not published the model yet, say so in the pull request and do not mark the record complete.
+>
+> Older records may carry the gaps listed in `scripts/completeness-baseline.json`. That list only shrinks: never add a new model to it, and remove an entry as soon as its gap is fixed. After adding a model also run `node scripts/refresh-independent.mjs`, which re-reads your numbers from the evaluator's page and must report 0 changed values.
+
 > **🔄 The Freshness Sweep (STRICT - never skip)**: The registry must never contradict itself. Every new entry must:
 > 1. Keep exactly **one** `isCompanyFlagship: true` per lab - demote the previous flagship.
 > 2. Scrub stale superlatives (`#1`, `NEWEST`, `SOTA`, `best`, `latest`, `reigning`, `most advanced`, `newly`) off every entry the newcomer dethrones - same lab first, plus any cross-lab record it takes. A record belongs only to its verified current holder.
