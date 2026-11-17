@@ -1,0 +1,146 @@
+{
+  "version": "3.0.0",
+  "suite": "Intelligence Index v5.0.1",
+  "scores": {
+    "beam-1": {
+      "score": 346,
+      "tests": 10,
+      "inputs": "869d42983bb5"
+    },
+    "claude-fable-5-2": {
+      "score": 654,
+      "tests": 9,
+      "inputs": "a3da565f622e"
+    },
+    "claude-haiku-5-5": {
+      "score": 478,
+      "tests": 10,
+      "inputs": "c3efcd104775"
+    },
+    "claude-opus-5-5": {
+      "score": 617,
+      "tests": 10,
+      "inputs": "e7c8f9c41222"
+    },
+    "claude-sonnet-5-5": {
+      "score": 591,
+      "tests": 10,
+      "inputs": "5b94618a665c"
+    },
+    "deepseek-v4-1-flash-1017": {
+      "score": 487,
+      "tests": 9,
+      "inputs": "59c546a32bd5"
+    },
+    "deepseek-v4-pro-0813": {
+      "score": 418,
+      "tests": 10,
+      "inputs": "b5690cd7c5c4"
+    },
+    "gemini-3-8-flash": {
+      "score": 480,
+      "tests": 10,
+      "inputs": "fc66ded5f3d7"
+    },
+    "gemini-4-argon": {
+      "score": 576,
+      "tests": 10,
+      "inputs": "12ed239cd2ad"
+    },
+    "gemini-4-carbon": {
+      "score": 625,
+      "tests": 10,
+      "inputs": "fa71a8f1bde7"
+    },
+    "gemini-4-hydrogen": {
+      "score": 599,
+      "tests": 9,
+      "inputs": "1b24c6cdd19c"
+    },
+    "glm-5-3": {
+      "score": 470,
+      "tests": 10,
+      "inputs": "bb71e31d1b57"
+    },
+    "glm-5-3-flash": {
+      "score": 448,
+      "tests": 9,
+      "inputs": "b0158ccc551a"
+    },
+    "gpt-6-1-terra": {
+      "score": 563,
+      "tests": 9,
+      "inputs": "e4f4123390c9"
+    },
+    "gpt-6-2-astra": {
+      "score": 635,
+      "tests": 9,
+      "inputs": "34b519c5a016"
+    },
+    "gpt-6-2-sol": {
+      "score": 606,
+      "tests": 9,
+      "inputs": "7b86dccd35bc"
+    },
+    "grok-4-7": {
+      "score": 502,
+      "tests": 10,
+      "inputs": "320b9b81dbdc"
+    },
+    "kimi-k3-1-pro": {
+      "score": 567,
+      "tests": 10,
+      "inputs": "8a11eab00285"
+    },
+    "mimo-v2-6-flash": {
+      "score": 435,
+      "tests": 10,
+      "inputs": "6d321a4a1ec2"
+    },
+    "mimo-v2-6-pro": {
+      "score": 470,
+      "tests": 10,
+      "inputs": "10ea767f6c2f"
+    },
+    "minimax-m3-1-flash": {
+      "score": 477,
+      "tests": 9,
+      "inputs": "653d46863fdc"
+    },
+    "mistral-large-4": {
+      "score": 434,
+      "tests": 10,
+      "inputs": "8619619e863b"
+    },
+    "muse-ember": {
+      "score": 509,
+      "tests": 9,
+      "inputs": "a57ae2208c2e"
+    },
+    "muse-spark-open": {
+      "score": 418,
+      "tests": 9,
+      "inputs": "1d45685ac4dc"
+    },
+    "muse-wonder": {
+      "score": 559,
+      "tests": 10,
+      "inputs": "aa35b20ca230"
+    },
+    "nemotron-3-5-super-vl": {
+      "score": 279,
+      "tests": 10,
+      "inputs": "1da466b02f82"
+    },
+    "nemotron-3-ultra": {
+      "score": 253,
+      "tests": 10,
+      "inputs": "238416470cd4"
+    },
+    "tencent-hy4": {
+      "score": 503,
+      "tests": 9,
+      "inputs": "d3d6a0cbf44b"
+    }
+  }
+}

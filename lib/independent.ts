@@ -11,6 +11,8 @@ import { isCurrent } from "./currency"
 import { readBenchmark } from "./benchmarks"
 import { MIN_COHORT_SIZE, type Leaderboard } from "./leaderboards"
 import { buildStanding, type RankableBoard, type StandingResult } from "./standing"
+import { meridianCalibration } from "@/data/meridian-calibration"
+import { MeridianInputError } from "./meridian"
 
 /**
  * Independent scores: what one evaluator measured, the same way, on everyone.
@@ -183,6 +185,13 @@ export function toRankable(boards: IndependentBoard[]): RankableBoard[] {
 export const MIN_INDEPENDENT_TESTS = 7
 
 export function buildIndependentStanding(models: ModelItem[] = modelsData): StandingResult {
+  // The ruler is calibrated for one evaluator suite. If the data moves to a new
+  // suite without a new calibration, refuse to score rather than mix two rulers.
+  if (INDEPENDENT_EVALUATOR.suite !== meridianCalibration.suite) {
+    throw new MeridianInputError(
+      `Meridian is calibrated for "${meridianCalibration.suite}" but the independent data is "${INDEPENDENT_EVALUATOR.suite}". Recalibrate (node scripts/calibrate-meridian.js) and bump MERIDIAN_VERSION.`,
+    )
+  }
   const boards = toRankable(buildIndependentBoards(models))
   // Percentiles are measured inside every cohort, but only models with broad
   // coverage are rated: a model missing most tests could look better or worse

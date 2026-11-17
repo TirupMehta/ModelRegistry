@@ -836,18 +836,19 @@ function scoreDocument(): MarkdownDocument {
   const standing = buildIndependentStanding(modelsData)
   const lineup = splitLineup(modelsData)
   const { boards, tests } = leaderboardStats(modelsData, { currentOnly: true })
-  const disagreement = Math.round(standing.betweenTestSd * 100)
+  const disagreement = Math.round(standing.betweenTestSd)
   const contested = standing.rows.filter((row) => row.agreement === "contested").length
 
   const rated = table(
-    ["Tier", "Model", "Laboratory", "Standing", "Tests", "Spread", "Tests measured"],
+    ["Tier", "Model", "Laboratory", "Meridian", "95% band", "Tests", "Spread", "Tests measured"],
     standing.rows.map((row) => [
       `Tier ${row.tier}`,
       `[${row.model.name}](${SITE_URL}/models/${row.model.id})`,
       row.model.companyName,
-      row.standing.toFixed(1),
+      String(row.standing),
+      `${row.band[0]} to ${row.band[1]}`,
       String(row.cohorts),
-      `${Math.round(row.spread)} pp`,
+      `${Math.round(row.spread)} points`,
       row.tests.join("; "),
     ])
   )
@@ -891,35 +892,37 @@ function scoreDocument(): MarkdownDocument {
     )
     .join("\n\n")
 
-  const body = `# Cross-test standing, ${SITE_NAME}
+  const body = `# Meridian cross-test score, ${SITE_NAME}
 
-A standing is an expected percentile across the tests a model reports, not a
-percentage correct and not a prediction of quality. Only current models are
-ranked: ${lineup.superseded.length} records have been replaced in their role by a
+Meridian measures each result against a frozen reference for its own test and
+combines them on one scale: 500 is the reference average, 100 points is one
+reference standard deviation, and there is no ceiling. A score never changes
+because another model was added. It is not a percentage correct and not a
+prediction of quality. Only current models are ranked: ${lineup.superseded.length} records have been replaced in their role by a
 later release from the same laboratory and are listed separately with their
 successors.
 
-- Standing version: ${STANDING_VERSION}
+- Meridian version: ${STANDING_VERSION}
 - Models rated across tests: ${standing.rated} of ${standing.ranked} ranked
-- Tests disagree by: ${disagreement} percentile points (pooled between-test standard deviation)
+- Tests disagree by: ${disagreement} Meridian points (pooled disagreement between a model's own tests; the 95% band is built from it)
 - Contested rows: ${contested} of ${standing.rated} have tests that disagree by more than ${CONTESTED_SPREAD} points
-- Cohorts behind the standings: ${tests}
+- Cohorts behind the scores: ${tests}
 - Dataset revision: ${datasetRevision.datasetVersion} (data revised ${REVISED_LABEL})
 
-A gap between two rows smaller than ${disagreement} points is not a difference this
-page can defend.
+Two rows whose gap is inside their combined 95% band are placed in the same tier:
+that is not a difference this page can defend.
 
-## Current standings
+## Current Meridian scores
 
 ${rated}
 
-A model needs at least ${MIN_TESTS_FOR_STANDING} tests to receive a standing. Spread is the
-distance between the model's best and worst test percentile, so a large spread
-means the tests tell different stories about the same model.
+A model needs at least ${MIN_TESTS_FOR_STANDING} tests to receive a score. Spread is the
+distance, in Meridian points, between the model's best and worst test, so a large
+spread means the tests tell different stories about the same model.
 
 ## Models measured on one test
 
-These records have a position, not a standing. One test cannot corroborate
+These records have a position, not a Meridian score. One test cannot corroborate
 itself, so no cross-test number is published for them.
 
 ${single}
@@ -940,26 +943,32 @@ cohort on a 0 to 100 scale.
 
 ${perTest}
 
-## How the standing is computed
+## How the Meridian score is computed
 
-1. Every reading is placed on its own test's cohort. Scores from different tests
-   are never compared directly.
-2. Each reading becomes a midrank percentile inside its cohort, using the Hazen
-   plotting position so the best and worst member sit half a step inside the
-   interval rather than at exactly 0 and 100.
-3. A test contributes in proportion to how far it separates its own members. A
-   cohort where every score is within a couple of points carries little signal.
-4. The standing is the equal-weight mean of those percentiles. It is not a fit, an
-   average of raw percentages, or a coverage-tiered composite.
+1. Every reading is measured against a frozen reference for its own test. A
+   percentage is put on a logit scale first; every test is then centred on the
+   reference median and divided by the reference's robust spread (1.4826 x MAD).
+   Scores from different tests are never compared as raw numbers.
+2. A result far beyond the reference field grows only logarithmically (past 2.5
+   standard deviations), so one extreme test cannot decide a score. Nothing is
+   clipped, so the order of results is always kept.
+3. The per-test values are summed with equal weight and divided by the number of
+   tests plus one. That pulls a model reporting few tests toward the reference
+   average, so reporting only your best tests never helps.
+4. The result is placed on the Meridian scale: 500 + 100 x (composite - reference
+   mean) / reference sd. The reference constants are frozen and published at
+   ${SITE_URL}/api/v1/standing, so every score can be recomputed. They change only
+   when the evaluator publishes a new test or suite, never when a model is added.
 5. A model is rated only with at least ${MIN_TESTS_FOR_STANDING} tests. With one test it keeps a
-   position on that test and no standing.
-6. Each row is refitted with one test removed at a time. A row that moves more
+   position on that test and no Meridian score.
+6. The 95% band comes from how far a model's own tests disagree. Two rows are in
+   the same tier unless their gap exceeds the combined band.
+7. Each row is refitted with one test removed at a time. A row that moves more
    than two places is labelled test dependent, and only where three or more
-   tests exist, because a two-test row cannot be audited this way. Coverage is
-   published instead.
+   tests exist, because a two-test row cannot be audited this way.
 
 Ranking rule v${LEADERBOARD_VERSION}: same test, same version, at least ${MIN_COHORT_SIZE} models, or no
-rank. Standing rule v${STANDING_VERSION}: at least ${MIN_TESTS_FOR_STANDING} tests, or no standing.
+rank. Meridian v${STANDING_VERSION}: at least ${MIN_TESTS_FOR_STANDING} tests, or no score.
 
 ${resourceLinks("/score")}
 `
@@ -969,7 +978,7 @@ ${resourceLinks("/score")}
 function trustDocument(): MarkdownDocument {
   const standing = buildIndependentStanding(modelsData)
   const lineup = splitLineup(modelsData)
-  const disagreement = Math.round(standing.betweenTestSd * 100)
+  const disagreement = Math.round(standing.betweenTestSd)
 
   const body = `# Can you trust ${SITE_NAME}?
 
@@ -992,7 +1001,7 @@ and modalities were each read from a laboratory document and cited.
 - No score is presented as independent. Every benchmark figure is published by
   the laboratory that built the model, and the record says so next to the number.
 - No overall score exists to game upward. Rankings are one test at one version,
-  and a cross-test standing is published only for models with at least
+  and a Meridian score is published only for models with at least
   ${MIN_TESTS_FOR_STANDING} tests, together with the spread between them.
 - No availability claim is made from a specification. A model being listed does
   not mean a provider is serving it.
@@ -1001,8 +1010,8 @@ and modalities were each read from a laboratory document and cited.
 
 ## The numbers a reader can check
 
-- Tests disagree by about ${disagreement} percentile points across the rated models.
-  That figure is printed next to the standings rather than hidden, and rows whose
+- Tests disagree by about ${disagreement} Meridian points across the rated models.
+  That figure is printed next to the scores rather than hidden, and rows whose
   tests disagree by more than ${CONTESTED_SPREAD} points are labelled contested.
 - ${standing.rated} of ${standing.ranked} ranked models have readings from more than one test.
   The rest keep a position on the one test they reported.
@@ -1014,7 +1023,7 @@ and modalities were each read from a laboratory document and cited.
 
 - Publish a figure with no source behind it.
 - Compare two scores from different tests or versions.
-- Give a standing to a model measured on one test.
+- Give a Meridian score to a model measured on one test.
 - Rank a superseded record against the current lineup.
 - Take payment, sponsorship or editorial input.
 

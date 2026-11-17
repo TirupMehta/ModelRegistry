@@ -243,7 +243,7 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
 RULES:
 - Official source required for every fact. No rumors, leaks, or benchmark guesses.
 - Popularity bar: top-15 OpenRouter weekly volume, a primary flagship, or a genuinely frontier capability. No obscure checkpoints or minor variants.
-- Completeness is mandatory: no blank fields, every figure cited, an unstated figure written as "Undisclosed", and for a text model an independent result row in data/independent-benchmarks.ts with all ten tests, cost and time per task copied exactly as the evaluator prints them. pnpm test enforces this (scripts/test-completeness.js).
+- Completeness is mandatory: no blank fields, every figure cited, an unstated figure written as "Undisclosed", and for a text model an independent result row in data/independent-benchmarks.ts with all ten tests, cost and time per task copied exactly as the evaluator prints them. pnpm test enforces this (scripts/test-completeness.js). The Meridian score is anchored to frozen constants, so adding a model must not change any other model's score: after adding the independent row run "node scripts/test-meridian.js --write-ledger" and check that the ledger diff (scripts/meridian-ledger.json) is only your model's new line.
 - Freshness is mandatory: a submission that adds a model without demoting/scrubbing what it replaced will be rejected.
 - Touch ONLY data/models.ts (plus data/companies.ts for a new lab). Website, API, RSS, and README update automatically.
 ```

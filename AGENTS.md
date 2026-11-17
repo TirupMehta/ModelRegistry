@@ -9,6 +9,7 @@ Read this file before continuing product work. The roadmap below describes work 
 - When changing model data or public routes, keep the model page, API/OpenAPI, RSS/JSON Feed, metadata, and share previews consistent.
 - Comparisons must identify the source, benchmark version, and test conditions. Do not label a model universally “best” from incomparable results.
 - A model is not added until its record is complete: nothing blank, every figure cited to a primary source, an unstated figure written as "Undisclosed", and, for a text model, our own score backed by an independent result row with every test filled. `scripts/test-completeness.js` (part of `npm test`) enforces it; new records can never join `scripts/completeness-baseline.json`. Read the evaluator's own page for the numbers, then run `node scripts/refresh-independent.mjs` and expect 0 changed values.
+- The Meridian score (`lib/meridian.ts`, `lib/standing.ts`) is anchored to frozen calibration constants in `data/meridian-calibration.ts`: adding a model must never change another model's score. After adding a model's independent row, run `node scripts/test-meridian.js --write-ledger` and confirm the ledger diff is only the new line. Do not recalibrate (`scripts/calibrate-meridian.js --write`) for a new model, and do not change the scoring math without bumping `MERIDIAN_VERSION`, recalibrating and rewriting the ledger on purpose. `npm test` enforces all of this.
 - Model suggestions require maintainer review. A generated GitHub issue does not publish a model.
 
 ## Unfinished roadmap

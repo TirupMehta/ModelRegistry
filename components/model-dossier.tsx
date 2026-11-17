@@ -302,17 +302,22 @@ export function ModelPositions({ model }: { model: ModelItem }) {
 
   const independentPositions = independentPositionsFor(model, buildIndependentBoards(modelsData))
   const row = (position: (typeof independentPositions)[number]) => (
-      <div key={position.test} className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-        <span className="text-body font-sans text-fg">{position.test}</span>
-        <span className="hidden sm:inline text-body font-sans text-fg-muted">
-          {position.domain}
-        </span>
-        {position.tiedWithLeader && position.rank > 1 && (
-          <span className="text-small font-sans text-fg-muted">
-            not separable from the leader
+      // The name block wraps on its own; rank and score stay together on the right,
+      // so a long note can never push the score onto a line by itself.
+      <div key={position.test} className="flex items-baseline gap-x-3">
+        <div className="min-w-0 flex-1">
+          <span className="text-body font-sans text-fg">{position.test}</span>
+          <span className="hidden sm:inline text-body font-sans text-fg-muted">
+            {" "}
+            {position.domain}
           </span>
-        )}
-        <span className="ml-auto text-body font-sans tabular-nums text-fg">
+          {position.tiedWithLeader && position.rank > 1 && (
+            <span className="block text-small font-sans text-fg-muted">
+              not separable from the leader
+            </span>
+          )}
+        </div>
+        <span className="shrink-0 text-body font-sans tabular-nums text-fg">
           <strong className="font-semibold text-fg-strong">{position.rank}</strong> of{" "}
           {position.of}
         </span>
@@ -334,18 +339,25 @@ export function ModelPositions({ model }: { model: ModelItem }) {
         </h2>
         <div className="tile p-4">
           {rated && (
-            <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 pb-3 mb-3 border-b border-black/5 dark:border-white/[0.06]">
-              <span className="text-body font-sans text-fg-muted">Cross-test standing</span>
-              <span className="text-title font-display font-semibold tracking-tight text-fg-strong tabular-nums leading-none">
-                {rated.standing.toFixed(1)}
-              </span>
-              <span className="text-body font-sans text-fg-muted">Tier {rated.tier}</span>
-              <span className="text-body font-sans tabular-nums text-fg-muted">
-                {rated.cohorts} tests, spread {rated.spread.toFixed(0)}
-              </span>
-              <span className="ml-auto text-body font-sans text-fg-muted">
-                {AGREEMENT_LABEL[rated.agreement]}
-              </span>
+            <div className="pb-3 mb-3 border-b border-black/5 dark:border-white/[0.06]">
+              {/* The score and its band stay together; the detail wraps below and never splits them. */}
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                <span className="flex items-baseline gap-x-2">
+                  <span className="text-body font-sans text-fg-muted">Meridian score</span>
+                  <span className="text-title font-display font-semibold tracking-tight text-fg-strong tabular-nums leading-none">
+                    {rated.standing}
+                  </span>
+                  <span className="text-body font-sans tabular-nums text-fg-muted">
+                    &plusmn;{Math.round((rated.band[1] - rated.band[0]) / 2)}
+                  </span>
+                </span>
+                <span className="text-body font-sans text-fg-muted">
+                  {AGREEMENT_LABEL[rated.agreement]}
+                </span>
+              </div>
+              <p className="mt-1 text-small font-sans tabular-nums text-fg-muted">
+                Tier {rated.tier} &middot; {rated.cohorts} tests &middot; spread {rated.spread.toFixed(0)}
+              </p>
             </div>
           )}
           <div className="space-y-2">
@@ -464,22 +476,26 @@ export function ModelPositions({ model }: { model: ModelItem }) {
       </h2>
       <div className="tile p-4">
         {standing && (
-          <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 pb-3 mb-3 border-b border-black/5 dark:border-white/[0.06]">
-            <span className="text-body font-sans text-fg-muted">
-              Cross-test standing
-            </span>
-            <span className="text-title font-display font-semibold tracking-tight text-fg-strong tabular-nums leading-none">
-              {standing.standing.toFixed(1)}
-            </span>
-            <span className="text-body font-sans tabular-nums text-fg-muted">
-              {standing.cohorts} tests
-            </span>
-            <span className="text-body font-sans tabular-nums text-fg-muted">
-              spread {standing.spread.toFixed(0)}
-            </span>
-            <span className="ml-auto text-body font-sans text-fg-muted">
-              {AGREEMENT_LABEL[standing.agreement]}
-            </span>
+          <div className="pb-3 mb-3 border-b border-black/5 dark:border-white/[0.06]">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+              <span className="flex items-baseline gap-x-2">
+                <span className="text-body font-sans text-fg-muted">
+                  Meridian score
+                </span>
+                <span className="text-title font-display font-semibold tracking-tight text-fg-strong tabular-nums leading-none">
+                  {standing.standing}
+                </span>
+                <span className="text-body font-sans tabular-nums text-fg-muted">
+                  &plusmn;{Math.round((standing.band[1] - standing.band[0]) / 2)}
+                </span>
+              </span>
+              <span className="text-body font-sans text-fg-muted">
+                {AGREEMENT_LABEL[standing.agreement]}
+              </span>
+            </div>
+            <p className="mt-1 text-small font-sans tabular-nums text-fg-muted">
+              {standing.cohorts} tests &middot; spread {standing.spread.toFixed(0)}
+            </p>
           </div>
         )}
         <div className="space-y-2">
@@ -505,8 +521,8 @@ export function ModelPositions({ model }: { model: ModelItem }) {
         </div>
         <p className="mt-3 text-body font-sans text-fg-muted leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
           Ranked only against current models measured by the same test at the same version. The
-          standing is the mean of the percentiles above, and its spread is the disagreement between
-          them.{" "}
+          Meridian score is measured against a fixed reference, so it never changes when other
+          models are added; its spread is the disagreement between the model&rsquo;s own tests.{" "}
           <Link href="/score" className="text-accent-ink hover:underline underline-offset-2">
             How it is computed
           </Link>
