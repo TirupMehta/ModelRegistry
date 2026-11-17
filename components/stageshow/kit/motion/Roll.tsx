@@ -121,6 +121,9 @@ function RollNow({
   // opens to the wider of the two so neither runs into what follows, then
   // settles to the new width. Set on the element directly so the starting
   // width never animates from a stale value.
+  // Under reduced motion the settled text is a dependency; otherwise it is not, so
+  // a text change never restarts the width animation in the middle of a roll.
+  const settledText = reduced ? children : undefined
   useLayoutEffect(() => {
     const el = mid.current
     const live = el?.querySelector<HTMLElement>('[data-live]')
@@ -155,7 +158,7 @@ function RollNow({
     if (widest === next) return
     const id = setTimeout(() => (el.style.width = `${next}px`), 360)
     return () => clearTimeout(id)
-  }, [view.key, reduced, reduced ? children : undefined])
+  }, [view.key, reduced, variant, settledText])
   // The settled render must not wait for an effect: a Stage poster can
   // arrive in the same commit that disables its CSS animations.
   const { text, head, tail, old, key, numeric } = reduced

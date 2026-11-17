@@ -527,12 +527,14 @@ export function Stage<S extends object>({
       onScreen = entry.isIntersecting
       // Off screen its CSS animations pause too, so nothing runs out of view
       markOffscreen()
-      onScreen ? start() : stop()
+      if (onScreen) start()
+      else stop()
     })
     io.observe(root)
     const onVisibility = () => {
       markOffscreen()
-      document.hidden ? stop() : start()
+      if (document.hidden) stop()
+      else start()
     }
     document.addEventListener('visibilitychange', onVisibility)
     const enter = () => {

@@ -6,10 +6,6 @@
     "no-measurement"
   ],
   "qwen-3-8-2-4t-a95b": [
-    "no-announcement-link",
-    "uncited:pricing",
-    "uncited:contextWindow",
-    "uncited:maxOutputTokens",
     "independent-incomplete"
   ],
   "qwen-3-8-omni-flash": [
