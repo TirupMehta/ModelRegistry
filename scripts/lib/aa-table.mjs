@@ -22,6 +22,19 @@ export const ROW_KEYS = new Map([
 
 export const norm = (text) => text.toLowerCase().replace(/[^a-z0-9.]+/g, "")
 
+/**
+ * AA prints ", Default Fallback" after the configuration in prose and record
+ * pages, but omits it in table headers, so a record label must be trimmed
+ * before it can be compared with a column.
+ */
+const withoutFallback = (text) => text.replace(/\(([^)]*),\s*default fallback\)/i, "($1)")
+
+/** True when an AA table label is the configuration a record was read for. */
+export function matchesLabel(label, evaluatedAs) {
+  const column = norm(label)
+  return column.includes(norm(evaluatedAs)) || column.includes(norm(withoutFallback(evaluatedAs)))
+}
+
 const clean = (html) =>
   html
     .replace(/<svg[\s\S]*?<\/svg>/g, "")
@@ -59,4 +72,29 @@ export function parseComparison(html) {
     rows[key] = cells
   }
   return { columns, rows }
+}
+
+/**
+ * One AA model page -> the reasoning variants listed in its table, each row
+ * keyed by the printed header. Used for models the evaluator has stopped
+ * offering a comparison page for: their own page still carries the headline
+ * Intelligence Index and the time per task, and nothing else in this suite.
+ */
+export function parseModelVariants(html) {
+  for (const table of html.matchAll(/<table[\s\S]*?<\/table>/g)) {
+    const head = table[0].match(/<thead[\s\S]*?<\/thead>/)
+    if (!head) continue
+    const headers = [...head[0].matchAll(/<th[^>]*>([\s\S]*?)<\/th>/g)].map((cell) => clean(cell[1]))
+    if (!headers.includes("Model Name") || !headers.includes("Intelligence")) continue
+    const rows = []
+    const body = table[0].slice(table[0].indexOf("</thead>"))
+    for (const row of body.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/g)) {
+      const cells = [...row[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((cell) => clean(cell[1]))
+      // Header and body must line up before a cell can be trusted to a column.
+      if (cells.length !== headers.length) continue
+      rows.push(Object.fromEntries(headers.map((header, index) => [header, cells[index]])))
+    }
+    return { headers, rows }
+  }
+  return null
 }

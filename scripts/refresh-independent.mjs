@@ -7,6 +7,11 @@
  * they can be read directly; arena.ai blocks automated clients, so that source
  * is checked for age only and refreshed by hand.
  *
+ * A comparison page carries two models. Where the evaluator has withdrawn the
+ * comparison for a retired model, the record points at the model's own page and
+ * only the two figures that page still prints are re-read, and said so in the
+ * output rather than being passed off as a full re-read.
+ *
  *   node scripts/refresh-independent.mjs            report only; exit 1 if anything changed
  *   node scripts/refresh-independent.mjs --write    patch data/independent-benchmarks.ts
  *
@@ -17,7 +22,7 @@ import fs from "node:fs"
 import path from "node:path"
 import { createRequire } from "node:module"
 import { fileURLToPath } from "node:url"
-import { norm, parseComparison } from "./lib/aa-table.mjs"
+import { matchesLabel, parseComparison, parseModelVariants } from "./lib/aa-table.mjs"
 
 const require = createRequire(import.meta.url)
 const ts = require("typescript")
@@ -48,12 +53,36 @@ const data = loadData()
 const { independentRecords, INDEPENDENT_EVALUATOR, ARENA_EVALUATOR } = data
 const changes = []
 const unread = []
+const partial = []
 const pages = new Map()
+const modelPages = new Map()
 
 for (const record of independentRecords) {
-  if (!record.sourceUrl.includes("/models/comparisons/")) continue
-  if (!pages.has(record.sourceUrl)) pages.set(record.sourceUrl, [])
-  pages.get(record.sourceUrl).push(record)
+  // Comparison pages are the full suite. A model page only ever covers the
+  // models whose comparison page the evaluator has withdrawn (retired models
+  // still get benchmarked, but no longer take part in comparisons).
+  const bucket = record.sourceUrl.includes("/models/comparisons/")
+    ? pages
+    : /\/models\/[a-z0-9.-]+$/.test(record.sourceUrl)
+      ? modelPages
+      : null
+  if (!bucket) continue
+  if (!bucket.has(record.sourceUrl)) bucket.set(record.sourceUrl, [])
+  bucket.get(record.sourceUrl).push(record)
+}
+
+const toNumber = (text) => {
+  const cleaned = (text ?? "").replace(/[,$\s]/g, "").replace(/min$/i, "")
+  const value = Number(cleaned)
+  return Number.isFinite(value) ? value : null
+}
+
+function recordChange(record, key, next, isMeta) {
+  if (next === null || next === undefined) return
+  const prev = isMeta ? record[key] : record.values[key]
+  // Whole-number percentages are the page rounding, not a change.
+  if (record.rounded && typeof prev === "number" && Math.round(next) === Math.round(prev)) return
+  if (prev !== next) changes.push({ record, key, isMeta, prev: prev ?? null, next })
 }
 
 for (const [url, records] of pages) {
@@ -69,21 +98,43 @@ for (const [url, records] of pages) {
     continue
   }
   for (const record of records) {
-    const wanted = norm(record.evaluatedAs)
-    const index = parsed.columns.findIndex((label) => norm(label).includes(wanted))
+    const index = parsed.columns.findIndex((label) => matchesLabel(label, record.evaluatedAs))
     if (index < 0) {
       unread.push(`${record.modelId}: column "${record.evaluatedAs}" not found (page has: ${parsed.columns.join("; ")})`)
       continue
     }
     for (const [key, cells] of Object.entries(parsed.rows)) {
-      const next = cells[index]
-      if (next === null || next === undefined) continue
-      const isMeta = key === "costPerTask" || key === "minutesPerTask"
-      const prev = isMeta ? record[key] : record.values[key]
-      // Whole-number percentages are the page rounding, not a change.
-      if (record.rounded && typeof prev === "number" && Math.round(next) === Math.round(prev)) continue
-      if (prev !== next) changes.push({ record, key, isMeta, prev: prev ?? null, next })
+      recordChange(record, key, cells[index], key === "costPerTask" || key === "minutesPerTask")
     }
+  }
+}
+
+for (const [url, records] of modelPages) {
+  let parsed
+  try {
+    parsed = parseModelVariants(await fetchPage(url))
+  } catch (error) {
+    for (const r of records) unread.push(`${r.modelId}: model page not readable (${error.message})`)
+    continue
+  }
+  if (!parsed) {
+    // Boards such as /models/speech-to-speech are not per-model pages and were
+    // never part of this check; only a benchmark record pointing at a dead
+    // model page is worth reporting.
+    for (const r of records) {
+      if (Object.keys(r.values ?? {}).length > 0) unread.push(`${r.modelId}: no variant table found on ${url}`)
+    }
+    continue
+  }
+  for (const record of records) {
+    const row = parsed.rows.find((cells) => matchesLabel(cells["Model Name"], record.evaluatedAs))
+    if (!row) {
+      unread.push(`${record.modelId}: variant "${record.evaluatedAs}" not listed (page has: ${parsed.rows.map((cells) => cells["Model Name"]).join("; ")})`)
+      continue
+    }
+    partial.push(`${record.modelId}: comparison page withdrawn, so only the Intelligence Index and time per task were re-read`)
+    recordChange(record, "intelligenceIndex", toNumber(row.Intelligence), false)
+    recordChange(record, "minutesPerTask", toNumber(row["Time per Task Minutes"]), true)
   }
 }
 
@@ -95,13 +146,17 @@ if (ARENA_EVALUATOR) {
     `  arena.ai leaderboard dated ${ARENA_EVALUATOR.asOf} (${age} days ago)${age > STALE_DAYS.arena ? "  STALE: refresh by hand, the site blocks automated reads" : ""}`,
   )
 }
-console.log(`  ${pages.size} pages read, ${changes.length} changed value(s), ${unread.length} unread record(s)\n`)
+console.log(`  ${pages.size} pages read, ${modelPages.size} model page(s) checked, ${changes.length} changed value(s), ${unread.length} unread record(s)\n`)
 for (const c of changes) {
   console.log(`  ${c.record.modelId}.${c.key}: ${c.prev ?? "(none)"} -> ${c.next}`)
 }
 if (unread.length) {
   console.log("\nNot refreshed:")
   for (const line of unread) console.log(`  ${line}`)
+}
+if (partial.length) {
+  console.log("\nPartly checked (the evaluator withdrew the comparison page):")
+  for (const line of partial) console.log(`  ${line}`)
 }
 
 if (WRITE && changes.length > 0) {
