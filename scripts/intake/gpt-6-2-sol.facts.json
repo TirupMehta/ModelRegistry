@@ -1,0 +1,210 @@
+{
+  "note": "Read from OpenAI's launch announcement, the gpt-6.2-sol model page and the API changelog on 2026-11-18. Every claim carries the page, the exact sentence and the tokens that sentence must contain. intake.mjs trusts none of it until it finds the sentence on the live page.",
+  "lab": {
+    "companyId": "openai",
+    "companyName": "OpenAI",
+    "groupComment": "OPENAI (GPT-6.2 Sol)"
+  },
+  "maintainer": {
+    "id": "gpt-6-2-sol",
+    "name": "GPT-6.2 Sol",
+    "version": "6.2-Sol",
+    "category": "reasoning",
+    "categoryLabel": "Agentic Workhorse",
+    "statusBadge": "OPENAI FLAGSHIP",
+    "isCompanyFlagship": true,
+    "openWeights": false,
+    "extraModalities": [
+      "Code"
+    ],
+    "links": {
+      "announcement": "blog",
+      "playground": "https://chatgpt.com",
+      "apiDocs": "model"
+    }
+  },
+  "sources": {
+    "blog": {
+      "url": "https://openai.com/index/introducing-gpt-6-2-astra-sol/",
+      "publisher": "OpenAI",
+      "title": "Introducing GPT-6.2 Astra and Sol",
+      "sourceType": "announcement"
+    },
+    "model": {
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.2-sol",
+      "publisher": "OpenAI",
+      "title": "GPT-6.2 Sol model page (limits, modalities, pricing)",
+      "sourceType": "api-docs"
+    },
+    "changelog": {
+      "url": "https://developers.openai.com/api/docs/changelog",
+      "publisher": "OpenAI",
+      "title": "OpenAI API changelog: gpt-6.2-sol listed on Nov 17, 2026",
+      "sourceType": "api-docs"
+    }
+  },
+  "fields": {
+    "releaseDate": {
+      "value": "2026-11-17",
+      "evidence": [
+        {
+          "source": "changelog",
+          "quote": "November, 2026 Nov 17 Feature gpt-6.2-astra gpt-6.2-sol",
+          "mustContain": [
+            "Nov 17",
+            "gpt-6.2-sol"
+          ],
+          "title": "OpenAI API changelog: gpt-6.2-sol launched in the API on Nov 17, 2026"
+        }
+      ]
+    },
+    "contextWindow": {
+      "value": "1,050,000 tokens",
+      "tokens": 1050000,
+      "evidence": [
+        {
+          "source": "model",
+          "quote": "1,050,000 context window 922,000 max input tokens 128,000 max output tokens",
+          "mustContain": [
+            "1,050,000"
+          ],
+          "title": "GPT-6.2 Sol model page: 1,050,000 context window, 922,000 max input tokens"
+        }
+      ]
+    },
+    "maxOutputTokens": {
+      "value": "128,000 tokens",
+      "evidence": [
+        {
+          "source": "model",
+          "quote": "1,050,000 context window 922,000 max input tokens 128,000 max output tokens",
+          "mustContain": [
+            "128,000"
+          ],
+          "title": "GPT-6.2 Sol model page: 128,000 max output tokens"
+        }
+      ]
+    },
+    "parameters": {
+      "value": "Undisclosed (OpenAI)",
+      "evidence": []
+    },
+    "license": {
+      "value": "Proprietary API / ChatGPT Work & Codex",
+      "evidence": [
+        {
+          "source": "blog",
+          "quote": "Starting today, GPT-6.2 Astra and Sol are available to all Plus, Pro, Enterprise, and Edu users in ChatGPT Work and Codex.",
+          "mustContain": [
+            "ChatGPT Work",
+            "Codex"
+          ],
+          "title": "Introducing GPT-6.2 Astra and Sol: available in ChatGPT Work and Codex"
+        },
+        {
+          "source": "blog",
+          "quote": "Developers can also access gpt-6.2-astra and gpt-6.2-sol through the OpenAI API, with Ultrafast available for both models at launch.",
+          "mustContain": [
+            "gpt-6.2-sol",
+            "API"
+          ],
+          "title": "Introducing GPT-6.2 Astra and Sol: gpt-6.2-sol available through the OpenAI API"
+        }
+      ]
+    },
+    "pricing": {
+      "value": {
+        "input": 2,
+        "output": 10
+      },
+      "evidence": [
+        {
+          "source": "blog",
+          "quote": "GPT‑6.2 Sol carries forward GPT‑6.1 Sol’s rates of $2 for input, $0.10 for cached input, and $10 for output per million tokens.",
+          "mustContain": [
+            "$2",
+            "$10"
+          ],
+          "title": "Introducing GPT-6.2 Astra and Sol: GPT-6.2 Sol carries forward $2 input and $10 output per 1M tokens"
+        },
+        {
+          "source": "model",
+          "quote": "Price $2 • $10 Input • Output",
+          "mustContain": [
+            "$2",
+            "$10"
+          ],
+          "title": "GPT-6.2 Sol model page: $2 input, $10 output per 1M tokens"
+        }
+      ]
+    },
+    "modalities": {
+      "value": [
+        "Text",
+        "Vision"
+      ],
+      "evidence": [
+        {
+          "source": "model",
+          "quote": "Input Text, Image Output Text",
+          "mustContain": [
+            "Text",
+            "Image"
+          ],
+          "title": "GPT-6.2 Sol model page: text and image input, text output"
+        }
+      ]
+    },
+    "benchmarks": {
+      "value": {},
+      "evidence": []
+    },
+    "isCompanyFlagship": {
+      "value": true,
+      "evidence": [
+        {
+          "source": "blog",
+          "quote": "Compared with GPT‑6.1 Sol, GPT‑6.2 Sol is smarter, more efficient, and lets you complete more tasks on the same paid plan.",
+          "mustContain": [
+            "6.1 Sol",
+            "6.2 Sol"
+          ],
+          "title": "Introducing GPT-6.2 Astra and Sol: GPT-6.2 Sol compared with GPT-6.1 Sol",
+          "note": "GPT-6.2 Sol succeeds GPT-6.1 Sol as the lab's everyday general-purpose model, the role the registry records as primary flagship."
+        }
+      ]
+    },
+    "isLatestCheckpoint": {
+      "rule": "newest release in the lab's lineup",
+      "evidence": [
+        {
+          "source": "blog",
+          "quote": "Starting today, GPT-6.2 Astra and Sol are available to all Plus, Pro, Enterprise, and Edu users in ChatGPT Work and Codex.",
+          "mustContain": [
+            "Starting today"
+          ],
+          "title": "Introducing GPT-6.2 Astra and Sol: available starting today"
+        }
+      ]
+    }
+  },
+  "changeLog": {
+    "summary": "Initial registry entry. Available the same day in ChatGPT Work, Codex and the API, with GPT-6.1 Sol's API rates carried forward. Takes the flagship role from GPT-6.1 Sol.",
+    "evidence": [
+      {
+        "source": "blog",
+        "quote": "Starting today, GPT-6.2 Astra and Sol are available to all Plus, Pro, Enterprise, and Edu users in ChatGPT Work and Codex.",
+        "mustContain": [
+          "Starting today"
+        ]
+      },
+      {
+        "source": "model",
+        "quote": "Our go-to model for everyday work, from coding to powering agents at scale.",
+        "mustContain": [
+          "go-to model"
+        ]
+      }
+    ]
+  }
+}

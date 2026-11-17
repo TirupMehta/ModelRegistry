@@ -10,9 +10,9 @@
 export const leaderboardSpotlights: Record<string, string[]> = {
   // Chosen from the independent Artificial Analysis results (see data/independent-benchmarks.ts)
   // and limited to current models: a superseded record is not something a reader can pick.
-  reasoning: ["claude-fable-5-2", "gemini-4-carbon", "claude-opus-5-5", "gpt-6-astra"],
-  coding: ["claude-fable-5-2", "claude-opus-5-5", "gpt-6-astra", "gpt-6-1-terra"],
-  value: ["gpt-6-1-sol", "gpt-6-1-terra", "muse-ember", "mimo-v2-6-flash"],
+  reasoning: ["claude-fable-5-2", "gemini-4-carbon", "claude-opus-5-5"],
+  coding: ["claude-fable-5-2", "claude-opus-5-5", "gpt-6-1-terra"],
+  value: ["gpt-6-1-terra", "muse-ember", "mimo-v2-6-flash"],
 }
 
 export interface LeaderboardSectionMethodology {
