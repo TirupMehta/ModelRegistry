@@ -75,7 +75,7 @@
     "gpt-6-2-astra": {
       "score": 635,
       "tests": 9,
-      "inputs": "34b519c5a016"
+      "inputs": "fc7985d7117f"
     },
     "gpt-6-2-sol": {
       "score": 606,

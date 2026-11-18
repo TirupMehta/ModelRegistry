@@ -168,7 +168,7 @@ export const INDEPENDENT_EVALUATOR = {
   name: "Artificial Analysis",
   url: "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
   suite: "Intelligence Index v5.0.1",
-  retrievedAt: "2026-11-17",
+  retrievedAt: "2026-11-18",
   method:
     "Same suite, same harness, run by the evaluator through each provider's own API. Reasoning effort is the setting the evaluator reports for the model, which differs by model.",
 } as const
@@ -212,7 +212,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_FABLE,
     values: { intelligenceIndex: 65, aaBriefcase: 1785, automationBench: 76.4, terminalBench4: 59.6, frontierCode: 48.8, omniscience: 67, gdpPdf: 24.2, hleDiamond: 80.2, critPt: 76.5, terminalBenchScience: 73.3 },
     costPerTask: 26.54,
-    minutesPerTask: 40.8,
+    minutesPerTask: 41.1,
   },
   {
     modelId: "claude-opus-5-5",
@@ -220,7 +220,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_OPUS,
     values: { intelligenceIndex: 59, aaBriefcase: 1800, automationBench: 69.5, terminalBench4: 59.6, frontierCode: 46.4, omniscience: 48, gdpPdf: 26.2, hleDiamond: 67.9, critPt: 68.0, terminalBenchScience: 59.0 },
     costPerTask: 10.04,
-    minutesPerTask: 24.6,
+    minutesPerTask: 24.5,
   },
   {
     modelId: "claude-sonnet-5-5",
@@ -242,9 +242,9 @@ export const independentRecords: IndependentRecord[] = [
     modelId: "gpt-6-2-astra",
     evaluatedAs: "GPT-6.2 Astra (Max)",
     sourceUrl: G_GPT62,
-    values: { intelligenceIndex: 62, aaBriefcase: 1643, automationBench: 77.2, terminalBench4: 64.1, frontierCode: 45.4, omniscience: 50, gdpPdf: 29.8, hleDiamond: 72.2, critPt: 71.5, terminalBenchScience: 78.1 },
+    values: { intelligenceIndex: 62, aaBriefcase: 1644, automationBench: 77.2, terminalBench4: 64.1, frontierCode: 45.4, omniscience: 50, gdpPdf: 29.8, hleDiamond: 72.2, critPt: 71.5, terminalBenchScience: 78.1 },
     costPerTask: 4.0,
-    minutesPerTask: 10.4,
+    minutesPerTask: 11.5,
   },
   {
     modelId: "gpt-6-2-sol",
@@ -260,7 +260,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: `${AA_PAGE}gpt-6-astra`,
     values: { intelligenceIndex: 57, aaBriefcase: 1569, automationBench: 68.5, terminalBench4: 59.1, frontierCode: 42.4, omniscience: 42, gdpPdf: 31.0, hleDiamond: 63.8, critPt: 70.5, terminalBenchScience: 63.3 },
     costPerTask: 6.24,
-    minutesPerTask: 20.4,
+    minutesPerTask: 19.9,
   },
   {
     modelId: "gpt-6-1-sol",
@@ -268,7 +268,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: `${AA_PAGE}gpt-6-1-sol`,
     values: { intelligenceIndex: 55, aaBriefcase: 1555, automationBench: 64.9, terminalBench4: 56.1, frontierCode: 40.6, omniscience: 42, gdpPdf: 31.0, hleDiamond: 58.8, critPt: 69.5, terminalBenchScience: 58.1 },
     costPerTask: 1.27,
-    minutesPerTask: 23.1,
+    minutesPerTask: 23.3,
   },
   {
     modelId: "gpt-6-1-terra",
@@ -309,7 +309,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: `${AA_PAGE}gemini-3-8-flash`,
     values: { intelligenceIndex: 31, aaBriefcase: 1203, automationBench: 59.9, terminalBench4: 19.7, frontierCode: 18.7, omniscience: 23, gdpPdf: 21.0, hleDiamond: 33.1, critPt: 46.5, terminalBenchScience: 10.0 },
     costPerTask: 7.77,
-    minutesPerTask: 14.1,
+    minutesPerTask: 14.2,
   },
   {
     modelId: "grok-4-7",
@@ -317,7 +317,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_GROK,
     values: { intelligenceIndex: 35, aaBriefcase: 1636, automationBench: 65.6, terminalBench4: 25.8, frontierCode: 28.7, omniscience: 31, gdpPdf: 20.0, hleDiamond: 23.2, critPt: 33.5, terminalBenchScience: 11.4 },
     costPerTask: 7.77,
-    minutesPerTask: 24.5,
+    minutesPerTask: 24.3,
   },
   {
     modelId: "kimi-k3-1-pro",
@@ -325,7 +325,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_KIMI,
     values: { intelligenceIndex: 46, aaBriefcase: 1674, automationBench: 73.3, terminalBench4: 67.2, frontierCode: 25.5, omniscience: 30, gdpPdf: 31.4, hleDiamond: 37.3, critPt: 49.5, terminalBenchScience: 34.3 },
     costPerTask: 3.68,
-    minutesPerTask: 38.7,
+    minutesPerTask: 38.4,
   },
   {
     modelId: "deepseek-v4-1-flash-1017",
@@ -333,7 +333,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_KIMI,
     values: { intelligenceIndex: 33, aaBriefcase: 1570, automationBench: 66.6, terminalBench4: 33.8, frontierCode: 28.5, omniscience: 1, gdpPdf: 17.2, hleDiamond: 25.3, critPt: 25.0, terminalBenchScience: 12.9 },
     costPerTask: 0.6,
-    minutesPerTask: 13.1,
+    minutesPerTask: 13.2,
   },
   {
     modelId: "mimo-v2-6-pro",
@@ -341,7 +341,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_MIMO,
     values: { intelligenceIndex: 30, aaBriefcase: 1512, automationBench: 58.6, terminalBench4: 34.8, frontierCode: 24.0, omniscience: -4, gdpPdf: 19.2, hleDiamond: 15.2, critPt: 34.0, terminalBenchScience: 5.7 },
     costPerTask: 0.26,
-    minutesPerTask: 35.8,
+    minutesPerTask: 34.6,
   },
   {
     modelId: "mimo-v2-6-flash",
@@ -349,7 +349,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_MIMO,
     values: { intelligenceIndex: 27, aaBriefcase: 1489, automationBench: 64.1, terminalBench4: 22.7, frontierCode: 21.6, omniscience: -11, gdpPdf: 9.0, hleDiamond: 13.7, critPt: 29.5, terminalBenchScience: 4.3 },
     costPerTask: 0.13,
-    minutesPerTask: 52.5,
+    minutesPerTask: 55.5,
   },
   {
     modelId: "muse-ember",
@@ -365,7 +365,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_MUSE,
     values: { intelligenceIndex: 44, aaBriefcase: 1659, automationBench: 68.1, terminalBench4: 52.0, frontierCode: 27.9, omniscience: 25, gdpPdf: 30.6, hleDiamond: 39.0, critPt: 50.5, terminalBenchScience: 25.7 },
     costPerTask: 6.95,
-    minutesPerTask: 13,
+    minutesPerTask: 13.3,
   },
   {
     modelId: "muse-spark-open",
@@ -373,7 +373,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_SPARK,
     values: { intelligenceIndex: 25, aaBriefcase: 1280, automationBench: 49.7, terminalBench4: 8.1, frontierCode: 7.6, omniscience: 26, gdpPdf: 18.6, hleDiamond: 26.3, critPt: 29.5, terminalBenchScience: 1.9 },
     costPerTask: 2.02,
-    minutesPerTask: 6.1,
+    minutesPerTask: 6,
   },
   {
     modelId: "mistral-large-4",
@@ -381,7 +381,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_MISTRAL,
     values: { intelligenceIndex: 26, aaBriefcase: 1347, automationBench: 57.8, terminalBench4: 24.7, frontierCode: 15.0, omniscience: 5, gdpPdf: 17.6, hleDiamond: 17.3, critPt: 27.0, terminalBenchScience: 4.3 },
     costPerTask: 2.06,
-    minutesPerTask: 18.4,
+    minutesPerTask: 19.5,
   },
   {
     modelId: "minimax-m3-1-flash",
@@ -389,15 +389,15 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_GLM,
     values: { intelligenceIndex: 29, aaBriefcase: 1474, automationBench: 72.5, terminalBench4: 25.8, frontierCode: 20.8, omniscience: -6, gdpPdf: 20.8, hleDiamond: 28.1, critPt: 32.5, terminalBenchScience: 3.3 },
     costPerTask: 0.49,
-    minutesPerTask: 16.6,
+    minutesPerTask: 17.5,
   },
   {
     modelId: "nemotron-3-5-super-vl",
     evaluatedAs: "Nemotron 3.5 Super VL",
     sourceUrl: G_MISTRAL,
     values: { intelligenceIndex: 14, aaBriefcase: 999, automationBench: 14.8, terminalBench4: 0.0, frontierCode: 6.1, omniscience: -3, gdpPdf: 8.0, hleDiamond: 8.8, critPt: 13.5, terminalBenchScience: 0.0 },
-    costPerTask: 0.56,
-    minutesPerTask: 4.5,
+    costPerTask: 0.48,
+    minutesPerTask: 4.4,
   },
   {
     modelId: "glm-5-3",
@@ -405,7 +405,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_GLM,
     values: { intelligenceIndex: 32, aaBriefcase: 1501, automationBench: 62.2, terminalBench4: 41.9, frontierCode: 21.6, omniscience: 6, gdpPdf: 11.2, hleDiamond: 17.9, critPt: 33.5, terminalBenchScience: 9.5 },
     costPerTask: 5.01,
-    minutesPerTask: 22.2,
+    minutesPerTask: 22,
   },
   {
     modelId: "deepseek-v4-pro-0813",
@@ -413,7 +413,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_DSPRO,
     values: { intelligenceIndex: 23, aaBriefcase: 1253, automationBench: 56.7, terminalBench4: 14.1, frontierCode: 17.1, omniscience: -6, gdpPdf: 11.4, hleDiamond: 19.5, critPt: 23.5, terminalBenchScience: 5.7 },
     costPerTask: 1.77,
-    minutesPerTask: 17.3,
+    minutesPerTask: 16.9,
   },
   {
     modelId: "nemotron-3-ultra",
@@ -421,7 +421,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_DSPRO,
     values: { intelligenceIndex: 12, aaBriefcase: 878, automationBench: 3.0, terminalBench4: 0.5, frontierCode: 1.1, omniscience: 3, gdpPdf: 5.0, hleDiamond: 8.5, critPt: 15.0, terminalBenchScience: 0.0 },
     costPerTask: 2.21,
-    minutesPerTask: 4.3,
+    minutesPerTask: 4.4,
   },
   {
     modelId: "tencent-hy4",
@@ -446,7 +446,7 @@ export const independentRecords: IndependentRecord[] = [
     sourceUrl: G_FLASH,
     values: { intelligenceIndex: 28, aaBriefcase: 1450, automationBench: 60.4, terminalBench4: 32.8, frontierCode: 17.6, omniscience: 1, gdpPdf: 15.4, hleDiamond: 18.2, critPt: 24.5, terminalBenchScience: 4.8 },
     costPerTask: 0.58,
-    minutesPerTask: 39.5,
+    minutesPerTask: 38.6,
   },
   {
     // The evaluator has run only part of its suite on this model: no index, no cost,
@@ -492,6 +492,7 @@ for (const [modelId, row] of Object.entries(arenaText)) {
 const AA_T2I = "https://artificialanalysis.ai/image/leaderboard/text-to-image"
 const AA_T2V = "https://artificialanalysis.ai/video/leaderboard/text-to-video"
 const AA_S2S = "https://artificialanalysis.ai/models/speech-to-speech"
+const AA_DECISION_MS = "https://artificialanalysis.ai/decision-models/microsoft-decision-1-1"
 const mediaExtras: Record<string, { label: string; value: string; note: string; sourceUrl: string }[]> = {
   "nano-banana-pro": [
     { label: "AA text-to-image arena", value: "Elo 1120 ±10, rank 11 to 18", note: "Printed as Nano Banana Pro (Gemini 3 Pro Image), 15,710 samples, AA-Image-T2I v2.1.", sourceUrl: AA_T2I },
@@ -510,6 +511,11 @@ const mediaExtras: Record<string, { label: string; value: string; note: string; 
   ],
   "gemini-3-8-live-extended-thinking": [
     { label: "AA speech-to-speech index", value: "82.6; arena Elo 966; speech reasoning 97.7%; task success 89.1%", note: "Printed as Gemini 3.8 Live Extended Thinking (High).", sourceUrl: AA_S2S },
+  ],
+  // A decision model returns probabilities for fixed options, so the language-model tests do not apply.
+  // Artificial Analysis scores it on its own Decision Index (25 decision models), which is not part of Meridian.
+  "microsoft-decision-1-1": [
+    { label: "AA Decision Index", value: "68, rank 11 of 25 decision models; 123 ms and $140 per 1M tasks; Microsoft-Decision-1 scored 62", note: "Printed as Microsoft-Decision-1.1.", sourceUrl: AA_DECISION_MS },
   ],
 }
 for (const [modelId, extras] of Object.entries(mediaExtras)) {

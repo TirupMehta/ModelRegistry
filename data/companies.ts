@@ -270,4 +270,16 @@ export const companies: Record<string, Company> = {
     latestFlagship: "Ripple-65B Preview",
     openWeightsAdvocate: true,
   },
+  microsoft: {
+    id: "microsoft",
+    name: "Microsoft",
+    shortName: "Microsoft",
+    website: "https://www.microsoft.com",
+    headquarters: "Redmond, WA",
+    accentColor: "#0078d4",
+    description:
+      "Microsoft-Decision-1.1, a Foundry decision model post-trained from Google's Gemma 4 26B-A4B that returns calibrated probabilities for fixed answer options instead of generated text, at $0.042 per 1M input tokens.",
+    latestFlagship: "Microsoft-Decision-1.1",
+    openWeightsAdvocate: false,
+  },
 }

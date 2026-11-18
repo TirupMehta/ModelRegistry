@@ -52,6 +52,14 @@ const normText = (s) =>
   s.replace(/&quot;/g, '"').replace(/&#39;|&#x27;/g, "'").replace(/&amp;/g, "&").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim()
 const toText = (html) =>
   normText(html.replace(/<script[\s\S]*?<\/script>/g, " ").replace(/<style[\s\S]*?<\/style>/g, " ").replace(/<[^>]+>/g, " "))
+/**
+ * The same page as data: nothing is stripped, and the escapes a script-rendered page uses
+ * (\\n, \\", \\u0026) are undone. Model catalogs such as Microsoft Foundry ship their model
+ * card as JSON inside a script, so a sentence that a reader sees on the page can be
+ * absent from toText() and present only here.
+ */
+const toData = (html) =>
+  normText(html.replace(/\\\\n|\\n/g, " ").replace(/\\\\"|\\"/g, '"').replace(/\\\\u0026|\\u0026/g, "&").replace(/\\\\u2019|\\u2019/g, "'"))
 
 function evalTs(text) {
   const out = ts.transpileModule(text, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText
@@ -106,7 +114,7 @@ async function readPage(url) {
 const pages = {}
 for (const [key, src] of Object.entries(spec.sources)) {
   const page = await readPage(src.url)
-  pages[key] = { ...page, text: toText(page.html) }
+  pages[key] = { ...page, text: toText(page.html), data: toData(page.html) }
 }
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -114,14 +122,28 @@ function check(ev, date) {
   const page = pages[ev.source]
   if (!page?.ok) return { status: "page-unreadable", detail: `HTTP ${page?.status ?? 0}` }
   const quote = normText(ev.quote)
-  const from = ev.anchor ? page.text.indexOf(ev.anchor) : 0
-  if (from < 0) return { status: "quote-missing", detail: `Anchor "${ev.anchor}" not on the page.` }
-  if (page.text.indexOf(quote, from) < 0) return { status: "quote-missing", detail: "Sentence is not on the page." }
+  // The sentence is looked for on the visible page first, then in the page's own data.
+  let anchorSeen = false
+  let found = false
+  for (const haystack of [page.text, page.data ?? ""]) {
+    const from = ev.anchor ? haystack.indexOf(ev.anchor) : 0
+    if (from < 0) continue
+    anchorSeen = true
+    if (haystack.indexOf(quote, from) >= 0) {
+      found = true
+      break
+    }
+  }
+  if (!anchorSeen) return { status: "quote-missing", detail: `Anchor "${ev.anchor}" not on the page.` }
+  if (!found) return { status: "quote-missing", detail: "Sentence is not on the page." }
   const absent = (ev.mustContain ?? []).filter((t) => !quote.includes(t))
   if (absent.length) return { status: "value-mismatch", detail: `Quote lacks: ${absent.join(", ")}` }
   if (date) {
-    const d = quote.match(/(\d{1,2}) ([A-Za-z]+) (\d{4})/)
-    const iso = d ? `${d[3]}-${String(MONTHS.indexOf(d[2]) + 1).padStart(2, "0")}-${d[1].padStart(2, "0")}` : null
+    // "17 November 2026" and "November 17, 2026" both name a date.
+    const dayFirst = quote.match(/(\d{1,2}) ([A-Za-z]+),? (\d{4})/)
+    const monthFirst = quote.match(/([A-Za-z]+) (\d{1,2}),? (\d{4})/)
+    const parts = dayFirst && MONTHS.includes(dayFirst[2]) ? [dayFirst[3], dayFirst[2], dayFirst[1]] : monthFirst && MONTHS.includes(monthFirst[1]) ? [monthFirst[3], monthFirst[1], monthFirst[2]] : null
+    const iso = parts ? `${parts[0]}-${String(MONTHS.indexOf(parts[1]) + 1).padStart(2, "0")}-${parts[2].padStart(2, "0")}` : null
     if (iso !== date) return { status: "value-mismatch", detail: `Quote says ${iso}, value says ${date}` }
   }
   return { status: "found", detail: "Sentence found on the live page." }
@@ -158,7 +180,8 @@ for (const field of Object.keys(spec.fields)) {
 const cited = [...new Set(Object.values(verified).flat().map((ev) => ev.source))]
 const get = (field, fallback) => spec.fields[field]?.value ?? fallback
 const price = get("pricing", { input: 0, output: 0 })
-const money = (n) => (Number.isInteger(n) ? `$${n}` : `$${n.toFixed(2)}`)
+// Two decimals, more only when the price needs them ($0.042 must not read as $0.04).
+const money = (n) => (Number.isInteger(n) ? `$${n}` : `$${n >= 0.1 ? n.toFixed(2) : String(+n.toFixed(4))}`)
 const releaseDate = get("releaseDate")
 const isLatestCheckpoint = labModels.every((x) => x.releaseDate < releaseDate)
 // "verified" means every core field was read against a live primary source. A field with no
@@ -229,7 +252,16 @@ for (const prev of previousLatest) {
   handover.push(prev.name)
 }
 const lastLab = labModels.map((x) => ({ id: x.id, at: after.indexOf(`    id: "${x.id}",`) })).sort((a, b) => b.at - a.at)[0]
-const [, lastEnd] = blockBounds(after, lastLab.id)
+let lastEnd
+if (lastLab) {
+  lastEnd = blockBounds(after, lastLab.id)[1]
+} else {
+  // A laboratory with no model in the registry yet: its group goes at the end of the list.
+  // (The lab itself still has to be added to data/companies.ts by hand.)
+  const close = after.indexOf("\n]\n", after.indexOf("export const modelsData"))
+  if (close < 0) throw new Error("could not find the end of modelsData")
+  lastEnd = close + 1
+}
 const header = `  // ─── ${spec.lab.groupComment} `.padEnd(78, "─")
 after = `${after.slice(0, lastEnd)}\n${header}\n  ${ser(candidate, 2)},\n${after.slice(lastEnd)}`
 

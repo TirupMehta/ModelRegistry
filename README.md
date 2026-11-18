@@ -44,6 +44,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**Elorian**](https://elorian.ai) | [Glimpse](https://modelregistry.tirup.in/models/glimpse) | - | 262k | Proprietary | $0.6 in / $3 out |
 | [**Inception Labs**](https://inceptionlabs.ai) | [Mercury 3](https://modelregistry.tirup.in/models/mercury-3) | - | 1M | Proprietary | $0.1 in / $0.35 out |
 | [**Ricursive Intelligence**](https://ricursive.ai) | [Ripple-65B Preview](https://modelregistry.tirup.in/models/ripple-65b-preview) | - | 1M | Open (Apache 2.0) | $0.2 in / $0.6 out *(Open)* |
+| [**Microsoft**](https://www.microsoft.com) | [Microsoft-Decision-1.1](https://modelregistry.tirup.in/models/microsoft-decision-1-1) | - | 33k | Proprietary | $0.042 in / $0 out |
 Where Latest Checkpoint is empty, the lab's newest release *is* its flagship (already listed to the left).
 
 <!-- REGISTRY_TABLE_END -->
@@ -197,7 +198,7 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
 
 {
   id: "lab-model-name-0102",        // unique lowercase kebab-case id
-  companyId: "openai",              // one of: anthropic, openai, google, xai, deepseek, meta, qwen, mistral, tencent, z-ai, minimax, nvidia, xiaomi, moonshotai, kuaishou, runway, sarvam, typesafe, reflection, elorian, inception, ricursive
+  companyId: "openai",              // one of: anthropic, openai, google, xai, deepseek, meta, qwen, mistral, tencent, z-ai, minimax, nvidia, xiaomi, moonshotai, kuaishou, runway, sarvam, typesafe, reflection, elorian, inception, ricursive, microsoft
   companyName: "OpenAI",            // lab display name
   name: "Model Display Name",
   version: "1.0",                   // lab version string

@@ -3,7 +3,9 @@
  * Completeness gate for model records. A record that is added or changed must
  * be fully described: every core field present and cited, and (for text
  * models) our own score backed by an independent result with every test,
- * the cost per task and the time per task filled in. An unknown is written
+ * the cost per task and the time per task filled in. A decision model
+ * ("Decision Model") instead carries the evaluator's decision index as an
+ * extras entry. An unknown is written
  * as an explicit "Undisclosed", never left blank.
  *
  * Records released after BASELINE_CUTOFF can never carry a gap. Older records
@@ -58,6 +60,9 @@ const hasUrl = (ref) => typeof ref?.url === "string" && /^https:\/\//.test(ref.u
 function gapsFor(model, independent) {
   const gaps = []
   const textModel = !model.pricingUnit && !NON_TEXT.has(model.category)
+  // A decision model returns probabilities for fixed options, so the language-model tests do
+  // not apply to it. Its own score is the evaluator's decision index, recorded as extras.
+  const decisionModel = model.categoryLabel === "Decision Model"
 
   for (const field of REQUIRED_TEXT) if (blank(model[field])) gaps.push(`empty:${field}`)
   if (!model.links?.announcement) gaps.push("no-announcement-link")
@@ -77,8 +82,10 @@ function gapsFor(model, independent) {
   const labBenchmarks = Object.values(model.benchmarks ?? {}).filter((value) => !blank(value))
   const row = independent.find((record) => record.modelId === model.id)
   if (!row && labBenchmarks.length === 0) gaps.push("no-measurement")
-  if (textModel && !row) gaps.push("no-independent-result")
-  if (textModel && row) {
+  if (decisionModel) {
+    if (!(row?.extras ?? []).some((extra) => !blank(extra.value) && /^https:\/\//.test(extra.sourceUrl ?? ""))) gaps.push("no-independent-result")
+  } else if (textModel && !row) gaps.push("no-independent-result")
+  if (textModel && !decisionModel && row) {
     const missing = TEXT_TESTS.filter((key) => typeof row.values?.[key] !== "number")
     if (typeof row.costPerTask !== "number") missing.push("costPerTask")
     if (typeof row.minutesPerTask !== "number") missing.push("minutesPerTask")
