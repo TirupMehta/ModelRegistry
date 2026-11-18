@@ -385,6 +385,13 @@ for (const tool of ["list_models", "get_model", "list_labs", "get_changes", "get
 }
 checkTrue("mcp-resources-exported", mcpToolsSrc.includes("export const RESOURCE_LIST") && (mcpToolsSrc.includes("export function readResource") || mcpToolsSrc.includes("export async function readResource")))
 checkTrue("mcp-landing-module", fs.existsSync(path.resolve(__dirname, "../lib/mcp-landing.ts")))
+{
+  // The MCP landing text is read by agents, so its dataset line must match the data exactly.
+  const { mcpLandingMarkdown } = loadTsModule("../lib/mcp-landing.ts", registry)
+  const landing = mcpLandingMarkdown()
+  const expected = `${modelsData.length} models across ${Object.keys(companies).length} labs, revision ${datasetRevision.datasetVersion}`
+  checkTrue("mcp-landing-dataset-line-current", landing.includes(expected), `expected "${expected}"`)
+}
 checkTrue("mcp-prompts-exported", mcpToolsSrc.includes("export const PROMPT_LIST") && mcpToolsSrc.includes("export function getPrompt"))
 checkTrue("well-known-mcp", fs.existsSync(path.resolve(__dirname, "../app/.well-known/mcp/route.ts")))
 
