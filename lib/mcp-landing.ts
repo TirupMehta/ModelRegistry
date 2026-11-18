@@ -6,6 +6,9 @@
  */
 
 import { SITE_URL } from "@/lib/site"
+import { modelsData } from "@/data/models"
+import { companies } from "@/data/companies"
+import { datasetRevision } from "@/data/revision"
 
 export function mcpLandingMarkdown(): string {
   return `# ModelRegistry MCP server
@@ -18,7 +21,7 @@ so any MCP-capable client can register the URL and start querying immediately.
 - Transport: HTTP POST, stateless (no session store, no SSE stream)
 - Protocol versions accepted: 2025-06-18, 2025-03-26, 2024-11-05
 - CORS: open (Access-Control-Allow-Origin: *)
-- Dataset: ${SITE_URL} (66 models across 22 labs, revision 2026.11.05-r8)
+- Dataset: ${SITE_URL} (${modelsData.length} models across ${Object.keys(companies).length} labs, revision ${datasetRevision.datasetVersion})
 
 ## Register it
 
