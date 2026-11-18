@@ -1,0 +1,69 @@
+{
+  "note": "Read from Microsoft's Foundry model catalog entry, the Microsoft Learn Foundry models page and Artificial Analysis's page for the model on 2026-11-18. Every claim carries the page, the exact sentence and the tokens that sentence must contain. intake.mjs trusts none of it until it finds the sentence on the live page (in the page text, or for script-rendered pages like Foundry, in the page's own data).",
+  "lab": { "companyId": "microsoft", "companyName": "Microsoft", "groupComment": "MICROSOFT (Decision model)" },
+  "maintainer": {
+    "id": "microsoft-decision-1-1",
+    "name": "Microsoft-Decision-1.1",
+    "version": "1.1",
+    "category": "flagship",
+    "categoryLabel": "Decision Model",
+    "statusBadge": "NEW DROP",
+    "isCompanyFlagship": true,
+    "openWeights": false,
+    "extraModalities": [],
+    "links": { "announcement": "catalog", "apiDocs": "learn" }
+  },
+  "sources": {
+    "catalog": { "url": "https://ai.azure.com/catalog/models/Microsoft-Decision-1.1", "publisher": "Microsoft", "title": "Microsoft-Decision-1.1 in the Microsoft Foundry model catalog", "sourceType": "model-card" },
+    "learn": { "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure", "publisher": "Microsoft", "title": "Foundry Models sold directly by Azure (Microsoft Learn)", "sourceType": "api-docs" },
+    "aa": { "url": "https://artificialanalysis.ai/decision-models/microsoft-decision-1-1", "publisher": "Artificial Analysis", "title": "Artificial Analysis: Microsoft-Decision-1.1", "sourceType": "benchmark" }
+  },
+  "fields": {
+    "releaseDate": {
+      "value": "2026-11-17",
+      "date": "2026-11-17",
+      "evidence": [{ "source": "catalog", "quote": "Model Release Date:** November 17, 2026", "mustContain": ["November 17, 2026"], "title": "Microsoft-Decision-1.1 model card: Model Release Date November 17, 2026" }]
+    },
+    "contextWindow": {
+      "value": "32,767 tokens",
+      "tokens": 32767,
+      "evidence": [{ "source": "catalog", "quote": "Context window 32767", "mustContain": ["32767"], "title": "Microsoft-Decision-1.1 catalog entry: context window 32767" }]
+    },
+    "maxOutputTokens": { "value": "Undisclosed (returns JSON scores, not generated text)", "evidence": [] },
+    "parameters": {
+      "value": "Post-trained from Gemma 4 26B-A4B (size not stated)",
+      "evidence": [{ "source": "catalog", "quote": "open-weight Gemma 4 26B-A4B and post-trained by Microsoft", "mustContain": ["Gemma 4 26B-A4B"], "title": "Microsoft-Decision-1.1 catalog entry: built on Gemma 4 26B-A4B and post-trained by Microsoft" }]
+    },
+    "license": {
+      "value": "Proprietary API (Azure Direct Model terms)",
+      "evidence": [{ "source": "catalog", "quote": "Use of this Azure Direct Model is subject to supplemental Terms of Use for Microsoft Azure", "mustContain": ["Azure Direct Model"], "title": "Microsoft-Decision-1.1 catalog entry: Azure Direct Model, supplemental Terms of Use for Microsoft Azure" }]
+    },
+    "pricing": {
+      "value": { "input": 0.042, "output": 0 },
+      "evidence": [
+        { "source": "aa", "quote": "Pricing for Microsoft-Decision-1.1 is $0.042 per 1M input tokens.", "mustContain": ["$0.042"], "title": "Artificial Analysis: Microsoft-Decision-1.1 priced at $0.042 per 1M input tokens", "note": "Microsoft's own pricing page renders the figure with a script and shows no number to a plain reader; the evaluator lists the provider's price." },
+        { "source": "aa", "quote": "Decision models are billed for input tokens only", "mustContain": ["input tokens only"], "title": "Artificial Analysis: decision models are billed for input tokens only, so output is free" }
+      ]
+    },
+    "modalities": {
+      "value": ["Text", "Vision"],
+      "evidence": [{ "source": "catalog", "quote": "In addition to text input, up to 8 images per API call are supported as input.", "mustContain": ["8 images"], "title": "Microsoft-Decision-1.1 catalog entry: text input and up to 8 images per call" }]
+    },
+    "benchmarks": { "value": {}, "evidence": [] },
+    "isCompanyFlagship": {
+      "value": true,
+      "evidence": [{ "source": "catalog", "quote": "Lifecycle Generally available (GA)", "mustContain": ["Generally available"], "title": "Microsoft-Decision-1.1 catalog entry: lifecycle generally available", "note": "The registry records it as Microsoft's flagship because it is the only Microsoft model tracked here." }]
+    },
+    "isLatestCheckpoint": {
+      "rule": "newest release in the lab's lineup",
+      "evidence": [{ "source": "learn", "quote": "Microsoft-Decision-1.1 Generally available decision, text classification, zero shot classification", "mustContain": ["Generally available"], "title": "Microsoft Learn: Microsoft-Decision-1.1 listed as generally available" }]
+    }
+  },
+  "changeLog": {
+    "summary": "Initial registry entry. Generally available in Microsoft Foundry as a Direct from Azure model, post-trained from Gemma 4 26B-A4B; first Microsoft model in the registry.",
+    "evidence": [
+      { "source": "catalog", "quote": "Direct from Azure models are a select portfolio", "mustContain": ["Direct from Azure"] },
+      { "source": "aa", "quote": "Microsoft-Decision-1.1 scores 68 on the Artificial Analysis Decision Index", "mustContain": ["68"] }
+    ]
+  }
+}
