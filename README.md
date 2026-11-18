@@ -39,7 +39,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**Kuaishou Kling**](https://klingai.com) | [Kling 3.0](https://modelregistry.tirup.in/models/kling-3-0) | - | - | Proprietary | $0.084 per second |
 | [**Runway**](https://runwayml.com) | [Runway Gen-4.5](https://modelregistry.tirup.in/models/runway-gen-4-5) | - | - | Proprietary | $0.15 per second |
 | [**Sarvam AI**](https://www.sarvam.ai) | [Sarvam 105B](https://modelregistry.tirup.in/models/sarvam-105b) | - | 128k | Open (Apache 2.0) | $0.33 in / $0.83 out *(Open)* |
-| [**TypeSafe AI**](https://typesafe.ai) | [Jev](https://modelregistry.tirup.in/models/jev-1) | - | - | Proprietary | $0.042 in / $0 out |
+| [**TypeSafe AI**](https://typesafe.ai) | [Jev 1.14](https://modelregistry.tirup.in/models/jev-1-14) | - | 64k | Proprietary | $0.042 in / $0 out |
 | [**Reflection AI**](https://reflection.ai) | [Beam](https://modelregistry.tirup.in/models/beam-1) | - | 1M | Open (Apache 2.0) | $0.25 in / $1 out *(Open)* |
 | [**Elorian**](https://elorian.ai) | [Glimpse](https://modelregistry.tirup.in/models/glimpse) | - | 262k | Proprietary | $0.6 in / $3 out |
 | [**Inception Labs**](https://inceptionlabs.ai) | [Mercury 3](https://modelregistry.tirup.in/models/mercury-3) | - | 1M | Proprietary | $0.1 in / $0.35 out |

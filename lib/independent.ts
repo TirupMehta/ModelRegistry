@@ -3,9 +3,11 @@ import {
   INDEPENDENT_BENCHMARKS,
   INDEPENDENT_EVALUATOR,
   independentRecords,
+  notEvaluatedRecords,
   type IndependentBenchmarkInfo,
   type IndependentBenchmarkKey,
   type IndependentRecord,
+  type NotEvaluatedRecord,
 } from "@/data/independent-benchmarks"
 import { isCurrent } from "./currency"
 import { readBenchmark } from "./benchmarks"
@@ -88,6 +90,11 @@ function hazen(values: number[], value: number): { rank: number; percentile: num
 
 export function independentFor(modelId: string): IndependentRecord | undefined {
   return independentRecords.find((record) => record.modelId === modelId)
+}
+
+/** The dated record that the evaluator has no result for this model, when there is one. */
+export function notEvaluatedFor(modelId: string): NotEvaluatedRecord | undefined {
+  return notEvaluatedRecords.find((record) => record.modelId === modelId)
 }
 
 /** One board per evaluation, current models only, in the registry's order of value. */

@@ -50,7 +50,7 @@ async function fetchPage(url) {
 const daysSince = (iso) => Math.floor((Date.now() - new Date(`${iso}T00:00:00Z`).getTime()) / 86_400_000)
 
 const data = loadData()
-const { independentRecords, INDEPENDENT_EVALUATOR, ARENA_EVALUATOR } = data
+const { independentRecords, INDEPENDENT_EVALUATOR, ARENA_EVALUATOR, notEvaluatedRecords = [] } = data
 const changes = []
 const unread = []
 const partial = []
@@ -138,6 +138,30 @@ for (const [url, records] of modelPages) {
   }
 }
 
+// Models the evaluator had no result for: read the pages again. A model page (/models/<slug>) that
+// now shows an Intelligence Index, or any other page that now names the model, means a result exists.
+const nowEvaluated = []
+const stillAbsent = []
+for (const record of notEvaluatedRecords) {
+  let evaluated = false
+  for (const url of record.checked) {
+    try {
+      const res = await fetch(url, { headers: { "user-agent": UA, accept: "text/html" }, redirect: "follow" })
+      if (/\/models\/[a-z0-9.-]+$/.test(url)) {
+        if (!res.ok) continue
+        const text = (await res.text()).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ")
+        if (!/Intelligence\s+N\/A/i.test(text)) evaluated = true
+      } else if (res.ok) {
+        const text = (await res.text()).replace(/<[^>]+>/g, " ").toLowerCase()
+        if (record.names.some((name) => text.includes(name.toLowerCase()))) evaluated = true
+      }
+    } catch {
+      // an unreachable page proves nothing: leave the record as it is
+    }
+  }
+  ;(evaluated ? nowEvaluated : stillAbsent).push(record)
+}
+
 console.log(`Independent results refresh (${WRITE ? "write" : "report"})`)
 console.log(`  Artificial Analysis data read ${INDEPENDENT_EVALUATOR.retrievedAt} (${daysSince(INDEPENDENT_EVALUATOR.retrievedAt)} days ago)`)
 if (ARENA_EVALUATOR) {
@@ -158,6 +182,11 @@ if (partial.length) {
   console.log("\nPartly checked (the evaluator withdrew the comparison page):")
   for (const line of partial) console.log(`  ${line}`)
 }
+if (nowEvaluated.length) {
+  console.log("\nNOW EVALUATED (the evaluator's page shows a result; replace the not-evaluated record with a real row):")
+  for (const record of nowEvaluated) console.log(`  ${record.modelId}: ${record.checked.join(" , ")}`)
+}
+console.log(`\n${stillAbsent.length} model(s) the evaluator still has no result for were re-checked.`)
 
 if (WRITE && changes.length > 0) {
   let source = fs.readFileSync(DATA_FILE, "utf8")
@@ -180,6 +209,9 @@ if (WRITE && changes.length > 0) {
   }
   const today = new Date().toISOString().slice(0, 10)
   source = source.replace(/(retrievedAt:\s*")\d{4}-\d{2}-\d{2}(")/, `$1${today}$2`)
+  for (const record of stillAbsent) {
+    source = source.replace(new RegExp(`(modelId: "${record.modelId}",[^\\n]*checkedAt: ")\\d{4}-\\d{2}-\\d{2}(")`), `$1${today}$2`)
+  }
   if (crlf) source = source.replace(/\n/g, "\r\n")
   fs.writeFileSync(DATA_FILE, source)
   console.log(`\nWrote ${changes.length} change(s) to data/independent-benchmarks.ts and set retrievedAt to ${today}.`)

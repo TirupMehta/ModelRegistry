@@ -492,7 +492,10 @@ for (const [modelId, row] of Object.entries(arenaText)) {
 const AA_T2I = "https://artificialanalysis.ai/image/leaderboard/text-to-image"
 const AA_T2V = "https://artificialanalysis.ai/video/leaderboard/text-to-video"
 const AA_S2S = "https://artificialanalysis.ai/models/speech-to-speech"
+const AA_STT = "https://artificialanalysis.ai/speech-to-text"
 const AA_DECISION_MS = "https://artificialanalysis.ai/decision-models/microsoft-decision-1-1"
+const AA_DECISION_MS1 = "https://artificialanalysis.ai/decision-models/microsoft-decision-1"
+const AA_DECISION_JEV = "https://artificialanalysis.ai/decision-models/jev-1-14"
 const mediaExtras: Record<string, { label: string; value: string; note: string; sourceUrl: string }[]> = {
   "nano-banana-pro": [
     { label: "AA text-to-image arena", value: "Elo 1120 ±10, rank 11 to 18", note: "Printed as Nano Banana Pro (Gemini 3 Pro Image), 15,710 samples, AA-Image-T2I v2.1.", sourceUrl: AA_T2I },
@@ -512,10 +515,28 @@ const mediaExtras: Record<string, { label: string; value: string; note: string; 
   "gemini-3-8-live-extended-thinking": [
     { label: "AA speech-to-speech index", value: "82.6; arena Elo 966; speech reasoning 97.7%; task success 89.1%", note: "Printed as Gemini 3.8 Live Extended Thinking (High).", sourceUrl: AA_S2S },
   ],
+  "chatgpt-images-2-6": [
+    { label: "AA text-to-image arena", value: "Sunburst Elo 1261 ±14, rank 1; Flare Elo 1227 ±12, rank 3 (2 to 4)", note: "Printed as GPT Image 2.6 Sunburst (max) and GPT Image 2.6 Flare (max).", sourceUrl: AA_T2I },
+  ],
+  "grok-voice-transcribe-2": [
+    { label: "AA speech-to-text (non-streaming)", value: "AA-WER 2.3% (lower is better); speed factor 177.6; $1.67 per 1,000 minutes", note: "Printed as Grok Voice Transcribe 2.0.", sourceUrl: AA_STT },
+  ],
+  "runway-gen-4-5": [
+    { label: "AA text-to-video arena", value: "Elo 914 ±16, rank 31 to 34; 4,188 samples, on the 61% of prompts within Runway's 1,000-character limit; $7.20 per minute", note: "Printed as Runway Gen-4.5 (720p).", sourceUrl: AA_T2V },
+  ],
+  "meta-muse-voice-transcribe": [
+    { label: "AA diarization index (speech-to-text)", value: "Word diarization error rate 8.6% (lower is better), rank 4 of 23; $3 per 1,000 minutes; it has no row in the main AA-WER table", note: "Printed as Muse Voice Transcribe.", sourceUrl: AA_STT },
+  ],
   // A decision model returns probabilities for fixed options, so the language-model tests do not apply.
   // Artificial Analysis scores it on its own Decision Index (25 decision models), which is not part of Meridian.
   "microsoft-decision-1-1": [
     { label: "AA Decision Index", value: "68, rank 11 of 25 decision models; 123 ms and $140 per 1M tasks; Microsoft-Decision-1 scored 62", note: "Printed as Microsoft-Decision-1.1.", sourceUrl: AA_DECISION_MS },
+  ],
+  "microsoft-decision-1": [
+    { label: "AA Decision Index", value: "62, rank 17 of 25 decision models; 274 ms and $143 per 1M tasks", note: "Printed as Microsoft-Decision-1.", sourceUrl: AA_DECISION_MS1 },
+  ],
+  "jev-1-14": [
+    { label: "AA Decision Index", value: "66, rank 14 of 25 decision models; 92 ms and $156 per 1M tasks", note: "Printed as Jev 1.14.", sourceUrl: AA_DECISION_JEV },
   ],
 }
 for (const [modelId, extras] of Object.entries(mediaExtras)) {
@@ -527,3 +548,33 @@ for (const [modelId, extras] of Object.entries(mediaExtras)) {
     extras,
   })
 }
+
+/**
+ * Models the evaluator has no published result for. This is a defined state, not a gap:
+ * it names the evaluator's pages that were searched and the day they were, and the weekly
+ * refresh (scripts/refresh-independent.mjs) re-reads those pages. When a page starts showing
+ * a result it says so, and the entry is replaced by a real row above. The completeness gate
+ * accepts an entry only while `checkedAt` is within 30 days of the suite's retrieval date.
+ */
+export interface NotEvaluatedRecord {
+  modelId: string
+  evaluator: string
+  /** The day the pages below were searched (YYYY-MM-DD). */
+  checkedAt: string
+  /** Evaluator pages that were searched. A /models/<slug> page is read for its Intelligence Index; any other page is searched for `names`. */
+  checked: string[]
+  /** How the model is written on the evaluator's pages. */
+  names: string[]
+  /** What was found, in one sentence. */
+  note: string
+}
+
+const AA_MODEL_LIST = "https://artificialanalysis.ai/leaderboards/models"
+export const notEvaluatedRecords: NotEvaluatedRecord[] = [
+  { modelId: "sarvam-105b", evaluator: "Artificial Analysis", checkedAt: "2026-11-18", names: ["Sarvam 105B"], checked: ["https://artificialanalysis.ai/models/sarvam-105b"], note: "Its page lists the Intelligence Index as N/A." },
+  { modelId: "qwen-3-8-2-4t-a95b", evaluator: "Artificial Analysis", checkedAt: "2026-11-18", names: ["Qwen3.8 2.4T"], checked: ["https://artificialanalysis.ai/models/qwen3-8-2-4t-a95b"], note: "Its page lists the Intelligence Index as N/A, so no complete set of results exists." },
+  { modelId: "mercury-3", evaluator: "Artificial Analysis", checkedAt: "2026-11-18", names: ["Mercury 3"], checked: ["https://artificialanalysis.ai/models/mercury-3", AA_MODEL_LIST], note: "There is no Mercury 3 page, and the model list shows only Mercury 2." },
+  { modelId: "ripple-65b-preview", evaluator: "Artificial Analysis", checkedAt: "2026-11-18", names: ["Ripple"], checked: ["https://artificialanalysis.ai/models/ripple-65b-preview", AA_MODEL_LIST], note: "There is no page for it, and the model list does not name it." },
+  { modelId: "glimpse", evaluator: "Artificial Analysis", checkedAt: "2026-11-18", names: ["Glimpse"], checked: ["https://artificialanalysis.ai/models/glimpse", AA_MODEL_LIST], note: "There is no page for it, and the model list does not name it." },
+  { modelId: "qwen-3-8-omni-flash", evaluator: "Artificial Analysis", checkedAt: "2026-11-18", names: ["Qwen3.8 Omni"], checked: ["https://artificialanalysis.ai/models/qwen3-8-omni-flash", AA_MODEL_LIST], note: "There is no page for it, and the model list does not name it." },
+]
