@@ -1,7 +1,8 @@
 /**
  * scripts/test-completeness.js
  * Completeness gate for model records. A record that is added or changed must
- * be fully described: every core field present and cited, and (for text
+ * be fully described (or, where the evaluator has published nothing, carry a dated
+ * "not evaluated" record that the weekly refresh re-checks): every core field present and cited, and (for text
  * models) our own score backed by an independent result with every test,
  * the cost per task and the time per task filled in. A decision model
  * ("Decision Model") instead carries the evaluator's decision index as an
@@ -57,6 +58,11 @@ const undisclosed = (value) => /^undisclosed/i.test(String(value ?? "").trim())
 const hasUrl = (ref) => typeof ref?.url === "string" && /^https:\/\//.test(ref.url)
 
 /** The gaps a record has today, as short stable codes. */
+// A "not evaluated" record is accepted while it is recent relative to the suite's own retrieval date,
+// so the gate never fails because of the calendar, only because the weekly re-check stopped.
+const NOT_EVALUATED_MAX_AGE_DAYS = 30
+const daysBetween = (later, earlier) => (Date.parse(later) - Date.parse(earlier)) / 86_400_000
+
 function gapsFor(model, independent) {
   const gaps = []
   const textModel = !model.pricingUnit && !NON_TEXT.has(model.category)
@@ -81,6 +87,14 @@ function gapsFor(model, independent) {
   // Measurement: some published reading, and for text models our own score.
   const labBenchmarks = Object.values(model.benchmarks ?? {}).filter((value) => !blank(value))
   const row = independent.find((record) => record.modelId === model.id)
+  const absent = notEvaluatedRecords.find((record) => record.modelId === model.id)
+  const absentFresh =
+    Boolean(absent) &&
+    (absent.checked ?? []).length > 0 &&
+    !blank(absent.note) &&
+    daysBetween(INDEPENDENT_EVALUATOR.retrievedAt, absent.checkedAt) <= NOT_EVALUATED_MAX_AGE_DAYS
+  if (absent && !absentFresh) gaps.push("not-evaluated-stale")
+  if (absentFresh) return gaps
   if (!row && labBenchmarks.length === 0) gaps.push("no-measurement")
   if (decisionModel) {
     if (!(row?.extras ?? []).some((extra) => !blank(extra.value) && /^https:\/\//.test(extra.sourceUrl ?? ""))) gaps.push("no-independent-result")
@@ -96,7 +110,7 @@ function gapsFor(model, independent) {
 }
 
 const { modelsData } = load("data/models.ts")
-const { independentRecords } = load("data/independent-benchmarks.ts")
+const { independentRecords, notEvaluatedRecords, INDEPENDENT_EVALUATOR } = load("data/independent-benchmarks.ts")
 const current = modelsData.filter((model) => !model.supersededBy && model.verificationStatus !== "retired")
 const found = Object.fromEntries(current.map((model) => [model.id, gapsFor(model, independentRecords)]).filter(([, gaps]) => gaps.length > 0))
 
@@ -121,6 +135,12 @@ function check(name, ok, detail) {
 
 const baseline = JSON.parse(fs.readFileSync(BASELINE_PATH, "utf8"))
 const byId = new Map(modelsData.map((model) => [model.id, model]))
+
+// 0. A "not evaluated" record must belong to a tracked model that is still current.
+{
+  const bad = notEvaluatedRecords.filter((record) => !byId.has(record.modelId) || byId.get(record.modelId).supersededBy)
+  check("every 'not evaluated' record names a current model", bad.length === 0, bad.map((record) => record.modelId).join(", "))
+}
 
 // 1. Nothing new: every gap on a record is already on the backlog.
 const fresh = []
@@ -151,7 +171,11 @@ for (const id of ["gpt-6-2-sol", "gpt-6-2-astra"]) {
 }
 
 const backlog = Object.values(baseline).reduce((total, gaps) => total + gaps.length, 0)
-console.log(`\n  Known backlog: ${Object.keys(baseline).length} older record(s) with ${backlog} gap(s) in scripts/completeness-baseline.json. Fix them and remove the entries.`)
+console.log(
+  backlog === 0
+    ? "\n  No known gaps: every current record is complete or carries a dated not-evaluated record."
+    : `\n  Known backlog: ${Object.keys(baseline).length} older record(s) with ${backlog} gap(s) in scripts/completeness-baseline.json. Fix them and remove the entries.`,
+)
 
 if (failures > 0) {
   console.error(`\n❌ test-completeness failed with ${failures} failure(s).`)

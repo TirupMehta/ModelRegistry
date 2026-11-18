@@ -222,7 +222,7 @@ export const companies: Record<string, Company> = {
     headquarters: "San Francisco, CA",
     accentColor: "#14b8a6",
     description: "Builders of System One decision models; first model Jev returns typed calibrated decisions in 70-500ms with free output tokens.",
-    latestFlagship: "Jev",
+    latestFlagship: "Jev 1.14",
     openWeightsAdvocate: false,
   },
   reflection: {

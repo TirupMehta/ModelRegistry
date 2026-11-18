@@ -1,0 +1,66 @@
+{
+  "note": "Read from Microsoft's Foundry model catalog entry and launch post, the Microsoft Learn Foundry models page and Artificial Analysis's page on 2026-11-18. Every claim carries the page, the exact sentence and the tokens that sentence must contain. intake.mjs trusts none of it until it finds the sentence on the live page (page text, or for script-rendered pages like Foundry, the page's own data).",
+  "lab": { "companyId": "microsoft", "companyName": "Microsoft", "groupComment": "MICROSOFT (Decision-1)" },
+  "maintainer": {
+    "id": "microsoft-decision-1",
+    "name": "Microsoft-Decision-1",
+    "version": "1",
+    "category": "flagship",
+    "categoryLabel": "Decision Model",
+    "statusBadge": "PRIOR RELEASE",
+    "isCompanyFlagship": false,
+    "openWeights": false,
+    "extraModalities": [],
+    "links": { "announcement": "blog", "apiDocs": "catalog" }
+  },
+  "sources": {
+    "catalog": { "url": "https://ai.azure.com/catalog/models/Microsoft-Decision-1", "publisher": "Microsoft", "title": "Microsoft-Decision-1 in the Microsoft Foundry model catalog", "sourceType": "model-card" },
+    "blog": { "url": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-microsoft-decision-1-in-microsoft-foundry-for-decision-and-classific/4562742", "publisher": "Microsoft", "title": "Introducing Microsoft-Decision-1 in Microsoft Foundry for decision and classification workloads (Oct 9, 2026)", "publishedAt": "2026-10-09", "sourceType": "announcement" },
+    "learn": { "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure", "publisher": "Microsoft", "title": "Foundry Models sold directly by Azure (Microsoft Learn)", "sourceType": "api-docs" },
+    "aa": { "url": "https://artificialanalysis.ai/decision-models/microsoft-decision-1", "publisher": "Artificial Analysis", "title": "Artificial Analysis: Microsoft-Decision-1", "sourceType": "benchmark" }
+  },
+  "fields": {
+    "releaseDate": {
+      "value": "2026-10-08",
+      "date": "2026-10-08",
+      "evidence": [{ "source": "catalog", "quote": "Model Release Date:** October 8, 2026", "mustContain": ["October 8, 2026"], "title": "Microsoft-Decision-1 model card: Model Release Date October 8, 2026" }]
+    },
+    "contextWindow": {
+      "value": "32,768 tokens",
+      "tokens": 32768,
+      "evidence": [{ "source": "catalog", "quote": "Context window 32768", "mustContain": ["32768"], "title": "Microsoft-Decision-1 catalog entry: context window 32768" }]
+    },
+    "maxOutputTokens": { "value": "Undisclosed (returns JSON scores, not generated text)", "evidence": [] },
+    "parameters": {
+      "value": "Post-trained from Qwen3.5-9B",
+      "evidence": [{ "source": "catalog", "quote": "open-weight Qwen3.5-9B and post-trained by Microsoft", "mustContain": ["Qwen3.5-9B"], "title": "Microsoft-Decision-1 catalog entry: built on Qwen3.5-9B and post-trained by Microsoft" }]
+    },
+    "license": {
+      "value": "Proprietary API (Azure Direct Model terms)",
+      "evidence": [{ "source": "catalog", "quote": "Use of this Azure Direct Model is subject to supplemental Terms of Use for Microsoft Azure", "mustContain": ["Azure Direct Model"], "title": "Microsoft-Decision-1 catalog entry: Azure Direct Model, supplemental Terms of Use for Microsoft Azure" }]
+    },
+    "pricing": {
+      "value": { "input": 0.042, "output": 0 },
+      "evidence": [
+        { "source": "blog", "quote": "Microsoft-Decision-1 US Datazone $0.042 N/A", "mustContain": ["$0.042"], "title": "Microsoft launch post: Microsoft-Decision-1 at $0.042 per 1M input tokens, no output charge" },
+        { "source": "aa", "quote": "Decision models are billed for input tokens only", "mustContain": ["input tokens only"], "title": "Artificial Analysis: decision models are billed for input tokens only, so output is free" }
+      ]
+    },
+    "modalities": {
+      "value": ["Text"],
+      "evidence": [{ "source": "catalog", "quote": "Input type text Output type json", "mustContain": ["Input type text"], "title": "Microsoft-Decision-1 catalog entry: text input, JSON output" }]
+    },
+    "benchmarks": { "value": {}, "evidence": [] },
+    "isCompanyFlagship": {
+      "value": false,
+      "evidence": [{ "source": "learn", "quote": "Microsoft-Decision-1.1 Generally available decision, text classification, zero shot classification", "mustContain": ["Microsoft-Decision-1.1"], "title": "Microsoft Learn: Microsoft-Decision-1.1 is generally available and takes the flagship role", "note": "Superseded by Microsoft-Decision-1.1." }]
+    }
+  },
+  "changeLog": {
+    "summary": "Initial registry entry, added after its successor Microsoft-Decision-1.1. Launched in public preview in Microsoft Foundry on a Qwen3.5-9B base; superseded by Microsoft-Decision-1.1.",
+    "evidence": [
+      { "source": "blog", "quote": "Now available in public preview, Microsoft-Decision-1 is a decision model built on Qwen3.5-9B", "mustContain": ["public preview"] },
+      { "source": "aa", "quote": "Microsoft-Decision-1 scores 62 on the Artificial Analysis Decision Index", "mustContain": ["62"] }
+    ]
+  }
+}

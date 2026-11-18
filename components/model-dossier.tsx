@@ -11,6 +11,7 @@ import {
   buildIndependentStanding,
   independentFor,
   independentPositionsFor,
+  notEvaluatedFor,
 } from "@/lib/independent"
 import { currentSuccessor } from "@/lib/currency"
 import { EVIDENCE_KIND_LABEL, evidenceSummary } from "@/lib/evidence"
@@ -442,6 +443,20 @@ export function ModelPositions({ model }: { model: ModelItem }) {
               ? "No benchmark with a comparable test and version is recorded for this model, so any position would be invented."
               : "Its published scores cannot join a comparison table:"}
           </p>
+          {notEvaluatedFor(model.id) && (
+            <p className="mt-2 text-body font-sans text-fg leading-6">
+              {notEvaluatedFor(model.id)?.evaluator} has not published a result for this model:{" "}
+              {notEvaluatedFor(model.id)?.note} Searched {formatDate(notEvaluatedFor(model.id)?.checkedAt ?? "")}, and re-checked weekly.{" "}
+              <a
+                href={notEvaluatedFor(model.id)?.checked[0]}
+                rel="noopener noreferrer"
+                className="text-accent-ink hover:underline underline-offset-2"
+              >
+                The page checked
+              </a>
+              .
+            </p>
+          )}
           {reasons.length > 0 && (
             <ul className="mt-2 space-y-1.5 text-body font-sans text-fg-muted leading-5">
               {reasons.map((item) => (

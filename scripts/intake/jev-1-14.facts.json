@@ -1,0 +1,66 @@
+{
+  "note": "Read from TypeSafe's documentation and blog and Artificial Analysis's page for the model on 2026-11-18. Every claim carries the page, the exact sentence and the tokens that sentence must contain. intake.mjs trusts none of it until it finds the sentence on the live page.",
+  "lab": { "companyId": "typesafe", "companyName": "TypeSafe AI", "groupComment": "TYPESAFE AI (Jev 1.14)" },
+  "maintainer": {
+    "id": "jev-1-14",
+    "name": "Jev 1.14",
+    "version": "1.14.0",
+    "category": "flagship",
+    "categoryLabel": "Decision Model",
+    "statusBadge": "NEW DROP",
+    "isCompanyFlagship": true,
+    "openWeights": false,
+    "extraModalities": [],
+    "links": { "announcement": "blog", "playground": "https://jevai.net/", "apiDocs": "docs" }
+  },
+  "sources": {
+    "blog": { "url": "https://typesafe.ai/blog/jev-1-14", "publisher": "TypeSafe AI", "title": "Jev: For the builders AND dreamers (Oct 14, 2026)", "publishedAt": "2026-10-14", "sourceType": "announcement" },
+    "docs": { "url": "https://docs.typesafe.ai/models", "publisher": "TypeSafe AI", "title": "TypeSafe documentation: models (Jev 1.14 and Jev 1.13)", "sourceType": "api-docs" },
+    "aa": { "url": "https://artificialanalysis.ai/decision-models/jev-1-14", "publisher": "Artificial Analysis", "title": "Artificial Analysis: Jev 1.14", "sourceType": "benchmark" }
+  },
+  "fields": {
+    "releaseDate": {
+      "value": "2026-10-14",
+      "date": "2026-10-14",
+      "evidence": [{ "source": "docs", "quote": "Jev 1.14 is the newest Jev release, available from October 14, 2026.", "mustContain": ["October 14, 2026"], "title": "TypeSafe documentation: Jev 1.14 available from October 14, 2026" }]
+    },
+    "contextWindow": {
+      "value": "64k tokens per request (32k per question)",
+      "tokens": 64000,
+      "evidence": [{ "source": "docs", "quote": "Context length 64k per-request / 32k per-question", "mustContain": ["64k"], "title": "TypeSafe documentation: context length 64k per request, 32k per question" }]
+    },
+    "maxOutputTokens": { "value": "Undisclosed (returns typed values, not generated text)", "evidence": [] },
+    "parameters": { "value": "Undisclosed (TypeSafe System One)", "evidence": [] },
+    "license": {
+      "value": "Proprietary API",
+      "evidence": [{ "source": "docs", "quote": "Price: You pay per input token. Output tokens are free.", "mustContain": ["per input token"], "title": "TypeSafe documentation: offered as a paid API, priced per input token" }]
+    },
+    "pricing": {
+      "value": { "input": 0.042, "output": 0 },
+      "evidence": [
+        { "source": "docs", "quote": "Price (per Btok / per Mtok) $42 / $0.042", "mustContain": ["$0.042"], "title": "TypeSafe documentation: $0.042 per 1M input tokens" },
+        { "source": "docs", "quote": "Output tokens are free.", "mustContain": ["free"], "title": "TypeSafe documentation: output tokens are free" }
+      ]
+    },
+    "modalities": {
+      "value": ["Text", "Vision"],
+      "evidence": [{ "source": "docs", "quote": "Input Text, images", "mustContain": ["images"], "title": "TypeSafe documentation: input is text and images" }]
+    },
+    "benchmarks": { "value": {}, "evidence": [] },
+    "isCompanyFlagship": {
+      "value": true,
+      "evidence": [{ "source": "docs", "quote": "Jev 1.14 is the newest Jev release", "mustContain": ["newest Jev release"], "title": "TypeSafe documentation: Jev 1.14 is the newest Jev release", "note": "Jev is TypeSafe's only model line; the registry records its newest release as the lab's flagship." }]
+    },
+    "isLatestCheckpoint": {
+      "rule": "newest release in the lab's lineup",
+      "evidence": [{ "source": "blog", "quote": "releasing an improved Jev 1.14.0 along with experimental features", "mustContain": ["Jev 1.14.0"], "title": "TypeSafe blog: releasing an improved Jev 1.14.0" }]
+    }
+  },
+  "changeLog": {
+    "summary": "Initial registry entry. Supersedes Jev 1.0 (the Sept 15 record): same $0.042 per 1M input tokens with free output, now 64k context, image input and a Box question type.",
+    "evidence": [
+      { "source": "blog", "quote": "releasing an improved Jev 1.14.0 along with experimental features", "mustContain": ["Jev 1.14.0"] },
+      { "source": "aa", "quote": "Jev 1.14 scores 66 on the Artificial Analysis Decision Index", "mustContain": ["66"] }
+    ]
+  }
+}
