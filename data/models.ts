@@ -288,7 +288,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-11-09",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -738,7 +738,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-07",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -1751,7 +1751,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-07",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -2246,7 +2246,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-07",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -7074,7 +7074,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-07",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -8030,7 +8030,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-11-05",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -8641,7 +8641,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-07",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -9131,7 +9131,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-13",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -9336,7 +9336,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-19",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -9702,7 +9702,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-24",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -10576,7 +10576,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-11-05",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -10801,7 +10801,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-27",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {
@@ -11331,7 +11331,7 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-11-10",
+    lastVerifiedAt: "2026-11-14",
     verificationStatus: "partially_verified",
     changeLog: [
       {

@@ -1,10 +1,14 @@
-import Link from "next/link"
-import { companies } from "@/data/companies"
-import { modelsData, type ModelItem } from "@/data/models"
-import { datasetRevision } from "@/data/revision"
-import { badgeInfo } from "@/lib/badges"
-import { buildLeaderboards, excludedReadings, positionsFor } from "@/lib/leaderboards"
-import { AGREEMENT_LABEL, standingFor } from "@/lib/standing"
+import Link from "next/link";
+import { companies } from "@/data/companies";
+import { modelsData, type ModelItem } from "@/data/models";
+import { datasetRevision } from "@/data/revision";
+import { badgeInfo } from "@/lib/badges";
+import {
+  buildLeaderboards,
+  excludedReadings,
+  positionsFor,
+} from "@/lib/leaderboards";
+import { AGREEMENT_LABEL, standingFor } from "@/lib/standing";
 import {
   INDEPENDENT_EVALUATOR,
   buildIndependentBoards,
@@ -12,13 +16,18 @@ import {
   independentFor,
   independentPositionsFor,
   notEvaluatedFor,
-} from "@/lib/independent"
-import { currentSuccessor } from "@/lib/currency"
-import { EVIDENCE_KIND_LABEL, evidenceSummary } from "@/lib/evidence"
-import { SITE, compareHref, comparisonPairs, faqPage } from "@/lib/seo"
-import { formatDate, safeJsonLd } from "@/lib/utils"
-import { fieldLabels } from "@/components/verification-section"
-import { ArrowUpRight, Check, ChevronDown, ExternalLink } from "lucide-react"
+} from "@/lib/independent";
+import { currentSuccessor } from "@/lib/currency";
+import { EVIDENCE_KIND_LABEL, evidenceSummary } from "@/lib/evidence";
+import { SITE, compareHref, comparisonPairs, faqPage } from "@/lib/seo";
+import { formatDate, safeJsonLd } from "@/lib/utils";
+import { fieldLabels } from "@/components/verification-section";
+import {
+  fieldChecks,
+  fieldChecksAt,
+  type CheckedField,
+} from "@/data/field-checks";
+import { ArrowUpRight, Check, ChevronDown, ExternalLink } from "lucide-react";
 
 /**
  * Server-rendered dossier sections.
@@ -33,62 +42,74 @@ const VERIFICATION_COPY: Record<string, string> = {
   verified: "Every displayed field is traced to a primary source.",
   partially_verified:
     "Some fields rest on a single secondary mention; nothing displayed is contradicted.",
-  unverified: "Figures are tracked but not yet confirmed against a primary document.",
+  unverified:
+    "Figures are tracked but not yet confirmed against a primary document.",
   retired: "Superseded. Kept for history and linked to its replacement.",
-}
+};
+
+const CHECK_FIELDS: [CheckedField, string][] = [
+  ["releaseDate", "Release date"],
+  ["contextWindow", "Context window"],
+  ["pricing", "Price"],
+];
 
 /** A source check older than this, at the time of the latest revision, is shown as stale. */
-export const STALE_AFTER_DAYS = 30
+export const STALE_AFTER_DAYS = 30;
 
 function daysSince(iso: string): number {
-  const then = new Date(`${iso}T00:00:00Z`).getTime()
-  if (Number.isNaN(then)) return 0
+  const then = new Date(`${iso}T00:00:00Z`).getTime();
+  if (Number.isNaN(then)) return 0;
   // Measured against the dataset revision date, not the wall clock: a static page
   // must say the same thing every time it is rendered.
-  const revised = new Date(`${datasetRevision.revisedAt}T00:00:00Z`).getTime()
-  return Math.max(0, Math.floor((revised - then) / 86_400_000))
+  const revised = new Date(`${datasetRevision.revisedAt}T00:00:00Z`).getTime();
+  return Math.max(0, Math.floor((revised - then) / 86_400_000));
 }
 
 export function ModelProvenance({ model }: { model: ModelItem }) {
-  const badge = badgeInfo(model.statusBadge)
-  const age = daysSince(model.lastVerifiedAt)
-  const stale = age > STALE_AFTER_DAYS
-  const summary = evidenceSummary(model)
-  const citation = `ModelRegistry, "${model.name}" datasheet, dataset revision ${datasetRevision.datasetVersion}, revised ${datasetRevision.revisedAt}, ${SITE}/models/${model.id}`
-  const label = "Sources"
+  const badge = badgeInfo(model.statusBadge);
+  const age = daysSince(model.lastVerifiedAt);
+  const stale = age > STALE_AFTER_DAYS;
+  const summary = evidenceSummary(model);
+  const citation = `ModelRegistry, "${model.name}" datasheet, dataset revision ${datasetRevision.datasetVersion}, revised ${datasetRevision.revisedAt}, ${SITE}/models/${model.id}`;
+  const label = "Sources";
 
   return (
     <section aria-label="Sources" className="mt-5">
       <details className="group">
         <summary className="flex cursor-pointer list-none items-center gap-2 border-t border-black/10 pt-4 text-small font-sans text-fg-muted dark:border-white/[0.08] [&::-webkit-details-marker]:hidden">
-          <Check size={14} className="text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
+          <Check
+            size={14}
+            className="text-emerald-600 dark:text-emerald-400"
+            aria-hidden="true"
+          />
           <span className="font-medium text-fg dark:text-white">{label}</span>
           <span className="tabular-nums">
-            {model.sources.length} sources · checked {formatDate(model.lastVerifiedAt)}
+            {model.sources.length} sources · checked{" "}
+            {formatDate(model.lastVerifiedAt)}
           </span>
-          <ChevronDown size={14} className="ml-auto transition-transform group-open:rotate-180" aria-hidden="true" />
+          <ChevronDown
+            size={14}
+            className="ml-auto transition-transform group-open:rotate-180"
+            aria-hidden="true"
+          />
         </summary>
 
         <div className="pt-3 text-small font-sans leading-5 text-fg-muted">
           <p>
             {VERIFICATION_COPY[model.verificationStatus] ?? ""}{" "}
-            <Link href="/trust" className="text-accent-ink hover:underline underline-offset-2">
+            <Link
+              href="/trust"
+              className="text-accent-ink hover:underline underline-offset-2"
+            >
               What this means
             </Link>
           </p>
           {stale && (
             <p className="mt-2 text-amber-700 dark:text-amber-500">
-              Checked {age} days ago. Prices and scores may have changed: confirm on the lab page before you rely on them.
+              Checked {age} days ago. Prices and scores may have changed:
+              confirm on the lab page before you rely on them.
             </p>
           )}
-          {summary.missing.length > 0 && (
-            <ul className="mt-2 list-disc pl-5 text-fg-muted">
-              {summary.missing.map((gap) => (
-                <li key={gap}>{gap}</li>
-              ))}
-            </ul>
-          )}
-
           <ul className="mt-3 space-y-1.5">
             {summary.items.map((item) => (
               <li key={item.url}>
@@ -99,11 +120,18 @@ export function ModelProvenance({ model }: { model: ModelItem }) {
                   className="inline-flex items-baseline gap-1 text-fg hover:text-accent-ink break-all"
                 >
                   <span>{item.title}</span>
-                  <ExternalLink size={11} className="shrink-0 opacity-60" aria-hidden="true" />
+                  <ExternalLink
+                    size={11}
+                    className="shrink-0 opacity-60"
+                    aria-hidden="true"
+                  />
                 </a>
                 <span className="text-fg-muted">
                   {" "}
-                  · {EVIDENCE_KIND_LABEL[item.kind as keyof typeof EVIDENCE_KIND_LABEL] ?? item.kind}
+                  ·{" "}
+                  {EVIDENCE_KIND_LABEL[
+                    item.kind as keyof typeof EVIDENCE_KIND_LABEL
+                  ] ?? item.kind}
                   {item.accessedAt ? ` · checked ${item.accessedAt}` : ""}
                 </span>
               </li>
@@ -111,41 +139,79 @@ export function ModelProvenance({ model }: { model: ModelItem }) {
           </ul>
 
           <details className="mt-4">
-            <summary className="w-fit cursor-pointer text-fg-muted hover:text-accent-ink">Where each fact comes from</summary>
+            <summary className="w-fit cursor-pointer text-fg-muted hover:text-accent-ink">
+              Where each fact comes from
+            </summary>
+            {CHECK_FIELDS.some(([field]) => fieldChecks[model.id]?.[field]) && (
+              <ul className="mt-2 grid gap-x-6 gap-y-1 sm:grid-cols-2">
+                {CHECK_FIELDS.map(([field, label]) => {
+                  const url = fieldChecks[model.id]?.[field];
+                  if (!url) return null;
+                  return (
+                    <li key={field} className="flex items-baseline gap-1.5">
+                      <span className="font-medium text-fg">{label}</span>
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-fg-muted underline underline-offset-2 hover:text-accent-ink"
+                      >
+                        confirmed on source, {formatDate(fieldChecksAt)}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
             <ul className="mt-2 space-y-1.5">
-              {Object.entries(model.fieldSources ?? {}).flatMap(([field, refs]) =>
-                (refs ?? []).map((source) => (
-                  <li key={`${field}-${source.url}`}>
-                    <span className="font-medium text-fg">{fieldLabels[field as keyof typeof fieldLabels]}</span>{" "}
-                    <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-fg-muted underline underline-offset-2 hover:text-accent-ink">
-                      {source.title}
-                    </a>
-                  </li>
-                )),
+              {Object.entries(model.fieldSources ?? {}).flatMap(
+                ([field, refs]) =>
+                  (refs ?? []).map((source) => (
+                    <li key={`${field}-${source.url}`}>
+                      <span className="font-medium text-fg">
+                        {fieldLabels[field as keyof typeof fieldLabels]}
+                      </span>{" "}
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-fg-muted underline underline-offset-2 hover:text-accent-ink"
+                      >
+                        {source.title}
+                      </a>
+                    </li>
+                  )),
               )}
             </ul>
           </details>
 
           <p className="mt-4 text-fg-muted">
-            Badge <span className="font-medium text-fg">{model.statusBadge}</span> is a{" "}
-            <Link href="/trust#badges" className="text-accent-ink hover:underline underline-offset-2">
+            Badge{" "}
+            <span className="font-medium text-fg">{model.statusBadge}</span> is
+            a{" "}
+            <Link
+              href="/trust#badges"
+              className="text-accent-ink hover:underline underline-offset-2"
+            >
               {badge.label.toLowerCase()}
             </Link>
             . {badge.basis}
           </p>
           <p className="mt-3 text-fg-muted">Cite this record</p>
-          <code className="block text-body font-mono text-fg-muted leading-relaxed break-words">{citation}</code>
+          <code className="block text-body font-mono text-fg-muted leading-relaxed break-words">
+            {citation}
+          </code>
         </div>
       </details>
     </section>
-  )
+  );
 }
 
 export function ModelFaq({ model }: { model: ModelItem }) {
-  const priced = !model.pricingUnit
+  const priced = !model.pricingUnit;
   const priceAnswer = priced
     ? `${model.name} lists at $${model.pricing.input.toFixed(2)} per 1M input tokens and $${model.pricing.output.toFixed(2)} per 1M output tokens, according to the price published by ${model.companyName}. Cached, batch and committed-throughput tiers are billed differently and are not included in that figure.`
-    : `${model.name} is billed ${model.pricingUnit}, not per token, so it has no per-1M-token list price in this registry.`
+    : `${model.name} is billed ${model.pricingUnit}, not per token, so it has no per-1M-token list price in this registry.`;
 
   const faq = [
     { q: `How much does ${model.name} cost?`, a: priceAnswer },
@@ -166,11 +232,14 @@ export function ModelFaq({ model }: { model: ModelItem }) {
       q: `When was ${model.name} released?`,
       a: `${model.name} was released on ${formatDate(model.releaseDate)} (${model.releaseDate}) and the record's sources were last checked on ${model.lastVerifiedAt}.`,
     },
-  ]
+  ];
 
   return (
     <section aria-labelledby="model-faq-heading" className="mb-6 sm:mb-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqPage(faq)) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(faqPage(faq)) }}
+      />
       <h2
         id="model-faq-heading"
         className="text-body font-semibold text-fg-strong mb-2.5"
@@ -182,43 +251,55 @@ export function ModelFaq({ model }: { model: ModelItem }) {
           <details key={item.q} className="group rule-b">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-3 text-body font-medium text-fg-strong [&::-webkit-details-marker]:hidden">
               <h3 className="text-body font-medium">{item.q}</h3>
-              <ChevronDown size={14} className="shrink-0 text-fg-muted transition-transform group-open:rotate-180" aria-hidden="true" />
+              <ChevronDown
+                size={14}
+                className="shrink-0 text-fg-muted transition-transform group-open:rotate-180"
+                aria-hidden="true"
+              />
             </summary>
-            <p className="pb-3.5 pr-6 text-body font-sans leading-6 text-fg-muted">{item.a}</p>
+            <p className="pb-3.5 pr-6 text-body font-sans leading-6 text-fg-muted">
+              {item.a}
+            </p>
           </details>
         ))}
       </div>
     </section>
-  )
+  );
 }
 
-const LAB_ORDER = Object.keys(companies)
+const LAB_ORDER = Object.keys(companies);
 function labRank(id: string): number {
-  const index = LAB_ORDER.indexOf(id)
-  return index === -1 ? LAB_ORDER.length : index
+  const index = LAB_ORDER.indexOf(id);
+  return index === -1 ? LAB_ORDER.length : index;
 }
 
 export function ModelComparisons({ model }: { model: ModelItem }) {
   const direct = comparisonPairs(modelsData).filter(
     (pair) => pair.a.id === model.id || pair.b.id === model.id,
-  )
+  );
 
   const rivals = direct
-    .map((pair) => ({ opponent: pair.a.id === model.id ? pair.b : pair.a, pair }))
+    .map((pair) => ({
+      opponent: pair.a.id === model.id ? pair.b : pair.a,
+      pair,
+    }))
     .sort((x, y) => {
-      const flagshipDelta = Number(y.opponent.isCompanyFlagship) - Number(x.opponent.isCompanyFlagship)
-      if (flagshipDelta !== 0) return flagshipDelta
+      const flagshipDelta =
+        Number(y.opponent.isCompanyFlagship) -
+        Number(x.opponent.isCompanyFlagship);
+      if (flagshipDelta !== 0) return flagshipDelta;
       // Rivals a reader would actually weigh first: the registry lists labs in
       // order of how widely their models are used, so earlier labs come first.
       // Sorting by release date alone surfaced the newest obscure model instead
       // of the model people are comparing against.
-      const labDelta = labRank(x.opponent.companyId) - labRank(y.opponent.companyId)
-      if (labDelta !== 0) return labDelta
-      return y.opponent.releaseDate.localeCompare(x.opponent.releaseDate)
+      const labDelta =
+        labRank(x.opponent.companyId) - labRank(y.opponent.companyId);
+      if (labDelta !== 0) return labDelta;
+      return y.opponent.releaseDate.localeCompare(x.opponent.releaseDate);
     })
-    .slice(0, 6)
+    .slice(0, 6);
 
-  if (rivals.length === 0) return null
+  if (rivals.length === 0) return null;
 
   return (
     <section aria-labelledby="model-compare-heading" className="mb-6 sm:mb-8">
@@ -254,7 +335,7 @@ export function ModelComparisons({ model }: { model: ModelItem }) {
         <span>All model comparisons</span>
       </Link>
     </section>
-  )
+  );
 }
 
 // The dataset is imported directly: this module is rendered only from the
@@ -263,7 +344,7 @@ export function ModelComparisons({ model }: { model: ModelItem }) {
 
 export function ModelPositions({ model }: { model: ModelItem }) {
   if (model.supersededBy) {
-    const successor = currentSuccessor(model, modelsData)
+    const successor = currentSuccessor(model, modelsData);
     return (
       <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
         <h2
@@ -288,48 +369,61 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             .
           </p>
           <p className="mt-2 text-body font-sans text-fg-muted leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
-            This record keeps its dates, sources and readings, and is not ranked against the current
-            lineup: it is not something a reader can choose today. Superseded is not retired, and no
-            laboratory has withdrawn it.{" "}
-            <Link href="/score" className="text-accent-ink hover:underline underline-offset-2">
+            This record keeps its dates, sources and readings, and is not ranked
+            against the current lineup: it is not something a reader can choose
+            today. Superseded is not retired, and no laboratory has withdrawn
+            it.{" "}
+            <Link
+              href="/score"
+              className="text-accent-ink hover:underline underline-offset-2"
+            >
               Current standings
             </Link>
             .
           </p>
         </div>
       </section>
-    )
+    );
   }
 
-  const independentPositions = independentPositionsFor(model, buildIndependentBoards(modelsData))
+  const independentPositions = independentPositionsFor(
+    model,
+    buildIndependentBoards(modelsData),
+  );
   const row = (position: (typeof independentPositions)[number]) => (
-      // The name block wraps on its own; rank and score stay together on the right,
-      // so a long note can never push the score onto a line by itself.
-      <div key={position.test} className="flex items-baseline gap-x-3">
-        <div className="min-w-0 flex-1">
-          <span className="text-body font-sans text-fg">{position.test}</span>
-          <span className="hidden sm:inline text-body font-sans text-fg-muted">
-            {" "}
-            {position.domain}
+    // The name block wraps on its own; rank and score stay together on the right,
+    // so a long note can never push the score onto a line by itself.
+    <div key={position.test} className="flex items-baseline gap-x-3">
+      <div className="min-w-0 flex-1">
+        <span className="text-body font-sans text-fg">{position.test}</span>
+        <span className="hidden sm:inline text-body font-sans text-fg-muted">
+          {" "}
+          {position.domain}
+        </span>
+        {position.tiedWithLeader && position.rank > 1 && (
+          <span className="block text-small font-sans text-fg-muted">
+            not separable from the leader
           </span>
-          {position.tiedWithLeader && position.rank > 1 && (
-            <span className="block text-small font-sans text-fg-muted">
-              not separable from the leader
-            </span>
-          )}
-        </div>
-        <span className="shrink-0 text-body font-sans tabular-nums text-fg">
-          <strong className="font-semibold text-fg-strong">{position.rank}</strong> of{" "}
-          {position.of}
-        </span>
-        <span className="text-body font-sans tabular-nums text-fg-muted w-14 text-right shrink-0">
-          {position.score}
-        </span>
+        )}
       </div>
-  )
-  const independentRecord = independentFor(model.id)
-  if ((independentPositions.length > 0 || (independentRecord?.extras?.length ?? 0) > 0) && independentRecord) {
-    const rated = standingFor(model, buildIndependentStanding(modelsData))
+      <span className="shrink-0 text-body font-sans tabular-nums text-fg">
+        <strong className="font-semibold text-fg-strong">
+          {position.rank}
+        </strong>{" "}
+        of {position.of}
+      </span>
+      <span className="text-body font-sans tabular-nums text-fg-muted w-14 text-right shrink-0">
+        {position.score}
+      </span>
+    </div>
+  );
+  const independentRecord = independentFor(model.id);
+  if (
+    (independentPositions.length > 0 ||
+      (independentRecord?.extras?.length ?? 0) > 0) &&
+    independentRecord
+  ) {
+    const rated = standingFor(model, buildIndependentStanding(modelsData));
     return (
       <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
         <h2
@@ -344,7 +438,9 @@ export function ModelPositions({ model }: { model: ModelItem }) {
               {/* The score and its band stay together; the detail wraps below and never splits them. */}
               <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                 <span className="flex items-baseline gap-x-2">
-                  <span className="text-body font-sans text-fg-muted">Meridian score</span>
+                  <span className="text-body font-sans text-fg-muted">
+                    Meridian score
+                  </span>
                   <span className="text-title font-display font-semibold tracking-tight text-fg-strong tabular-nums leading-none">
                     {rated.standing}
                   </span>
@@ -357,7 +453,8 @@ export function ModelPositions({ model }: { model: ModelItem }) {
                 </span>
               </div>
               <p className="mt-1 text-small font-sans tabular-nums text-fg-muted">
-                Tier {rated.tier} &middot; {rated.cohorts} tests &middot; spread {rated.spread.toFixed(0)}
+                Tier {rated.tier} &middot; {rated.cohorts} tests &middot; spread{" "}
+                {rated.spread.toFixed(0)}
               </p>
             </div>
           )}
@@ -366,10 +463,14 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             {independentPositions.length > 4 && (
               <details className="group pt-1">
                 <summary className="w-fit cursor-pointer list-none text-body text-fg-muted hover:text-accent-ink [&::-webkit-details-marker]:hidden">
-                  <span className="group-open:hidden">Show all {independentPositions.length} tests</span>
+                  <span className="group-open:hidden">
+                    Show all {independentPositions.length} tests
+                  </span>
                   <span className="hidden group-open:inline">Show fewer</span>
                 </summary>
-                <div className="mt-2 space-y-2">{independentPositions.slice(4).map(row)}</div>
+                <div className="mt-2 space-y-2">
+                  {independentPositions.slice(4).map(row)}
+                </div>
               </details>
             )}
           </div>
@@ -377,23 +478,32 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             <ul className="space-y-2 text-body font-sans text-fg">
               {independentRecord.extras.map((extra) => (
                 <li key={extra.label}>
-                  <span className="font-medium text-fg-strong">{extra.label}:</span> {extra.value}
+                  <span className="font-medium text-fg-strong">
+                    {extra.label}:
+                  </span>{" "}
+                  {extra.value}
                   <span className="block text-body text-fg-muted">
                     {extra.note}{" "}
-                    <a href={extra.sourceUrl} rel="noopener noreferrer" className="text-accent-ink hover:underline underline-offset-2">
+                    <a
+                      href={extra.sourceUrl}
+                      rel="noopener noreferrer"
+                      className="text-accent-ink hover:underline underline-offset-2"
+                    >
                       Source
                     </a>
                   </span>
                 </li>
               ))}
               <li className="text-body text-fg-muted">
-                Too few registry models have this kind of result to rank them against each other, so no position is claimed.
+                Too few registry models have this kind of result to rank them
+                against each other, so no position is claimed.
               </li>
             </ul>
           )}
           {typeof independentRecord.costPerTask === "number" && (
             <p className="mt-3 text-body font-sans text-fg-muted leading-5">
-              Evaluator cost per task ${independentRecord.costPerTask.toFixed(2)}
+              Evaluator cost per task $
+              {independentRecord.costPerTask.toFixed(2)}
               {typeof independentRecord.minutesPerTask === "number"
                 ? `, ${independentRecord.minutesPerTask.toFixed(1)} minutes per task`
                 : ""}
@@ -401,8 +511,11 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             </p>
           )}
           <p className="mt-3 text-body font-sans text-fg-muted leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
-            Run by {INDEPENDENT_EVALUATOR.name} as {independentRecord.evaluatedAs}: same tasks and harness
-            for every model, read {independentRecord.retrievedAt ?? INDEPENDENT_EVALUATOR.retrievedAt} from{" "}
+            Run by {INDEPENDENT_EVALUATOR.name} as{" "}
+            {independentRecord.evaluatedAs}: same tasks and harness for every
+            model, read{" "}
+            {independentRecord.retrievedAt ?? INDEPENDENT_EVALUATOR.retrievedAt}{" "}
+            from{" "}
             <a
               href={independentRecord.sourceUrl}
               rel="noopener noreferrer"
@@ -410,24 +523,28 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             >
               the evaluator&rsquo;s page
             </a>
-            . Laboratory-reported figures are listed separately above and are not part of this ranking.{" "}
-            <Link href="/score" className="text-accent-ink hover:underline underline-offset-2">
+            . Laboratory-reported figures are listed separately above and are
+            not part of this ranking.{" "}
+            <Link
+              href="/score"
+              className="text-accent-ink hover:underline underline-offset-2"
+            >
               How it is computed
             </Link>
             .
           </p>
         </div>
       </section>
-    )
+    );
   }
 
-  const boards = buildLeaderboards(modelsData, { currentOnly: true })
-  const positions = positionsFor(model, boards)
-  const standing = standingFor(model, buildIndependentStanding(modelsData))
+  const boards = buildLeaderboards(modelsData, { currentOnly: true });
+  const positions = positionsFor(model, boards);
+  const standing = standingFor(model, buildIndependentStanding(modelsData));
   if (positions.length === 0) {
-    const reasons = excludedReadings(modelsData, boards, { currentOnly: true }).filter(
-      (item) => item.model.id === model.id,
-    )
+    const reasons = excludedReadings(modelsData, boards, {
+      currentOnly: true,
+    }).filter((item) => item.model.id === model.id);
     return (
       <section aria-labelledby="score-heading" className="mb-6 sm:mb-8">
         <h2
@@ -470,15 +587,19 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             </ul>
           )}
           <p className="mt-2 text-body font-sans text-fg-muted leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
-            A missing rank means the evidence is missing, not that the model is weak.{" "}
-            <Link href="/best" className="text-accent-ink hover:underline underline-offset-2">
+            A missing rank means the evidence is missing, not that the model is
+            weak.{" "}
+            <Link
+              href="/best"
+              className="text-accent-ink hover:underline underline-offset-2"
+            >
               Leaders by task
             </Link>
             .
           </p>
         </div>
       </section>
-    )
+    );
   }
 
   return (
@@ -515,7 +636,10 @@ export function ModelPositions({ model }: { model: ModelItem }) {
         )}
         <div className="space-y-2">
           {positions.map((position) => (
-            <div key={position.test} className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+            <div
+              key={position.test}
+              className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1"
+            >
               <span className="text-body font-sans text-fg">
                 {position.test}
               </span>
@@ -535,16 +659,17 @@ export function ModelPositions({ model }: { model: ModelItem }) {
           ))}
         </div>
         <p className="mt-3 text-body font-sans text-fg-muted leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
-          Ranked only against current models measured by the same test at the same version. The
-          Meridian score is measured against a fixed reference, so it never changes when other
-          models are added; its spread is the disagreement between the model&rsquo;s own tests.{" "}
-          <Link href="/score" className="text-accent-ink hover:underline underline-offset-2">
+          Ranked only against current models measured by the same test at the
+          same version. The Meridian score is measured against a fixed reference, so it never changes when other models are added; its spread is the disagreement between the model&rsquo;s own tests.{" "}
+          <Link
+            href="/score"
+            className="text-accent-ink hover:underline underline-offset-2"
+          >
             How it is computed
           </Link>
           .
         </p>
       </div>
     </section>
-  )
+  );
 }
-

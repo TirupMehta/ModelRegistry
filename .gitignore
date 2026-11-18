@@ -38,3 +38,6 @@ Thumbs.db
 
 # intake staging
 /.intake/
+
+# Local screenshots and promotional images; never pushed
+/assets/
