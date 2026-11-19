@@ -4503,13 +4503,13 @@ export const modelsData: ModelItem[] = [
     categoryLabel: "Multimodal MoE Frontier",
     contextWindow: "1,000,000 tokens",
     contextWindowTokens: 1000000,
-    maxOutputTokens: "32,768 tokens",
-    parameters: "1.05T MoE (49B Active)",
+    maxOutputTokens: "Undisclosed",
+    parameters: "1.05T total / 52B active MoE, plus a 1.6B vision encoder",
     openWeights: true,
-    license: "Open Weights (27 Oct 2026) / Mistral API Preview",
-    pricing: { input: 1.36, output: 4.18 },
+    license: "Mistral Ecosystem Open Weight License",
+    pricing: { input: 0.7, output: 2.1 },
     highlight:
-      "Released Oct 6, 2026 in public preview on Mistral Studio ($1.36/$4.18); Mistral's largest model - 1.05T total / 49B active MoE with 1.6B vision encoder, native multimodal, 1M context, 160+ languages; SOTA open-weight outside China for cyber, finance and legal with 61.7% DeepSWE v1.1; weights drop Oct 27.",
+      "Released Oct 6, 2026 in public preview on Mistral Studio at $0.70/$2.10 per 1M tokens; Mistral's largest model, a natively multimodal MoE with 1.05T total and 52B active parameters, a 1M-token context and training data in 160+ languages. Mistral reports 61.7% on DeepSWE v1.1 and 28.3% on Terminal-Bench 4.0 (self-reported); the open weights were promised for the end of October.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {
       sweBench: "61.7% (DeepSWE v1.1)",
@@ -4524,7 +4524,7 @@ export const modelsData: ModelItem[] = [
     {
       url: "https://mistral.ai/news/mistral-large-4/",
       publisher: "Mistral AI",
-      title: "Mistral Large 4 announcement",
+      title: "Mistral Large 4 launch post (Oct 6, 2026): 52B active, $0.7 / $2.1 per 1M tokens, DeepSWE v1.1 61.7%",
       publishedAt: "2026-10-06",
       accessedAt: "2026-10-07",
       sourceType: "announcement",
@@ -4533,7 +4533,7 @@ export const modelsData: ModelItem[] = [
     {
       url: "https://docs.mistral.ai/models/mistral-large-4-0",
       publisher: "Mistral AI",
-      title: "Mistral Large 4 API reference",
+      title: "Mistral Large 4 model docs: 1M context, 1.05T total / 52B active, Mistral Ecosystem Open Weight License, $0.70 / $2.10 per 1M tokens",
       accessedAt: "2026-10-07",
       sourceType: "api-docs",
       live: true,
@@ -4544,7 +4544,7 @@ export const modelsData: ModelItem[] = [
       {
         url: "https://mistral.ai/news/mistral-large-4/",
         publisher: "Mistral AI",
-        title: "Mistral Large 4 announcement",
+        title: "Mistral Large 4 launch post (Oct 6, 2026): 52B active, $0.7 / $2.1 per 1M tokens, DeepSWE v1.1 61.7%",
         publishedAt: "2026-10-06",
         accessedAt: "2026-10-07",
         sourceType: "announcement",
@@ -4555,7 +4555,7 @@ export const modelsData: ModelItem[] = [
       {
         url: "https://docs.mistral.ai/models/mistral-large-4-0",
         publisher: "Mistral AI",
-        title: "Mistral Large 4 API reference",
+        title: "Mistral Large 4 model docs: 1M context, 1.05T total / 52B active, Mistral Ecosystem Open Weight License, $0.70 / $2.10 per 1M tokens",
         accessedAt: "2026-10-07",
         sourceType: "api-docs",
         live: true,
@@ -4565,7 +4565,7 @@ export const modelsData: ModelItem[] = [
       {
         url: "https://docs.mistral.ai/models/mistral-large-4-0",
         publisher: "Mistral AI",
-        title: "Mistral Large 4 API reference",
+        title: "Mistral Large 4 model docs: 1M context, 1.05T total / 52B active, Mistral Ecosystem Open Weight License, $0.70 / $2.10 per 1M tokens",
         accessedAt: "2026-10-07",
         sourceType: "api-docs",
         live: true,
@@ -4575,7 +4575,7 @@ export const modelsData: ModelItem[] = [
       {
         url: "https://mistral.ai/news/mistral-large-4/",
         publisher: "Mistral AI",
-        title: "Mistral Large 4 announcement",
+        title: "Mistral Large 4 launch post (Oct 6, 2026): 52B active, $0.7 / $2.1 per 1M tokens, DeepSWE v1.1 61.7%",
         publishedAt: "2026-10-06",
         accessedAt: "2026-10-07",
         sourceType: "announcement",
@@ -4586,7 +4586,7 @@ export const modelsData: ModelItem[] = [
       {
         url: "https://mistral.ai/news/mistral-large-4/",
         publisher: "Mistral AI",
-        title: "Mistral Large 4 announcement",
+        title: "Mistral Large 4 launch post (Oct 6, 2026): 52B active, $0.7 / $2.1 per 1M tokens, DeepSWE v1.1 61.7%",
         publishedAt: "2026-10-06",
         accessedAt: "2026-10-07",
         sourceType: "announcement",
@@ -4597,7 +4597,7 @@ export const modelsData: ModelItem[] = [
       {
         url: "https://docs.mistral.ai/models/mistral-large-4-0",
         publisher: "Mistral AI",
-        title: "Mistral Large 4 API reference",
+        title: "Mistral Large 4 model docs: 1M context, 1.05T total / 52B active, Mistral Ecosystem Open Weight License, $0.70 / $2.10 per 1M tokens",
         accessedAt: "2026-10-07",
         sourceType: "api-docs",
         live: true,
@@ -4607,7 +4607,7 @@ export const modelsData: ModelItem[] = [
       {
         url: "https://mistral.ai/news/mistral-large-4/",
         publisher: "Mistral AI",
-        title: "Mistral Large 4 announcement",
+        title: "Mistral Large 4 launch post (Oct 6, 2026): 52B active, $0.7 / $2.1 per 1M tokens, DeepSWE v1.1 61.7%",
         publishedAt: "2026-10-06",
         accessedAt: "2026-10-07",
         sourceType: "announcement",
@@ -4618,7 +4618,7 @@ export const modelsData: ModelItem[] = [
       {
         url: "https://mistral.ai/news/mistral-large-4/",
         publisher: "Mistral AI",
-        title: "Mistral Large 4 announcement",
+        title: "Mistral Large 4 launch post (Oct 6, 2026): 52B active, $0.7 / $2.1 per 1M tokens, DeepSWE v1.1 61.7%",
         publishedAt: "2026-10-06",
         accessedAt: "2026-10-07",
         sourceType: "announcement",
@@ -4629,7 +4629,7 @@ export const modelsData: ModelItem[] = [
       {
         url: "https://mistral.ai/news/mistral-large-4/",
         publisher: "Mistral AI",
-        title: "Mistral Large 4 announcement",
+        title: "Mistral Large 4 launch post (Oct 6, 2026): 52B active, $0.7 / $2.1 per 1M tokens, DeepSWE v1.1 61.7%",
         publishedAt: "2026-10-06",
         accessedAt: "2026-10-07",
         sourceType: "announcement",
@@ -4640,7 +4640,7 @@ export const modelsData: ModelItem[] = [
       {
         url: "https://mistral.ai/news/mistral-large-4/",
         publisher: "Mistral AI",
-        title: "Mistral Large 4 announcement",
+        title: "Mistral Large 4 launch post (Oct 6, 2026): 52B active, $0.7 / $2.1 per 1M tokens, DeepSWE v1.1 61.7%",
         publishedAt: "2026-10-06",
         accessedAt: "2026-10-07",
         sourceType: "announcement",
@@ -4648,9 +4648,17 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-07",
+    lastVerifiedAt: "2026-11-19",
     verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Corrected against Mistral's launch post and model docs: price $0.70/$2.10 per 1M tokens (was $1.36/$4.18), 52B active parameters (was 49B), maximum output undisclosed (was 32,768), and the license named as the Mistral Ecosystem Open Weight License. Benchmark figures were re-read and match the post.",
+        sources: [
+          "https://mistral.ai/news/mistral-large-4/",
+          "https://docs.mistral.ai/models/mistral-large-4-0",
+        ],
+      },
       {
         date: "2026-10-06",
         summary: "Initial registry entry.",

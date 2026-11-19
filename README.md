@@ -29,7 +29,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**DeepSeek**](https://www.deepseek.com) | [DeepSeek V4.1 Flash 1017](https://modelregistry.tirup.in/models/deepseek-v4-1-flash-1017) | - | 1M | Open (MIT) | $0.15 in / $0.6 out *(Open)* |
 | [**Meta AI**](https://ai.meta.com) | [Muse Wonder](https://modelregistry.tirup.in/models/muse-wonder) | [Muse Ember](https://modelregistry.tirup.in/models/muse-ember) | 1M | Proprietary | $4 in / $20 out |
 | [**Alibaba Cloud (Qwen)**](https://qwenlm.github.io) | [Qwen4-Max](https://modelregistry.tirup.in/models/qwen4-max) | - | 1M | Proprietary | $1.5 in / $4.5 out |
-| [**Mistral AI**](https://mistral.ai) | [Mistral Large 4](https://modelregistry.tirup.in/models/mistral-large-4) | - | 1M | Open (Open Weights (27 Oct 2026)) | $1.36 in / $4.18 out *(Open)* |
+| [**Mistral AI**](https://mistral.ai) | [Mistral Large 4](https://modelregistry.tirup.in/models/mistral-large-4) | - | 1M | Open (Mistral Ecosystem Open Weight) | $0.7 in / $2.1 out *(Open)* |
 | [**Tencent Hunyuan**](https://hunyuan.tencent.com) | [Hy4](https://modelregistry.tirup.in/models/tencent-hy4) | [Hy4 flash](https://modelregistry.tirup.in/models/tencent-hy4-flash) | 1M | Proprietary | $0.83 in / $2.5 out |
 | [**Z.ai**](https://z.ai) | [GLM 5.3](https://modelregistry.tirup.in/models/glm-5-3) | [GLM 5.3 Flash](https://modelregistry.tirup.in/models/glm-5-3-flash) | 1M | Proprietary | $1.4 in / $4.4 out |
 | [**MiniMax**](https://www.minimaxi.com) | [MiniMax M3.1 Flash](https://modelregistry.tirup.in/models/minimax-m3-1-flash) | - | 1M | Proprietary | $0.15 in / $0.6 out |
