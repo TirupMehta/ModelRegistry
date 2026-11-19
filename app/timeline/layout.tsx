@@ -1,8 +1,9 @@
 import type { Metadata } from "next"
+import { withShare } from "@/lib/share"
 
 const SITE_URL = "https://modelregistry.tirup.in"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "AI Model Release Timeline - Every Frontier Launch in Order",
   description:
     "Chronological log of every verified frontier AI model release - flagships and research checkpoints from OpenAI, Anthropic, Google, xAI, DeepSeek, Meta and all premier labs, newest first.",
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     description:
       "Every verified frontier AI launch in chronological order - flagships and checkpoints, newest first.",
   },
-}
+}, { page: "/timeline" }, "/timeline")
 
 export default function TimelineLayout({
   children,

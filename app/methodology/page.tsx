@@ -2,13 +2,14 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import Header from "@/components/header"
 import { safeJsonLd } from "@/lib/utils"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Methodology - How ModelRegistry verifies models",
   description:
     "ModelRegistry's inclusion standard, primary-source rules, flagship and latest definitions, benchmark policy, verification levels, and maintenance schedule.",
   alternates: { canonical: "https://modelregistry.tirup.in/methodology" },
-}
+}, { page: "/methodology" }, "/methodology")
 
 function H2({ children }: { children: React.ReactNode }) {
   return (

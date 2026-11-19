@@ -4,13 +4,14 @@ import Header from "@/components/header"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "AI model capability & modality matrix",
   description:
     "Which frontier models handle text, vision, audio, video, code, and images - as declared by each lab, with sources.",
   alternates: { canonical: "https://modelregistry.tirup.in/modalities" },
-}
+}, { page: "/modalities" }, "/modalities")
 
 const MODS = ["Text", "Vision", "Audio", "Video", "Code", "Image"] as const
 

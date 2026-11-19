@@ -4,8 +4,9 @@ import Header from "@/components/header"
 import { ORGANIZATION_ID, PERSON_ID } from "@/lib/entities"
 import { SITE_URL } from "@/lib/site"
 import { safeJsonLd } from "@/lib/utils"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Contact ModelRegistry - data corrections, security, and enquiries",
   description:
     "How to reach ModelRegistry: report a data correction, an endpoint problem, or a security issue, and which channels exist for everything else. No phone line, no sales team, no guaranteed service level.",
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
     siteName: "ModelRegistry",
     type: "website",
   },
-}
+}, { page: "/contact" }, "/contact")
 
 function H2({ children }: { children: React.ReactNode }) {
   return (

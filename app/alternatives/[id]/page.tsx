@@ -9,6 +9,7 @@ import { SITE, breadcrumbList, compareHref, faqPage, isComparablePair } from "@/
 import { buildAlternatives, hasAlternatives, type AlternativeRow } from "@/lib/alternatives"
 import { ArrowLeft } from "lucide-react"
 import { Disclosure, PageHeader } from "@/components/ui"
+import { withShare } from "@/lib/share"
 
 export const dynamicParams = false
 
@@ -36,13 +37,16 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     ? `${swap.model.name} scores within 3 points of ${model.name} on the independent Intelligence Index at ${usd(swap.blended)} vs ${usd(view.self.blended)} per 1M tokens. ${view.total} alternatives compared. Updated ${datasetRevision.revisedAt}.`
     : `${view.total} alternatives to ${model.name} compared on price per 1M tokens and independent scores. Updated ${datasetRevision.revisedAt}.`
   const url = `${SITE}/alternatives/${id}`
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url, siteName: "ModelRegistry", type: "article", modifiedTime: `${datasetRevision.revisedAt}T00:00:00Z` },
-    twitter: { card: "summary_large_image", title, description },
-  }
+  return withShare(
+    {
+      title,
+      description,
+      alternates: { canonical: url },
+      openGraph: { title, description, url, siteName: "ModelRegistry", type: "article", modifiedTime: `${datasetRevision.revisedAt}T00:00:00Z` },
+      twitter: { card: "summary_large_image", title, description },
+    },
+    { model: id }
+  )
 }
 
 function Table({ caption, rows, self }: { caption: string; rows: AlternativeRow[]; self: AlternativeRow }) {

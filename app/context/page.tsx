@@ -4,13 +4,14 @@ import Header from "@/components/header"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "AI model context window comparison",
   description:
     "Maximum input context per frontier AI model, sorted largest first, with primary sources and the dataset revision they were checked against.",
   alternates: { canonical: "https://modelregistry.tirup.in/context" },
-}
+}, { page: "/context" }, "/context")
 
 function fmt(tokens: number) {
   if (tokens <= 0) return "-"

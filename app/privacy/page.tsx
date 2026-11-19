@@ -4,8 +4,9 @@ import Header from "@/components/header"
 import { ORGANIZATION_ID } from "@/lib/entities"
 import { SITE_URL } from "@/lib/site"
 import { safeJsonLd } from "@/lib/utils"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Privacy policy - what ModelRegistry stores",
   description:
     "What ModelRegistry stores and what it does not: no accounts, no login, no payment data. Local preferences stay in your browser; the Model Alerts waitlist stores one email address; analytics are aggregate.",
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
     siteName: "ModelRegistry",
     type: "website",
   },
-}
+}, { page: "/privacy" }, "/privacy")
 
 function H2({ children }: { children: React.ReactNode }) {
   return (

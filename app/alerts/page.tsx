@@ -6,13 +6,14 @@ import AlertsWaitlistForm from "@/components/alerts-waitlist-form"
 import { safeJsonLd } from "@/lib/utils"
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Model Alerts - Join the waitlist",
   description:
     "Model Alerts will report new registry entries and specification changes across the frontier model index. Join the waitlist for one email when it opens.",
   alternates: { canonical: "https://modelregistry.tirup.in/alerts" },
-}
+}, { page: "/alerts" }, "/alerts")
 
 const BENEFITS = [
   {

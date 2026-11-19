@@ -8,6 +8,7 @@ import { costStory } from "@/lib/insights"
 import { INDEPENDENT_EVALUATOR } from "@/lib/independent"
 import { ArrowLeft } from "lucide-react"
 import { Disclosure, PageHeader } from "@/components/ui"
+import { withShare } from "@/lib/share"
 
 const story = costStory()
 const usd = (n: number) => `$${n.toFixed(2)}`
@@ -19,13 +20,13 @@ const DESCRIPTION = story.top && story.priciest
   ? `Cost per task against the independent Intelligence Index for ${story.rows.length} current models: from ${usd(story.rows.reduce((m, r) => Math.min(m, r.costPerTask), Infinity))} to ${usd(story.priciest.costPerTask)}. Data and CSV included.`
   : "Cost per task against the independent Intelligence Index."
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: `${SITE}/insights/cost-of-intelligence` },
   openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE}/insights/cost-of-intelligence`, siteName: "ModelRegistry", type: "article", modifiedTime: `${datasetRevision.revisedAt}T00:00:00Z` },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
-}
+}, { page: "/insights/cost-of-intelligence" }, "/insights/cost-of-intelligence")
 
 export default function CostPage() {
   const url = `${SITE}/insights/cost-of-intelligence`

@@ -10,6 +10,7 @@ import { INDEPENDENT_EVALUATOR } from "@/lib/independent"
 import RankingsSwitcher from "@/components/rankings-switcher"
 import { ArrowLeft } from "lucide-react"
 import { Disclosure, PageHeader } from "@/components/ui"
+import { withShare } from "@/lib/share"
 
 export const dynamicParams = false
 
@@ -32,13 +33,16 @@ export async function generateMetadata({ params }: { params: Promise<{ task: str
   const title = `${bestPageTitle(answer)} (${monthYear(datasetRevision.revisedAt)}): ${leader.model.name} leads`
   const description = `${leader.model.name} leads on ${answer.measure} (${leader.value}) among ${answer.field} current models. Independent results, not lab claims. Updated ${datasetRevision.revisedAt}.`
   const url = `${SITE}/best/${task}`
-  return {
-    title,
-    description,
-    alternates: { canonical: url },
-    openGraph: { title, description, url, siteName: "ModelRegistry", type: "article", modifiedTime: `${datasetRevision.revisedAt}T00:00:00Z` },
-    twitter: { card: "summary_large_image", title, description },
-  }
+  return withShare(
+    {
+      title,
+      description,
+      alternates: { canonical: url },
+      openGraph: { title, description, url, siteName: "ModelRegistry", type: "article", modifiedTime: `${datasetRevision.revisedAt}T00:00:00Z` },
+      twitter: { card: "summary_large_image", title, description },
+    },
+    { task }
+  )
 }
 
 export default async function BestTaskPage({ params }: { params: Promise<{ task: string }> }) {

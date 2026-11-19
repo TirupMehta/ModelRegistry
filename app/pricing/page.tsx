@@ -6,13 +6,14 @@ import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import { ArrowUpRight } from "lucide-react"
 import { Disclosure, PageHeader } from "@/components/ui"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "AI model pricing comparison with sources",
   description:
     "Official hosted API pricing per lab flagship and checkpoint, with billing units, source links, and the dataset revision they were checked against.",
   alternates: { canonical: "https://modelregistry.tirup.in/pricing" },
-}
+}, { page: "/pricing" }, "/pricing")
 
 /** List price per 1M tokens: two decimals, more only when the price is under a dime. */
 const usd = (n: number) => (n === 0 ? "Free" : n < 0.1 ? `$${n}` : `$${n.toFixed(2)}`)

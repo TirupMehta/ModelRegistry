@@ -10,10 +10,11 @@ import { safeJsonLd } from "@/lib/utils"
 import { API_USE_PROMPT, buildContributePrompt } from "@/lib/agent-prompts"
 import PromptBlock from "@/components/prompt-block"
 import { ArrowLeft, ArrowUpRight } from "lucide-react"
+import { withShare } from "@/lib/share"
 
 const SITE_URL = "https://modelregistry.tirup.in"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "ModelRegistry API Reference - endpoints, parameters, examples",
   description:
     "ModelRegistry API reference: free unauthenticated REST API, OpenAPI 3.1 description, RSS, llms.txt, CLI, badges and health endpoints for the open frontier AI model registry. Authentication, rate limits, error codes, full field reference, and copy-paste examples.",
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     description:
       "Query frontier AI models as JSON, RSS, plain text, or badges. Free and unauthenticated.",
   },
-}
+}, { page: "/docs" }, "/docs")
 
 function CodeBlock({ code }: { code: string }) {
   return (

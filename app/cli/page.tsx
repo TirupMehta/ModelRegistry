@@ -5,8 +5,9 @@ import { datasetRevision } from "@/data/revision"
 import { ORGANIZATION_ID } from "@/lib/entities"
 import { SITE_URL } from "@/lib/site"
 import { safeJsonLd } from "@/lib/utils"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "ModelRegistry CLI - query frontier AI models from the terminal",
   description:
     "Official ModelRegistry CLI: list flagships, fetch one model, diff the changelog, and print Markdown from a terminal. Zero-dependency Node 18+ script over the free, unauthenticated REST API.",
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "ModelRegistry",
     type: "website",
   },
-}
+}, { page: "/cli" }, "/cli")
 
 function Code({ children }: { children: string }) {
   return (

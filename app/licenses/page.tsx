@@ -4,13 +4,14 @@ import Header from "@/components/header"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Open-weight AI license comparison",
   description:
     "Which frontier models publish weights, under which license, grouped for enterprise review - with primary sources and verification status.",
   alternates: { canonical: "https://modelregistry.tirup.in/licenses" },
-}
+}, { page: "/licenses" }, "/licenses")
 
 export default function LicensesPage() {
   const groups = new Map<string, typeof modelsData>()

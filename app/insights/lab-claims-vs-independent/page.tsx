@@ -8,18 +8,19 @@ import { labClaimStory } from "@/lib/insights"
 import { INDEPENDENT_EVALUATOR } from "@/lib/independent"
 import { ArrowLeft } from "lucide-react"
 import { Disclosure, PageHeader } from "@/components/ui"
+import { withShare } from "@/lib/share"
 
 const story = labClaimStory()
 const TITLE = `Do AI labs' benchmark claims hold up? ${story.lowerCount} of ${story.total} came in lower when run independently`
 const DESCRIPTION = `Lab-reported Terminal-Bench scores against the same test run independently by ${INDEPENDENT_EVALUATOR.name}: ${story.lowerCount} of ${story.total} are lower, ${Math.abs(story.meanGap)} points on average. Data and CSV included.`
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: `${SITE}/insights/lab-claims-vs-independent` },
   openGraph: { title: TITLE, description: DESCRIPTION, url: `${SITE}/insights/lab-claims-vs-independent`, siteName: "ModelRegistry", type: "article", modifiedTime: `${datasetRevision.revisedAt}T00:00:00Z` },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
-}
+}, { page: "/insights/lab-claims-vs-independent" }, "/insights/lab-claims-vs-independent")
 
 export default function LabClaimsPage() {
   const url = `${SITE}/insights/lab-claims-vs-independent`

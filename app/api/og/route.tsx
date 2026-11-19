@@ -7,6 +7,8 @@ import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
 import { modelFolio } from "@/lib/registry"
 import { benchPretty, formatPrice } from "@/lib/utils"
+import { pageCard } from "@/lib/share"
+import { buildBestAnswers, bestSlug, bestPageTitle } from "@/lib/best"
 import {
   Card,
   ColumnRule,
@@ -82,6 +84,114 @@ export async function GET(req: NextRequest) {
           year: "numeric",
         })
       : "Live index"
+
+    const pageKey = searchParams.get("page")
+    const card = pageKey ? pageCard(pageKey) : null
+    const taskSlug = searchParams.get("task")
+    const taskAnswer =
+      !model && !lab && taskSlug ? buildBestAnswers().find((a) => bestSlug(a.id) === taskSlug) : null
+
+    const factCard = card
+      ? {
+          kicker: card.kicker,
+          title: card.title,
+          blurb: card.blurb,
+          big: card.big,
+          bigLabel: card.bigLabel,
+          lines: card.lines,
+          folio: `PAGE ${pageKey}`,
+        }
+      : taskAnswer
+        ? {
+            kicker: "BEST BY TASK",
+            title: bestPageTitle(taskAnswer),
+            blurb: `${taskAnswer.entries[0].model.name} has the highest independent score on ${taskAnswer.measure} among ${taskAnswer.field} current models.`,
+            big: taskAnswer.entries[0].value,
+            bigLabel: taskAnswer.entries[0].model.name.toUpperCase(),
+            lines: [
+              taskAnswer.tied ? "Statistically tied at the top" : "Clear leader",
+              `${taskAnswer.field} current models`,
+              `Revised ${datasetRevision.revisedAt}`,
+            ],
+            folio: `BEST / ${taskSlug}`,
+          }
+        : null
+
+    if (factCard) {
+      return renderCard(
+        <>
+          <Masthead
+            folio={`Dataset ${datasetRevision.datasetVersion}`}
+            eyebrowLeft="OPEN FRONTIER AI INDEX"
+            palette={palette}
+            display={display}
+            sans={sans}
+          />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "26px", width: "650px" }}>
+              <Kicker palette={palette} fontFamily={sans}>
+                {factCard.kicker}
+              </Kicker>
+              <div
+                style={{
+                  display: "flex",
+                  fontFamily: display,
+                  fontSize: "56px",
+                  fontWeight: 700,
+                  letterSpacing: "-0.03em",
+                  lineHeight: 1.05,
+                  maxWidth: "650px",
+                }}
+              >
+                {factCard.title}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  fontFamily: sans,
+                  fontSize: "20px",
+                  fontWeight: 500,
+                  color: palette.muted,
+                  lineHeight: 1.5,
+                  maxWidth: "640px",
+                }}
+              >
+                {factCard.blurb}
+              </div>
+            </div>
+            <ColumnRule palette={palette} height={232} />
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px", width: "340px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                <span
+                  style={{
+                    display: "flex",
+                    fontFamily: display,
+                    fontSize: "64px",
+                    fontWeight: 700,
+                    letterSpacing: "-0.03em",
+                    lineHeight: 1,
+                  }}
+                >
+                  {factCard.big}
+                </span>
+                <Eyebrow palette={palette} fontFamily={sans}>
+                  {factCard.bigLabel}
+                </Eyebrow>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                {factCard.lines.map((line) => (
+                  <SpecLine key={line} palette={palette} fontFamily={sans}>
+                    {line}
+                  </SpecLine>
+                ))}
+              </div>
+            </div>
+          </div>
+          <FolioFooter folioId={factCard.folio.toUpperCase()} palette={palette} sans={sans} />
+        </>,
+        { palette, sans, fonts }
+      )
+    }
 
     if (model) {
       // ---- Model datasheet: one record, its lab, its evidence -------------
