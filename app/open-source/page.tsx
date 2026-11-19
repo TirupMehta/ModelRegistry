@@ -5,8 +5,9 @@ import { CORE_KEYWORDS, ORGANIZATION_ID, PERSON_ID } from "@/lib/entities"
 import { SITE_URL } from "@/lib/site"
 import { safeJsonLd } from "@/lib/utils"
 import { REPO_URL, fetchRepoSnapshot, type RepoSnapshot } from "@/lib/github"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Open source - how ModelRegistry is built and how to contribute",
   description:
     "ModelRegistry is MIT licensed and developed in public: the dataset records, site source, CLI, and agent skills live in one repository. Latest pushes, community contributors, merged pull requests, and every way to contribute.",
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
     siteName: "ModelRegistry",
     type: "website",
   },
-}
+}, { page: "/open-source" }, "/open-source")
 
 // Re-render on the same cadence as the live data cache below.
 export const revalidate = 900

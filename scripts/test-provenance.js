@@ -109,7 +109,7 @@ const health = read("app/api/check-updates/route.ts")
 check("health never claims 'up to date'", !health.includes("up to date"))
 check("health reports generatedAt separately", health.includes("generatedAt"))
 check("health reports datasetLastChangedAt", health.includes("datasetLastChangedAt"))
-check("health reports verification counts", health.includes("verifiedModelCount") && health.includes("unverifiedModelCount"))
+check("health reports the oldest source-review date", health.includes("oldestVerificationDate"))
 check("health reports upstream separately", health.includes("upstreamAvailability"))
 
 // 6. API honesty: revision-based updatedAt + ETag + dataset version.
@@ -122,7 +122,7 @@ check("api exposes datasetVersion", api.includes("datasetVersion"))
 check("feed.json route exists", exists("app/feed.json/route.ts"))
 const feed = read("app/feed.json/route.ts")
 check("feed declares JSON Feed 1.1", feed.includes("jsonfeed.org/version/1.1"))
-check("feed carries verification status", feed.includes("_verification_status"))
+check("feed carries only the public verification status", feed.includes("publicVerificationStatus"))
 check("feed uses record modification dates", feed.includes("lastVerifiedAt"))
 
 // 8. Revision system: file exists, valid shape, idempotent writer.

@@ -2,13 +2,14 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import Header from "@/components/header"
 import { safeJsonLd } from "@/lib/utils"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Methodology - How ModelRegistry verifies models",
   description:
     "ModelRegistry's inclusion standard, primary-source rules, flagship and latest definitions, benchmark policy, verification levels, and maintenance schedule.",
   alternates: { canonical: "https://modelregistry.tirup.in/methodology" },
-}
+}, { page: "/methodology" }, "/methodology")
 
 function H2({ children }: { children: React.ReactNode }) {
   return (
@@ -84,10 +85,10 @@ export default function MethodologyPage() {
         <H2>Verification and sources</H2>
         <div className="mb-3 max-w-[54ch] space-y-2 text-body leading-6 text-fg sm:text-body sm:leading-7">
           <p>Every record cites the primary sources it was read from (announcement, model card, API docs, pricing page), with per-field citations showing which source supports which fact. Each record also carries a <strong className="text-fg-strong">last-verified date</strong> - the date those sources were reviewed. That date is a source-review date, not a live availability check.</p>
-          <p>There is no &ldquo;partially verified&rdquo; badge on the site: a label that applies to almost every record says nothing. Instead, the sources and the last-checked date are shown directly, and every record has a &ldquo;Report an error&rdquo; link so readers can flag anything stale.</p>
+          <p>The sources and the last-checked date are shown directly on every record, and each record has a &ldquo;Report an error&rdquo; link so readers can flag anything stale.</p>
           <p><strong className="text-fg-strong">Retired</strong> - explicitly marked as retired by the registry and kept for historical reference. This label describes availability, not verification depth, and it alone does not confirm provider availability.</p>
           <p><strong className="text-fg-strong">Superseded</strong> - a later release from the same laboratory took over this model&apos;s role. The record is kept with its sources and readings and links its replacement, but it is not ranked against the current lineup. Superseded is not retired.</p>
-          <p><strong className="text-fg-strong">Unverified records</strong> can never carry flagship or latest labels and must be treated as unconfirmed until sources are cited.</p>
+          <p>Only records with cited sources are published, and only those can carry flagship or latest labels.</p>
         </div>
 
         <H2>What “flagship”, “latest”, and leaderboard places mean</H2>

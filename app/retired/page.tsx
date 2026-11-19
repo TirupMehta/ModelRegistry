@@ -4,13 +4,14 @@ import Header from "@/components/header"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Retired & archived AI models",
   description:
     "Historical model records explicitly marked retired by the registry. A newer release alone does not mean an older model is discontinued.",
   alternates: { canonical: "https://modelregistry.tirup.in/retired" },
-}
+}, { page: "/retired" }, "/retired")
 
 export default function RetiredPage() {
   const retired = modelsData.filter((m) => m.verificationStatus === "retired")

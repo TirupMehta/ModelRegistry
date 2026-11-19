@@ -30,7 +30,7 @@ Commands
   models                 List tracked frontier models
   model <id>             Show one model by its stable id
   changes                List changelog entries (incremental sync)
-  health                 Dataset revision, verification counts, upstream status
+  health                 Dataset revision, oldest source check, upstream status
   markdown [path]        Print the Markdown view of a site page (default "/")
   help                   Show this help
 
@@ -219,8 +219,9 @@ function table(headers, rows) {
 function formatPrice(model) {
   const { input, output } = model.pricing ?? {}
   if (input === undefined || output === undefined) return "n/a"
-  if (model.pricingUnit) return input === output ? `$${input} ${model.pricingUnit}` : `$${input}/$${output} ${model.pricingUnit}`
-  return `$${input}/$${output} per 1M`
+  const s = model.pricingCurrency === "INR" ? "₹" : model.pricingCurrency === "CNY" ? "¥" : "$"
+  if (model.pricingUnit) return input === output ? `${s}${input} ${model.pricingUnit}` : `${s}${input}/${s}${output} ${model.pricingUnit}`
+  return `${s}${input}/${s}${output} per 1M`
 }
 
 /* ---------------------------------------------------------------- commands */

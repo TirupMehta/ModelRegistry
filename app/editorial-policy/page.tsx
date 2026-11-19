@@ -2,13 +2,14 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import Header from "@/components/header"
 import { safeJsonLd } from "@/lib/utils"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Editorial Policy",
   description:
     "ModelRegistry's editorial policy: sourcing requirements, no paid placement, no manipulated SEO, correction process, and what this registry does not claim.",
   alternates: { canonical: "https://modelregistry.tirup.in/editorial-policy" },
-}
+}, { page: "/editorial-policy" }, "/editorial-policy")
 
 function H2({ children }: { children: React.ReactNode }) {
   return (

@@ -88,7 +88,8 @@ export async function GET() {
 
   flagships.forEach((m, i) => {
     const num = String(i + 1).padStart(2, "0")
-    const price = `$${m.pricing.input}/$${m.pricing.output}`
+    const sym = m.pricingCurrency === "INR" ? "₹" : m.pricingCurrency === "CNY" ? "¥" : "$"
+    const price = `${sym}${m.pricing.input}/${sym}${m.pricing.output}`
     table += ` ${num}  ${cell(labDisplay(m), COL_LAB)} ${cell(m.name, COL_MODEL)} ${cell(contextDisplay(m), COL_CTX)} ${cell(price, COL_PRICE)} ${m.releaseDate}\n`
   })
 

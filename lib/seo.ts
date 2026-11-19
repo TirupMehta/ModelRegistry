@@ -5,6 +5,7 @@ import {
   compareBenchmarks,
 } from "./benchmarks"
 import { isCurrent } from "./currency"
+import { isUsdPriced } from "./utils"
 
 /**
  * Shared structured-data and comparison primitives.
@@ -106,18 +107,19 @@ export function measuredProperties(model: ModelItem) {
   }
 
   if (!model.pricingUnit) {
+    const currency = model.pricingCurrency ?? "USD"
     props.push(
       {
         "@type": "PropertyValue",
         name: "Input price",
         value: model.pricing.input,
-        unitText: "USD per 1M tokens",
+        unitText: `${currency} per 1M tokens`,
       },
       {
         "@type": "PropertyValue",
         name: "Output price",
         value: model.pricing.output,
-        unitText: "USD per 1M tokens",
+        unitText: `${currency} per 1M tokens`,
       },
     )
   }
@@ -356,7 +358,7 @@ export function buildComparison(a: ModelItem, b: ModelItem): Comparison {
   })
 
   // --- Price ----------------------------------------------------------
-  const tokenBilled = !a.pricingUnit && !b.pricingUnit
+  const tokenBilled = !a.pricingUnit && !b.pricingUnit && isUsdPriced(a) && isUsdPriced(b)
   if (tokenBilled) {
     const aIn = a.pricing.input
     const bIn = b.pricing.input

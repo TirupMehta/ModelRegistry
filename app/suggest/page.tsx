@@ -1,12 +1,13 @@
 import type { Metadata } from "next"
 import Header from "@/components/header"
 import ModelSuggestionForm from "@/components/model-suggestion-form"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Suggest a model",
   description: "Suggest a newly released AI model for review by the ModelRegistry maintainers.",
   alternates: { canonical: "https://modelregistry.tirup.in/suggest" },
-}
+}, { page: "/suggest" }, "/suggest")
 
 export default function SuggestPage() {
   return <main className="relative min-h-screen">

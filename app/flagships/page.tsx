@@ -4,13 +4,14 @@ import Header from "@/components/header"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import FlagshipsClient from "@/components/flagships-client"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Current flagship AI model by lab",
   description:
     "The current primary flagship foundation model for every tracked AI lab, with release dates, context windows, pricing, verification status, and primary sources.",
   alternates: { canonical: "https://modelregistry.tirup.in/flagships" },
-}
+}, { page: "/flagships" }, "/flagships")
 
 export default function FlagshipsPage() {
   const jsonLd = {

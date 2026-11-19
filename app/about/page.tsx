@@ -6,8 +6,9 @@ import { datasetRevision } from "@/data/revision"
 import { CORE_KEYWORDS, DATASET_ID, ORGANIZATION_ID, PERSON_ID, WEBSITE_ID, PERSON_SAME_AS } from "@/lib/entities"
 import { SITE_URL } from "@/lib/site"
 import { safeJsonLd } from "@/lib/utils"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "About ModelRegistry - built and maintained by Tirup Mehta",
   description:
     "ModelRegistry is an open, source-linked registry of frontier AI model specifications, built and maintained by Tirup Mehta. What it covers, how records are verified, and how to query it.",
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [{ url: "/api/og?theme=light", width: 1200, height: 630, alt: "About ModelRegistry" }],
   },
-}
+}, { page: "/about" }, "/about")
 
 function H2({ children }: { children: React.ReactNode }) {
   return (

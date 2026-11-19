@@ -20,7 +20,7 @@ import {
 import { currentSuccessor } from "@/lib/currency";
 import { EVIDENCE_KIND_LABEL, evidenceSummary } from "@/lib/evidence";
 import { SITE, compareHref, comparisonPairs, faqPage } from "@/lib/seo";
-import { formatDate, safeJsonLd } from "@/lib/utils";
+import { formatDate, priceSymbol, safeJsonLd } from "@/lib/utils";
 import { fieldLabels } from "@/components/verification-section";
 import {
   fieldChecks,
@@ -40,10 +40,6 @@ import { ArrowUpRight, Check, ChevronDown, ExternalLink } from "lucide-react";
 
 const VERIFICATION_COPY: Record<string, string> = {
   verified: "Every displayed field is traced to a primary source.",
-  partially_verified:
-    "Some fields rest on a single secondary mention; nothing displayed is contradicted.",
-  unverified:
-    "Figures are tracked but not yet confirmed against a primary document.",
   retired: "Superseded. Kept for history and linked to its replacement.",
 };
 
@@ -96,7 +92,7 @@ export function ModelProvenance({ model }: { model: ModelItem }) {
 
         <div className="pt-3 text-small font-sans leading-5 text-fg-muted">
           <p>
-            {VERIFICATION_COPY[model.verificationStatus] ?? ""}{" "}
+            {VERIFICATION_COPY[model.verificationStatus] ?? "Every source below is cited to the page it was read from."}{" "}
             <Link
               href="/trust"
               className="text-accent-ink hover:underline underline-offset-2"
@@ -210,7 +206,7 @@ export function ModelProvenance({ model }: { model: ModelItem }) {
 export function ModelFaq({ model }: { model: ModelItem }) {
   const priced = !model.pricingUnit;
   const priceAnswer = priced
-    ? `${model.name} lists at $${model.pricing.input.toFixed(2)} per 1M input tokens and $${model.pricing.output.toFixed(2)} per 1M output tokens, according to the price published by ${model.companyName}. Cached, batch and committed-throughput tiers are billed differently and are not included in that figure.`
+    ? `${model.name} lists at ${priceSymbol(model)}${model.pricing.input.toFixed(2)} per 1M input tokens and ${priceSymbol(model)}${model.pricing.output.toFixed(2)} per 1M output tokens, according to the price published by ${model.companyName}. Cached, batch and committed-throughput tiers are billed differently and are not included in that figure.`
     : `${model.name} is billed ${model.pricingUnit}, not per token, so it has no per-1M-token list price in this registry.`;
 
   const faq = [

@@ -50,14 +50,15 @@ function formatContext(tokens) {
 }
 
 function formatPricing(model) {
+  const sym = model.pricingCurrency === "INR" ? "\u20b9" : model.pricingCurrency === "CNY" ? "¥" : "$"
   if (model.pricingUnit) {
     const unitBase =
       model.pricing.input === model.pricing.output
-        ? `$${model.pricing.input}`
-        : `$${model.pricing.input} in / $${model.pricing.output}`
+        ? `${sym}${model.pricing.input}`
+        : `${sym}${model.pricing.input} in / ${sym}${model.pricing.output}`
     return `${unitBase} ${model.pricingUnit}`
   }
-  const base = `$${model.pricing.input} in / $${model.pricing.output} out`
+  const base = `${sym}${model.pricing.input} in / ${sym}${model.pricing.output} out`
   if (model.openWeights) {
     return `${base} *(Open)*`
   }

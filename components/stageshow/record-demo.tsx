@@ -55,7 +55,7 @@ function usd(n: number): string {
 
 function toCard(model: ModelItem): Card | null {
   const source = model.sources[0]
-  if (!source || model.contextWindowTokens <= 0 || model.pricingUnit) return null
+  if (!source || model.contextWindowTokens <= 0 || model.pricingUnit || model.pricingCurrency) return null
   return {
     id: model.id,
     name: model.name,

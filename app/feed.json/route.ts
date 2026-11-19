@@ -1,6 +1,7 @@
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site"
+import { publicVerificationStatus } from "@/lib/verification"
 
 export const dynamic = "force-dynamic"
 
@@ -27,7 +28,7 @@ export async function GET() {
       content_text: `${model.highlight} | Context Window: ${model.contextWindow} | Category: ${model.categoryLabel}`,
       date_published: new Date(`${model.releaseDate}T00:00:00Z`).toISOString(),
       date_modified: new Date(`${model.lastVerifiedAt}T00:00:00Z`).toISOString(),
-      _verification_status: model.verificationStatus,
+      ...(publicVerificationStatus(model) ? { _verification_status: publicVerificationStatus(model) } : {}),
       authors: [{ name: model.companyName }],
     })),
   }

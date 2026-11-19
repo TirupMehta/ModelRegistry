@@ -11,8 +11,9 @@ import ModelPicker, { type PickerModel, type PickerTest } from "@/components/mod
 import RankingsSwitcher from "@/components/rankings-switcher"
 import { ArrowLeft, ArrowUpRight } from "lucide-react"
 import { Disclosure, PageHeader } from "@/components/ui"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Best AI model by task: coding, science, price, context",
   description:
     "Which AI model leads each test right now, from independent results run on the same tasks for every model, with the score, the size of the field, the runners-up and which models are statistically tied.",
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
     siteName: "ModelRegistry",
     type: "article",
   },
-}
+}, { page: "/best" }, "/best")
 
 /** Short names for the jump chips; the full question stays as the section heading. */
 const SHORT_LABEL: Record<string, string> = {

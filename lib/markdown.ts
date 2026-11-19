@@ -3,7 +3,7 @@ import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { SITE_NAME, SITE_URL } from "@/lib/site"
 import { REPO_URL } from "@/lib/github"
-import { formatPrice } from "@/lib/utils"
+import { formatPrice, isUsdPriced, priceSymbol } from "@/lib/utils"
 import { CONTESTED_SPREAD, MIN_TESTS_FOR_STANDING, STANDING_VERSION } from "@/lib/standing"
 import { buildIndependentStanding } from "@/lib/independent"
 import { LEADERBOARD_VERSION, MIN_COHORT_SIZE, leaderboardStats } from "@/lib/leaderboards"
@@ -138,7 +138,7 @@ ${flagshipsTable()}
 - \`GET ${SITE_URL}/api/v1/snapshot\` - versioned full-dataset download
 - \`GET ${SITE_URL}/llms.txt\` - compact per-lab summary
 - \`GET ${SITE_URL}/llms-full.txt\` - exhaustive field matrix
-- \`GET ${SITE_URL}/api/check-updates\` - dataset counts and verification snapshot
+- \`GET ${SITE_URL}/api/check-updates\` - dataset revision and oldest source-review date
 - \`POST ${SITE_URL}/api/mcp\` - MCP server endpoint (JSON-RPC 2.0, stateless; tools: list_models, get_model, list_labs, get_changes, get_health, read_page_markdown)
 
 All of the above are free, unauthenticated, and read-only. Send
@@ -259,7 +259,7 @@ Versioned full-dataset JSON download with a dated filename.
 
 ## GET /api/check-updates
 
-Dataset revision, per-status counts, oldest verification date, and an unrelated
+Dataset revision, oldest source-review date, and an unrelated
 upstream reachability heartbeat. Poll no more than once every five minutes.
 
 ## GET /api/v1/cli
@@ -447,9 +447,6 @@ benchmark figures are attributed.
   source-review date, not a live availability claim.
 - **Retired**: the laboratory has withdrawn or superseded the model; the
   record stays for history.
-- There is no public "partially verified" badge: a label that applies to
-  almost every record says nothing, so sources and the last-checked date are
-  shown directly instead.
 - **Benchmarks** are lab-reported unless a model page says otherwise. Figures
   from different harness versions or test conditions are not directly
   comparable and are never used to crown a universal winner.`
@@ -607,7 +604,7 @@ node ModelRegistry/cli/index.mjs markdown /docs
   \`--flagship-only\`, \`--latest-only\`)
 - \`model <id>\` - one record with specs, pricing, license, verification, sources
 - \`changes\` - changelog entries (\`--since\`, \`--until\`, \`--model\`, \`--company\`, \`--limit\`)
-- \`health\` - dataset revision, status counts, oldest source check
+- \`health\` - dataset revision, oldest source check
 - \`markdown [path]\` - Markdown view of any page (default \`/\`)
 - Global: \`--json\`, \`--base-url <url>\`, \`--timeout <ms>\`
 
@@ -688,12 +685,12 @@ records marked per second use that billing unit. Provider listings can differ
 and are not substituted here.`,
       ["Laboratory", "Model", "Input", "Output", "Unit"],
       [...modelsData]
-        .sort((a, b) => a.pricing.input - b.pricing.input)
+        .sort((a, b) => (isUsdPriced(a) ? a.pricing.input : Infinity) - (isUsdPriced(b) ? b.pricing.input : Infinity))
         .map((m) => [
           m.companyName,
           `[${m.name}](${SITE_URL}/models/${m.id})`,
-          `$${m.pricing.input}`,
-          `$${m.pricing.output}`,
+          `${priceSymbol(m)}${m.pricing.input}`,
+          `${priceSymbol(m)}${m.pricing.output}`,
           m.pricingUnit ? m.pricingUnit : "per 1M tokens",
         ])
     ),

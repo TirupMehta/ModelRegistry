@@ -9,8 +9,9 @@ import { breadcrumbList, comparisonPairs, compareHref, SITE } from "@/lib/seo"
 import { independentFor } from "@/lib/independent"
 import ComparePicker, { type PickerModel } from "@/components/compare-picker"
 import { ArrowLeft, ArrowUpRight, ChevronDown } from "lucide-react"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "AI model comparisons: head-to-head specs, price and context",
   description:
     "Side-by-side comparisons of frontier AI models from different laboratories: context window, list price per 1M tokens, max output, open-weight access, release date and lab-published benchmarks.",
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     siteName: "ModelRegistry",
     type: "website",
   },
-}
+}, { page: "/compare" }, "/compare")
 
 export default function CompareIndexPage() {
   const pairs = comparisonPairs(modelsData)

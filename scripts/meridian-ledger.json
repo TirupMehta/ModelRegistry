@@ -57,6 +57,11 @@
       "tests": 9,
       "inputs": "1b24c6cdd19c"
     },
+    "gemini-4-neon": {
+      "score": 632,
+      "tests": 9,
+      "inputs": "a6a5ed9904c6"
+    },
     "glm-5-3": {
       "score": 470,
       "tests": 10,
@@ -70,12 +75,12 @@
     "gpt-6-1-terra": {
       "score": 563,
       "tests": 9,
-      "inputs": "e4f4123390c9"
+      "inputs": "fe3b9e53d428"
     },
     "gpt-6-2-astra": {
       "score": 635,
       "tests": 9,
-      "inputs": "fc7985d7117f"
+      "inputs": "34b519c5a016"
     },
     "gpt-6-2-sol": {
       "score": 606,
@@ -136,6 +141,11 @@
       "score": 253,
       "tests": 10,
       "inputs": "238416470cd4"
+    },
+    "qwen4-max": {
+      "score": 556,
+      "tests": 9,
+      "inputs": "48634dbb7dd3"
     },
     "tencent-hy4": {
       "score": 503,

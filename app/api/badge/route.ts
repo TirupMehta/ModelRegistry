@@ -71,7 +71,7 @@ export async function GET(req: NextRequest) {
     rightText = model.contextWindow.replace(" tokens", "")
   } else if (type === "pricing") {
     leftText = model.name.toUpperCase()
-    rightText = model.openWeights ? "FREE / OPEN" : `$${model.pricing.input}/M`
+    rightText = model.openWeights ? "FREE / OPEN" : `${model.pricingCurrency === "INR" ? "₹" : model.pricingCurrency === "CNY" ? "¥" : "$"}${model.pricing.input}/M`
   } else if (type === "status") {
     leftText = model.name.toUpperCase()
     rightText = model.statusBadge

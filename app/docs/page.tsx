@@ -10,10 +10,11 @@ import { safeJsonLd } from "@/lib/utils"
 import { API_USE_PROMPT, buildContributePrompt } from "@/lib/agent-prompts"
 import PromptBlock from "@/components/prompt-block"
 import { ArrowLeft, ArrowUpRight } from "lucide-react"
+import { withShare } from "@/lib/share"
 
 const SITE_URL = "https://modelregistry.tirup.in"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "ModelRegistry API Reference - endpoints, parameters, examples",
   description:
     "ModelRegistry API reference: free unauthenticated REST API, OpenAPI 3.1 description, RSS, llms.txt, CLI, badges and health endpoints for the open frontier AI model registry. Authentication, rate limits, error codes, full field reference, and copy-paste examples.",
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     description:
       "Query frontier AI models as JSON, RSS, plain text, or badges. Free and unauthenticated.",
   },
-}
+}, { page: "/docs" }, "/docs")
 
 function CodeBlock({ code }: { code: string }) {
   return (
@@ -78,10 +79,6 @@ export default function DocsPage() {
   // Sample mirrors GET /api/v1/models in trimmed form. Every value below
   // derives from the live dataset so the reference cannot rot - see
   // app/api/v1/models/route.ts for the canonical shape.
-  const verification = { verified: 0, partially_verified: 0, unverified: 0, retired: 0 }
-  for (const m of modelsData) {
-    verification[m.verificationStatus] = (verification[m.verificationStatus] || 0) + 1
-  }
   const openaiFlagship = modelsData.find((m) => m.companyId === "openai" && m.isCompanyFlagship)
   const openaiCheckpoint = modelsData.find(
     (m) => m.companyId === "openai" && m.isLatestCheckpoint && !m.isCompanyFlagship
@@ -94,7 +91,6 @@ export default function DocsPage() {
   "total": ${modelsData.length},
   "updatedAt": "${datasetRevision.revisedAt}",
   "datasetVersion": "${datasetRevision.datasetVersion}",
-  "verification": ${JSON.stringify(verification)},
   "metadata": { "registry": "ModelRegistry", "license": "Open Data / MIT" },
   "companies": [{ "id": "openai", "page": "/companies/openai",
     "latestFlagship": "${openaiFlagship?.name ?? ""}", "latestCheckpoint": "${openaiCheckpoint?.name ?? ""}" }],
@@ -389,7 +385,7 @@ export default function DocsPage() {
                 <FieldRow name="category · categoryLabel" type="string" desc="Machine bucket (image, video, flagship…) plus the human display label." />
                 <FieldRow name="contextWindow(Tokens)" type="string · number" desc="Human string plus sortable token count. Visual models use descriptive windows with a 0 count so they never outrank token models." />
                 <FieldRow name="parameters" type="string" desc="Architecture description. “Undisclosed (…)” where the lab has published nothing - never fabricated." />
-                <FieldRow name="pricing · pricingUnit" type="object · string?" desc="Per-1M-token input/output USD by default; pricingUnit (e.g. “per second”) marks non-token billing." />
+                <FieldRow name="pricing · pricingUnit · pricingCurrency" type="object · string? · string?" desc="Per-1M-token input/output USD by default; pricingUnit (e.g. “per second”) marks non-token billing; pricingCurrency (e.g. “INR” or “CNY”) marks a price the lab publishes in another currency, shown as published and never converted." />
                 <FieldRow name="modalities" type="string[]" desc="Text · Vision · Audio · Video · Code · Image, as applicable." />
                 <FieldRow name="benchmarks" type="object" desc="Lab-published scores only (sweBench, mmluPro, gpqa…). Empty object means none published." />
                 <FieldRow name="links" type="object" desc="Official announcement, playground, paper, apiDocs, weights URLs. Announcement is mandatory per contribution policy." />

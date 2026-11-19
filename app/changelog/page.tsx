@@ -4,13 +4,14 @@ import Header from "@/components/header"
 import { modelsData } from "@/data/models"
 import { safeJsonLd } from "@/lib/utils"
 import ChangelogClient from "@/components/changelog-client"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Changelog - ModelRegistry record history",
   description:
     "Dated history of additions, corrections, and re-sourcing across ModelRegistry model records.",
   alternates: { canonical: "https://modelregistry.tirup.in/changelog" },
-}
+}, { page: "/changelog" }, "/changelog")
 
 export default function ChangelogPage() {
   const entries = modelsData

@@ -22,8 +22,9 @@ import {
 import { splitLineup } from "@/lib/currency"
 import RankingsSwitcher from "@/components/rankings-switcher"
 import { ArrowLeft, ChevronDown } from "lucide-react"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "Meridian: AI model score across benchmarks, and why it is not one number",
   description:
     "Meridian is a fixed-reference cross-test score with a 95% band, and the disagreement between tests published next to it. Models measured on one test are ranked on that test only.",
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     siteName: "ModelRegistry",
     type: "article",
   },
-}
+}, { page: "/score" }, "/score")
 
 const summaryClass =
   "flex cursor-pointer list-none items-center gap-3 py-3.5 [&::-webkit-details-marker]:hidden"

@@ -202,6 +202,12 @@ modelsData.forEach((model, index) => {
   const prefix = `Model #${index + 1} [${model.id || "MISSING_ID"}]`
   const isCurrent = Boolean(model.isCompanyFlagship || model.isLatestCheckpoint)
 
+  // The registry publishes confirmed records only: every record is verified or retired.
+  if (model.verificationStatus === "partially_verified" || model.verificationStatus === "unverified") {
+    errors.push(
+      `${prefix}: verificationStatus is '${model.verificationStatus}'. Re-source the record against primary pages and mark it verified (or retired) before it ships; see AGENTS.md.`
+    )
+  }
   if (!VERIFICATION_STATUSES.has(model.verificationStatus)) {
     errors.push(
       `${prefix}: Unknown verificationStatus '${model.verificationStatus}'. Valid: ${Array.from(VERIFICATION_STATUSES).join(", ")}.`
@@ -266,9 +272,9 @@ modelsData.forEach((model, index) => {
 
   // Current / latest / flagship labels require fresh, live evidence.
   if (isCurrent) {
-    if (model.verificationStatus !== "verified" && model.verificationStatus !== "partially_verified") {
+    if (model.verificationStatus !== "verified") {
       errors.push(
-        `${prefix}: Labeled flagship/latest but verificationStatus is '${model.verificationStatus}'. Current labels require verified or partially_verified evidence.`
+        `${prefix}: Labeled flagship/latest but verificationStatus is '${model.verificationStatus}'. Current labels require verified evidence.`
       )
     }
     const liveSources = (model.sources || []).filter((s) => s && s.live === true)

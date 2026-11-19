@@ -6,13 +6,14 @@ import { safeJsonLd } from "@/lib/utils"
 import { SITE, breadcrumbList } from "@/lib/seo"
 import { costStory, labClaimStory } from "@/lib/insights"
 import { PageHeader } from "@/components/ui"
+import { withShare } from "@/lib/share"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withShare({
   title: "AI model insights: data stories from independent results",
   description: "Short, sourced data stories about AI models: how lab claims compare with independent runs, and what intelligence costs per task. Each comes with a CSV.",
   alternates: { canonical: `${SITE}/insights` },
   openGraph: { title: "AI model insights", description: "Data stories from independent results, with the CSV for each.", url: `${SITE}/insights`, siteName: "ModelRegistry", type: "website" },
-}
+}, { page: "/insights" }, "/insights")
 
 export default function InsightsPage() {
   const claims = labClaimStory()

@@ -2,6 +2,7 @@ import { modelsData, type ModelItem } from "@/data/models"
 import { isCurrent, currentSuccessor } from "@/lib/currency"
 import { independentFor } from "@/lib/independent"
 import { outputClass } from "@/lib/seo"
+import { isUsdPriced } from "./utils"
 
 /**
  * "Alternatives to X" for one model: who is cheaper, who scores higher, who is
@@ -47,7 +48,7 @@ function row(model: ModelItem): AlternativeRow {
 
 /** Models that get an alternatives page: token-priced text models. */
 export function hasAlternatives(model: ModelItem): boolean {
-  return outputClass(model) === "text" && !model.pricingUnit && model.pricing.input > 0 && model.pricing.output > 0
+  return outputClass(model) === "text" && !model.pricingUnit && isUsdPriced(model) && model.pricing.input > 0 && model.pricing.output > 0
 }
 
 export function buildAlternatives(model: ModelItem, models: ModelItem[] = modelsData): AlternativesView | null {
