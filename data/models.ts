@@ -2120,7 +2120,7 @@ export const modelsData: ModelItem[] = [
     license: "Proprietary API / Grok Build",
     pricing: { input: 2.0, output: 6.0 },
     highlight: "Released Aug 2026; xAI's Grok 4.6 coding and agent model, with a 500k-token context and $2/$6 per 1M tokens under 200k-token prompts ($4/$12 at 200k or more). Superseded by Grok 4.7.",
-    modalities: ["Text", "Vision", "Code"],
+    modalities: ["Text", "Code"],
     benchmarks: {},
     links: {
       announcement: "https://x.ai/blog/grok-4-6",
@@ -2211,6 +2211,46 @@ export const modelsData: ModelItem[] = [
           live: true,
         },
       ],
+      maxOutputTokens: [
+        {
+          url: "https://docs.x.ai/developers/models",
+          publisher: "xAI",
+          title: "Grok 4.6: the models page lists no maximum output length",
+          accessedAt: "2026-11-19",
+          sourceType: "api-docs",
+          live: true,
+        },
+      ],
+      parameters: [
+        {
+          url: "https://docs.x.ai/developers/models",
+          publisher: "xAI",
+          title: "Grok 4.6: parameter count not stated",
+          accessedAt: "2026-11-19",
+          sourceType: "api-docs",
+          live: true,
+        },
+      ],
+      license: [
+        {
+          url: "https://docs.x.ai/developers/models",
+          publisher: "xAI",
+          title: "Grok 4.6: available through the xAI API",
+          accessedAt: "2026-11-19",
+          sourceType: "api-docs",
+          live: true,
+        },
+      ],
+      modalities: [
+        {
+          url: "https://docs.x.ai/developers/models",
+          publisher: "xAI",
+          title: "Grok 4.6: the models page lists it as a text model; no other input modality is documented",
+          accessedAt: "2026-11-19",
+          sourceType: "api-docs",
+          live: true,
+        },
+      ],
     },
     lastVerifiedAt: "2026-11-19",
     verificationStatus: "verified",
@@ -2260,7 +2300,7 @@ export const modelsData: ModelItem[] = [
     license: "Proprietary API / Grok Build",
     pricing: { input: 2.0, output: 6.0 },
     highlight: "Released Sept 21, 2026; xAI's Grok 4.7 for coding and knowledge work, on a new, larger base model than Grok 4.6, with a 500k-token context and the same $2/$6 per 1M tokens (under 200k-token prompts; $4/$12 at 200k or more). xAI reports 46.3% on CursorBench 4.0, 71.0% on DeepSWE v1.1 and 37.6% on Terminal-Bench 4.0 (lab-reported).",
-    modalities: ["Text", "Vision", "Code"],
+    modalities: ["Text", "Code"],
     benchmarks: {
       sweBench: "71.0% (DeepSWE v1.1)",
       terminalBench: "37.6%",
