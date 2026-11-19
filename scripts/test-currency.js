@@ -29,10 +29,10 @@ const { formatPrice, isUsdPriced, priceSymbol } = load("lib/utils.ts", { clsx: {
 const inr = modelsData.filter((m) => m.pricingCurrency)
 check("at least one model carries a non-USD price", inr.length > 0)
 for (const m of inr) {
-  check(`${m.id} currency is a known code`, m.pricingCurrency === "INR")
+  check(`${m.id} currency is a known code`, ["INR", "CNY"].includes(m.pricingCurrency))
   check(`${m.id} is not USD-priced`, !isUsdPriced(m))
   check(`${m.id} shows its own symbol`, formatPrice(m).includes(priceSymbol(m)) && !formatPrice(m).includes("$"), formatPrice(m))
-  check(`${m.id} price carries a citation naming the currency`, (m.fieldSources.pricing ?? []).some((s) => /₹|INR|rupee/i.test(`${s.title} ${s.note ?? ""}`)))
+  check(`${m.id} price carries a citation naming the currency`, (m.fieldSources.pricing ?? []).some((s) => /₹|¥|INR|CNY|RMB|rupee|yuan/i.test(`${s.title} ${s.note ?? ""}`)))
 }
 
 // USD rankings and comparisons must filter on isUsdPriced.

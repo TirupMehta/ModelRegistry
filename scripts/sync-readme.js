@@ -50,7 +50,7 @@ function formatContext(tokens) {
 }
 
 function formatPricing(model) {
-  const sym = model.pricingCurrency === "INR" ? "\u20b9" : "$"
+  const sym = model.pricingCurrency === "INR" ? "\u20b9" : model.pricingCurrency === "CNY" ? "¥" : "$"
   if (model.pricingUnit) {
     const unitBase =
       model.pricing.input === model.pricing.output

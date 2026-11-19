@@ -22,7 +22,9 @@ export function safeJsonLd(obj: unknown): string {
  */
 /** Currency symbol for a model's published price. Prices are never converted between currencies. */
 export function priceSymbol(model: Pick<ModelItem, 'pricingCurrency'>): string {
-  return model.pricingCurrency === 'INR' ? '₹' : '$'
+  if (model.pricingCurrency === 'INR') return '₹'
+  if (model.pricingCurrency === 'CNY') return '¥'
+  return '$'
 }
 
 /** True when the price is in US dollars, so it can be ranked and compared with other USD prices. */
