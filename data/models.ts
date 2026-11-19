@@ -2839,7 +2839,7 @@ export const modelsData: ModelItem[] = [
     isCompanyFlagship: false,
     isLatestCheckpoint: false,
     supersededBy: "deepseek-v4-1-flash-1017",
-    statusBadge: "NEW ARCHITECTURE",
+    statusBadge: "RETIRED",
     category: "flagship",
     categoryLabel: "Frontier Multimodal MoE",
     contextWindow: "1,000,000 tokens",
@@ -2849,15 +2849,9 @@ export const modelsData: ModelItem[] = [
     openWeights: true,
     license: "MIT License",
     pricing: { input: 0.3, output: 1.2 },
-    highlight:
-      "Released Sept 10, 2026; first of DeepSeek's Causal Encoder-Decoder family with native image+text, 1M context and 384K output. Replaces V4-Flash and V4-Pro from Sept 14.",
+    highlight: "Released Sept 10, 2026; the first DeepSeek V4.1 Flash checkpoint, a 552B-parameter mixture-of-experts model (8B active for input, 16B for output) with native image and text input, served as deepseek-flash until the Oct 17 checkpoint replaced it.",
     modalities: ["Text", "Vision", "Code"],
-    benchmarks: {
-      mmluPro: "74.1%",
-      terminalBench: "90.6%",
-      sweBench: "74.2% (DeepSWE v1.1)",
-      gpqa: "90.9%",
-    },
+    benchmarks: {},
     links: {
       announcement: "https://www.deepseek.com/en/news/deepseek-v4-1-flash/",
       playground: "https://chat.deepseek.com",
@@ -3001,9 +2995,17 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-07",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "retired",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "DeepSeek's pricing page now lists only the V4.1-Flash-1017 checkpoint behind deepseek-flash, so this earlier checkpoint is retired. The September 10, 2026 release and the 552B total parameters (8B active for input, 16B for output) were confirmed against DeepSeek's release post; the unsourced benchmark figures and architecture-family wording were removed.",
+        sources: [
+          "https://api-docs.deepseek.com/news/news260910",
+          "https://api-docs.deepseek.com/quick_start/pricing",
+        ],
+      },
       {
         date: "2026-09-10",
         summary: "Initial registry entry.",
@@ -7741,7 +7743,7 @@ export const modelsData: ModelItem[] = [
     isCompanyFlagship: false,
     isLatestCheckpoint: false,
     supersededBy: "deepseek-v4-1-flash-1017",
-    statusBadge: "VOLUME LEADER",
+    statusBadge: "RETIRED",
     category: "code",
     categoryLabel: "Fast Inference",
     contextWindow: "1,048,576 tokens",
@@ -7751,7 +7753,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "DeepSeek API",
     pricing: { input: 0.09, output: 0.18 },
-    highlight: "Released Jul 31, 2026; a DeepSeek V4 Flash checkpoint with a 1,048,576-token context at budget pricing. Superseded by DeepSeek-V4.1-Flash-1017.",
+    highlight: "Released Jul 31, 2026 as the official V4-Flash, a re-post-trained version of the V4-Flash preview with the same architecture and size, reporting Terminal Bench 2.1 82.7, DeepSWE 54.4 and Toolathlon-Verified 70.3 (lab-reported). DeepSeek lists the V4 Flash name as retired: requests are routed to V4.1 Flash.",
     modalities: ["Text", "Code"],
     benchmarks: {},
     links: {
@@ -7860,9 +7862,17 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-07",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "retired",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "DeepSeek's change log says the previous-generation V4 Flash models are retired and routed to V4.1 Flash. The record is retired; the July 31, 2026 release and the benchmark figures in the highlight were confirmed against DeepSeek's change log and the Hugging Face model card.",
+        sources: [
+          "https://api-docs.deepseek.com/updates/",
+          "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash-0731",
+        ],
+      },
       {
         date: "2026-11-19",
         summary: "Removed the unsourced OpenRouter-volume claim from the highlight. DeepSeek's pricing page lists only the current V4.1 Flash and V4 Pro, so this record stays unconfirmed.",
@@ -7889,7 +7899,7 @@ export const modelsData: ModelItem[] = [
     isCompanyFlagship: false,
     isLatestCheckpoint: false,
     supersededBy: "deepseek-v4-flash-0731",
-    statusBadge: "BUDGET WORKHORSE",
+    statusBadge: "RETIRED",
     category: "code",
     categoryLabel: "Fast Inference",
     contextWindow: "1,048,576 tokens",
@@ -7899,7 +7909,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "DeepSeek API",
     pricing: { input: 0.09, output: 0.18 },
-    highlight: "Released Apr 24, 2026; an earlier DeepSeek V4 Flash checkpoint with a 1,048,576-token context at budget pricing. Superseded by later Flash checkpoints.",
+    highlight: "Released Apr 24, 2026 as the V4-Flash preview, a 284B-parameter mixture-of-experts model with 13B active parameters and a 1M-token context, text only. DeepSeek lists the V4 Flash name as retired: requests are routed to V4.1 Flash.",
     modalities: ["Text", "Code"],
     benchmarks: {},
     links: {
@@ -8008,9 +8018,17 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-07",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "retired",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "DeepSeek's change log says the previous-generation V4 Flash models are retired and their names are routed to V4.1 Flash, and its pricing page lists only the current deepseek-flash and deepseek-v4-pro. The record is retired; the unsourced OpenRouter-volume claim was removed earlier, and the 284B / 13B active parameters, 1M context and April 24, 2026 release were confirmed against DeepSeek's change log and TechCrunch's launch coverage.",
+        sources: [
+          "https://api-docs.deepseek.com/updates/",
+          "https://api-docs.deepseek.com/quick_start/pricing",
+        ],
+      },
       {
         date: "2026-11-19",
         summary: "Removed the unsourced OpenRouter-volume claim from the highlight. DeepSeek's pricing page lists only the current V4.1 Flash and V4 Pro, so this record stays unconfirmed.",
