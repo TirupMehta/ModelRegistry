@@ -26,7 +26,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**OpenAI**](https://openai.com) | [GPT-6.2 Sol](https://modelregistry.tirup.in/models/gpt-6-2-sol) | - | 1M | Proprietary | $2 in / $10 out |
 | [**Google DeepMind**](https://deepmind.google) | [Gemini 4 Carbon](https://modelregistry.tirup.in/models/gemini-4-carbon) | [Gemini 4 Neon](https://modelregistry.tirup.in/models/gemini-4-neon) | - | Proprietary | $2 in / $10 out |
 | [**xAI**](https://x.ai) | [Grok 4.7](https://modelregistry.tirup.in/models/grok-4-7) | [Grok Voice 3.0](https://modelregistry.tirup.in/models/grok-voice-3) | 500k | Proprietary | $2 in / $6 out |
-| [**DeepSeek**](https://www.deepseek.com) | [DeepSeek V4.1 Flash 1017](https://modelregistry.tirup.in/models/deepseek-v4-1-flash-1017) | - | 1M | Open (MIT) | $0.15 in / $0.6 out *(Open)* |
+| [**DeepSeek**](https://www.deepseek.com) | [DeepSeek V4.1 Flash 1017](https://modelregistry.tirup.in/models/deepseek-v4-1-flash-1017) | - | 1M | Open (MIT) | $0.3 in / $1.2 out *(Open)* |
 | [**Meta AI**](https://ai.meta.com) | [Muse Wonder](https://modelregistry.tirup.in/models/muse-wonder) | [Muse Ember](https://modelregistry.tirup.in/models/muse-ember) | 1M | Proprietary | $4 in / $20 out |
 | [**Alibaba Cloud (Qwen)**](https://qwenlm.github.io) | [Qwen4-Max](https://modelregistry.tirup.in/models/qwen4-max) | - | 1M | Proprietary | $1.5 in / $4.5 out |
 | [**Mistral AI**](https://mistral.ai) | [Mistral Large 4](https://modelregistry.tirup.in/models/mistral-large-4) | - | 1M | Open (Mistral Ecosystem Open Weight) | $0.7 in / $2.1 out *(Open)* |

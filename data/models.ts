@@ -2798,11 +2798,11 @@ export const modelsData: ModelItem[] = [
     categoryLabel: "Frontier MoE",
     contextWindow: "1,048,576 tokens",
     contextWindowTokens: 1048576,
-    maxOutputTokens: "65,536 tokens",
+    maxOutputTokens: "384K tokens",
     parameters: "1.6 Trillion Total (49B Activated)",
     openWeights: false,
     license: "DeepSeek API / Enterprise",
-    pricing: { input: 1.12, output: 3.35 },
+    pricing: { input: 1.32, output: 3.96 },
     highlight: "DeepSeek's primary 1.6T parameter powerhouse with 49B activated per token, configurable thinking budget, and 1M context.",
     modalities: ["Text", "Code"],
     benchmarks: {
@@ -2845,6 +2845,14 @@ export const modelsData: ModelItem[] = [
       },
       ],
       maxOutputTokens: [
+        {
+          url: "https://api-docs.deepseek.com/quick_start/pricing",
+          publisher: "DeepSeek",
+          title: "DeepSeek pricing page: maximum output 384K tokens, context length 1M",
+          accessedAt: "2026-11-19",
+          sourceType: "pricing",
+          live: true,
+        },
       {
         url: "https://api-docs.deepseek.com/news/news260813",
         publisher: "DeepSeek",
@@ -2875,6 +2883,15 @@ export const modelsData: ModelItem[] = [
       },
       ],
       pricing: [
+        {
+          url: "https://api-docs.deepseek.com/quick_start/pricing",
+          publisher: "DeepSeek",
+          title: "DeepSeek pricing: DeepSeek-V4-Pro-0813 peak $1.32 input (cache miss) / $3.96 output per 1M tokens; off-peak is half",
+          accessedAt: "2026-11-19",
+          sourceType: "pricing",
+          live: true,
+          note: "DeepSeek bills peak and off-peak rates; off-peak ($0.66 / $1.98) is half the peak price. The registry lists the peak rate.",
+        },
       {
         url: "https://api-docs.deepseek.com/news/news260813",
         publisher: "DeepSeek",
@@ -2925,9 +2942,16 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-07",
+    lastVerifiedAt: "2026-11-19",
     verificationStatus: "partially_verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Corrected against DeepSeek's pricing page: price $1.32 input / $3.96 output per 1M tokens at the peak rate (was $1.12/$3.35, which matched no published rate) and maximum output 384K tokens (was 65,536).",
+        sources: [
+          "https://api-docs.deepseek.com/quick_start/pricing",
+        ],
+      },
       {
         date: "2026-08-13",
         summary: "Initial registry entry.",
@@ -10554,7 +10578,7 @@ export const modelsData: ModelItem[] = [
     parameters: "763B MoE (mixed-precision HF checkpoint)",
     openWeights: true,
     license: "MIT",
-    pricing: { input: 0.15, output: 0.6 },
+    pricing: { input: 0.3, output: 1.2 },
     highlight: "Oct 17, 2026 checkpoint of DeepSeek V4.1 Flash: substantially stronger reasoning, agentic coding, and visual reasoning - Terminal-Bench 4.0 42.3% (vs 31.2% prior), DeepSWE v1.1 77.0%, ProgramBench 29.1% (vs 20.3%) - while reducing task time and output length on the same $0.15/$0.60 pricing and advancing the performance-cost Pareto frontier.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {
@@ -10646,6 +10670,15 @@ export const modelsData: ModelItem[] = [
       },
       ],
       pricing: [
+        {
+          url: "https://api-docs.deepseek.com/quick_start/pricing",
+          publisher: "DeepSeek",
+          title: "DeepSeek pricing: peak $0.3 input (cache miss) / $1.2 output per 1M tokens; off-peak is half",
+          accessedAt: "2026-11-19",
+          sourceType: "pricing",
+          live: true,
+          note: "DeepSeek bills peak and off-peak rates. Peak hours are 01:00-04:00 and 06:00-10:00 UTC on weekdays; off-peak, the rest of the time, is half the price ($0.15 / $0.60). The registry lists the peak rate.",
+        },
       {
         url: "https://openrouter.ai/deepseek/deepseek-v4.1-flash-1017",
         publisher: "OpenRouter",
@@ -10698,9 +10731,16 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-24",
+    lastVerifiedAt: "2026-11-19",
     verificationStatus: "partially_verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Price now lists DeepSeek's peak rate, $0.30 input / $1.20 output per 1M tokens (cache miss); the earlier $0.15/$0.60 is the off-peak rate, half the peak price. Maximum output 384K tokens re-confirmed.",
+        sources: [
+          "https://api-docs.deepseek.com/quick_start/pricing",
+        ],
+      },
       {
         date: "2026-10-24",
         summary: "Initial registry entry.",
