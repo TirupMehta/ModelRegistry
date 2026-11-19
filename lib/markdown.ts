@@ -3,7 +3,7 @@ import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { SITE_NAME, SITE_URL } from "@/lib/site"
 import { REPO_URL } from "@/lib/github"
-import { formatPrice } from "@/lib/utils"
+import { formatPrice, isUsdPriced, priceSymbol } from "@/lib/utils"
 import { CONTESTED_SPREAD, MIN_TESTS_FOR_STANDING, STANDING_VERSION } from "@/lib/standing"
 import { buildIndependentStanding } from "@/lib/independent"
 import { LEADERBOARD_VERSION, MIN_COHORT_SIZE, leaderboardStats } from "@/lib/leaderboards"
@@ -685,12 +685,12 @@ records marked per second use that billing unit. Provider listings can differ
 and are not substituted here.`,
       ["Laboratory", "Model", "Input", "Output", "Unit"],
       [...modelsData]
-        .sort((a, b) => a.pricing.input - b.pricing.input)
+        .sort((a, b) => (isUsdPriced(a) ? a.pricing.input : Infinity) - (isUsdPriced(b) ? b.pricing.input : Infinity))
         .map((m) => [
           m.companyName,
           `[${m.name}](${SITE_URL}/models/${m.id})`,
-          `$${m.pricing.input}`,
-          `$${m.pricing.output}`,
+          `${priceSymbol(m)}${m.pricing.input}`,
+          `${priceSymbol(m)}${m.pricing.output}`,
           m.pricingUnit ? m.pricingUnit : "per 1M tokens",
         ])
     ),

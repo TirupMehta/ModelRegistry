@@ -20,13 +20,24 @@ export function safeJsonLd(obj: unknown): string {
  * "$X in / $Y out" (per 1M tokens); visual models with a pricingUnit
  * (e.g. "per second") collapse equal rates to "$X per second".
  */
-export function formatPrice(model: Pick<ModelItem, 'pricing' | 'pricingUnit' | 'openWeights'>): string {
+/** Currency symbol for a model's published price. Prices are never converted between currencies. */
+export function priceSymbol(model: Pick<ModelItem, 'pricingCurrency'>): string {
+  return model.pricingCurrency === 'INR' ? '₹' : '$'
+}
+
+/** True when the price is in US dollars, so it can be ranked and compared with other USD prices. */
+export function isUsdPriced(model: Pick<ModelItem, 'pricingCurrency'>): boolean {
+  return !model.pricingCurrency
+}
+
+export function formatPrice(model: Pick<ModelItem, 'pricing' | 'pricingUnit' | 'pricingCurrency' | 'openWeights'>): string {
   const { input, output } = model.pricing
+  const s = priceSymbol(model)
   if (model.pricingUnit) {
-    const base = input === output ? `$${input}` : `$${input} in / $${output}`
+    const base = input === output ? `${s}${input}` : `${s}${input} in / ${s}${output}`
     return `${base} ${model.pricingUnit}`
   }
-  const base = `$${input} in / $${output} out`
+  const base = `${s}${input} in / ${s}${output} out`
   return model.openWeights ? `${base} (Open)` : base
 }
 

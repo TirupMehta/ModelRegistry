@@ -212,6 +212,7 @@ function trimModel(model: ModelItem) {
     license: model.license,
     pricing: model.pricing,
     pricingUnit: model.pricingUnit,
+    pricingCurrency: model.pricingCurrency,
     modalities: model.modalities,
     benchmarks: model.benchmarks,
     highlight: model.highlight,

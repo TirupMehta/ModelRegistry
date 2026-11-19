@@ -651,6 +651,7 @@
           "license": { "type": "string" },
           "pricing": { "$ref": "#/components/schemas/Pricing" },
           "pricingUnit": { "type": "string", "description": "Only 'per second'; absent means per-1M-tokens." },
+          "pricingCurrency": { "type": "string", "enum": ["INR"], "description": "Present only when the lab publishes its price in another currency; pricing is then in that currency exactly as published, never converted. Absent means USD." },
           "highlight": { "type": "string" },
           "modalities": { "type": "array", "items": { "type": "string" } },
           "benchmarks": {

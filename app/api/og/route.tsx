@@ -6,7 +6,7 @@ import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
 import { modelFolio } from "@/lib/registry"
-import { benchPretty, formatPrice } from "@/lib/utils"
+import { benchPretty, formatPrice, priceSymbol } from "@/lib/utils"
 import { pageCard } from "@/lib/share"
 import { buildBestAnswers, bestSlug, bestPageTitle } from "@/lib/best"
 import {
@@ -242,7 +242,7 @@ export async function GET(req: NextRequest) {
         sigBig = ctxCompact
         sigSmall = "context"
       } else {
-        sigBig = `$${model.pricing.input}`
+        sigBig = `${priceSymbol(model)}${model.pricing.input}`
         sigSmall = "API input"
       }
 

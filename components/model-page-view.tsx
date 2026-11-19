@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { type ModelItem } from "@/data/models"
 import { independentRecords } from "@/data/independent-benchmarks"
-import { formatPrice, formatDate } from "@/lib/utils"
+import { formatPrice, formatDate, priceSymbol } from "@/lib/utils"
 import { ShareCardModal } from "@/components/share-card-modal"
 import { reportIssueUrl } from "@/components/verification-section"
 import { ProviderAvailability } from "@/components/provider-availability"
@@ -296,10 +296,10 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
                 ) : (
                   <>
                     <span className="block whitespace-nowrap">
-                      ${model.pricing.input.toFixed(2)} <span className="text-small font-normal text-fg-muted">in</span>
+                      {priceSymbol(model)}{model.pricing.input.toFixed(2)} <span className="text-small font-normal text-fg-muted">in</span>
                     </span>
                     <span className="block whitespace-nowrap">
-                      ${model.pricing.output.toFixed(2)} <span className="text-small font-normal text-fg-muted">out</span>
+                      {priceSymbol(model)}{model.pricing.output.toFixed(2)} <span className="text-small font-normal text-fg-muted">out</span>
                     </span>
                   </>
                 ),

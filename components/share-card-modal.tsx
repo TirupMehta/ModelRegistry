@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react"
 import { type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
-import { benchPretty, formatPrice } from "@/lib/utils"
+import { benchPretty, formatPrice, priceSymbol } from "@/lib/utils"
 import { Download, Copy, Share2, Check, X, Sparkles, Code2, ZoomIn } from "lucide-react"
 
 interface ShareCardModalProps {
@@ -175,7 +175,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
       sigSmall = "context"
       sigKind = "context"
     } else {
-      sigBig = `$${model.pricing.input}`
+      sigBig = `${priceSymbol(model)}${model.pricing.input}`
       sigSmall = "API input"
       sigKind = "price"
     }

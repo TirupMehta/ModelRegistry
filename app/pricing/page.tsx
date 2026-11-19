@@ -3,7 +3,7 @@ import Link from "next/link"
 import Header from "@/components/header"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
-import { safeJsonLd } from "@/lib/utils"
+import { isUsdPriced, priceSymbol, safeJsonLd } from "@/lib/utils"
 import { ArrowUpRight } from "lucide-react"
 import { Disclosure, PageHeader } from "@/components/ui"
 import { withShare } from "@/lib/share"
@@ -16,13 +16,13 @@ export const metadata: Metadata = withShare({
 }, { page: "/pricing" }, "/pricing")
 
 /** List price per 1M tokens: two decimals, more only when the price is under a dime. */
-const usd = (n: number) => (n === 0 ? "Free" : n < 0.1 ? `$${n}` : `$${n.toFixed(2)}`)
+const usd = (n: number, sym = "$") => (n === 0 ? "Free" : n < 0.1 ? `${sym}${n}` : `${sym}${n.toFixed(2)}`)
 
 export default function PricingPage() {
   const tokenModels = [...modelsData]
-    .filter((m) => !m.pricingUnit)
+    .filter((m) => !m.pricingUnit && isUsdPriced(m))
     .sort((a, b) => a.pricing.input - b.pricing.input)
-  const unitModels = modelsData.filter((m) => m.pricingUnit)
+  const unitModels = modelsData.filter((m) => m.pricingUnit || !isUsdPriced(m))
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -98,7 +98,7 @@ export default function PricingPage() {
         {unitModels.length > 0 && (
           <div className="mt-12">
             <h2 className="mb-1 font-display text-heading font-semibold tracking-tight text-fg-strong">Billed by another unit</h2>
-            <p className="mb-3 text-small text-fg-muted">Separate units, so these are not comparable with the table above.</p>
+            <p className="mb-3 text-small text-fg-muted">Billed per unit or in another currency, so these are shown as published and are not comparable with the table above.</p>
             <ul className="rule-t">
               {unitModels.map((m) => (
                 <li key={m.id} className="flex items-baseline gap-3 border-b border-black/10 py-3 dark:border-white/[0.08]">
@@ -109,7 +109,7 @@ export default function PricingPage() {
                     <span className="block text-small text-fg-muted">{m.companyName}</span>
                   </span>
                   <span className="ml-auto shrink-0 text-body tabular-nums text-fg">
-                    {usd(m.pricing.input)} in / {usd(m.pricing.output)} out {m.pricingUnit}
+                    {usd(m.pricing.input, priceSymbol(m))} in / {usd(m.pricing.output, priceSymbol(m))} out {m.pricingUnit ?? "per 1M tokens"}
                   </span>
                 </li>
               ))}

@@ -20,7 +20,7 @@ import {
 import { currentSuccessor } from "@/lib/currency";
 import { EVIDENCE_KIND_LABEL, evidenceSummary } from "@/lib/evidence";
 import { SITE, compareHref, comparisonPairs, faqPage } from "@/lib/seo";
-import { formatDate, safeJsonLd } from "@/lib/utils";
+import { formatDate, priceSymbol, safeJsonLd } from "@/lib/utils";
 import { fieldLabels } from "@/components/verification-section";
 import {
   fieldChecks,
@@ -206,7 +206,7 @@ export function ModelProvenance({ model }: { model: ModelItem }) {
 export function ModelFaq({ model }: { model: ModelItem }) {
   const priced = !model.pricingUnit;
   const priceAnswer = priced
-    ? `${model.name} lists at $${model.pricing.input.toFixed(2)} per 1M input tokens and $${model.pricing.output.toFixed(2)} per 1M output tokens, according to the price published by ${model.companyName}. Cached, batch and committed-throughput tiers are billed differently and are not included in that figure.`
+    ? `${model.name} lists at ${priceSymbol(model)}${model.pricing.input.toFixed(2)} per 1M input tokens and ${priceSymbol(model)}${model.pricing.output.toFixed(2)} per 1M output tokens, according to the price published by ${model.companyName}. Cached, batch and committed-throughput tiers are billed differently and are not included in that figure.`
     : `${model.name} is billed ${model.pricingUnit}, not per token, so it has no per-1M-token list price in this registry.`;
 
   const faq = [

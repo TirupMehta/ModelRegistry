@@ -219,8 +219,9 @@ function table(headers, rows) {
 function formatPrice(model) {
   const { input, output } = model.pricing ?? {}
   if (input === undefined || output === undefined) return "n/a"
-  if (model.pricingUnit) return input === output ? `$${input} ${model.pricingUnit}` : `$${input}/$${output} ${model.pricingUnit}`
-  return `$${input}/$${output} per 1M`
+  const s = model.pricingCurrency === "INR" ? "₹" : "$"
+  if (model.pricingUnit) return input === output ? `${s}${input} ${model.pricingUnit}` : `${s}${input}/${s}${output} ${model.pricingUnit}`
+  return `${s}${input}/${s}${output} per 1M`
 }
 
 /* ---------------------------------------------------------------- commands */

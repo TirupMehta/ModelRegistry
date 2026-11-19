@@ -1,6 +1,6 @@
 export interface ModelPricing {
-  input: number // USD per 1M tokens
-  output: number // USD per 1M tokens
+  input: number // per 1M tokens, in pricingCurrency (USD unless the model sets another)
+  output: number // per 1M tokens, in pricingCurrency
 }
 
 export interface ModelVariant {
@@ -82,6 +82,9 @@ export interface ModelItem {
   // Non-token billing unit for visual models (e.g. "per second").
   // Undefined = classic per-1M-tokens pricing; excluded from token cost leaderboards.
   pricingUnit?: string
+  // Currency the lab publishes its price in, when it is not USD (e.g. "INR").
+  // Shown exactly as published and never converted; excluded from USD comparisons.
+  pricingCurrency?: "INR"
   highlight: string
   modalities: ("Text" | "Vision" | "Audio" | "Video" | "Code" | "Image")[]
   // Named sub-variants shipped under this entry (e.g. API twins).
@@ -8936,11 +8939,12 @@ export const modelsData: ModelItem[] = [
     categoryLabel: "Open Reasoning MoE",
     contextWindow: "128,000 tokens",
     contextWindowTokens: 128000,
-    maxOutputTokens: "32,768 tokens",
+    maxOutputTokens: "4,096 to 128,000 tokens, by plan",
     parameters: "105B MoE (10.3B Active, 128 Experts)",
     openWeights: true,
     license: "Apache 2.0",
-    pricing: { input: 0.33, output: 0.83 },
+    pricing: { input: 10, output: 25 },
+    pricingCurrency: "INR",
     highlight: "Released Mar 6, 2026; India's sovereign 105B MoE trained from scratch on 12T tokens, which Sarvam reports as state-of-the-art across 22 Indian languages, with 98.6 Math500 and 49.5 BrowseComp.",
     modalities: ["Text", "Code"],
     benchmarks: {
@@ -9035,7 +9039,7 @@ export const modelsData: ModelItem[] = [
       {
         url: "https://docs.sarvam.ai/api-reference-docs/getting-started/models/sarvam-105b",
         publisher: "Sarvam AI",
-        title: "Sarvam 105B API reference",
+        title: "Sarvam 105B model page: ₹10 input / ₹25 output per 1M tokens (introductory through the end of 2026)",
         accessedAt: "2026-10-07",
         sourceType: "api-docs",
         live: true,
@@ -9082,9 +9086,16 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-07",
+    lastVerifiedAt: "2026-11-19",
     verificationStatus: "partially_verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Price corrected to Sarvam's published rupee rates, ₹10 input / ₹25 output per 1M tokens (introductory through the end of 2026), shown in rupees and not converted; the earlier $0.33/$0.83 had no source. Maximum output is plan-dependent (4,096 on Starter, 16,384 on Pro, 128,000 on Business) rather than 32,768.",
+        sources: [
+          "https://docs.sarvam.ai/api-reference-docs/getting-started/models/sarvam-105b",
+        ],
+      },
       {
         date: "2026-03-06",
         summary: "Initial registry entry.",

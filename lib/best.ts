@@ -2,6 +2,7 @@ import { type ModelItem, modelsData } from "@/data/models"
 import { isCurrent } from "./currency"
 import { INDEPENDENT_EVALUATOR, buildIndependentBoards, valueRows, type IndependentBoard } from "./independent"
 import { outputClass } from "./seo"
+import { isUsdPriced } from "./utils"
 
 /**
  * "Best model for X", answered the only way the evidence allows.
@@ -157,7 +158,7 @@ function fromBoard(board: IndependentBoard): BestAnswer | null {
 function priceAnswer(models: ModelItem[]): BestAnswer | null {
   // Token-priced text models only; per-second and per-image pricing is not comparable.
   const field = models.filter(
-    (model) => outputClass(model) === "text" && !model.pricingUnit && model.pricing.input > 0 && model.pricing.output > 0,
+    (model) => outputClass(model) === "text" && !model.pricingUnit && isUsdPriced(model) && model.pricing.input > 0 && model.pricing.output > 0,
   )
   if (field.length < 4) return null
   // A 3:1 input to output mix: a stated, common chat ratio, not a quality claim.

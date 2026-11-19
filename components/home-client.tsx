@@ -7,7 +7,7 @@ import ModelDetailsModal from "@/components/model-details-modal"
 import { modelsData, type ModelItem } from "@/data/models"
 import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
-import { formatDate } from "@/lib/utils"
+import { formatDate, isUsdPriced, priceSymbol } from "@/lib/utils"
 import { folioFor, newestReleaseMonth } from "@/lib/registry"
 import { selectFeedback, tapFeedback, successFeedback } from "@/lib/feedback"
 import { ArrowUpRight, Copy, Check, X, Search, SearchX } from "lucide-react"
@@ -454,7 +454,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                             Input / 1M
                           </p>
                           <p className="text-small font-sans font-semibold tabular-nums text-fg-strong mt-0.5 truncate">
-                            {model.pricing.input === 0 ? "Free" : `$${model.pricing.input}`}
+                            {model.pricing.input === 0 ? "Free" : `${priceSymbol(model)}${model.pricing.input}`}
                           </p>
                         </div>
                         <div className="px-2.5 min-w-0">
@@ -496,7 +496,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
                         </span>
                         <span className="shrink-0 text-small text-fg-muted">{model.companyName}</span>
                         <span className="ml-auto shrink-0 text-small tabular-nums text-fg">
-                          {model.pricingUnit ? model.pricingUnit : `${usd(model.pricing.input)} / ${usd(model.pricing.output)}`}
+                          {model.pricingUnit ? model.pricingUnit : isUsdPriced(model) ? `${usd(model.pricing.input)} / ${usd(model.pricing.output)}` : `${priceSymbol(model)}${model.pricing.input} / ${priceSymbol(model)}${model.pricing.output}`}
                         </span>
                         <time dateTime={model.releaseDate} className="w-28 shrink-0 text-right text-small tabular-nums text-fg-muted">
                           {formatDate(model.releaseDate)}

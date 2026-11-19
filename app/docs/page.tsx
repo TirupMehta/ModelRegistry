@@ -385,7 +385,7 @@ export default function DocsPage() {
                 <FieldRow name="category · categoryLabel" type="string" desc="Machine bucket (image, video, flagship…) plus the human display label." />
                 <FieldRow name="contextWindow(Tokens)" type="string · number" desc="Human string plus sortable token count. Visual models use descriptive windows with a 0 count so they never outrank token models." />
                 <FieldRow name="parameters" type="string" desc="Architecture description. “Undisclosed (…)” where the lab has published nothing - never fabricated." />
-                <FieldRow name="pricing · pricingUnit" type="object · string?" desc="Per-1M-token input/output USD by default; pricingUnit (e.g. “per second”) marks non-token billing." />
+                <FieldRow name="pricing · pricingUnit · pricingCurrency" type="object · string? · string?" desc="Per-1M-token input/output USD by default; pricingUnit (e.g. “per second”) marks non-token billing; pricingCurrency (e.g. “INR”) marks a price the lab publishes in another currency, shown as published and never converted." />
                 <FieldRow name="modalities" type="string[]" desc="Text · Vision · Audio · Video · Code · Image, as applicable." />
                 <FieldRow name="benchmarks" type="object" desc="Lab-published scores only (sweBench, mmluPro, gpqa…). Empty object means none published." />
                 <FieldRow name="links" type="object" desc="Official announcement, playground, paper, apiDocs, weights URLs. Announcement is mandatory per contribution policy." />

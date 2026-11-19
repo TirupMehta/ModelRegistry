@@ -1,4 +1,5 @@
 import type { ModelItem } from "@/data/models"
+import { isUsdPriced } from "@/lib/utils"
 
 export type ModelSort = "default" | "newest" | "context" | "price" | "name"
 
@@ -36,7 +37,7 @@ export function filterModels(models: ModelItem[], filters: ModelFilters, preserv
     if (filters.modality !== "all" && !model.modalities.includes(filters.modality as ModelItem["modalities"][number])) return false
     if (minContext !== null && model.contextWindowTokens < minContext * 1000) return false
     // Per-second and other non-token prices are intentionally excluded from this token-price filter.
-    if (maxPrice !== null && (model.pricingUnit || model.pricing.input > maxPrice)) return false
+    if (maxPrice !== null && (model.pricingUnit || !isUsdPriced(model) || model.pricing.input > maxPrice)) return false
     return true
   })
 
@@ -44,7 +45,7 @@ export function filterModels(models: ModelItem[], filters: ModelFilters, preserv
     switch (filters.sort) {
       case "newest": result.sort((a, b) => b.releaseDate.localeCompare(a.releaseDate) || a.name.localeCompare(b.name)); break
       case "context": result.sort((a, b) => b.contextWindowTokens - a.contextWindowTokens || a.name.localeCompare(b.name)); break
-      case "price": result.sort((a, b) => (a.pricingUnit ? Infinity : a.pricing.input) - (b.pricingUnit ? Infinity : b.pricing.input) || a.name.localeCompare(b.name)); break
+      case "price": result.sort((a, b) => (a.pricingUnit || !isUsdPriced(a) ? Infinity : a.pricing.input) - (b.pricingUnit || !isUsdPriced(b) ? Infinity : b.pricing.input) || a.name.localeCompare(b.name)); break
       case "name": result.sort((a, b) => a.name.localeCompare(b.name)); break
     }
   }
