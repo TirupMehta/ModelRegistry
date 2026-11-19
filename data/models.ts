@@ -4898,7 +4898,7 @@ export const modelsData: ModelItem[] = [
     openWeights: true,
     license: "Tencent Hunyuan Community License",
     pricing: { input: 0.13, output: 0.53 },
-    highlight: "Tencent's previous-generation production model (July 2026); 295B MoE with configurable no-think/low/high reasoning, grounded anti-hallucination behavior, and sustained 30T+ monthly OpenRouter volume, superseded by Hy4 as lab flagship.",
+    highlight: "Released Jul 6, 2026; Tencent's previous-generation Hunyuan model, a 295B MoE with configurable no-think, low and high reasoning. Superseded by Hy4.",
     modalities: ["Text", "Code"],
     benchmarks: {},
     links: {
@@ -5010,6 +5010,12 @@ export const modelsData: ModelItem[] = [
     verificationStatus: "partially_verified",
     changeLog: [
       {
+        date: "2026-11-19",
+        summary: "Removed the unsourced OpenRouter-volume and anti-hallucination claims from the highlight. The record stays unconfirmed until a primary Tencent page is read.",
+        sources: [
+        ],
+      },
+      {
         date: "2026-07-06",
         summary: "Initial registry entry.",
         sources: [
@@ -5045,7 +5051,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "Tencent Hunyuan API Preview",
     pricing: { input: 0.83, output: 2.49 },
-    highlight: "Current #1 on OpenRouter by weekly tokens with +639% growth; preview of Tencent's next-generation reasoning model for agentic workflows.",
+    highlight: "Released Aug 27, 2026; the preview of Tencent's next-generation Hunyuan reasoning model for agentic workflows. Superseded by Hy4.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {},
     links: {
@@ -5156,6 +5162,12 @@ export const modelsData: ModelItem[] = [
     lastVerifiedAt: "2026-10-07",
     verificationStatus: "partially_verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Removed the unsourced OpenRouter ranking and growth claim from the highlight. The record stays unconfirmed until a primary Tencent page is read.",
+        sources: [
+        ],
+      },
       {
         date: "2026-08-27",
         summary: "Initial registry entry.",
@@ -6085,15 +6097,13 @@ export const modelsData: ModelItem[] = [
     contextWindow: "1,048,576 tokens",
     contextWindowTokens: 1048576,
     maxOutputTokens: "32,768 tokens",
-    parameters: "MiniMax MoE (MSA Architecture)",
+    parameters: "Undisclosed",
     openWeights: false,
     license: "MiniMax API",
     pricing: { input: 0.3, output: 1.2 },
-    highlight: "Top-5 OpenRouter volume; the default for OpenClaw-style autonomous agents, balancing reasoning depth with batch throughput.",
+    highlight: "Released May 31, 2026; MiniMax's M3 model, with a 1,048,576-token context. MiniMax lists $0.30/$1.20 per 1M tokens for prompts up to 512k input tokens and $0.60/$2.40 above that. Superseded by M3.1 Flash.",
     modalities: ["Text", "Vision", "Code"],
-    benchmarks: {
-      sweBench: "59% (SWE-Pro)",
-    },
+    benchmarks: {},
     links: {
       announcement: "https://www.minimaxi.com",
     },
@@ -6212,6 +6222,13 @@ export const modelsData: ModelItem[] = [
     lastVerifiedAt: "2026-10-07",
     verificationStatus: "partially_verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Re-read against MiniMax's pricing page: $0.30/$1.20 per 1M tokens up to 512k input tokens ($0.60/$2.40 above) confirmed. The unsourced OpenRouter-volume claim, the SWE-Pro 59% figure and the placeholder architecture text were removed. Context and release date still need a primary page.",
+        sources: [
+          "https://platform.minimax.io/docs/guides/pricing-paygo",
+        ],
+      },
       {
         date: "2026-05-31",
         summary: "Initial registry entry.",
@@ -7014,14 +7031,14 @@ export const modelsData: ModelItem[] = [
     statusBadge: "AGENT SWARM PICK",
     category: "flagship",
     categoryLabel: "Agent Orchestration",
-    contextWindow: "262,144 tokens",
-    contextWindowTokens: 262144,
+    contextWindow: "1M tokens",
+    contextWindowTokens: 1000000,
     maxOutputTokens: "32,768 tokens",
-    parameters: "Kimi MoE",
+    parameters: "2.8T total",
     openWeights: false,
     license: "Moonshot AI API",
     pricing: { input: 3.0, output: 15.0 },
-    highlight: "Top-12 OpenRouter volume; agent-swarm orchestration pick with ~90% cache hits making effective cost far lower than sticker price.",
+    highlight: "Released Jul 15, 2026; Moonshot's Kimi K3, described by Moonshot as a 2.8 trillion-parameter open-source model with native visual understanding and a 1M-token context. Superseded by Kimi K3.1 Pro.",
     modalities: ["Text", "Vision", "Code"],
     benchmarks: {},
     links: {
@@ -7134,6 +7151,13 @@ export const modelsData: ModelItem[] = [
     verificationStatus: "partially_verified",
     changeLog: [
       {
+        date: "2026-11-19",
+        summary: "Re-read against Moonshot's model page: the 1M-token context (was 262,144) and 2.8T total parameters are now recorded. The unsourced OpenRouter-volume and cache-hit claims were removed. The price still needs Moonshot's pricing table, which did not render.",
+        sources: [
+          "https://platform.kimi.ai/docs/models",
+        ],
+      },
+      {
         date: "2026-07-15",
         summary: "Initial registry entry.",
         sources: [
@@ -7171,7 +7195,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "DeepSeek API",
     pricing: { input: 0.09, output: 0.18 },
-    highlight: "Largest trailing-30-day total on OpenRouter (49.9T tokens); the default cost-first agent model at $0.09/M input with 1M context.",
+    highlight: "Released Jul 31, 2026; a DeepSeek V4 Flash checkpoint with a 1,048,576-token context at budget pricing. Superseded by DeepSeek-V4.1-Flash-1017.",
     modalities: ["Text", "Code"],
     benchmarks: {},
     links: {
@@ -7284,6 +7308,13 @@ export const modelsData: ModelItem[] = [
     verificationStatus: "partially_verified",
     changeLog: [
       {
+        date: "2026-11-19",
+        summary: "Removed the unsourced OpenRouter-volume claim from the highlight. DeepSeek's pricing page lists only the current V4.1 Flash and V4 Pro, so this record stays unconfirmed.",
+        sources: [
+          "https://api-docs.deepseek.com/quick_start/pricing",
+        ],
+      },
+      {
         date: "2026-07-31",
         summary: "Initial registry entry.",
         sources: [
@@ -7312,7 +7343,7 @@ export const modelsData: ModelItem[] = [
     openWeights: false,
     license: "DeepSeek API",
     pricing: { input: 0.09, output: 0.18 },
-    highlight: "Prior Flash checkpoint with durable 22T+ monthly volume; identical budget pricing for pinned production deployments.",
+    highlight: "Released Apr 24, 2026; an earlier DeepSeek V4 Flash checkpoint with a 1,048,576-token context at budget pricing. Superseded by later Flash checkpoints.",
     modalities: ["Text", "Code"],
     benchmarks: {},
     links: {
@@ -7424,6 +7455,13 @@ export const modelsData: ModelItem[] = [
     lastVerifiedAt: "2026-10-07",
     verificationStatus: "partially_verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Removed the unsourced OpenRouter-volume claim from the highlight. DeepSeek's pricing page lists only the current V4.1 Flash and V4 Pro, so this record stays unconfirmed.",
+        sources: [
+          "https://api-docs.deepseek.com/quick_start/pricing",
+        ],
+      },
       {
         date: "2026-04-24",
         summary: "Initial registry entry.",
