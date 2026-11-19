@@ -5506,6 +5506,13 @@ export const modelsData: ModelItem[] = [
     verificationStatus: "verified",
     changeLog: [
       {
+        date: "2026-11-19",
+        summary: "Promoted after a claim check: every numeric claim in the highlight and benchmarks was found on the record's cited pages, and its name, release date, context window and price were found on cited pages. Missing field citations were added.",
+        sources: [
+          "https://hy.tencent.ai/research/hy4-flash",
+        ],
+      },
+      {
         date: "2026-11-16",
         summary: "Initial registry entry. Takes the latest-checkpoint flag from Hy4 while Hy4 keeps the flagship label: Tencent recommends Hy4 for long-horizon software engineering and positions flash for everyday work. Recorded as open weights, released the same day under the Tencent Hy License.",
         sources: [
@@ -8847,9 +8854,16 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-11-14",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a claim check: every numeric claim in the highlight and benchmarks was found on the record's cited pages, and its name, release date, context window and price were found on cited pages. Missing field citations were added.",
+        sources: [
+          "https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-omni-1-2-flash/",
+        ],
+      },
       {
         date: "2026-11-05",
         summary: "Initial registry entry for the Gemini Omni 1.2 Flash generally available release.",
@@ -9472,9 +9486,16 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-11-14",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a claim check: every numeric claim in the highlight and benchmarks was found on the record's cited pages, and its name, release date, context window and price were found on cited pages. Missing field citations were added.",
+        sources: [
+          "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+        ],
+      },
       {
         date: "2026-09-15",
         summary: "Initial registry entry.",
@@ -9618,10 +9639,37 @@ export const modelsData: ModelItem[] = [
           live: true,
         },
       ],
+      maxOutputTokens: [
+        {
+          url: "https://docs.typesafe.ai/models",
+          publisher: "TypeSafe AI",
+          title: "Jev 1.14: no maximum output length is published, so it is recorded as Undisclosed; the model returns typed values",
+          accessedAt: "2026-11-19",
+          sourceType: "api-docs",
+          live: true,
+        },
+      ],
+      parameters: [
+        {
+          url: "https://docs.typesafe.ai/models",
+          publisher: "TypeSafe AI",
+          title: "Jev 1.14: no parameter count is published, recorded as Undisclosed",
+          accessedAt: "2026-11-19",
+          sourceType: "api-docs",
+          live: true,
+        },
+      ],
     },
-    lastVerifiedAt: "2026-11-18",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a claim check: every numeric claim in the highlight and benchmarks was found on the record's cited pages, and its name, release date, context window and price were found on cited pages. Missing field citations were added.",
+        sources: [
+          "https://docs.typesafe.ai/models",
+        ],
+      },
       {
         date: "2026-10-14",
         summary: "Initial registry entry. Supersedes Jev 1.0 (the Sept 15 record): same $0.042 per 1M input tokens with free output, now 64k context, image input and a Box question type.",
@@ -9962,9 +10010,16 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-11-14",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a claim check: every numeric claim in the highlight and benchmarks was found on the record's cited pages, and its name, release date, context window and price were found on cited pages. Missing field citations were added.",
+        sources: [
+          "https://research.meta.ai/blog/muse-wonder",
+        ],
+      },
       {
         date: "2026-10-12",
         summary: "Initial registry entry.",
@@ -10166,10 +10221,27 @@ export const modelsData: ModelItem[] = [
         live: true,
       },
       ],
+      maxOutputTokens: [
+        {
+          url: "https://research.meta.ai/blog/muse-spark-open",
+          publisher: "Meta",
+          title: "Muse Spark Open: no maximum output length is published, recorded as Undisclosed",
+          accessedAt: "2026-11-19",
+          sourceType: "announcement",
+          live: true,
+        },
+      ],
     },
-    lastVerifiedAt: "2026-11-14",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a claim check: every numeric claim in the highlight and benchmarks was found on the record's cited pages, and its name, release date, context window and price were found on cited pages. Missing field citations were added.",
+        sources: [
+          "https://research.meta.ai/blog/muse-spark-open",
+        ],
+      },
       {
         date: "2026-10-19",
         summary: "Initial registry entry.",
@@ -10533,9 +10605,16 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-11-14",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a claim check: every numeric claim in the highlight and benchmarks was found on the record's cited pages, and its name, release date, context window and price were found on cited pages. Missing field citations were added.",
+        sources: [
+          "https://reflection.ai/blog/beam-is-available",
+        ],
+      },
       {
         date: "2026-10-24",
         summary: "Initial registry entry.",
@@ -10719,9 +10798,16 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-24",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a claim check: every numeric claim in the highlight and benchmarks was found on the record's cited pages, and its name, release date, context window and price were found on cited pages. Missing field citations were added.",
+        sources: [
+          "https://elorian.ai/blog/introducing-glimpse",
+        ],
+      },
       {
         date: "2026-10-24",
         summary: "Initial registry entry.",
@@ -11075,9 +11161,16 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-10-24",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a claim check: every numeric claim in the highlight and benchmarks was found on the record's cited pages, and its name, release date, context window and price were found on cited pages. Missing field citations were added.",
+        sources: [
+          "https://www.minimax.io/blog/minimax-m31f",
+        ],
+      },
       {
         date: "2026-10-24",
         summary: "Initial registry entry.",
@@ -11419,9 +11512,16 @@ export const modelsData: ModelItem[] = [
       },
       ],
     },
-    lastVerifiedAt: "2026-11-14",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a claim check: every numeric claim in the highlight and benchmarks was found on the record's cited pages, and its name, release date, context window and price were found on cited pages. Missing field citations were added.",
+        sources: [
+          "https://platform.kimi.ai/docs/guide/kimi-k3-1-pro-quickstart",
+        ],
+      },
       {
         date: "2026-10-24",
         summary: "Initial registry entry; becomes Moonshot AI's flagship, superseding Kimi K3.",
@@ -13023,10 +13123,27 @@ export const modelsData: ModelItem[] = [
           note: "Same release day as the MAI models; the registry gives the latest-checkpoint flag to MAI Code 2, the lab's newest general model.",
         },
       ],
+      maxOutputTokens: [
+        {
+          url: "https://ai.azure.com/catalog/models/Microsoft-Decision-1.1",
+          publisher: "Microsoft",
+          title: "Microsoft-Decision-1.1: no maximum output is published; the model returns JSON scores, not generated text",
+          accessedAt: "2026-11-19",
+          sourceType: "model-card",
+          live: true,
+        },
+      ],
     },
-    lastVerifiedAt: "2026-11-18",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a claim check: every numeric claim in the highlight and benchmarks was found on the record's cited pages, and its name, release date, context window and price were found on cited pages. Missing field citations were added.",
+        sources: [
+          "https://ai.azure.com/catalog/models/Microsoft-Decision-1.1",
+        ],
+      },
       {
         date: "2026-11-17",
         summary: "Initial registry entry. Generally available in Microsoft Foundry as a Direct from Azure model, post-trained from Gemma 4 26B-A4B; first Microsoft model in the registry.",
@@ -13168,10 +13285,47 @@ export const modelsData: ModelItem[] = [
           live: true,
         },
       ],
+      isCompanyFlagship: [
+        {
+          url: "https://microsoft.ai/pdf/MAI-Code-2-And-MAI-Code-2-Flash-Model-Card.pdf",
+          publisher: "Microsoft",
+          title: "MAI Code 2: the model card calls MAI Code 2 the larger frontier model of the MAI Code 2 family",
+          accessedAt: "2026-11-19",
+          sourceType: "model-card",
+          live: true,
+        },
+      ],
+      isLatestCheckpoint: [
+        {
+          url: "https://microsoft.ai/pdf/MAI-Code-2-And-MAI-Code-2-Flash-Model-Card.pdf",
+          publisher: "Microsoft",
+          title: "MAI Code 2: the model card is dated 17 November 2026 and describes MAI Code 2 as Microsoft's newest coding model family",
+          accessedAt: "2026-11-19",
+          sourceType: "model-card",
+          live: true,
+        },
+      ],
+      benchmarks: [
+        {
+          url: "https://microsoft.ai/pdf/MAI-Code-2-And-MAI-Code-2-Flash-Model-Card.pdf",
+          publisher: "Microsoft",
+          title: "MAI Code 2: the model card's table gives Terminal-Bench 2.1 84.6% and DeepSWE 1.1 73.2% at max reasoning effort",
+          accessedAt: "2026-11-19",
+          sourceType: "model-card",
+          live: true,
+        },
+      ],
     },
     lastVerifiedAt: "2026-11-19",
-    verificationStatus: "partially_verified",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a manual read of the model card: Terminal-Bench 2.1 84.6%, DeepSWE 1.1 73.2%, 77B active and about 2.8T total parameters, 1,050,000 context, 128,000 output and the release date were all confirmed. The listed price is the promotional GitHub Copilot rate noted on the record.",
+        sources: [
+          "https://microsoft.ai/news/introducing-mai-code-2-and-mai-code-2-flash/",
+        ],
+      },
       {
         date: "2026-11-17",
         summary: "Initial registry entry. Generally available family of Microsoft agentic coding models with sparse MoE and an integrated vision encoder, 1,050,000-token context window, 128,000 output tokens.",
@@ -13326,10 +13480,37 @@ export const modelsData: ModelItem[] = [
           note: "Superseded by Microsoft-Decision-1.1.",
         },
       ],
+      maxOutputTokens: [
+        {
+          url: "https://ai.azure.com/catalog/models/Microsoft-Decision-1",
+          publisher: "Microsoft",
+          title: "Microsoft-Decision-1: no maximum output is published; the model returns JSON scores, not generated text",
+          accessedAt: "2026-11-19",
+          sourceType: "model-card",
+          live: true,
+        },
+      ],
+      isLatestCheckpoint: [
+        {
+          url: "https://ai.azure.com/catalog/models/Microsoft-Decision-1.1",
+          publisher: "Microsoft",
+          title: "Microsoft-Decision-1: Microsoft-Decision-1.1 (2026-11-17) is the newer decision model, so this record is not the latest",
+          accessedAt: "2026-11-19",
+          sourceType: "model-card",
+          live: true,
+        },
+      ],
     },
-    lastVerifiedAt: "2026-11-18",
-    verificationStatus: "partially_verified",
+    lastVerifiedAt: "2026-11-19",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a claim check: every numeric claim in the highlight and benchmarks was found on the record's cited pages, and its name, release date, context window and price were found on cited pages. Missing field citations were added.",
+        sources: [
+          "https://ai.azure.com/catalog/models/Microsoft-Decision-1",
+        ],
+      },
       {
         date: "2026-10-08",
         summary: "Initial registry entry, added after its successor Microsoft-Decision-1.1. Launched in public preview in Microsoft Foundry on a Qwen3.5-9B base; superseded by Microsoft-Decision-1.1.",
