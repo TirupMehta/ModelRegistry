@@ -37,7 +37,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**Xiaomi MiMo**](https://www.mi.com) | [MiMo-V2.6 Pro](https://modelregistry.tirup.in/models/mimo-v2-6-pro) | [MiMo-V2.6 Flash](https://modelregistry.tirup.in/models/mimo-v2-6-flash) | 1M | Open (MIT) | $0.435 in / $0.87 out *(Open)* |
 | [**Moonshot AI**](https://www.moonshot.ai) | [Kimi K3.1 Pro](https://modelregistry.tirup.in/models/kimi-k3-1-pro) | - | 1M | Open (Custom open-weight license, commercial thresholds) | $2 in / $10 out *(Open)* |
 | [**Kuaishou Kling**](https://klingai.com) | [Kling 3.0](https://modelregistry.tirup.in/models/kling-3-0) | - | - | Proprietary | $0.084 per second |
-| [**Runway**](https://runwayml.com) | [Runway Gen-4.5](https://modelregistry.tirup.in/models/runway-gen-4-5) | - | - | Proprietary | $0.15 per second |
+| [**Runway**](https://runwayml.com) | [Runway Gen-4.5](https://modelregistry.tirup.in/models/runway-gen-4-5) | - | - | Proprietary | $0.12 per second |
 | [**Sarvam AI**](https://www.sarvam.ai) | [Sarvam 105B](https://modelregistry.tirup.in/models/sarvam-105b) | - | 128k | Open (Apache 2.0) | ₹10 in / ₹25 out *(Open)* |
 | [**TypeSafe AI**](https://typesafe.ai) | [Jev 1.14](https://modelregistry.tirup.in/models/jev-1-14) | - | 64k | Proprietary | $0.042 in / $0 out |
 | [**Reflection AI**](https://reflection.ai) | [Beam](https://modelregistry.tirup.in/models/beam-1) | - | 1M | Open (Apache 2.0) | $0.25 in / $1 out *(Open)* |
