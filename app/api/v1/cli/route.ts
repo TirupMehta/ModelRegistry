@@ -88,7 +88,8 @@ export async function GET() {
 
   flagships.forEach((m, i) => {
     const num = String(i + 1).padStart(2, "0")
-    const sym = m.pricingCurrency === "INR" ? "₹" : m.pricingCurrency === "CNY" ? "¥" : "$"
+    // The terminal table is ASCII-only, so non-USD prices carry their currency code.
+    const sym = m.pricingCurrency ? `${m.pricingCurrency} ` : "$"
     const price = `${sym}${m.pricing.input}/${sym}${m.pricing.output}`
     table += ` ${num}  ${cell(labDisplay(m), COL_LAB)} ${cell(m.name, COL_MODEL)} ${cell(contextDisplay(m), COL_CTX)} ${cell(price, COL_PRICE)} ${m.releaseDate}\n`
   })
