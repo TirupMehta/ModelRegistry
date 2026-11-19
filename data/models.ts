@@ -9245,6 +9245,14 @@ export const modelsData: ModelItem[] = [
       },
       ],
       maxOutputTokens: [
+        {
+          url: "https://docs.sarvam.ai/api-reference-docs/getting-started/models/sarvam-105b",
+          publisher: "Sarvam AI",
+          title: "Sarvam 105B: maximum output depends on the plan: 4,096 on Starter, 16,384 on Pro, 128,000 on Business",
+          accessedAt: "2026-11-19",
+          sourceType: "api-docs",
+          live: true,
+        },
       {
         url: "https://docs.sarvam.ai/api-reference-docs/getting-started/models/sarvam-105b",
         publisher: "Sarvam AI",
@@ -9326,8 +9334,15 @@ export const modelsData: ModelItem[] = [
       ],
     },
     lastVerifiedAt: "2026-11-19",
-    verificationStatus: "partially_verified",
+    verificationStatus: "verified",
     changeLog: [
+      {
+        date: "2026-11-19",
+        summary: "Promoted after a manual read of Sarvam's model page and a claim check: context 128K, Apache 2.0, 105B parameters, plan-dependent maximum output and the rupee price all match the page; the release date and benchmark figures were found on the launch post.",
+        sources: [
+          "https://www.sarvam.ai/blogs/sarvam-30b-105b",
+        ],
+      },
       {
         date: "2026-11-19",
         summary: "Price corrected to Sarvam's published rupee rates, ₹10 input / ₹25 output per 1M tokens (introductory through the end of 2026), shown in rupees and not converted; the earlier $0.33/$0.83 had no source. Maximum output is plan-dependent (4,096 on Starter, 16,384 on Pro, 128,000 on Business) rather than 32,768.",
