@@ -31,7 +31,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**Alibaba Cloud (Qwen)**](https://qwenlm.github.io) | [Qwen4-Max](https://modelregistry.tirup.in/models/qwen4-max) | - | 1M | Proprietary | $1.5 in / $4.5 out |
 | [**Mistral AI**](https://mistral.ai) | [Mistral Large 4](https://modelregistry.tirup.in/models/mistral-large-4) | - | 1M | Open (Open Weights (27 Oct 2026)) | $1.36 in / $4.18 out *(Open)* |
 | [**Tencent Hunyuan**](https://hunyuan.tencent.com) | [Hy4](https://modelregistry.tirup.in/models/tencent-hy4) | [Hy4 flash](https://modelregistry.tirup.in/models/tencent-hy4-flash) | 1M | Proprietary | $0.83 in / $2.5 out |
-| [**Z.ai**](https://z.ai) | [GLM 5.3](https://modelregistry.tirup.in/models/glm-5-3) | [GLM 5.3 Flash](https://modelregistry.tirup.in/models/glm-5-3-flash) | 1M | Proprietary | $0.9 in / $2.7 out |
+| [**Z.ai**](https://z.ai) | [GLM 5.3](https://modelregistry.tirup.in/models/glm-5-3) | [GLM 5.3 Flash](https://modelregistry.tirup.in/models/glm-5-3-flash) | 1M | Proprietary | $1.4 in / $4.4 out |
 | [**MiniMax**](https://www.minimaxi.com) | [MiniMax M3.1 Flash](https://modelregistry.tirup.in/models/minimax-m3-1-flash) | - | 1M | Proprietary | $0.15 in / $0.6 out |
 | [**NVIDIA**](https://www.nvidia.com) | [Nemotron 3 Ultra 550B](https://modelregistry.tirup.in/models/nemotron-3-ultra) | [Nemotron 3.5 Super VL](https://modelregistry.tirup.in/models/nemotron-3-5-super-vl) | 262k | Open (NVIDIA Open Model) | $0.6 in / $2.4 out *(Open)* |
 | [**Xiaomi MiMo**](https://www.mi.com) | [MiMo-V2.6 Pro](https://modelregistry.tirup.in/models/mimo-v2-6-pro) | [MiMo-V2.6 Flash](https://modelregistry.tirup.in/models/mimo-v2-6-flash) | 1M | Open (MIT) | $0.435 in / $0.87 out *(Open)* |
