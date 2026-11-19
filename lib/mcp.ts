@@ -50,9 +50,7 @@ HOW TO ANSWER
 - Cite the model page URL and datasetVersion. Record ids are stable kebab-case.
 - Specification figures are lab-reported unless a cited source states otherwise; benchmarks are never independently reproduced.
 - lastVerifiedAt is the date a source was reviewed, not a live availability signal. Dataset revision dates never substitute for field verification.
-- There is no "partially verified" badge: sources and the last-checked date are shown directly.
 - Retired records stay for history; provider availability may have changed.
-- Unverified records can never carry flagship or latest labels.
 - An unmapped model is not unavailable: provider coverage is OpenRouter-only and explicit.
 
 DISCOVERY
@@ -503,9 +501,7 @@ export function getPrompt(name: string, args: Record<string, string> | undefined
 Before answering, internalise these rules:
 - Specification figures are lab-reported unless a cited source states otherwise; benchmarks are never independently reproduced.
 - lastVerifiedAt is the date a source was reviewed, not a live availability signal. Dataset revision dates never substitute for field verification.
-- There is no "partially verified" badge: sources and the last-checked date are shown directly.
 - Retired records stay for history; provider availability may have changed.
-- Unverified records can never carry flagship or latest labels.
 - An unmapped model is not unavailable: provider coverage is OpenRouter-only and explicit.
 
 Discovery:

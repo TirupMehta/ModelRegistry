@@ -10,8 +10,8 @@
 export const leaderboardSpotlights: Record<string, string[]> = {
   // Chosen from the independent Artificial Analysis results (see data/independent-benchmarks.ts)
   // and limited to current models: a superseded record is not something a reader can pick.
-  reasoning: ["claude-fable-5-2", "gpt-6-2-astra", "gemini-4-carbon", "claude-opus-5-5"],
-  coding: ["claude-fable-5-2", "claude-opus-5-5", "gpt-6-2-astra", "gpt-6-1-terra"],
+  reasoning: ["claude-fable-5-2", "gpt-6-2-astra", "gemini-4-neon", "claude-opus-5-5"],
+  coding: ["claude-fable-5-2", "claude-opus-5-5", "gpt-6-2-astra", "gemini-4-neon"],
   value: ["gpt-6-2-sol", "gpt-6-1-terra", "muse-ember", "mimo-v2-6-flash"],
 }
 
@@ -33,14 +33,14 @@ export const leaderboardMethodology: Record<string, LeaderboardSectionMethodolog
   reasoning: {
     basis:
       "Highest scores on the Artificial Analysis Intelligence Index v5.0.1 among current models, run by the evaluator on the same tasks for every model. Not a universal 'best model' title.",
-    evaluatedAt: "2026-11-11",
+    evaluatedAt: "2026-11-19",
     sources: ["https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index"],
     claimGuidance: "Say 'highest published score in this comparison'. Never 'best reasoning model'.",
   },
   coding: {
     basis:
       "Highest scores on FrontierCode 2.0 among current models: real open-source repository tasks graded on whether a maintainer would merge the change, run independently by Artificial Analysis. Many are statistically tied; see the best-by-task page.",
-    evaluatedAt: "2026-11-11",
+    evaluatedAt: "2026-11-19",
     sources: ["https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index"],
     claimGuidance: "Say 'highest published score in this comparison'. Never 'best coding model'.",
   },

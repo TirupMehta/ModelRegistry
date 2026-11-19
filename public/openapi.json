@@ -630,7 +630,7 @@
       "ModelItem": {
         "type": "object",
         "description": "One registry record. Benchmark figures are lab-reported, not independently reproduced.",
-        "required": ["id", "companyId", "name", "releaseDate", "pricing", "sources", "fieldSources", "lastVerifiedAt", "verificationStatus", "changeLog"],
+        "required": ["id", "companyId", "name", "releaseDate", "pricing", "sources", "fieldSources", "lastVerifiedAt", "changeLog"],
         "properties": {
           "id": { "type": "string", "description": "Stable kebab-case record ID.", "example": "mistral-large-4" },
           "companyId": { "type": "string", "example": "mistral" },
@@ -675,7 +675,7 @@
             "additionalProperties": { "type": "array", "items": { "$ref": "#/components/schemas/SourceRef" } }
           },
           "lastVerifiedAt": { "type": "string", "format": "date", "description": "Date a source was reviewed. Not a live availability signal." },
-          "verificationStatus": { "type": "string", "enum": ["verified", "partially_verified", "unverified", "retired"] },
+          "verificationStatus": { "type": "string", "enum": ["verified", "retired"], "description": "Present only when the record is confirmed (verified) or retired." },
           "changeLog": {
             "type": "array",
             "items": {
@@ -689,16 +689,6 @@
             }
           },
           "supersededBy": { "type": "string", "description": "Replacement record id, when retired." }
-        }
-      },
-      "VerificationCounts": {
-        "type": "object",
-        "description": "Status counts over the returned models.",
-        "properties": {
-          "verified": { "type": "integer" },
-          "partially_verified": { "type": "integer" },
-          "unverified": { "type": "integer" },
-          "retired": { "type": "integer" }
         }
       },
       "CompanyRollup": {
@@ -720,7 +710,6 @@
           "total": { "type": "integer" },
           "updatedAt": { "type": "string", "format": "date", "description": "Last real data revision (YYYY-MM-DD), never the request time." },
           "datasetVersion": { "type": "string", "example": "2026.11.05-r8" },
-          "verification": { "$ref": "#/components/schemas/VerificationCounts" },
           "methodology": { "type": "string", "format": "uri" },
           "metadata": {
             "type": "object",
@@ -840,9 +829,6 @@
           "datasetVersion": { "type": "string" },
           "datasetLastChangedAt": { "type": "string", "format": "date" },
           "oldestVerificationDate": { "type": "string", "format": "date" },
-          "verifiedModelCount": { "type": "integer" },
-          "partiallyVerifiedModelCount": { "type": "integer" },
-          "unverifiedModelCount": { "type": "integer" },
           "retiredModelCount": { "type": "integer" },
           "upstreamAvailability": {
             "type": "object",
@@ -876,7 +862,7 @@
               "properties": { "name": { "type": "string" } }
             }
           },
-          "_verification_status": { "type": "string", "enum": ["verified", "partially_verified", "unverified", "retired"] }
+          "_verification_status": { "type": "string", "enum": ["verified", "retired"] }
         }
       },
       "JsonFeed": {

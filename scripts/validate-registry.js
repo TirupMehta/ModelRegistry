@@ -268,7 +268,7 @@ modelsData.forEach((model, index) => {
   if (isCurrent) {
     if (model.verificationStatus !== "verified" && model.verificationStatus !== "partially_verified") {
       errors.push(
-        `${prefix}: Labeled flagship/latest but verificationStatus is '${model.verificationStatus}'. Current labels require verified or partially_verified evidence.`
+        `${prefix}: Labeled flagship/latest but verificationStatus is '${model.verificationStatus}'. Current labels require verified or partially_verified (internal) evidence.`
       )
     }
     const liveSources = (model.sources || []).filter((s) => s && s.live === true)

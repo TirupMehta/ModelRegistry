@@ -138,7 +138,7 @@ ${flagshipsTable()}
 - \`GET ${SITE_URL}/api/v1/snapshot\` - versioned full-dataset download
 - \`GET ${SITE_URL}/llms.txt\` - compact per-lab summary
 - \`GET ${SITE_URL}/llms-full.txt\` - exhaustive field matrix
-- \`GET ${SITE_URL}/api/check-updates\` - dataset counts and verification snapshot
+- \`GET ${SITE_URL}/api/check-updates\` - dataset revision and oldest source-review date
 - \`POST ${SITE_URL}/api/mcp\` - MCP server endpoint (JSON-RPC 2.0, stateless; tools: list_models, get_model, list_labs, get_changes, get_health, read_page_markdown)
 
 All of the above are free, unauthenticated, and read-only. Send
@@ -259,7 +259,7 @@ Versioned full-dataset JSON download with a dated filename.
 
 ## GET /api/check-updates
 
-Dataset revision, per-status counts, oldest verification date, and an unrelated
+Dataset revision, oldest source-review date, and an unrelated
 upstream reachability heartbeat. Poll no more than once every five minutes.
 
 ## GET /api/v1/cli
@@ -447,9 +447,6 @@ benchmark figures are attributed.
   source-review date, not a live availability claim.
 - **Retired**: the laboratory has withdrawn or superseded the model; the
   record stays for history.
-- There is no public "partially verified" badge: a label that applies to
-  almost every record says nothing, so sources and the last-checked date are
-  shown directly instead.
 - **Benchmarks** are lab-reported unless a model page says otherwise. Figures
   from different harness versions or test conditions are not directly
   comparable and are never used to crown a universal winner.`
@@ -607,7 +604,7 @@ node ModelRegistry/cli/index.mjs markdown /docs
   \`--flagship-only\`, \`--latest-only\`)
 - \`model <id>\` - one record with specs, pricing, license, verification, sources
 - \`changes\` - changelog entries (\`--since\`, \`--until\`, \`--model\`, \`--company\`, \`--limit\`)
-- \`health\` - dataset revision, status counts, oldest source check
+- \`health\` - dataset revision, oldest source check
 - \`markdown [path]\` - Markdown view of any page (default \`/\`)
 - Global: \`--json\`, \`--base-url <url>\`, \`--timeout <ms>\`
 

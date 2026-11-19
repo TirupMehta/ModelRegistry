@@ -112,7 +112,7 @@ node ModelRegistry/cli/index.mjs markdown /docs`}</Code>
           <Row name="models" desc="List tracked models. Filters: --company, --category, --open-weights, --flagship-only, --latest-only." />
           <Row name="model <id>" desc="One record: specs, pricing, license, verification status, lab-reported benchmarks, sources." />
           <Row name="changes" desc="Changelog entries newest first. Filters: --since, --until, --model, --company, --limit." />
-          <Row name="health" desc="Dataset revision, per-status counts, oldest source check, upstream reachability." />
+          <Row name="health" desc="Dataset revision, oldest source check, upstream reachability." />
           <Row name="markdown [path]" desc="Markdown rendering of any page, default /. Same bytes an agent gets from Accept: text/markdown." />
           <Row name="--json" desc="Print the untouched API payload instead of a table." />
           <Row name="--base-url" desc="Point at a preview or local build. Also read from MODELREGISTRY_BASE_URL." />

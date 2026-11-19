@@ -76,11 +76,8 @@ method not found, -32602 invalid params, -32603 internal).
   never independently reproduced.
 - \`lastVerifiedAt\` is the date a source was reviewed, not a live availability
   signal. Dataset revision dates never substitute for field verification.
-- There is no "partially verified" badge: sources and the last-checked date are
-  shown directly.
 - Retired records stay in the dataset for history; provider availability may
   have changed.
-- Unverified records can never carry flagship or latest labels.
 
 ## Other surfaces
 

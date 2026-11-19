@@ -78,10 +78,6 @@ export default function DocsPage() {
   // Sample mirrors GET /api/v1/models in trimmed form. Every value below
   // derives from the live dataset so the reference cannot rot - see
   // app/api/v1/models/route.ts for the canonical shape.
-  const verification = { verified: 0, partially_verified: 0, unverified: 0, retired: 0 }
-  for (const m of modelsData) {
-    verification[m.verificationStatus] = (verification[m.verificationStatus] || 0) + 1
-  }
   const openaiFlagship = modelsData.find((m) => m.companyId === "openai" && m.isCompanyFlagship)
   const openaiCheckpoint = modelsData.find(
     (m) => m.companyId === "openai" && m.isLatestCheckpoint && !m.isCompanyFlagship
@@ -94,7 +90,6 @@ export default function DocsPage() {
   "total": ${modelsData.length},
   "updatedAt": "${datasetRevision.revisedAt}",
   "datasetVersion": "${datasetRevision.datasetVersion}",
-  "verification": ${JSON.stringify(verification)},
   "metadata": { "registry": "ModelRegistry", "license": "Open Data / MIT" },
   "companies": [{ "id": "openai", "page": "/companies/openai",
     "latestFlagship": "${openaiFlagship?.name ?? ""}", "latestCheckpoint": "${openaiCheckpoint?.name ?? ""}" }],

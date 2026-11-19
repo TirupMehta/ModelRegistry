@@ -30,7 +30,7 @@ Commands
   models                 List tracked frontier models
   model <id>             Show one model by its stable id
   changes                List changelog entries (incremental sync)
-  health                 Dataset revision, verification counts, upstream status
+  health                 Dataset revision, oldest source check, upstream status
   markdown [path]        Print the Markdown view of a site page (default "/")
   help                   Show this help
 

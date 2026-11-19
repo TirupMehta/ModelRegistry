@@ -39,10 +39,10 @@ export async function GET() {
     upstream = "unreachable"
   }
 
-  const counts = { verified: 0, partially_verified: 0, unverified: 0, retired: 0 }
+  const counts = { retired: 0 }
   let oldestVerificationDate: string | null = null
   for (const m of modelsData) {
-    counts[m.verificationStatus] = (counts[m.verificationStatus] || 0) + 1
+    if (m.verificationStatus === "retired") counts.retired += 1
     if (!oldestVerificationDate || m.lastVerifiedAt < oldestVerificationDate) {
       oldestVerificationDate = m.lastVerifiedAt
     }
@@ -54,9 +54,6 @@ export async function GET() {
     datasetVersion: datasetRevision.datasetVersion,
     datasetLastChangedAt: datasetRevision.revisedAt,
     oldestVerificationDate,
-    verifiedModelCount: counts.verified,
-    partiallyVerifiedModelCount: counts.partially_verified,
-    unverifiedModelCount: counts.unverified,
     retiredModelCount: counts.retired,
     upstreamAvailability: {
       openrouter: upstream,

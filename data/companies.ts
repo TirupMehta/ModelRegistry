@@ -19,9 +19,9 @@ export const companies: Record<string, Company> = {
     website: "https://www.anthropic.com",
     headquarters: "San Francisco, CA",
     accentColor: "#d97706",
-    description: "Creator of the Claude family; pioneers of adaptive thinking, Enterprise Frontier Safeguards (EFS), and agentic knowledge work.",
+    description: "Creator of the Claude family; pioneers of adaptive thinking, Enterprise Frontier Safeguards (EFS), and agentic knowledge work. Claude Fable 5.2 is, per Anthropic, the same underlying model as Claude Mythos 5.2, the variant without the cyber and biology safeguards reserved for vetted cyber and life-sciences organizations.",
     latestFlagship: "Claude Fable 5.2",
-    latestReasoning: "Claude Mythos 5.2 (Restricted) / Claude Fable 5.2",
+    latestReasoning: "Claude Fable 5.2 / Claude Mythos 5.2 (Restricted)",
     openWeightsAdvocate: false,
   },
   openai: {
@@ -43,9 +43,9 @@ export const companies: Record<string, Company> = {
     website: "https://deepmind.google",
     headquarters: "London, UK / Mountain View, CA",
     accentColor: "#4285f4",
-    description: "Creators of the Gemini 4 family: Gemini 4 Carbon, the strongest model with state-of-the-art cybersecurity and #1 on the Artificial Analysis Intelligence Index (59) at $2/$10 intro pricing; Gemini 4 Argon for long-horizon engineering and 1M-token output; Gemini 4 Hydrogen, the fast execution tier shipped Nov 12 at $1.50/$7.50 with a 1M-token context; plus Gemini Omni 1.2 Flash for native 15-second video with multi-turn edits.",
+    description: "Creators of the Gemini 4 family: Gemini 4 Carbon, the strongest model with state-of-the-art cybersecurity at $2/$10 intro pricing; Gemini 4 Argon for long-horizon engineering and 1M-token output; Gemini 4 Neon, the balanced middle tier shipped Nov 18 at $3/$15 with a 1M-token context; Gemini 4 Hydrogen, the fast execution tier shipped Nov 12 at $1.50/$7.50; plus Gemini Omni 1.2 Flash for native 15-second video with multi-turn edits.",
     latestFlagship: "Gemini 4 Carbon",
-    latestReasoning: "Gemini 4 Carbon / Gemini 4 Argon",
+    latestReasoning: "Gemini 4 Carbon / Gemini 4 Neon",
     openWeightsAdvocate: true,
   },
   xai: {
@@ -91,9 +91,9 @@ export const companies: Record<string, Company> = {
     website: "https://qwenlm.github.io",
     headquarters: "Hangzhou, China",
     accentColor: "#8b5cf6",
-    description: "Massive open and proprietary foundation ecosystem, leading global charts with the Qwen3.8 series and 2.4T open MoE models.",
-    latestFlagship: "Qwen3.8 2.4T A95B",
-    latestReasoning: "Qwen3.8 Flash (Multimodal Reasoning)",
+    description: "Massive open and proprietary foundation ecosystem: Qwen4-Max is the proprietary Qwen4 flagship at 2.4T parameters with native vision and a 1M context, while Qwen3.8 2.4T A95B remains the largest open-weight model in the family.",
+    latestFlagship: "Qwen4-Max",
+    latestReasoning: "Qwen4-Max (Deep Thinking)",
     openWeightsAdvocate: true,
   },
   mistral: {
@@ -117,9 +117,9 @@ export const companies: Record<string, Company> = {
     headquarters: "Shenzhen, China",
     accentColor: "#00a9e0",
     description:
-      "Creator of the Hunyuan Hy4 series: a 770B total / ~49B active MoE with native vision, 1M context, and CLI + GUI computer-use trained on Blender, CAD, and multi-app long-horizon tasks, at $0.83/$2.50 per 1M tokens.",
+      "Creator of the Hunyuan Hy4 series: Hy4 is a 770B total / ~49B active MoE with native vision, 1M context, and CLI + GUI computer-use trained on Blender, CAD, and multi-app long-horizon tasks at $0.83/$2.50 per 1M tokens; Hy4 flash, shipped Nov 16, is the open-weight 220B / 12B active everyday tier at $0.07/$0.281.",
     latestFlagship: "Hy4",
-    latestReasoning: "Hy4",
+    latestReasoning: "Hy4 / Hy4 flash",
     openWeightsAdvocate: true,
   },
   "z-ai": {
@@ -278,8 +278,8 @@ export const companies: Record<string, Company> = {
     headquarters: "Redmond, WA",
     accentColor: "#0078d4",
     description:
-      "Microsoft-Decision-1.1, a Foundry decision model post-trained from Google's Gemma 4 26B-A4B that returns calibrated probabilities for fixed answer options instead of generated text, at $0.042 per 1M input tokens.",
-    latestFlagship: "Microsoft-Decision-1.1",
+      "MAI Code 2 (frontier agentic coding model, 2.8T total / 77B active, 1M context), plus the Microsoft-Decision-1.1 Foundry decision model post-trained from Google's Gemma 4 26B-A4B that returns calibrated probabilities for fixed answer options instead of generated text, at $0.042 per 1M input tokens.",
+    latestFlagship: "MAI Code 2",
     openWeightsAdvocate: false,
   },
 }

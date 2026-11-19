@@ -3,6 +3,7 @@ import { createHash } from "crypto"
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
+import { toPublicModel } from "@/lib/verification"
 
 export const dynamic = "force-dynamic"
 
@@ -42,11 +43,6 @@ export async function GET(request: Request) {
     filtered = filtered.filter((m) => m.isLatestCheckpoint)
   }
 
-  const verification = { verified: 0, partially_verified: 0, unverified: 0, retired: 0 }
-  for (const m of filtered) {
-    verification[m.verificationStatus] = (verification[m.verificationStatus] || 0) + 1
-  }
-
   const body = {
     status: "success",
     total: filtered.length,
@@ -54,7 +50,6 @@ export async function GET(request: Request) {
     // See data/revision.ts (scripts/write-revision.js) and /methodology.
     updatedAt: datasetRevision.revisedAt,
     datasetVersion: datasetRevision.datasetVersion,
-    verification,
     methodology: "https://modelregistry.tirup.in/methodology",
     metadata: {
       registry: "ModelRegistry",
@@ -76,7 +71,7 @@ export async function GET(request: Request) {
         latestCheckpoint: checkpoint?.name || "",
       }
     }),
-    models: filtered,
+    models: filtered.map(toPublicModel),
   }
 
   const etag = `"${createHash("sha256")

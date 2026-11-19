@@ -24,13 +24,13 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 |:---|:---|:---|:---|:---|:---|
 | [**Anthropic**](https://www.anthropic.com) | [Claude Fable 5.2](https://modelregistry.tirup.in/models/claude-fable-5-2) | - | 1M | Proprietary | $8 in / $40 out |
 | [**OpenAI**](https://openai.com) | [GPT-6.2 Sol](https://modelregistry.tirup.in/models/gpt-6-2-sol) | - | 1M | Proprietary | $2 in / $10 out |
-| [**Google DeepMind**](https://deepmind.google) | [Gemini 4 Carbon](https://modelregistry.tirup.in/models/gemini-4-carbon) | [Gemini 4 Hydrogen](https://modelregistry.tirup.in/models/gemini-4-hydrogen) | - | Proprietary | $2 in / $10 out |
+| [**Google DeepMind**](https://deepmind.google) | [Gemini 4 Carbon](https://modelregistry.tirup.in/models/gemini-4-carbon) | [Gemini 4 Neon](https://modelregistry.tirup.in/models/gemini-4-neon) | - | Proprietary | $2 in / $10 out |
 | [**xAI**](https://x.ai) | [Grok 4.7](https://modelregistry.tirup.in/models/grok-4-7) | [Grok Voice 3.0](https://modelregistry.tirup.in/models/grok-voice-3) | 500k | Proprietary | $2 in / $6 out |
 | [**DeepSeek**](https://www.deepseek.com) | [DeepSeek V4.1 Flash 1017](https://modelregistry.tirup.in/models/deepseek-v4-1-flash-1017) | - | 1M | Open (MIT) | $0.15 in / $0.6 out *(Open)* |
 | [**Meta AI**](https://ai.meta.com) | [Muse Wonder](https://modelregistry.tirup.in/models/muse-wonder) | [Muse Ember](https://modelregistry.tirup.in/models/muse-ember) | 1M | Proprietary | $4 in / $20 out |
-| [**Alibaba Cloud (Qwen)**](https://qwenlm.github.io) | [Qwen3.8 2.4T A95B](https://modelregistry.tirup.in/models/qwen-3-8-2-4t-a95b) | [Qwen3.8 Omni Flash](https://modelregistry.tirup.in/models/qwen-3-8-omni-flash) | 1M | Open (Qwen3.8-Max (custom, license:other)) | $2 in / $6 out *(Open)* |
+| [**Alibaba Cloud (Qwen)**](https://qwenlm.github.io) | [Qwen4-Max](https://modelregistry.tirup.in/models/qwen4-max) | - | 1M | Proprietary | $1.5 in / $4.5 out |
 | [**Mistral AI**](https://mistral.ai) | [Mistral Large 4](https://modelregistry.tirup.in/models/mistral-large-4) | - | 1M | Open (Open Weights (27 Oct 2026)) | $1.36 in / $4.18 out *(Open)* |
-| [**Tencent Hunyuan**](https://hunyuan.tencent.com) | [Hy4](https://modelregistry.tirup.in/models/tencent-hy4) | - | 1M | Proprietary | $0.83 in / $2.5 out |
+| [**Tencent Hunyuan**](https://hunyuan.tencent.com) | [Hy4](https://modelregistry.tirup.in/models/tencent-hy4) | [Hy4 flash](https://modelregistry.tirup.in/models/tencent-hy4-flash) | 1M | Proprietary | $0.83 in / $2.5 out |
 | [**Z.ai**](https://z.ai) | [GLM 5.3](https://modelregistry.tirup.in/models/glm-5-3) | [GLM 5.3 Flash](https://modelregistry.tirup.in/models/glm-5-3-flash) | 1M | Proprietary | $0.9 in / $2.7 out |
 | [**MiniMax**](https://www.minimaxi.com) | [MiniMax M3.1 Flash](https://modelregistry.tirup.in/models/minimax-m3-1-flash) | - | 1M | Proprietary | $0.15 in / $0.6 out |
 | [**NVIDIA**](https://www.nvidia.com) | [Nemotron 3 Ultra 550B](https://modelregistry.tirup.in/models/nemotron-3-ultra) | [Nemotron 3.5 Super VL](https://modelregistry.tirup.in/models/nemotron-3-5-super-vl) | 262k | Open (NVIDIA Open Model) | $0.6 in / $2.4 out *(Open)* |
@@ -44,7 +44,7 @@ Hosted at **[modelregistry.tirup.in](https://modelregistry.tirup.in)**.
 | [**Elorian**](https://elorian.ai) | [Glimpse](https://modelregistry.tirup.in/models/glimpse) | - | 262k | Proprietary | $0.6 in / $3 out |
 | [**Inception Labs**](https://inceptionlabs.ai) | [Mercury 3](https://modelregistry.tirup.in/models/mercury-3) | - | 1M | Proprietary | $0.1 in / $0.35 out |
 | [**Ricursive Intelligence**](https://ricursive.ai) | [Ripple-65B Preview](https://modelregistry.tirup.in/models/ripple-65b-preview) | - | 1M | Open (Apache 2.0) | $0.2 in / $0.6 out *(Open)* |
-| [**Microsoft**](https://www.microsoft.com) | [Microsoft-Decision-1.1](https://modelregistry.tirup.in/models/microsoft-decision-1-1) | - | 33k | Proprietary | $0.042 in / $0 out |
+| [**Microsoft**](https://www.microsoft.com) | [MAI Code 2](https://modelregistry.tirup.in/models/mai-code-2) | - | 1M | Proprietary | $0.5 in / $2.5 out |
 Where Latest Checkpoint is empty, the lab's newest release *is* its flagship (already listed to the left).
 
 <!-- REGISTRY_TABLE_END -->

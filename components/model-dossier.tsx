@@ -40,10 +40,6 @@ import { ArrowUpRight, Check, ChevronDown, ExternalLink } from "lucide-react";
 
 const VERIFICATION_COPY: Record<string, string> = {
   verified: "Every displayed field is traced to a primary source.",
-  partially_verified:
-    "Some fields rest on a single secondary mention; nothing displayed is contradicted.",
-  unverified:
-    "Figures are tracked but not yet confirmed against a primary document.",
   retired: "Superseded. Kept for history and linked to its replacement.",
 };
 
@@ -96,7 +92,7 @@ export function ModelProvenance({ model }: { model: ModelItem }) {
 
         <div className="pt-3 text-small font-sans leading-5 text-fg-muted">
           <p>
-            {VERIFICATION_COPY[model.verificationStatus] ?? ""}{" "}
+            {VERIFICATION_COPY[model.verificationStatus] ?? "Every source below is cited to the page it was read from."}{" "}
             <Link
               href="/trust"
               className="text-accent-ink hover:underline underline-offset-2"
