@@ -54,6 +54,7 @@ const EDITORIAL_PATTERNS: RegExp[] = [
   /\bDEFAULT\b/,
   /\bWORKHORSE\b/,
   /\bFAVORITE\b/,
+  /\bLOVED\b/,
   /\bPICK\b/,
   /\bKING\b/,
   /\bVALUE\b/,
