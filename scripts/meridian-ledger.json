@@ -75,12 +75,12 @@
     "gpt-6-1-terra": {
       "score": 563,
       "tests": 9,
-      "inputs": "fe3b9e53d428"
+      "inputs": "70c0b58e92f8"
     },
     "gpt-6-2-astra": {
       "score": 635,
       "tests": 9,
-      "inputs": "34b519c5a016"
+      "inputs": "fc7985d7117f"
     },
     "gpt-6-2-sol": {
       "score": 606,
@@ -90,7 +90,7 @@
     "grok-4-7": {
       "score": 502,
       "tests": 10,
-      "inputs": "320b9b81dbdc"
+      "inputs": "569c32da430f"
     },
     "kimi-k3-1-pro": {
       "score": 567,
