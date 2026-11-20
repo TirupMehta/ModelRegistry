@@ -12,6 +12,8 @@ import {
 } from "@/lib/leaderboards"
 import { AGREEMENT_LABEL, CORROBORATED_SPREAD, CONTESTED_SPREAD, HELD_OUT_LABEL, MIN_TESTS_FOR_STANDING, MIN_TESTS_PER_ACCESS, STANDING_VERSION } from "@/lib/standing"
 import { TEST_ACCESS_SOURCE } from "@/data/independent-benchmarks"
+import { EPOCH_EVALUATOR } from "@/data/epoch-eci"
+import { buildAgreement } from "@/lib/agreement"
 import {
   INDEPENDENT_EVALUATOR,
   buildIndependentBoards,
@@ -87,6 +89,8 @@ export default function ScorePage() {
     privateNames: namesFor("private").join(", "),
     publicNames: namesFor("public").join(", "),
   }
+  const agreement = buildAgreement(standing.rows)
+  const rankLabel = (rank: number) => (Number.isInteger(rank) ? String(rank) : `${Math.floor(rank)}=`)
   const disagreementPoints = Math.round(standing.betweenTestSd)
   const contested = standing.rows.filter((row) => row.agreement === "contested").length
   const unstable = standing.rows.filter((row) => row.auditable && !row.stable).length
@@ -120,6 +124,10 @@ export default function ScorePage() {
     {
       q: "How can I tell whether a model is tuned to public benchmarks?",
       a: `Compare its results on tests whose answers are private with its results on tests whose answers are public. The page publishes that gap for every rated model with its 95% band. ${beyondNoise === 0 ? "Today no model's gap is larger than its band." : `Today ${beyondNoise} of ${heldRows.length} models have a gap larger than their band.`} A gap is a pattern in the results, not a finding about how a model was trained.`,
+    },
+    {
+      q: "Does the score depend on a single evaluator?",
+      a: `Mostly, and the page checks it. Nine of the ten tests come from ${INDEPENDENT_EVALUATOR.name}; the tenth is arena.ai's blind human-preference Elo. As a cross-check the page compares the score with ${EPOCH_EVALUATOR.name}'s ${EPOCH_EVALUATOR.index}, a different method on 50+ other benchmarks, which is never mixed into the score. On the ${agreement.covered} of ${agreement.rated} rated models both cover, the rank correlation is ${agreement.rho === null ? "not reported" : agreement.rho.toFixed(2)}, and ${agreement.pairs.same} of ${agreement.pairs.separable} pairs that both can tell apart are ordered the same way.`,
     },
   ]
 
@@ -386,6 +394,64 @@ export default function ScorePage() {
                     {row.heldOut!.privateTests} private, {row.heldOut!.publicTests} public
                   </td>
                   <td className="py-2.5 text-small text-fg-muted">{HELD_OUT_LABEL[row.heldOut!.reading]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* A different evaluator, a different method: does it order the models the same way? */}
+        <h2 id="second-evaluator" className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
+          Agreement with a second evaluator
+        </h2>
+        <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
+          The score rests mainly on one evaluator&rsquo;s tests, so it is checked against a different method.{" "}
+          <a href={EPOCH_EVALUATOR.url} className="underline decoration-black/20 underline-offset-2 hover:text-accent-ink dark:decoration-white/25">
+            {EPOCH_EVALUATOR.name}&rsquo;s {EPOCH_EVALUATOR.index}
+          </a>{" "}
+          fits 50+ other benchmarks onto one scale. It is a cross-check only and is never mixed into the score.
+          Across the {agreement.covered} of {agreement.rated} rated models it also covers, the two order the models
+          with a rank correlation of {agreement.rho === null ? "n/a" : agreement.rho.toFixed(2)} (1 means identical
+          order). Of the {agreement.pairs.separable} pairs of models that both can tell apart, {agreement.pairs.same} are
+          ordered the same way.
+        </p>
+        <p className="text-small font-sans text-fg-muted mb-4 max-w-2xl">
+          The two draw on some of the same benchmark families, so agreement shows the result is consistent, not
+          that the sources are fully separate. {agreement.notCovered.length} rated models are not in Epoch&rsquo;s file
+          under a matching name ({agreement.notCovered.map((row) => row.model.name).join(", ")}) and are left out
+          rather than estimated. {EPOCH_EVALUATOR.method} Data: {EPOCH_EVALUATOR.license}, read {EPOCH_EVALUATOR.retrievedAt}.
+        </p>
+        <div className="mb-12 overflow-x-auto">
+          <table className="w-full text-left text-body font-sans">
+            <thead>
+              <tr className="border-b border-black/10 text-small text-fg-muted dark:border-white/[0.08]">
+                <th className="py-2 pr-4 font-medium">Model</th>
+                <th className="py-2 pr-4 font-medium">ModelRegistry Score</th>
+                <th className="py-2 pr-4 font-medium">Epoch ECI</th>
+                <th className="py-2 pr-4 font-medium">Our rank</th>
+                <th className="py-2 pr-4 font-medium">Epoch rank</th>
+                <th className="py-2 font-medium">Difference</th>
+              </tr>
+            </thead>
+            <tbody>
+              {agreement.rows.map((item) => (
+                <tr key={item.row.model.id} className="rule-b">
+                  <td className="py-2.5 pr-4">
+                    <Link href={`/models/${item.row.model.id}`} className="font-medium text-black hover:text-accent-ink dark:text-white">
+                      {item.row.model.name}
+                    </Link>
+                  </td>
+                  <td className="py-2.5 pr-4 tabular-nums text-fg">
+                    {item.row.standing} <span className="text-fg-muted">&plusmn;{Math.round((item.row.band[1] - item.row.band[0]) / 2)}</span>
+                  </td>
+                  <td className="py-2.5 pr-4 tabular-nums text-fg">
+                    {item.epoch.eci.toFixed(1)} <span className="text-fg-muted">&plusmn;{((item.epoch.ciHigh - item.epoch.ciLow) / 2).toFixed(1)}</span>
+                  </td>
+                  <td className="py-2.5 pr-4 tabular-nums text-fg">{rankLabel(item.ourRank)}</td>
+                  <td className="py-2.5 pr-4 tabular-nums text-fg">{rankLabel(item.epochRank)}</td>
+                  <td className="py-2.5 tabular-nums text-fg-muted">
+                    {item.gap === 0 ? "same" : `${Math.abs(item.gap)} ${Math.abs(item.gap) === 1 ? "place" : "places"} ${item.gap > 0 ? "lower here" : "higher here"}`}
+                  </td>
                 </tr>
               ))}
             </tbody>

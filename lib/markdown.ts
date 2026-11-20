@@ -6,6 +6,8 @@ import { REPO_URL } from "@/lib/github"
 import { formatPrice, isUsdPriced, priceSymbol } from "@/lib/utils"
 import { CONTESTED_SPREAD, MIN_TESTS_FOR_STANDING, STANDING_VERSION } from "@/lib/standing"
 import { buildIndependentStanding } from "@/lib/independent"
+import { INDEPENDENT_BENCHMARKS } from "@/data/independent-benchmarks"
+import { buildAgreement } from "@/lib/agreement"
 import { LEADERBOARD_VERSION, MIN_COHORT_SIZE, leaderboardStats } from "@/lib/leaderboards"
 import { splitLineup } from "@/lib/currency"
 import { buildBestAnswers } from "@/lib/best"
@@ -835,6 +837,12 @@ function scoreDocument(): MarkdownDocument {
   const { boards, tests } = leaderboardStats(modelsData, { currentOnly: true })
   const disagreement = Math.round(standing.betweenTestSd)
   const contested = standing.rows.filter((row) => row.agreement === "contested").length
+  const agreement = buildAgreement(standing.rows)
+  const heldRows = standing.rows.filter((row) => row.heldOut)
+  const heldCount = heldRows.length
+  const beyondNoise = heldRows.filter((row) => row.heldOut!.reading !== "within-noise").length
+  const privateCount = INDEPENDENT_BENCHMARKS.filter((info) => info.access === "private").length
+  const publicCount = INDEPENDENT_BENCHMARKS.filter((info) => info.access === "public").length
 
   const rated = table(
     ["Tier", "Model", "Laboratory", "Score", "95% band", "Tests", "Spread", "Tests measured"],
@@ -916,6 +924,11 @@ ${rated}
 A model needs at least ${MIN_TESTS_FOR_STANDING} tests to receive a score. Spread is the
 distance, in score points, between the model's best and worst test, so a large
 spread means the tests tell different stories about the same model.
+
+## Checks on the score
+
+- **Public tests against private tests.** The evaluator keeps ${privateCount} of its tests private and publishes ${publicCount}. Each model's gap (private-test average minus public-test average, in score points, with a 95% band) is on its page and in /api/v1/standing. ${beyondNoise === 0 ? "No model's gap is larger than its band." : `${beyondNoise} of ${heldCount} models have a gap larger than their band.`}
+- **A second evaluator.** Epoch AI's Epoch Capabilities Index (a different method on 50+ other benchmarks, never mixed into the score) covers ${agreement.covered} of ${agreement.rated} rated models. The two order them with a rank correlation of ${agreement.rho === null ? "n/a" : agreement.rho.toFixed(2)}, and ${agreement.pairs.same} of ${agreement.pairs.separable} pairs that both can tell apart are ordered the same way.
 
 ## Models measured on one test
 

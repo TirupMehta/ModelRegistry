@@ -9,6 +9,7 @@ import {
   positionsFor,
 } from "@/lib/leaderboards";
 import { AGREEMENT_LABEL, HELD_OUT_LABEL, standingFor } from "@/lib/standing";
+import { epochRecords } from "@/data/epoch-eci";
 import {
   INDEPENDENT_EVALUATOR,
   buildIndependentBoards,
@@ -452,6 +453,19 @@ export function ModelPositions({ model }: { model: ModelItem }) {
                 Tier {rated.tier} &middot; {rated.cohorts} tests &middot; spread{" "}
                 {rated.spread.toFixed(0)}
               </p>
+              {(() => {
+                const epoch = epochRecords.find((record) => record.modelId === model.id);
+                return epoch ? (
+                  <p className="mt-1 text-small font-sans text-fg-muted">
+                    <a href="/score#second-evaluator" className="hover:text-accent-ink">
+                      Epoch Capabilities Index
+                    </a>{" "}
+                    <span className="tabular-nums">
+                      {epoch.eci.toFixed(1)} ({epoch.ciLow.toFixed(1)} to {epoch.ciHigh.toFixed(1)})
+                    </span>
+                  </p>
+                ) : null;
+              })()}
               {rated.heldOut && (
                 <p className="mt-1 text-small font-sans text-fg-muted">
                   <a href="/score#public-vs-private" className="hover:text-accent-ink">
