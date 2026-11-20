@@ -139,12 +139,15 @@ export default function ScorePage() {
     isAccessibleForFree: true,
     about: { "@id": `${SITE}/#organization` },
     keywords: [
+      "ModelRegistry Score",
+      "AI model score across benchmarks",
       "AI benchmark leaderboard",
       "LLM benchmark comparison",
-      "GPQA ranking",
-      "MMLU-Pro ranking",
-      "SWE-bench ranking",
-      "Terminal-Bench ranking",
+      "private versus public benchmarks",
+      "benchmark tuning check",
+      "Terminal-Bench",
+      "HLE-Diamond",
+      "FrontierCode",
     ],
   }
 
@@ -208,11 +211,22 @@ export default function ScorePage() {
           How the models compare
         </h1>
         <p className="text-title text-fg-muted leading-7 max-w-2xl mb-5">
-          A standing across tests, an honest measure of how much those tests disagree, and a refusal
-          to rate a model on evidence that cannot corroborate itself. Only the current lineup is
-          ranked: a superseded checkpoint is not something a reader can choose today, so it is kept
-          below with its replacement instead of being placed against current models.
+          The ModelRegistry Score is one number for how an AI model performs across independent
+          benchmarks, measured against a fixed reference so it never moves when another model is added.
+          It comes with an honest measure of how much the tests disagree, each model&rsquo;s results on private
+          tests against public tests, and a refusal to rate a model on evidence that cannot corroborate
+          itself. Only the current lineup is ranked: a superseded checkpoint is kept below with its
+          replacement instead of being placed against current models.
         </p>
+        <div className="tile p-4 mb-5 max-w-2xl">
+          <h2 className="text-body font-sans font-semibold text-fg-strong mb-1.5">How to read a score</h2>
+          <ul className="space-y-1 text-body font-sans text-fg-muted leading-6">
+            <li>500 is the average of the reference models; every 100 points is one step of spread among them.</li>
+            <li>The &plusmn; figure is the 95% band. Two models whose bands overlap are in the same tier, not ranked against each other.</li>
+            <li>The spread is how far apart a model&rsquo;s own tests put it. A large spread means a compromise between tests, not a clear result.</li>
+            <li>The public-versus-private gap shows whether a model is stronger on tests whose answers it could have seen.</li>
+          </ul>
+        </div>
         <p className="mb-8 flex flex-wrap items-center gap-2 text-small font-sans text-fg-muted">
           <span>ModelRegistry Score v{STANDING_VERSION}</span>
           <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
@@ -951,6 +965,22 @@ export default function ScorePage() {
             </div>
           ))}
         </div>
+
+        <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
+          What changed in the score
+        </h2>
+        <ul className="mb-8 max-w-2xl space-y-1.5 text-body font-sans text-fg-muted leading-6">
+          <li>
+            <span className="tabular-nums text-fg">2026-11-20</span> &middot; Added the public-versus-private
+            test gap. No score, place or tier changed. Renamed from &ldquo;Meridian&rdquo; to ModelRegistry
+            Score; the method and the API fields are unchanged.
+          </li>
+          <li>
+            <span className="tabular-nums text-fg">2026-11-17</span> &middot; Version 3.0.0: the reference
+            calibration was frozen against {INDEPENDENT_EVALUATOR.suite}. Scores change only if the evaluator
+            publishes a new suite or the registry declares a new calibration on purpose.
+          </li>
+        </ul>
 
         <p className="text-body font-sans text-fg-muted leading-6">
           ModelRegistry Score v{STANDING_VERSION}, rank rule v{LEADERBOARD_VERSION}, minimum cohort{" "}

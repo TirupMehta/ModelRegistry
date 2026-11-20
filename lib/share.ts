@@ -3,6 +3,7 @@ import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
 import { independentRecords } from "@/data/independent-benchmarks"
+import { buildIndependentStanding } from "@/lib/independent"
 import { SITE_NAME, SITE_URL } from "@/lib/site"
 
 /**
@@ -89,7 +90,7 @@ export function pageCard(path: string): PageCard | null {
     case "/retired":
       return base("Retired", "Retired models", "Models kept for history after a lab withdrew them.", String(retired), "Retired records", [`${models} models`, `Revised ${rev}`])
     case "/score":
-      return base("ModelRegistry Score", "The ModelRegistry Score", "A fixed-reference score across the independent tests.", String(independentRecords.length), "Models scored", ["Fixed calibration", `Revised ${rev}`])
+      return base("ModelRegistry Score", "The ModelRegistry Score", "A fixed-reference score across the independent tests.", String(buildIndependentStanding(modelsData).rated), "Models rated", ["Fixed calibration", `Revised ${rev}`])
     case "/suggest":
       return base("Suggest a model", "Suggest a model", "Propose a model for the registry. Every suggestion is reviewed.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/timeline":
