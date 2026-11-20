@@ -56,13 +56,13 @@ EXECUTIVE KNOWLEDGE SUMMARY (GEO GROUNDING)
   text += `\n===============================================================================\n`
   text += `MERIDIAN SCORES (cross-test, ${standing.rated} rated, tests disagree by about ${Math.round(standing.betweenTestSd)} points)\n`
   text += `===============================================================================\n`
-  text += `Meridian version ${STANDING_VERSION}; rules: ${siteUrl}/methodology. Machine-readable: ${siteUrl}/api/v1/standing. Markdown: ${siteUrl}/api/markdown/score.\n`
-  text += `Meridian is measured against a frozen reference, so a score never changes because another model was added: 500 is the reference average, 100 points is one reference standard deviation, and there is no ceiling. Each score carries a 95% band. Rows in the same tier are not separated by the evidence. Only current models are ranked; superseded records are listed below and not ranked.\n\n`
+  text += `ModelRegistry Score version ${STANDING_VERSION}; rules: ${siteUrl}/methodology. Machine-readable: ${siteUrl}/api/v1/standing. Markdown: ${siteUrl}/api/markdown/score.\n`
+  text += `The ModelRegistry Score is measured against a frozen reference, so a score never changes because another model was added: 500 is the reference average, 100 points is one reference standard deviation, and there is no ceiling. Each score carries a 95% band. Rows in the same tier are not separated by the evidence. Only current models are ranked; superseded records are listed below and not ranked.\n\n`
   standing.rows.forEach((row) => {
-    text += `- Tier ${row.tier}: ${row.model.name} (${row.model.companyName}) - Meridian ${row.standing} (95% band ${row.band[0]} to ${row.band[1]}), ${row.cohorts} tests, spread ${Math.round(row.spread)} points, ${AGREEMENT_LABEL[row.agreement]}. Tests: ${row.tests.join("; ")}.\n`
+    text += `- Tier ${row.tier}: ${row.model.name} (${row.model.companyName}) - score ${row.standing} (95% band ${row.band[0]} to ${row.band[1]}), ${row.cohorts} tests, spread ${Math.round(row.spread)} points, ${AGREEMENT_LABEL[row.agreement]}. Tests: ${row.tests.join("; ")}.\n`
   })
   if (standing.singleTest.length > 0) {
-    text += `\nMeasured on one test only (a position, not a Meridian score):\n`
+    text += `\nMeasured on one test only (a position, not a ModelRegistry Score):\n`
     standing.singleTest.forEach((row) => {
       text += `- ${row.model.name} (${row.model.companyName}): ${row.test}, ${row.rank} of ${row.of}, ${row.score}.\n`
     })

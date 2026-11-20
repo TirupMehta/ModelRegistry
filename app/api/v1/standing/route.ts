@@ -2,10 +2,11 @@ import { NextResponse } from "next/server"
 import { createHash } from "crypto"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
-import { CONTESTED_SPREAD, CORROBORATED_SPREAD, MIN_TESTS_FOR_STANDING, STABILITY_TOLERANCE, STANDING_VERSION } from "@/lib/standing"
+import { CONTESTED_SPREAD, CORROBORATED_SPREAD, MIN_TESTS_FOR_STANDING, MIN_TESTS_PER_ACCESS, STABILITY_TOLERANCE, STANDING_VERSION } from "@/lib/standing"
 import { PRIOR_TESTS, SOFT_LIMIT } from "@/lib/meridian"
 import { meridianCalibration } from "@/data/meridian-calibration"
 import { INDEPENDENT_EVALUATOR, buildIndependentStanding } from "@/lib/independent"
+import { INDEPENDENT_BENCHMARKS, TEST_ACCESS_SOURCE } from "@/data/independent-benchmarks"
 import { splitLineup } from "@/lib/currency"
 import { leaderboardStats, LEADERBOARD_VERSION, MIN_COHORT_SIZE } from "@/lib/leaderboards"
 import { SITE_URL } from "@/lib/site"
@@ -13,7 +14,7 @@ import { SITE_URL } from "@/lib/site"
 export const dynamic = "force-dynamic"
 
 /**
- * The Meridian score as machine-readable data. The calibration constants are
+ * The ModelRegistry Score as machine-readable data. The calibration constants are
  * published in full, so every score here can be recomputed from the evaluator's
  * own readings without trusting this endpoint.
  *
@@ -49,9 +50,16 @@ export async function GET() {
       retrievedAt: INDEPENDENT_EVALUATOR.retrievedAt,
       method: INDEPENDENT_EVALUATOR.method,
       laboratoryReportedScoresIncluded: false,
+      testAccess: {
+        source: TEST_ACCESS_SOURCE.url,
+        checkedAt: TEST_ACCESS_SOURCE.checkedAt,
+        private: INDEPENDENT_BENCHMARKS.filter((b) => b.access === "private").map((b) => b.label),
+        public: INDEPENDENT_BENCHMARKS.filter((b) => b.access === "public").map((b) => b.label),
+      },
     },
     scale: {
-      name: "Meridian",
+      name: "ModelRegistry Score",
+      formerName: "Meridian",
       referenceAverage: 500,
       pointsPerReferenceStandardDeviation: 100,
       ceiling: null,
@@ -71,6 +79,7 @@ export async function GET() {
       band: "95% band from the pooled disagreement between a model's own tests: 1.96 x noise x sqrt(tests) / (tests + prior) on the same scale",
       tiers: "a row joins the tier of the row above unless its gap to the tier leader exceeds 1.96 x the combined standard error",
       audit: "leave one test out; test dependent when the model moves more than 2 places",
+      heldOutGap: `mean limited z on private tests minus mean on public tests, in score points; 95% half-width 1.96 x noise x sqrt(1/private + 1/public); computed only with at least ${MIN_TESTS_PER_ACCESS} tests on each side; reading is within-noise unless the gap exceeds its half-width`,
     },
     calibration: meridianCalibration,
     betweenTest: {
@@ -111,6 +120,7 @@ export async function GET() {
       stable: row.stable,
       maxShift: row.maxShift,
       unanimous: row.unanimous,
+      heldOut: row.heldOut,
       tests: row.tests,
     })),
     singleTest: standing.singleTest.map((row) => ({

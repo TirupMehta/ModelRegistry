@@ -3,6 +3,7 @@ import { meridianCalibration } from "@/data/meridian-calibration"
 import {
   MERIDIAN_VERSION,
   MeridianInputError,
+  Z95,
   composite,
   separable,
   standardError,
@@ -12,7 +13,7 @@ import {
 } from "./meridian"
 
 /**
- * Cross-test standing, published as the Meridian score.
+ * Cross-test standing, published as the ModelRegistry Score (the method keeps its internal name, Meridian; the public name changed in 2026-11 because "Meridian score" collides with Google's Meridian marketing tool).
  *
  * Every ranking site publishes one number across several exams. That number is
  * usually a mean of raw percentages, which treats four exams as one scale, or a
@@ -64,7 +65,61 @@ const WELL_CALIBRATED = 8
 /** A test is saturated when its top three scores sit within this many raw points. */
 const SATURATION_GAP = 10
 
+/** Tests needed on each side (private and public) before a gap is computed at all. */
+export const MIN_TESTS_PER_ACCESS = 2
+
 export type Agreement = "corroborated" | "mixed" | "contested"
+
+export type Access = "private" | "public"
+
+/**
+ * How a model's results on tests whose answers are kept private compare with
+ * its results on tests whose answers are public. A model tuned to public
+ * benchmarks does better on them than on tests it cannot have seen, so a gap
+ * that is larger than the noise is worth a reader's attention. It is a
+ * measurement of the pattern, not a finding about how the model was trained.
+ */
+export interface HeldOutGap {
+  privateTests: number
+  publicTests: number
+  /** Private minus public, in Meridian points. Negative means stronger on public tests. */
+  gap: number
+  /** 95% half-width of the gap, in Meridian points. */
+  halfWidth: number
+  reading: "within-noise" | "public-stronger" | "private-stronger"
+}
+
+export const HELD_OUT_LABEL: Record<HeldOutGap["reading"], string> = {
+  "within-noise": "No gap beyond noise",
+  "public-stronger": "Stronger on public tests",
+  "private-stronger": "Stronger on private tests",
+}
+
+/** Difference between a model's private-test and public-test results, or null when either side is too thin. */
+export function heldOutGap(
+  zs: readonly number[],
+  access: readonly (Access | null)[],
+  calibration: Calibration,
+): HeldOutGap | null {
+  const priv: number[] = []
+  const pub: number[] = []
+  zs.forEach((z, index) => {
+    if (access[index] === "private") priv.push(z)
+    else if (access[index] === "public") pub.push(z)
+  })
+  if (priv.length < MIN_TESTS_PER_ACCESS || pub.length < MIN_TESTS_PER_ACCESS) return null
+  const mean = (values: number[]) => values.reduce((sum, value) => sum + value, 0) / values.length
+  const sd = calibration.composite.sd
+  const gap = (100 * (mean(priv) - mean(pub))) / sd
+  const halfWidth = (Z95 * 100 * calibration.noise * Math.sqrt(1 / priv.length + 1 / pub.length)) / sd
+  return {
+    privateTests: priv.length,
+    publicTests: pub.length,
+    gap: Math.round(gap),
+    halfWidth: Math.round(halfWidth),
+    reading: Math.abs(gap) <= halfWidth ? "within-noise" : gap < 0 ? "public-stronger" : "private-stronger",
+  }
+}
 
 export interface StandingTestPoint {
   test: string
@@ -104,6 +159,8 @@ export interface StandingRow {
   stable: boolean
   /** True when the model is top of every cohort it reports. */
   unanimous: boolean
+  /** Private-test versus public-test results, or null when either side has too few tests. */
+  heldOut: HeldOutGap | null
 }
 
 export interface SingleTestRow {
@@ -157,6 +214,8 @@ export interface RankableBoard {
   id: string
   test: string
   domain: string
+  /** Whether the evaluator keeps this test's answers private. Omitted or null: not classified. */
+  access?: Access | null
   entries: {
     model: ModelItem
     reading: { value: number | null; score: string }
@@ -168,6 +227,7 @@ interface Draft {
   model: ModelItem
   /** Limited z per test, same order as boardIds. */
   zs: number[]
+  access: (Access | null)[]
   boardIds: string[]
   tests: string[]
   unanimous: boolean
@@ -236,6 +296,7 @@ export function buildStanding(
   const drafts: Draft[] = []
   for (const model of models) {
     const zs: number[] = []
+    const access: (Access | null)[] = []
     const boardIds: string[] = []
     const tests: string[] = []
     let unanimous = true
@@ -243,12 +304,13 @@ export function buildStanding(
       const entry = board.entries.find((candidate) => candidate.model.id === model.id)
       if (!entry) continue
       zs.push(testZ(board.test, entry.reading.value as number, calibration.tests[board.id]))
+      access.push(board.access ?? null)
       boardIds.push(board.id)
       tests.push(board.test)
       const best = Math.max(...board.entries.map((candidate) => candidate.reading.value as number))
       if (entry.reading.value !== best) unanimous = false
     }
-    if (zs.length > 0) drafts.push({ model, zs, boardIds, tests, unanimous: unanimous && zs.length > 1 })
+    if (zs.length > 0) drafts.push({ model, zs, access, boardIds, tests, unanimous: unanimous && zs.length > 1 })
   }
 
   // ---- rated rows ------------------------------------------------------
@@ -279,6 +341,7 @@ export function buildStanding(
         maxShift: 0,
         stable: true,
         unanimous: draft.unanimous,
+        heldOut: heldOutGap(draft.zs, draft.access, calibration),
         draft,
       }
     })

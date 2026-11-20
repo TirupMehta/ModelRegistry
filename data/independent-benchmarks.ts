@@ -36,6 +36,12 @@ export interface IndependentBenchmarkInfo {
   /** What a reader would call the capability. */
   domain: string
   unit: "index" | "percent" | "elo" | "net"
+  /**
+   * Whether the evaluator keeps the test set private, as its methodology page
+   * states in the Private column. null: not a task test (human votes) or not a
+   * test at all (the composite).
+   */
+  access: "private" | "public" | null
   /** Task count when the evaluator states it; used for the sampling-error band. */
   tasks: number | null
   /** One plain sentence on what is measured. */
@@ -48,6 +54,7 @@ export const INDEPENDENT_BENCHMARKS: IndependentBenchmarkInfo[] = [
     label: "Text Arena (human preference)",
     domain: "Human preference in blind chat votes",
     unit: "elo",
+    access: null,
     tasks: null,
     measures:
       "Elo from millions of blind side-by-side votes by real users on arena.ai. It measures what people prefer, not whether an answer is correct, and a second, different evaluator from the task benchmarks.",
@@ -57,6 +64,7 @@ export const INDEPENDENT_BENCHMARKS: IndependentBenchmarkInfo[] = [
     label: "AA Intelligence Index v5.0.1",
     domain: "Overall (evaluator's composite)",
     unit: "index",
+    access: null,
     tasks: null,
     measures:
       "Artificial Analysis's own weighted composite of nine evaluations. It is their number and their weighting, not ModelRegistry's.",
@@ -66,6 +74,7 @@ export const INDEPENDENT_BENCHMARKS: IndependentBenchmarkInfo[] = [
     label: "Terminal-Bench 4.0",
     domain: "Agentic command-line work",
     unit: "percent",
+    access: "public",
     tasks: 66,
     measures: "66 hard multi-step terminal tasks across software, ML, security and operations.",
   },
@@ -74,6 +83,7 @@ export const INDEPENDENT_BENCHMARKS: IndependentBenchmarkInfo[] = [
     label: "FrontierCode 2.0",
     domain: "Software engineering",
     unit: "percent",
+    access: "private",
     tasks: 132,
     measures:
       "132 private tasks in real open-source repositories, graded on whether a maintainer would merge the change.",
@@ -83,6 +93,7 @@ export const INDEPENDENT_BENCHMARKS: IndependentBenchmarkInfo[] = [
     label: "HLE-Diamond",
     domain: "Expert knowledge and reasoning",
     unit: "percent",
+    access: "public",
     tasks: 1000,
     measures: "1,000 expert-level questions from Humanity's Last Exam, half reasoning and half knowledge.",
   },
@@ -91,6 +102,7 @@ export const INDEPENDENT_BENCHMARKS: IndependentBenchmarkInfo[] = [
     label: "CritPt v2 (Hard)",
     domain: "Research-level physics",
     unit: "percent",
+    access: "private",
     tasks: 70,
     measures: "70 research-level physics challenges solved with a code tool.",
   },
@@ -99,6 +111,7 @@ export const INDEPENDENT_BENCHMARKS: IndependentBenchmarkInfo[] = [
     label: "Terminal-Bench-Science 0.1",
     domain: "Scientific workflows",
     unit: "percent",
+    access: "public",
     tasks: 70,
     measures: "70 expert-authored research workflows completed in a terminal.",
   },
@@ -107,6 +120,7 @@ export const INDEPENDENT_BENCHMARKS: IndependentBenchmarkInfo[] = [
     label: "AutomationBench",
     domain: "Business workflow automation",
     unit: "percent",
+    access: "private",
     tasks: null,
     measures: "Share of objectives completed across simulated SaaS workflows without breaking a guardrail.",
   },
@@ -115,6 +129,7 @@ export const INDEPENDENT_BENCHMARKS: IndependentBenchmarkInfo[] = [
     label: "AA-Briefcase v1.1",
     domain: "Agentic knowledge work",
     unit: "elo",
+    access: "private",
     tasks: null,
     measures: "Long-horizon business deliverables (spreadsheets, decks, memos), reported as an Elo.",
   },
@@ -123,6 +138,7 @@ export const INDEPENDENT_BENCHMARKS: IndependentBenchmarkInfo[] = [
     label: "AA-Omniscience v1.1",
     domain: "Factual reliability",
     unit: "net",
+    access: "private",
     tasks: null,
     measures:
       "Net score from -100 to 100: correct answers minus hallucinations, with no penalty for declining to answer.",
@@ -132,6 +148,7 @@ export const INDEPENDENT_BENCHMARKS: IndependentBenchmarkInfo[] = [
     label: "GDP.pdf",
     domain: "Long professional documents",
     unit: "percent",
+    access: "public",
     tasks: null,
     measures: "Reasoning over long real-world documents against detailed task criteria.",
   },
@@ -163,6 +180,14 @@ export interface IndependentRecord {
   /** Results that cannot be ranked inside the registry (too few models), shown as printed. */
   extras?: { label: string; value: string; note: string; sourceUrl: string }[]
 }
+
+/** Where each test's private or public status was read, and when. */
+export const TEST_ACCESS_SOURCE = {
+  url: "https://artificialanalysis.ai/methodology/intelligence-benchmarking",
+  checkedAt: "2026-11-20",
+  statement:
+    "Artificial Analysis lists AA-Briefcase, AutomationBench-AA, FrontierCode-AA 2.0, CritPt v2 and AA-Omniscience as private test sets, and GDP.pdf, Terminal-Bench 4.0, Terminal-Bench-Science and HLE-Diamond as not private.",
+} as const
 
 export const INDEPENDENT_EVALUATOR = {
   name: "Artificial Analysis",

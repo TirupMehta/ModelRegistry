@@ -24,6 +24,26 @@ import {
   type Palette,
 } from "@/lib/og-card"
 
+/**
+ * Longest description a card can hold above its footer at 20px on a 640px
+ * column. A longer text is cut at the last full sentence that fits, else at the
+ * last word, so the footer and the site address are never pushed off the card.
+ * The full text stays on the page; the card shows its opening.
+ */
+const CARD_TEXT_LIMIT = 360
+
+function clampText(text: string, limit = CARD_TEXT_LIMIT): string {
+  const clean = text.replace(/\s+/g, " ").trim()
+  if (clean.length <= limit) return clean
+  const head = clean.slice(0, limit)
+  const sentence = Math.max(head.lastIndexOf(". "), head.lastIndexOf("; "))
+  if (sentence >= limit * 0.5) return `${head.slice(0, sentence)}.`
+  const comma = head.lastIndexOf(", ")
+  if (comma >= limit * 0.6) return `${head.slice(0, comma)}…`
+  const word = head.lastIndexOf(" ")
+  return `${head.slice(0, word > 0 ? word : limit).replace(/[,;:\s]+$/, "")}…`
+}
+
 function renderCard(
   children: ReactNode,
   opts: { palette: Palette; sans: string; fonts: OgFont[] }
@@ -156,7 +176,7 @@ export async function GET(req: NextRequest) {
                   maxWidth: "640px",
                 }}
               >
-                {factCard.blurb}
+                {clampText(factCard.blurb)}
               </div>
             </div>
             <ColumnRule palette={palette} height={232} />
@@ -291,7 +311,7 @@ export async function GET(req: NextRequest) {
                   maxWidth: "640px",
                 }}
               >
-                {model.highlight}
+                {clampText(model.highlight)}
               </div>
             </div>
             <ColumnRule palette={palette} height={232} />
@@ -376,7 +396,7 @@ export async function GET(req: NextRequest) {
                   maxWidth: "640px",
                 }}
               >
-                {lab.description}
+                {clampText(lab.description)}
               </div>
             </div>
             <ColumnRule palette={palette} height={232} />
