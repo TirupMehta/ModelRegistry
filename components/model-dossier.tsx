@@ -8,7 +8,7 @@ import {
   excludedReadings,
   positionsFor,
 } from "@/lib/leaderboards";
-import { AGREEMENT_LABEL, standingFor } from "@/lib/standing";
+import { AGREEMENT_LABEL, HELD_OUT_LABEL, standingFor } from "@/lib/standing";
 import {
   INDEPENDENT_EVALUATOR,
   buildIndependentBoards,
@@ -435,7 +435,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
               <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                 <span className="flex items-baseline gap-x-2">
                   <span className="text-body font-sans text-fg-muted">
-                    Meridian score
+                    ModelRegistry Score
                   </span>
                   <span className="text-title font-display font-semibold tracking-tight text-fg-strong tabular-nums leading-none">
                     {rated.standing}
@@ -452,6 +452,18 @@ export function ModelPositions({ model }: { model: ModelItem }) {
                 Tier {rated.tier} &middot; {rated.cohorts} tests &middot; spread{" "}
                 {rated.spread.toFixed(0)}
               </p>
+              {rated.heldOut && (
+                <p className="mt-1 text-small font-sans text-fg-muted">
+                  <a href="/score#public-vs-private" className="hover:text-accent-ink">
+                    {HELD_OUT_LABEL[rated.heldOut.reading]}
+                  </a>{" "}
+                  <span className="tabular-nums">
+                    ({rated.heldOut.privateTests} private, {rated.heldOut.publicTests} public; gap{" "}
+                    {rated.heldOut.gap > 0 ? "+" : ""}
+                    {rated.heldOut.gap} &plusmn;{rated.heldOut.halfWidth})
+                  </span>
+                </p>
+              )}
             </div>
           )}
           <div className="space-y-2">
@@ -612,7 +624,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
               <span className="flex items-baseline gap-x-2">
                 <span className="text-body font-sans text-fg-muted">
-                  Meridian score
+                  ModelRegistry Score
                 </span>
                 <span className="text-title font-display font-semibold tracking-tight text-fg-strong tabular-nums leading-none">
                   {standing.standing}
@@ -628,6 +640,18 @@ export function ModelPositions({ model }: { model: ModelItem }) {
             <p className="mt-1 text-small font-sans tabular-nums text-fg-muted">
               {standing.cohorts} tests &middot; spread {standing.spread.toFixed(0)}
             </p>
+            {standing.heldOut && (
+              <p className="mt-1 text-small font-sans text-fg-muted">
+                <a href="/score#public-vs-private" className="hover:text-accent-ink">
+                  {HELD_OUT_LABEL[standing.heldOut.reading]}
+                </a>{" "}
+                <span className="tabular-nums">
+                  ({standing.heldOut.privateTests} private, {standing.heldOut.publicTests} public; gap{" "}
+                  {standing.heldOut.gap > 0 ? "+" : ""}
+                  {standing.heldOut.gap} &plusmn;{standing.heldOut.halfWidth})
+                </span>
+              </p>
+            )}
           </div>
         )}
         <div className="space-y-2">
@@ -656,7 +680,7 @@ export function ModelPositions({ model }: { model: ModelItem }) {
         </div>
         <p className="mt-3 text-body font-sans text-fg-muted leading-5 border-t border-black/5 dark:border-white/[0.06] pt-2.5">
           Ranked only against current models measured by the same test at the
-          same version. The Meridian score is measured against a fixed reference, so it never changes when other models are added; its spread is the disagreement between the model&rsquo;s own tests.{" "}
+          same version. The ModelRegistry Score is measured against a fixed reference, so it never changes when other models are added; its spread is the disagreement between the model&rsquo;s own tests.{" "}
           <Link
             href="/score"
             className="text-accent-ink hover:underline underline-offset-2"

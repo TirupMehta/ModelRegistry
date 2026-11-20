@@ -250,6 +250,48 @@ check("the fixture rates the reference models", base.rows.length >= 20, `${base.
 }
 
 // ---------------------------------------------------------------- ledger
+
+// ---------------------------------------------------------------- held-out gap
+{
+  const { INDEPENDENT_BENCHMARKS, TEST_ACCESS_SOURCE } = load("data/independent-benchmarks.ts")
+  const accessOf = (id) => INDEPENDENT_BENCHMARKS.find((info) => info.key === keyOf(id))?.access ?? null
+  const withAccess = (boards) => boards.map((board) => ({ ...board, access: accessOf(board.id) }))
+  const privateKeys = INDEPENDENT_BENCHMARKS.filter((info) => info.access === "private").map((info) => info.key).sort()
+  const publicKeys = INDEPENDENT_BENCHMARKS.filter((info) => info.access === "public").map((info) => info.key).sort()
+  check("heldout: the evaluator's five private tests are classified private", JSON.stringify(privateKeys) === JSON.stringify(["aaBriefcase", "automationBench", "critPt", "frontierCode", "omniscience"]), privateKeys.join(","))
+  check("heldout: the evaluator's four public tests are classified public", JSON.stringify(publicKeys) === JSON.stringify(["gdpPdf", "hleDiamond", "terminalBench4", "terminalBenchScience"]), publicKeys.join(","))
+  check("heldout: the human-vote test and the composite are not classified", accessOf("independent::arenaText") === null && INDEPENDENT_BENCHMARKS.find((i) => i.key === "intelligenceIndex").access === null)
+  check("heldout: the classification cites its source page and date", TEST_ACCESS_SOURCE.url.startsWith("https://artificialanalysis.ai/") && TEST_ACCESS_SOURCE.checkedAt.length === 10 && !Number.isNaN(Date.parse(TEST_ACCESS_SOURCE.checkedAt)))
+
+  const classified = buildStanding(modelsOf(baseRecords), withAccess(boardsFrom(baseRecords)))
+  check("heldout: classifying tests changes no score, place or tier", JSON.stringify(classified.rows.map((r) => [r.model.id, r.standing, r.place, r.tier, r.band])) === JSON.stringify(base.rows.map((r) => [r.model.id, r.standing, r.place, r.tier, r.band])))
+  check("heldout: without a classification no gap is invented", base.rows.every((row) => row.heldOut === null))
+
+  const median = (key) => { const v = baseRecords.map((r) => r.values[key]).filter((x) => typeof x === "number").sort((a, b) => a - b); return v[v.length >> 1] }
+  const shaped = (high, low) => {
+    const values = {}
+    for (const id of TEST_IDS) {
+      const key = keyOf(id)
+      const isPercent = meridianCalibration.tests[id].transform === "logit"
+      const side = accessOf(id)
+      const lift = side === "public" ? high : side === "private" ? low : 0
+      values[key] = isPercent ? Math.min(99, Math.max(1, 100 / (1 + Math.exp(-(meridianCalibration.tests[id].location + lift * meridianCalibration.tests[id].scale)))) ) : meridianCalibration.tests[id].location + lift * meridianCalibration.tests[id].scale
+    }
+    return values
+  }
+  const synthetic = [...baseRecords, { id: "syn-public", values: shaped(2, -1) }, { id: "syn-flat", values: shaped(0.5, 0.5) }, { id: "syn-private", values: shaped(-1, 2) }]
+  const result = buildStanding(modelsOf(synthetic), withAccess(boardsFrom(synthetic)))
+  const rowOf = (id) => result.rows.find((r) => r.model.id === id)
+  check("heldout: a model far stronger on public tests reads public-stronger with a negative gap", rowOf("syn-public").heldOut.reading === "public-stronger" && rowOf("syn-public").heldOut.gap < 0, JSON.stringify(rowOf("syn-public").heldOut))
+  check("heldout: a model equally strong on both reads within-noise", rowOf("syn-flat").heldOut.reading === "within-noise", JSON.stringify(rowOf("syn-flat").heldOut))
+  check("heldout: a model far stronger on private tests reads private-stronger with a positive gap", rowOf("syn-private").heldOut.reading === "private-stronger" && rowOf("syn-private").heldOut.gap > 0, JSON.stringify(rowOf("syn-private").heldOut))
+  check("heldout: the band is the same for every model with the same test counts", new Set(result.rows.map((r) => r.heldOut && r.heldOut.halfWidth + "/" + r.heldOut.privateTests + "/" + r.heldOut.publicTests)).size <= 3)
+  const thin = buildStanding(modelsOf(synthetic), withAccess(boardsFrom(synthetic)).map((board) => (accessOf(board.id) === "private" ? { ...board, access: null } : board)))
+  check("heldout: fewer than two tests on a side gives no gap", thin.rows.every((row) => row.heldOut === null))
+  check("heldout: other models do not move when a skewed model is added", baseRecords.every((r) => rowOf(r.id) && rowOf(r.id).standing === baseScores[r.id]))
+  void median
+}
+
 const live = independent.buildIndependentStanding(modelsData)
 const hashInputs = (id) => {
   const record = independentRecords.find((candidate) => candidate.modelId === id)

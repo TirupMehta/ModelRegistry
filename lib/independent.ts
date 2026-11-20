@@ -175,6 +175,7 @@ export function toRankable(boards: IndependentBoard[]): RankableBoard[] {
       id: board.id,
       test: board.test,
       domain: board.domain,
+      access: board.info.access,
       entries: board.entries.map((entry) => ({
         model: entry.model,
         reading: { value: entry.value, score: entry.score },

@@ -10,7 +10,8 @@ import {
   MIN_COHORT_SIZE,
   positionsFor,
 } from "@/lib/leaderboards"
-import { AGREEMENT_LABEL, CORROBORATED_SPREAD, CONTESTED_SPREAD, MIN_TESTS_FOR_STANDING, STANDING_VERSION } from "@/lib/standing"
+import { AGREEMENT_LABEL, CORROBORATED_SPREAD, CONTESTED_SPREAD, HELD_OUT_LABEL, MIN_TESTS_FOR_STANDING, MIN_TESTS_PER_ACCESS, STANDING_VERSION } from "@/lib/standing"
+import { TEST_ACCESS_SOURCE } from "@/data/independent-benchmarks"
 import {
   INDEPENDENT_EVALUATOR,
   buildIndependentBoards,
@@ -25,12 +26,12 @@ import { ArrowLeft, ChevronDown } from "lucide-react"
 import { withShare } from "@/lib/share"
 
 export const metadata: Metadata = withShare({
-  title: "Meridian: AI model score across benchmarks, and why it is not one number",
+  title: "ModelRegistry Score: AI model score across benchmarks, and how to spot benchmark tuning",
   description:
-    "Meridian is a fixed-reference cross-test score with a 95% band, and the disagreement between tests published next to it. Models measured on one test are ranked on that test only.",
+    "The ModelRegistry Score is a fixed-reference cross-test score for AI models, with a 95% band, the disagreement between tests, and each model's results on private tests against public tests. Models measured on one test are ranked on that test only.",
   alternates: { canonical: `${SITE}/score` },
   openGraph: {
-    title: "Meridian: AI model score across benchmarks",
+    title: "ModelRegistry Score: AI model score across benchmarks",
     description:
       "A fixed reference scale, 95% bands, coverage refusal, and the spread between tests published as a first-class number.",
     url: `${SITE}/score`,
@@ -73,6 +74,19 @@ export default function ScorePage() {
         Math.min(...a.positions.map((p) => p.rank)) - Math.min(...b.positions.map((p) => p.rank)),
     )
 
+  const heldRows = standing.rows
+    .filter((row) => row.heldOut)
+    .sort((a, b) => a.heldOut!.gap - b.heldOut!.gap || a.model.name.localeCompare(b.model.name))
+  const beyondNoise = heldRows.filter((row) => row.heldOut!.reading !== "within-noise").length
+  const widest = [...heldRows].sort((a, b) => Math.abs(b.heldOut!.gap) - Math.abs(a.heldOut!.gap))[0]
+  const namesFor = (access: "private" | "public") =>
+    independentBoards.filter((b) => b.info.access === access).map((b) => b.test)
+  const accessCounts = {
+    private: namesFor("private").length,
+    public: namesFor("public").length,
+    privateNames: namesFor("private").join(", "),
+    publicNames: namesFor("public").join(", "),
+  }
   const disagreementPoints = Math.round(standing.betweenTestSd)
   const contested = standing.rows.filter((row) => row.agreement === "contested").length
   const unstable = standing.rows.filter((row) => row.auditable && !row.stable).length
@@ -81,10 +95,10 @@ export default function ScorePage() {
   const faq = [
     {
       q: "What is the best AI model right now?",
-      a: `No model leads every test, so none is called best overall; the leader on each test is on the best-by-task page (${SITE}/best). On this page, ${standing.rated} of ${standing.ranked} ranked models report more than one test, and those ${standing.rated} are ordered by their Meridian score. Where two models sit a few points apart, the gap is smaller than the error band on each score, and the page does not pretend otherwise.`,
+      a: `No model leads every test, so none is called best overall; the leader on each test is on the best-by-task page (${SITE}/best). On this page, ${standing.rated} of ${standing.ranked} ranked models report more than one test, and those ${standing.rated} are ordered by their ModelRegistry Score. Where two models sit a few points apart, the gap is smaller than the error band on each score, and the page does not pretend otherwise.`,
     },
     {
-      q: "How is the Meridian score calculated?",
+      q: "How is the ModelRegistry Score calculated?",
       a: "Each result is measured against a frozen reference for its own test, so a hard exam and an easy exam count on the same footing, and a score never changes because another model was added. The per-test results are combined with equal weight and a small pull toward the reference average for models that report few tests. 500 is the reference average and 100 points is one reference standard deviation. A model needs at least two tests to receive a score, and the spread between its best and worst test is published next to it.",
     },
     {
@@ -93,7 +107,7 @@ export default function ScorePage() {
     },
     {
       q: "Can a laboratory game this by publishing only the tests it wins?",
-      a: `Only partly, and the page shows where. A model that reports one exam can hold a high position on that exam but cannot receive a cross-test standing. A model that reports several exams and only wins one gets its standing pulled toward the middle by the exams it did not win, and is labelled contested when the spread between its best and worst test exceeds ${CONTESTED_SPREAD} Meridian points.`,
+      a: `Only partly, and the page shows where. A model that reports one exam can hold a high position on that exam but cannot receive a cross-test standing. A model that reports several exams and only wins one gets its standing pulled toward the middle by the exams it did not win, and is labelled contested when the spread between its best and worst test exceeds ${CONTESTED_SPREAD} score points.`,
     },
     {
       q: "Why are older models not on the board?",
@@ -101,7 +115,11 @@ export default function ScorePage() {
     },
     {
       q: "Are these scores independent?",
-      a: "No. Every score is published by the laboratory that built the model, and each record links the document it came from. The ranking says where a laboratory's own figure sits against other laboratories' own figures on the same test.",
+      a: `Yes. The standing uses only results from independent evaluators: nine tests run by ${INDEPENDENT_EVALUATOR.name} on the same tasks with the same harness for every model, and arena.ai's blind human-preference Elo. Laboratory-reported figures are kept on each model's record and are never mixed into the score, because the laboratory chooses which tests to publish.`,
+    },
+    {
+      q: "How can I tell whether a model is tuned to public benchmarks?",
+      a: `Compare its results on tests whose answers are private with its results on tests whose answers are public. The page publishes that gap for every rated model with its 95% band. ${beyondNoise === 0 ? "Today no model's gap is larger than its band." : `Today ${beyondNoise} of ${heldRows.length} models have a gap larger than their band.`} A gap is a pattern in the results, not a finding about how a model was trained.`,
     },
   ]
 
@@ -109,7 +127,7 @@ export default function ScorePage() {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "@id": `${SITE}/score#article`,
-    headline: `Meridian v${STANDING_VERSION}: AI model score across benchmarks`,
+    headline: `ModelRegistry Score v${STANDING_VERSION}: AI model score across benchmarks`,
     description:
       "Cross-test score on a fixed reference scale, with a 95% band and the disagreement between tests published alongside it.",
     url: `${SITE}/score`,
@@ -196,7 +214,7 @@ export default function ScorePage() {
           below with its replacement instead of being placed against current models.
         </p>
         <p className="mb-8 flex flex-wrap items-center gap-2 text-small font-sans text-fg-muted">
-          <span>Meridian v{STANDING_VERSION}</span>
+          <span>ModelRegistry Score v{STANDING_VERSION}</span>
           <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
           <span>{standing.rated} rated</span>
           <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
@@ -211,7 +229,7 @@ export default function ScorePage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
           {[
             { value: `${standing.rated}`, label: "models rated across tests" },
-            { value: `${disagreementPoints}`, label: "Meridian points between tests" },
+            { value: `${disagreementPoints}`, label: "score points between tests" },
             { value: `${standing.singleTest.length}`, label: "models on one test only" },
             { value: `${lineup.superseded.length}`, label: "superseded, not ranked here" },
           ].map((stat) => (
@@ -231,12 +249,12 @@ export default function ScorePage() {
 
         {/* Standing table */}
         <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
-          Meridian score
+          ModelRegistry Score
         </h2>
         <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
           Each model&rsquo;s results against a fixed reference, combined with equal weight per test. The
           figure after &plusmn; is the 95% error band, and the spread column is the disagreement between
-          the model&rsquo;s own tests, in Meridian points. Read them together: a high score with a wide spread is a
+          the model&rsquo;s own tests, in score points. Read them together: a high score with a wide spread is a
           compromise between tests, not a result.
         </p>
 
@@ -301,6 +319,64 @@ export default function ScorePage() {
           than {CONTESTED_SPREAD} points, and each is labelled contested rather than described as
           strong.{unstable > 0 ? ` ${unstable} rows move more than two places when a single test is removed and are labelled test dependent.` : ""}{unaudited > 0 ? ` ${unaudited} rows report exactly two tests; removing either leaves no standing, so the leave-one-test-out audit cannot run on them and they are labelled not auditable rather than stable.` : ""}
         </p>
+
+        {/* Public against private tests: the benchmark-tuning check */}
+        <h2 id="public-vs-private" className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
+          Public tests against private tests
+        </h2>
+        <p className="text-body font-sans text-fg-muted mb-4 max-w-2xl">
+          A model tuned to a public benchmark does better on it than on tests whose answers it cannot have
+          seen. {INDEPENDENT_EVALUATOR.name} keeps {accessCounts.private} of its tests private
+          ({accessCounts.privateNames}) and publishes {accessCounts.public} ({accessCounts.publicNames}), as
+          its{" "}
+          <a href={TEST_ACCESS_SOURCE.url} className="underline decoration-black/20 underline-offset-2 hover:text-accent-ink dark:decoration-white/25">
+            methodology page
+          </a>{" "}
+          states (read {TEST_ACCESS_SOURCE.checkedAt}). The gap below is a model&rsquo;s average on the private
+          tests minus its average on the public ones, in score points, with its 95% band. A negative gap
+          means stronger on public tests. {beyondNoise === 0
+            ? `No model's gap is larger than its band, so none shows a public-test advantage the evidence can separate from noise.`
+            : `${beyondNoise} of ${heldRows.length} models have a gap larger than their band.`}{" "}
+          The widest gap is {widest.model.name} at {widest.heldOut!.gap > 0 ? "+" : ""}{widest.heldOut!.gap}
+          {" "}&plusmn;{widest.heldOut!.halfWidth}.
+        </p>
+        <p className="text-small font-sans text-fg-muted mb-4 max-w-2xl">
+          The band is wide on purpose. It is built from how far a model&rsquo;s own tests normally disagree,
+          so a model that is simply better at coding than at physics is not mistaken for one tuned to a
+          benchmark. The gap describes a pattern in the results, not how a model was trained, and a model
+          with fewer than {MIN_TESTS_PER_ACCESS} tests on either side receives none.
+        </p>
+        <div className="mb-12 overflow-x-auto">
+          <table className="w-full text-left text-body font-sans">
+            <thead>
+              <tr className="border-b border-black/10 text-small text-fg-muted dark:border-white/[0.08]">
+                <th className="py-2 pr-4 font-medium">Model</th>
+                <th className="py-2 pr-4 font-medium">Gap (private minus public)</th>
+                <th className="py-2 pr-4 font-medium">Tests</th>
+                <th className="py-2 font-medium">Reading</th>
+              </tr>
+            </thead>
+            <tbody>
+              {heldRows.map((row) => (
+                <tr key={row.model.id} className="rule-b">
+                  <td className="py-2.5 pr-4">
+                    <Link href={`/models/${row.model.id}`} className="font-medium text-black hover:text-accent-ink dark:text-white">
+                      {row.model.name}
+                    </Link>
+                  </td>
+                  <td className="py-2.5 pr-4 tabular-nums font-medium text-fg-strong">
+                    {row.heldOut!.gap > 0 ? "+" : ""}
+                    {row.heldOut!.gap} <span className="font-normal text-fg-muted">&plusmn;{row.heldOut!.halfWidth}</span>
+                  </td>
+                  <td className="py-2.5 pr-4 tabular-nums text-fg">
+                    {row.heldOut!.privateTests} private, {row.heldOut!.publicTests} public
+                  </td>
+                  <td className="py-2.5 text-small text-fg-muted">{HELD_OUT_LABEL[row.heldOut!.reading]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {/* Independent evidence: where laboratory figures and independent runs part ways */}
         <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mb-1">
@@ -705,7 +781,7 @@ export default function ScorePage() {
           <details className="group rule-b">
             <summary className={summaryClass}>
               <span className="text-body font-sans font-medium text-fg-strong">
-                Meridian: anchor, combine, refuse, audit
+                How the score is built: anchor, combine, refuse, audit
               </span>
               <ChevronDown size={15} className={chevronClass} aria-hidden="true" />
             </summary>
@@ -729,7 +805,7 @@ export default function ScorePage() {
                 {
                   n: "4",
                   title: "Publish the disagreement",
-                  body: `The spread between a model's best and worst test, in Meridian points, is printed next to its score, with a 95% band built from how far a model's own tests disagree. Up to ${CORROBORATED_SPREAD} points the tests agree, up to ${CONTESTED_SPREAD} they partly agree, beyond that they disagree and the row is labelled contested.`,
+                  body: `The spread between a model's best and worst test, in score points, is printed next to its score, with a 95% band built from how far a model's own tests disagree. Up to ${CORROBORATED_SPREAD} points the tests agree, up to ${CONTESTED_SPREAD} they partly agree, beyond that they disagree and the row is labelled contested.`,
                 },
                 {
                   n: "5",
@@ -877,7 +953,7 @@ export default function ScorePage() {
         </div>
 
         <p className="text-body font-sans text-fg-muted leading-6">
-          Meridian v{STANDING_VERSION}, rank rule v{LEADERBOARD_VERSION}, minimum cohort{" "}
+          ModelRegistry Score v{STANDING_VERSION}, rank rule v{LEADERBOARD_VERSION}, minimum cohort{" "}
           {MIN_COHORT_SIZE}, data revised {datasetRevision.revisedAt}. Recompute every table from{" "}
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a href="/api/v1/models" className="text-accent-ink hover:underline underline-offset-2">

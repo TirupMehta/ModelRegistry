@@ -284,8 +284,8 @@
       "get": {
         "operationId": "getStanding",
         "tags": ["agents"],
-        "summary": "Meridian cross-test score of current models",
-        "description": "Published summary of the per-test leaderboards: per-model Meridian score (a fixed-reference scale where 500 is the reference average and 100 points is one reference standard deviation, with no ceiling) across at least two tests, its 95% band and per-test points, tier, spread between tests, agreement label, auditability, the cohorts behind it, and the full calibration constants so every score can be recomputed. Computed from independent results only (Artificial Analysis, same tasks and harness for every model); laboratory-reported scores are excluded. Only current (not superseded, not retired) models are ranked. Rows in the same tier are not separated by the evidence; `place` is sort order only.",
+        "summary": "ModelRegistry Score: cross-test score of current models",
+        "description": "Published summary of the per-test leaderboards: per-model ModelRegistry Score (a fixed-reference scale where 500 is the reference average and 100 points is one reference standard deviation, with no ceiling) across at least two tests, its 95% band and per-test points, tier, spread between tests, agreement label, auditability, its held-out gap (private-test minus public-test results in score points with a 95% half-width, null when either side has fewer than 2 tests), the cohorts behind it, and the full calibration constants so every score can be recomputed. Computed from independent results only (Artificial Analysis, same tasks and harness for every model); laboratory-reported scores are excluded. Only current (not superseded, not retired) models are ranked. Rows in the same tier are not separated by the evidence; `place` is sort order only.",
         "responses": {
           "200": {
             "description": "Standing, cohorts and single-test positions.",
