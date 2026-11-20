@@ -54,7 +54,7 @@ EXECUTIVE KNOWLEDGE SUMMARY (GEO GROUNDING)
   const lineup = splitLineup(modelsData)
 
   text += `\n===============================================================================\n`
-  text += `MERIDIAN SCORES (cross-test, ${standing.rated} rated, tests disagree by about ${Math.round(standing.betweenTestSd)} points)\n`
+  text += `ModelRegistry Score (cross-test, ${standing.rated} rated, tests disagree by about ${Math.round(standing.betweenTestSd)} points)\n`
   text += `===============================================================================\n`
   text += `ModelRegistry Score version ${STANDING_VERSION}; rules: ${siteUrl}/methodology. Machine-readable: ${siteUrl}/api/v1/standing. Markdown: ${siteUrl}/api/markdown/score.\n`
   text += `The ModelRegistry Score is measured against a frozen reference, so a score never changes because another model was added: 500 is the reference average, 100 points is one reference standard deviation, and there is no ceiling. Each score carries a 95% band. Rows in the same tier are not separated by the evidence. Only current models are ranked; superseded records are listed below and not ranked.\n\n`

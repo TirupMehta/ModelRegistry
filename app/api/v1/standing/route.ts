@@ -7,6 +7,8 @@ import { PRIOR_TESTS, SOFT_LIMIT } from "@/lib/meridian"
 import { meridianCalibration } from "@/data/meridian-calibration"
 import { INDEPENDENT_EVALUATOR, buildIndependentStanding } from "@/lib/independent"
 import { INDEPENDENT_BENCHMARKS, TEST_ACCESS_SOURCE } from "@/data/independent-benchmarks"
+import { EPOCH_EVALUATOR } from "@/data/epoch-eci"
+import { buildAgreement } from "@/lib/agreement"
 import { splitLineup } from "@/lib/currency"
 import { leaderboardStats, LEADERBOARD_VERSION, MIN_COHORT_SIZE } from "@/lib/leaderboards"
 import { SITE_URL } from "@/lib/site"
@@ -31,6 +33,8 @@ export async function GET() {
   const standing = buildIndependentStanding(modelsData)
   const lineup = splitLineup(modelsData)
   const { tests } = leaderboardStats(modelsData, { currentOnly: true })
+
+  const agreement = buildAgreement(standing.rows)
 
   const body = {
     status: "success",
@@ -75,13 +79,36 @@ export async function GET() {
       standardise: "z = (reading - location) / scale, with the frozen median and 1.4826 x MAD of the reference field",
       influenceLimit: `z is linear to ${SOFT_LIMIT}, then ${SOFT_LIMIT} + ln(1 + |z| - ${SOFT_LIMIT}); never clipped`,
       combine: `sum of per-test z / (tests + ${PRIOR_TESTS}), equal weight per test`,
-      place: "meridian = 500 + 100 x (composite - mean) / sd, with the frozen reference mean and sd",
+      place: "score = 500 + 100 x (composite - mean) / sd, with the frozen reference mean and sd",
       band: "95% band from the pooled disagreement between a model's own tests: 1.96 x noise x sqrt(tests) / (tests + prior) on the same scale",
       tiers: "a row joins the tier of the row above unless its gap to the tier leader exceeds 1.96 x the combined standard error",
       audit: "leave one test out; test dependent when the model moves more than 2 places",
       heldOutGap: `mean limited z on private tests minus mean on public tests, in score points; 95% half-width 1.96 x noise x sqrt(1/private + 1/public); computed only with at least ${MIN_TESTS_PER_ACCESS} tests on each side; reading is within-noise unless the gap exceeds its half-width`,
     },
     calibration: meridianCalibration,
+    secondEvaluator: {
+      name: EPOCH_EVALUATOR.name,
+      index: EPOCH_EVALUATOR.index,
+      source: EPOCH_EVALUATOR.url,
+      data: EPOCH_EVALUATOR.dataUrl,
+      retrievedAt: EPOCH_EVALUATOR.retrievedAt,
+      license: EPOCH_EVALUATOR.license,
+      usedInScore: false,
+      note: EPOCH_EVALUATOR.method,
+      covered: agreement.covered,
+      ratedModels: agreement.rated,
+      rankCorrelation: agreement.rho,
+      pairs: { separable: agreement.pairs.separable, orderedTheSame: agreement.pairs.same },
+      notCovered: agreement.notCovered.map((row) => row.model.id),
+      rows: agreement.rows.map((item) => ({
+        id: item.row.model.id,
+        standing: item.row.standing,
+        eci: item.epoch.eci,
+        eciInterval95: [item.epoch.ciLow, item.epoch.ciHigh],
+        ourRank: item.ourRank,
+        epochRank: item.epochRank,
+      })),
+    },
     betweenTest: {
       sd: standing.betweenTestSd,
       pooledVariance: standing.betweenTest,

@@ -292,6 +292,39 @@ check("the fixture rates the reference models", base.rows.length >= 20, `${base.
   void median
 }
 
+// ---------------------------------------------------------------- agreement with a second evaluator
+{
+  const { ranksDescending, spearman, buildAgreement, MIN_AGREEMENT_MODELS } = load("lib/agreement.ts")
+  const { epochRecords, EPOCH_EVALUATOR } = load("data/epoch-eci.ts")
+  const same = (a, b) => JSON.stringify(a) === JSON.stringify(b)
+  check("agreement: ranks run from the highest value, ties share the average rank", same(ranksDescending([10, 30, 30, 20]), [4, 1.5, 1.5, 3]))
+  check("agreement: identical order correlates at 1", Math.abs(spearman([1, 2, 3, 4, 5], [10, 20, 30, 40, 50]) - 1) < 1e-12)
+  check("agreement: reversed order correlates at -1", Math.abs(spearman([1, 2, 3, 4, 5], [50, 40, 30, 20, 10]) + 1) < 1e-12)
+  check("agreement: fewer than three models or a constant series has no correlation", spearman([1, 2], [1, 2]) === null && spearman([1, 1, 1], [1, 2, 3]) === null)
+
+  const ids = epochRecords.map((record) => record.modelId)
+  const known = new Set(modelsData.map((model) => model.id))
+  check("agreement: every Epoch record maps to a registry model, once", ids.every((id) => known.has(id)) && new Set(ids).size === ids.length)
+  check("agreement: every interval holds its estimate", epochRecords.every((r) => [r.eci, r.ciLow, r.ciHigh].every(Number.isFinite) && r.ciLow <= r.eci && r.eci <= r.ciHigh))
+  check("agreement: every record carries Epoch's own name and a date", epochRecords.every((r) => r.epochName.length > 0 && !Number.isNaN(Date.parse(r.evaluatedAt))))
+  check("agreement: the source, data file, date and licence are cited", EPOCH_EVALUATOR.url.startsWith("https://epoch.ai/") && EPOCH_EVALUATOR.dataUrl.endsWith(".csv") && !Number.isNaN(Date.parse(EPOCH_EVALUATOR.retrievedAt)) && EPOCH_EVALUATOR.license.startsWith("CC BY"))
+
+  const fakeRow = (id, standing, se = 5) => ({ model: { id, name: id }, standing, se })
+  const fakeEpoch = (id, eci, half = 1) => ({ modelId: id, epochName: id, eci, ciLow: eci - half, ciHigh: eci + half, evaluatedAt: "2026-11-20" })
+  const rows = ["a", "b", "c", "d", "e", "f"].map((id, i) => fakeRow(id, 600 - i * 40))
+  const agree = buildAgreement(rows, rows.map((r, i) => fakeEpoch(r.model.id, 170 - i * 3)))
+  check("agreement: the same order everywhere gives rho 1 and every separable pair agreeing", Math.abs(agree.rho - 1) < 1e-12 && agree.pairs.separable === 15 && agree.pairs.same === 15)
+  const flipped = buildAgreement(rows, rows.map((r, i) => fakeEpoch(r.model.id, 140 + i * 3)))
+  check("agreement: the opposite order gives rho -1 and no agreeing pair", Math.abs(flipped.rho + 1) < 1e-12 && flipped.pairs.same === 0)
+  const blurred = buildAgreement(rows, rows.map((r, i) => fakeEpoch(r.model.id, 170 - i * 3, 40)))
+  check("agreement: pairs the other evaluator cannot separate are left out, not counted as disagreement", blurred.pairs.separable === 0 && blurred.pairs.same === 0)
+  const partial = buildAgreement(rows, [fakeEpoch("a", 170), fakeEpoch("b", 160)])
+  check("agreement: with too few shared models no correlation is reported, and the rest are listed as not covered", partial.rho === null && partial.covered === 2 && partial.notCovered.length === 4 && MIN_AGREEMENT_MODELS > 2)
+
+  const real = buildAgreement(independent.buildIndependentStanding(modelsData).rows)
+  check("agreement: the registry's own data is covered widely and the evaluators broadly agree (guards a wrong id map)", real.covered >= 15 && real.rho > 0.6, `covered ${real.covered}, rho ${real.rho}`)
+}
+
 const live = independent.buildIndependentStanding(modelsData)
 const hashInputs = (id) => {
   const record = independentRecords.find((candidate) => candidate.modelId === id)
