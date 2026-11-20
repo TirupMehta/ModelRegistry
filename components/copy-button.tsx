@@ -12,8 +12,8 @@ interface CopyButtonProps {
 
 export default function CopyButton({
   text,
-  label = "COPY PROMPT",
-  copiedLabel = "COPIED",
+  label = "Copy prompt",
+  copiedLabel = "Copied",
   className = "",
 }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)

@@ -406,25 +406,25 @@ export default function ScorePage() {
               <tr className="border-b border-black/15 dark:border-white/[0.12]">
                 <th
                   scope="col"
-                  className="text-left py-2 pr-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted"
+                  className="text-left py-2 pr-3 font-sans text-small font-medium text-fg-muted"
                 >
                   Model
                 </th>
                 <th
                   scope="col"
-                  className="text-left py-2 px-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted"
+                  className="text-left py-2 px-3 font-sans text-small font-medium text-fg-muted"
                 >
                   Test
                 </th>
                 <th
                   scope="col"
-                  className="text-right py-2 px-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted"
+                  className="text-right py-2 px-3 font-sans text-small font-medium text-fg-muted"
                 >
                   Position
                 </th>
                 <th
                   scope="col"
-                  className="text-right py-2 pl-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted"
+                  className="text-right py-2 pl-3 font-sans text-small font-medium text-fg-muted"
                 >
                   Score
                 </th>
@@ -590,7 +590,7 @@ export default function ScorePage() {
                   <tr className="border-b border-black/15 dark:border-white/[0.12]">
                     <th
                       scope="col"
-                      className="text-left py-2 pr-3 font-sans text-small font-medium uppercase tracking-wide text-fg-muted"
+                      className="text-left py-2 pr-3 font-sans text-small font-medium text-fg-muted"
                     >
                       Model
                     </th>

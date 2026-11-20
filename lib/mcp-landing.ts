@@ -120,7 +120,7 @@ export function mcpLandingHtml(): string {
   th, td { border: 1px solid rgba(0,0,0,.1); padding: .5rem .75rem; text-align: left; font-size: .9rem; }
   @media (prefers-color-scheme: dark) { th, td { border-color: rgba(255,255,255,.1); } }
   a { color: #ff5d2e; }
-  .eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: .7rem; color: #737373; font-weight: 600; }
+  .eyebrow { letter-spacing: .02em; font-size: .7rem; color: #737373; font-weight: 600; }
   .url { font-family: ui-monospace, monospace; font-size: .9rem; color: #ff5d2e; }
 </style>
 </head>

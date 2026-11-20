@@ -255,7 +255,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
       ctx!.fillText(folio, width - padding - fw, top)
       ctx!.font = `500 ${descPx}px ${F_SANS}`
       ctx!.fillStyle = faint
-      ctx!.fillText("OPEN FRONTIER AI SPECIFICATION", padding, top + descPx + 14 + gapBoost)
+      ctx!.fillText("Open frontier AI specification", padding, top + descPx + 14 + gapBoost)
       const ruleY = top + descPx + 30 + gapBoost * 2
       ctx!.strokeStyle = hair
       ctx!.lineWidth = 1.5
@@ -541,12 +541,12 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
         unitBottom = sigY + 40 + 34
       }
       const rows: [string, string][] = [
-        ["CONTEXT", ctxShort],
-        model.openWeights ? ["WEIGHTS", "Open weights"] : ["API", priceFull],
-        ["LICENSE", model.license],
+        ["Context", ctxShort],
+        model.openWeights ? ["Weights", "Open weights"] : ["API", priceFull],
+        ["License", model.license],
         benchPick
-          ? ["BENCHMARK", `${benchPretty(benchPick[0])} ${benchScore}`]
-          : ["STATUS", model.statusBadge],
+          ? ["Benchmark", `${benchPretty(benchPick[0])} ${benchScore}`]
+          : ["Status", model.statusBadge],
       ]
       let ry = unitBottom + 64
       for (const [label, value] of rows) {
@@ -1014,7 +1014,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
               className="w-full py-2.5 px-3.5 rounded-md border border-black/10 dark:border-white/[0.09] text-black dark:text-zinc-200 font-sans text-small font-medium hover:border-accent hover:text-accent-ink transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer bg-[var(--tile)] dark:bg-white/[0.03]"
             >
               <Download size={14} />
-              <span>DOWNLOAD PNG ({ratio.toUpperCase()})</span>
+              <span>Download PNG ({ratio})</span>
             </button>
 
             {/* Native Mobile Share (if supported) */}

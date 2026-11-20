@@ -30,7 +30,7 @@ Open `data/models.ts` and add your model to the `modelsData` array:
   releaseDate: "2026-09-03",           // YYYY-MM-DD
   isCompanyFlagship: true,             // true = lab's primary flagship, false = specialized checkpoint
   isLatestCheckpoint: false,           // true if it is the lab's newest secondary release
-  statusBadge: "LATEST SOTA",          // Short pill badge: "FLAGSHIP", "NEW DROP", "OPEN WEIGHTS"
+  statusBadge: "Latest SOTA",          // Short sentence-case pill badge: "Flagship", "New drop", "Open weights"
   category: "flagship",                // "flagship" | "reasoning" | "open-weights" | "code" | "multimodal" | "audio" | "image" | "video"
   categoryLabel: "Frontier Multimodal",
   contextWindow: "262k tokens",
