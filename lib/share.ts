@@ -102,7 +102,7 @@ export function pageCard(path: string): PageCard | null {
   }
 }
 
-export type ShareImage = { page: string } | { model: string } | { lab: string } | { task: string }
+export type ShareImage = { page: string } | { model: string } | { lab: string } | { task: string } | { a: string; b: string }
 
 export function ogImageUrl(image: ShareImage): string {
   const q = new URLSearchParams(image as Record<string, string>)

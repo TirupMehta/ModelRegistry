@@ -57,6 +57,9 @@ for (const p of used) check(`page-card ${p}`, cards.has(p), "withShare asks for 
 const og = read("app/api/og/route.tsx")
 check("og route renders page cards", og.includes("pageCard("))
 check("og route renders task cards", og.includes('searchParams.get("task")'))
+check("og route renders model pair cards", og.includes('searchParams.get("a")') && og.includes('searchParams.get("b")'))
+const compare = read("app/compare/[slug]/page.tsx")
+check("compare pages share the pair image, not model A alone", compare.includes("/api/og?a=${a.id}&b=${b.id}") && !compare.includes("/api/og?model="))
 
 // 4. Public model JSON never leaks an internal verification status.
 console.log("Public status parity")

@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "article",
       images: [
         {
-          url: `${SITE}/api/og?model=${a.id}`,
+          url: `${SITE}/api/og?a=${a.id}&b=${b.id}`,
           width: 1200,
           height: 630,
           alt: `${a.name} vs ${b.name}`,
@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: `${a.name} vs ${b.name}`,
       description,
-      images: [`${SITE}/api/og?model=${a.id}`],
+      images: [`${SITE}/api/og?a=${a.id}&b=${b.id}`],
     },
   }
 }

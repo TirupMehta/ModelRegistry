@@ -8,6 +8,8 @@ import { datasetRevision } from "@/data/revision"
 import { modelFolio } from "@/lib/registry"
 import { benchPretty, formatPrice, priceSymbol } from "@/lib/utils"
 import { pageCard } from "@/lib/share"
+import { buildIndependentStanding } from "@/lib/independent"
+import type { ModelItem } from "@/data/models"
 import { buildBestAnswers, bestSlug, bestPageTitle } from "@/lib/best"
 import {
   Card,
@@ -42,6 +44,15 @@ function clampText(text: string, limit = CARD_TEXT_LIMIT): string {
   if (comma >= limit * 0.6) return `${head.slice(0, comma)}…`
   const word = head.lastIndexOf(" ")
   return `${head.slice(0, word > 0 ? word : limit).replace(/[,;:\s]+$/, "")}…`
+}
+
+/** 1,048,576 becomes 1.05M, 65,536 becomes 66K; text that is not a plain number is kept. */
+function compactContext(model: ModelItem): string {
+  const n = model.contextWindowTokens
+  if (!Number.isFinite(n) || n <= 0) return model.contextWindow
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(2).replace(/.?0+$/, "")}M`
+  if (n >= 1_000) return `${Math.round(n / 1_000)}K`
+  return String(n)
 }
 
 function renderCard(
@@ -208,6 +219,68 @@ export async function GET(req: NextRequest) {
             </div>
           </div>
           <FolioFooter folioId={factCard.folio} palette={palette} sans={sans} />
+        </>,
+        { palette, sans, fonts }
+      )
+    }
+
+    // ---- Model pair: the two records side by side, no winner declared ------
+    const pairA = searchParams.get("a") ? modelsData.find((m) => m.id === searchParams.get("a")) : null
+    const pairB = searchParams.get("b") ? modelsData.find((m) => m.id === searchParams.get("b")) : null
+    if (!model && !lab && pairA && pairB && pairA.id !== pairB.id) {
+      const rated = buildIndependentStanding(modelsData).rows
+      const column = (m: ModelItem) => {
+        const row = rated.find((r) => r.model.id === m.id)
+        const company = companies[m.companyId]
+        const lines = [
+          `${compactContext(m)} context`,
+          m.openWeights ? "Open weights" : formatPrice(m),
+          row ? `ModelRegistry Score ${row.standing} ±${Math.round((row.band[1] - row.band[0]) / 2)}` : "No cross-test score",
+        ]
+        return (
+          <div key={m.id} style={{ display: "flex", flexDirection: "column", gap: "22px", width: "480px" }}>
+            <Kicker palette={palette} fontFamily={sans} accent={company?.accentColor || palette.brand}>
+              {`${m.companyName} / ${m.releaseDate.slice(0, 4)}`}
+            </Kicker>
+            <div
+              style={{
+                display: "flex",
+                fontFamily: display,
+                fontSize: "48px",
+                fontWeight: 700,
+                letterSpacing: "-0.03em",
+                lineHeight: 1.05,
+                maxWidth: "480px",
+              }}
+            >
+              {m.name}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              {lines.map((line) => (
+                <SpecLine key={line} palette={palette} fontFamily={sans}>
+                  {line}
+                </SpecLine>
+              ))}
+            </div>
+          </div>
+        )
+      }
+      return renderCard(
+        <>
+          <Masthead
+            folio="Compare"
+            eyebrowLeft="Open frontier AI model comparison"
+            eyebrowRight="Source-linked records"
+            palette={palette}
+            display={display}
+            sans={sans}
+          />
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+            {column(pairA)}
+            <ColumnRule palette={palette} height={232} />
+            {column(pairB)}
+          </div>
+          <FolioFooter folioId={`${pairA.id} / ${pairB.id}`} palette={palette} sans={sans} />
         </>,
         { palette, sans, fonts }
       )
