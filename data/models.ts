@@ -13281,7 +13281,7 @@ export const modelsData: ModelItem[] = [
     releaseDate: "2026-11-18",
     isCompanyFlagship: false,
     isLatestCheckpoint: true,
-    statusBadge: "GA · LIVE",
+    statusBadge: "MOST LOVED",
     category: "flagship",
     categoryLabel: "Balanced Frontier Tier",
     contextWindow: "1,048,576 tokens (unified input and output)",
