@@ -178,6 +178,24 @@ async function main() {
   await expectContains("/sitemap.xml", "/companies/openai", "xml")
   await expectContains("/sitemap.xml", "/docs", "xml")
   await expectContains("/rss.xml", EXPECTED.newestName, "xml")
+  // ---- Count parity: every public surface reports the same number of records ----
+  try {
+    const rss = await (await get("/rss.xml")).res.text()
+    const feedJson = await (await get("/feed.json")).res.json()
+    const api = await (await get("/api/v1/models")).res.json()
+    const rssItems = (rss.match(/<item>/g) || []).length
+    const counts = { dataset: EXPECTED.models, "rss.xml": rssItems, "feed.json": feedJson.items.length, "api/v1/models": api.total }
+    const same = Object.values(counts).every((n) => n === EXPECTED.models)
+    if (same) pass("feed and API count parity", Object.entries(counts).map(([k, v]) => k + " " + v).join(", "))
+    else fail("feed and API count parity", Object.entries(counts).map(([k, v]) => k + " " + v).join(", "))
+    const rssGuids = [...rss.matchAll(new RegExp("<guid>([^<]+)</guid>", "g"))].map((m) => m[1]).sort()
+    const jsonIds = feedJson.items.map((i) => i.id).sort()
+    if (JSON.stringify(rssGuids) === JSON.stringify(jsonIds)) pass("rss and json feed list the same records")
+    else fail("rss and json feed list the same records", "ids differ")
+  } catch (e) {
+    fail("feed and API count parity", "fetch failed: " + e.message)
+  }
+
   await expectContains("/llms.txt", `/companies/${EXPECTED.lastLab}`, "text/plain")
   await expectContains("/llms-full.txt", EXPECTED.newestName, "text/plain")
 
@@ -726,6 +744,7 @@ async function main() {
   // OG cards render real PNGs (model, lab, default)
   await expectPng(`/api/og?model=${EXPECTED.openaiFlagship}`)
   await expectPng("/api/og?lab=openai")
+  await expectPng(`/api/og?a=${EXPECTED.openaiFlagship}&b=${EXPECTED.newestId}`)
   await expectPng("/api/og")
 
   // Official CLI (cli/): the packaged client must work against this build, not
