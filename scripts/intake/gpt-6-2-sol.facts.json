@@ -11,7 +11,7 @@
     "version": "6.2-Sol",
     "category": "reasoning",
     "categoryLabel": "Agentic Workhorse",
-    "statusBadge": "OPENAI FLAGSHIP",
+    "statusBadge": "OpenAI flagship",
     "isCompanyFlagship": true,
     "openWeights": false,
     "extraModalities": [

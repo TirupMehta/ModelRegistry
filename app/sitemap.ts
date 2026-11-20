@@ -156,9 +156,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   //    these pages recrawl priority.
   const modelRoutes: MetadataRoute.Sitemap = modelsData.map((model) => {
     const isSotaOrFlagship =
-      model.statusBadge.includes("FLAGSHIP") ||
-      model.statusBadge.includes("SOTA") ||
-      model.statusBadge.includes("NEWEST");
+      /flagship/i.test(model.statusBadge) ||
+      /sota/i.test(model.statusBadge) ||
+      /newest/i.test(model.statusBadge);
 
     const released = new Date(model.releaseDate);
     const verified = new Date(model.lastVerifiedAt);

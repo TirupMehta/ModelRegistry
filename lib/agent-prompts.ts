@@ -50,7 +50,7 @@ Follow this workflow step by step. Ask me for any fact you cannot verify from an
   releaseDate: "2026-09-08",        // YYYY-MM-DD, first public availability
   isCompanyFlagship: false,         // true ONLY if this is the lab's primary flagship (exactly 1 per lab - demote the previous flagship to false)
   isLatestCheckpoint: true,         // true if this is the lab's newest release
-  statusBadge: "NEW DROP",          // short uppercase pill, e.g. "NEW DROP", "OPEN WEIGHTS", "EXPIRES SEPT 10"
+  statusBadge: "New drop",          // short sentence-case pill, e.g. "New drop", "Open weights", "Expires Sept 10"
   category: "flagship",             // one of: ${categories()}
   categoryLabel: "Human Readable Label",
   contextWindow: "1,048,576 tokens", // human string; visual models use descriptive windows like "8s clips"

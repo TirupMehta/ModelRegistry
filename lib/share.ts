@@ -45,57 +45,57 @@ export function pageCard(path: string): PageCard | null {
   })
   switch (path) {
     case "/about":
-      return base("ABOUT", "About ModelRegistry", "An open, source-linked record of frontier AI models.", String(models), "MODELS TRACKED", [`${labs} labs`, `Revised ${rev}`])
+      return base("About", "About ModelRegistry", "An open, source-linked record of frontier AI models.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/alerts":
-      return base("ALERTS", "Model alerts waitlist", "Join the waitlist for model-change alerts.", String(models), "MODELS TRACKED", [`${labs} labs`, `Revised ${rev}`])
+      return base("Alerts", "Model alerts waitlist", "Join the waitlist for model-change alerts.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/best":
-      return base("BEST BY TASK", "Best AI model by task", "The highest independent score on each named test among current models.", String(independentRecords.length), "MODELS TESTED", ["Independent results", `Revised ${rev}`])
+      return base("Best by task", "Best AI model by task", "The highest independent score on each named test among current models.", String(independentRecords.length), "Models tested", ["Independent results", `Revised ${rev}`])
     case "/changelog":
-      return base("CHANGELOG", "Record history", "Dated additions, corrections and re-sourcing across every model record.", String(changelogCount()), "DATED ENTRIES", [`${models} models`, `Revised ${rev}`])
+      return base("Changelog", "Record history", "Dated additions, corrections and re-sourcing across every model record.", String(changelogCount()), "Dated entries", [`${models} models`, `Revised ${rev}`])
     case "/cli":
-      return base("COMMAND LINE", "The ModelRegistry CLI", "Query the registry from a terminal. No keys, no signup.", String(models), "MODELS AVAILABLE", ["Zero dependencies", "Free JSON API"])
+      return base("Command line", "The ModelRegistry CLI", "Query the registry from a terminal. No keys, no signup.", String(models), "Models available", ["Zero dependencies", "Free JSON API"])
     case "/companies":
-      return base("LABS", "AI labs tracked", "Every laboratory in the registry with its flagship and newest release.", String(labs), "LABS TRACKED", [`${flagships} flagships`, `${models} models`])
+      return base("Labs", "AI labs tracked", "Every laboratory in the registry with its flagship and newest release.", String(labs), "Labs tracked", [`${flagships} flagships`, `${models} models`])
     case "/compare":
-      return base("COMPARE", "Compare AI models", "Side-by-side specifications and independent results, with the source of every figure.", String(models), "MODELS TO COMPARE", ["Same-test results only", `Revised ${rev}`])
+      return base("Compare", "Compare AI models", "Side-by-side specifications and independent results, with the source of every figure.", String(models), "Models to compare", ["Same-test results only", `Revised ${rev}`])
     case "/contact":
-      return base("CONTACT", "Contact the maintainer", "Report an error or ask about the registry.", String(models), "MODELS TRACKED", [`${labs} labs`, `Revised ${rev}`])
+      return base("Contact", "Contact the maintainer", "Report an error or ask about the registry.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/context":
-      return base("CONTEXT WINDOWS", "Context windows compared", "Published context window for every tracked model.", String(models), "MODELS TRACKED", [`${labs} labs`, `Revised ${rev}`])
+      return base("Context windows", "Context windows compared", "Published context window for every tracked model.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/docs":
-      return base("API REFERENCE", "ModelRegistry API", "A free, read-only JSON API with provenance on every record.", String(models), "RECORDS SERVED", ["OpenAPI 3.1", "CORS open"])
+      return base("Api reference", "ModelRegistry API", "A free, read-only JSON API with provenance on every record.", String(models), "Records served", ["OpenAPI 3.1", "CORS open"])
     case "/editorial-policy":
-      return base("EDITORIAL POLICY", "How the registry decides", "What gets published, what gets corrected and who decides.", String(models), "MODELS TRACKED", [`${labs} labs`, `Revised ${rev}`])
+      return base("Editorial policy", "How the registry decides", "What gets published, what gets corrected and who decides.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/flagships":
-      return base("FLAGSHIPS", "Current flagship models", "The primary flagship of every tracked lab, with sources.", String(flagships), "FLAGSHIPS", [`${labs} labs`, `Revised ${rev}`])
+      return base("Flagships", "Current flagship models", "The primary flagship of every tracked lab, with sources.", String(flagships), "Flagships", [`${labs} labs`, `Revised ${rev}`])
     case "/insights":
-      return base("INSIGHTS", "Registry insights", "Analyses built from the registry's sourced data.", String(models), "MODELS TRACKED", [`${labs} labs`, `Revised ${rev}`])
+      return base("Insights", "Registry insights", "Analyses built from the registry's sourced data.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/insights/cost-of-intelligence":
-      return base("INSIGHTS", "The cost of intelligence", "What each independent score costs across current models.", String(independentRecords.length), "MODELS WITH SCORES", ["Independent results", `Revised ${rev}`])
+      return base("Insights", "The cost of intelligence", "What each independent score costs across current models.", String(independentRecords.length), "Models with scores", ["Independent results", `Revised ${rev}`])
     case "/insights/lab-claims-vs-independent":
-      return base("INSIGHTS", "Lab claims vs independent results", "Where lab-reported figures and independent measurements differ.", String(independentRecords.length), "MODELS COMPARED", ["Independent results", `Revised ${rev}`])
+      return base("Insights", "Lab claims vs independent results", "Where lab-reported figures and independent measurements differ.", String(independentRecords.length), "Models compared", ["Independent results", `Revised ${rev}`])
     case "/licenses":
-      return base("LICENSES", "Model licenses", "Which models publish weights, and under which license.", String(open), "OPEN-WEIGHT MODELS", [`${models} models`, `Revised ${rev}`])
+      return base("Licenses", "Model licenses", "Which models publish weights, and under which license.", String(open), "Open-weight models", [`${models} models`, `Revised ${rev}`])
     case "/methodology":
-      return base("METHODOLOGY", "How the registry works", "Inclusion standard, sourcing rules and what the dates mean.", String(models), "MODELS TRACKED", [`${labs} labs`, `Revised ${rev}`])
+      return base("Methodology", "How the registry works", "Inclusion standard, sourcing rules and what the dates mean.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/modalities":
-      return base("MODALITIES", "Models by modality", "Text, vision, audio, image and video models, grouped.", String(models), "MODELS TRACKED", [`${labs} labs`, `Revised ${rev}`])
+      return base("Modalities", "Models by modality", "Text, vision, audio, image and video models, grouped.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/open-source":
-      return base("OPEN WEIGHTS", "Open-weight AI models", "Models whose weights are published, with their licenses.", String(open), "OPEN-WEIGHT MODELS", [`${models} models`, `Revised ${rev}`])
+      return base("Open weights", "Open-weight AI models", "Models whose weights are published, with their licenses.", String(open), "Open-weight models", [`${models} models`, `Revised ${rev}`])
     case "/pricing":
-      return base("PRICING", "AI model pricing", "Published price per 1M tokens for every tracked model.", String(models), "MODELS PRICED", [`${labs} labs`, `Revised ${rev}`])
+      return base("Pricing", "AI model pricing", "Published price per 1M tokens for every tracked model.", String(models), "Models priced", [`${labs} labs`, `Revised ${rev}`])
     case "/privacy":
-      return base("PRIVACY", "Privacy policy", "What the site collects and what it does not.", String(models), "MODELS TRACKED", [`${labs} labs`, `Revised ${rev}`])
+      return base("Privacy", "Privacy policy", "What the site collects and what it does not.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/retired":
-      return base("RETIRED", "Retired models", "Models kept for history after a lab withdrew them.", String(retired), "RETIRED RECORDS", [`${models} models`, `Revised ${rev}`])
+      return base("Retired", "Retired models", "Models kept for history after a lab withdrew them.", String(retired), "Retired records", [`${models} models`, `Revised ${rev}`])
     case "/score":
-      return base("MERIDIAN SCORE", "The Meridian score", "A fixed-reference score across the independent tests.", String(independentRecords.length), "MODELS SCORED", ["Fixed calibration", `Revised ${rev}`])
+      return base("Meridian score", "The Meridian score", "A fixed-reference score across the independent tests.", String(independentRecords.length), "Models scored", ["Fixed calibration", `Revised ${rev}`])
     case "/suggest":
-      return base("SUGGEST A MODEL", "Suggest a model", "Propose a model for the registry. Every suggestion is reviewed.", String(models), "MODELS TRACKED", [`${labs} labs`, `Revised ${rev}`])
+      return base("Suggest a model", "Suggest a model", "Propose a model for the registry. Every suggestion is reviewed.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/timeline":
-      return base("TIMELINE", "Release timeline", "Every tracked release in order, newest first.", String(models), "RELEASES", [newest() ? `Newest: ${newest().name}` : "", `Revised ${rev}`].filter(Boolean))
+      return base("Timeline", "Release timeline", "Every tracked release in order, newest first.", String(models), "Releases", [newest() ? `Newest: ${newest().name}` : "", `Revised ${rev}`].filter(Boolean))
     case "/trust":
-      return base("TRUST", "Why you can trust the registry", "Sources, check dates and the limits of what the registry can know.", String(models), "MODELS TRACKED", [`${labs} labs`, `Revised ${rev}`])
+      return base("Trust", "Why you can trust the registry", "Sources, check dates and the limits of what the registry can know.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     default:
       return null
   }

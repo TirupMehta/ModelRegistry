@@ -103,11 +103,11 @@ export async function GET(req: NextRequest) {
         }
       : taskAnswer
         ? {
-            kicker: "BEST BY TASK",
+            kicker: "Best by task",
             title: bestPageTitle(taskAnswer),
             blurb: `${taskAnswer.entries[0].model.name} has the highest independent score on ${taskAnswer.measure} among ${taskAnswer.field} current models.`,
             big: taskAnswer.entries[0].value,
-            bigLabel: taskAnswer.entries[0].model.name.toUpperCase(),
+            bigLabel: taskAnswer.entries[0].model.name,
             lines: [
               taskAnswer.tied ? "Statistically tied at the top" : "Clear leader",
               `${taskAnswer.field} current models`,
@@ -122,7 +122,7 @@ export async function GET(req: NextRequest) {
         <>
           <Masthead
             folio={`Dataset ${datasetRevision.datasetVersion}`}
-            eyebrowLeft="OPEN FRONTIER AI INDEX"
+            eyebrowLeft="Open frontier AI index"
             palette={palette}
             display={display}
             sans={sans}
@@ -187,7 +187,7 @@ export async function GET(req: NextRequest) {
               </div>
             </div>
           </div>
-          <FolioFooter folioId={factCard.folio.toUpperCase()} palette={palette} sans={sans} />
+          <FolioFooter folioId={factCard.folio} palette={palette} sans={sans} />
         </>,
         { palette, sans, fonts }
       )
@@ -256,8 +256,8 @@ export async function GET(req: NextRequest) {
         <>
           <Masthead
             folio={folio}
-            eyebrowLeft="OPEN FRONTIER AI MODEL DATASHEET"
-            eyebrowRight={recordState.toUpperCase()}
+            eyebrowLeft="Open frontier AI model datasheet"
+            eyebrowRight={recordState}
             palette={palette}
             display={display}
             sans={sans}
@@ -310,7 +310,7 @@ export async function GET(req: NextRequest) {
                   {sigBig}
                 </span>
                 <Eyebrow palette={palette} fontFamily={sans}>
-                  {sigSmall.toUpperCase()}
+                  {sigSmall}
                 </Eyebrow>
                 {sigVariant ? (
                   <span style={{ display: "flex", fontFamily: sans, fontSize: "16px", fontWeight: 500, color: palette.faint }}>
@@ -342,7 +342,7 @@ export async function GET(req: NextRequest) {
         <>
           <Masthead
             folio={`${labModels.length} models tracked`}
-            eyebrowLeft="OPEN FRONTIER LABORATORY PROFILE"
+            eyebrowLeft="Open frontier laboratory profile"
             palette={palette}
             display={display}
             sans={sans}
@@ -411,7 +411,7 @@ export async function GET(req: NextRequest) {
               </div>
             </div>
           </div>
-          <FolioFooter folioId={`LAB / ${lab.id.toUpperCase()}`} palette={palette} sans={sans} />
+          <FolioFooter folioId={`Lab / ${lab.id}`} palette={palette} sans={sans} />
         </>,
         { palette, sans, fonts }
       )
@@ -425,8 +425,8 @@ export async function GET(req: NextRequest) {
       <>
         <Masthead
           folio={`Frontier Radar · ${monthLabel}`}
-          eyebrowLeft="OPEN FRONTIER AI INDEX"
-          eyebrowRight="COMMUNITY-MAINTAINED DATASET"
+          eyebrowLeft="Open frontier AI index"
+          eyebrowRight="Community-maintained dataset"
           palette={palette}
           display={display}
           sans={sans}

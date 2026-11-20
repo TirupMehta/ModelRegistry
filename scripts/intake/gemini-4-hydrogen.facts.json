@@ -7,7 +7,7 @@
     "version": "4.0-Hydrogen",
     "category": "flagship",
     "categoryLabel": "Fast Agentic Execution",
-    "statusBadge": "GA · LIVE",
+    "statusBadge": "GA · live",
     "isCompanyFlagship": false,
     "openWeights": false,
     "extraModalities": ["Code"],

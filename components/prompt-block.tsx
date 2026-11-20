@@ -42,7 +42,7 @@ export default function PromptBlock({ title, text, previewLines = 3 }: PromptBlo
           aria-expanded={expanded}
           className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rule-t text-caption sm:text-small font-sans text-fg-muted hover:text-accent-ink transition-colors cursor-pointer"
         >
-          <span>{expanded ? "SHOW LESS" : `READ MORE (+${hiddenCount} LINES)`}</span>
+          <span>{expanded ? "Show less" : `Read more (+${hiddenCount} lines)`}</span>
           <ChevronDown
             size={12}
             className={`transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
