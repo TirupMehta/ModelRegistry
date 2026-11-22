@@ -1,4 +1,5 @@
 import type { ModelItem } from "@/data/models"
+import type { ModelCore } from "@/lib/model-list"
 import { isUsdPriced } from "@/lib/utils"
 
 export type ModelSort = "default" | "newest" | "context" | "price" | "name"
@@ -27,7 +28,7 @@ export function hasActiveModelFilters(filters: ModelFilters): boolean {
     filters.maxInputPrice !== "" || filters.sort !== "default"
 }
 
-export function filterModels(models: ModelItem[], filters: ModelFilters, preserveInputOrder = false): ModelItem[] {
+export function filterModels<T extends ModelCore>(models: T[], filters: ModelFilters, preserveInputOrder = false): T[] {
   const minContext = filters.minContext === "" ? null : Number(filters.minContext)
   const maxPrice = filters.maxInputPrice === "" ? null : Number(filters.maxInputPrice)
   const result = models.filter((model) => {

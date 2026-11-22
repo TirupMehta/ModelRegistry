@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { type ModelItem } from "@/data/models"
+import type { ModelListItem } from "@/lib/model-list"
 import { formatPrice, formatDate } from "@/lib/utils"
 import {
   X,
@@ -17,11 +17,11 @@ import {
   Share2,
 } from "lucide-react"
 import { ShareCardModal } from "./share-card-modal"
-import VerificationSection from "./verification-section"
+import ModelEvidence from "./model-evidence"
 import { tapFeedback, successFeedback } from "@/lib/feedback"
 
 interface ModelDetailsModalProps {
-  model: ModelItem | null
+  model: ModelListItem | null
   onClose: () => void
   // Dossier folio, derived where the dataset lives (see lib/registry).
   folio: string
@@ -31,6 +31,9 @@ interface ModelDetailsModalProps {
 export default function ModelDetailsModal({ model, onClose, folio, folioId }: ModelDetailsModalProps) {
   const [copied, setCopied] = useState(false)
   const [isShareStudioOpen, setIsShareStudioOpen] = useState(false)
+  const panelRef = useRef<HTMLDivElement>(null)
+  const shareOpenRef = useRef(false)
+  shareOpenRef.current = isShareStudioOpen
 
   // Prevent background scroll and support ESC key.
   // Saves the page scroll position on open and restores it exactly on close,
@@ -38,8 +41,42 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
   useEffect(() => {
     if (!model) return
 
+    // Keyboard users: focus moves into the dialog when it opens, Tab stays
+    // inside it, and focus returns to the control that opened it on close.
+    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const focusables = () =>
+      Array.from(
+        panelRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      ).filter((el) => el.getClientRects().length > 0)
+    const focusTimer = window.setTimeout(() => panelRef.current?.focus({ preventScroll: true }), 0)
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
+      if (e.key === "Escape") {
+        onClose()
+        return
+      }
+      // The share studio traps its own focus while it is open.
+      if (e.key !== "Tab" || shareOpenRef.current) return
+      const items = focusables()
+      if (items.length === 0) {
+        e.preventDefault()
+        return
+      }
+      const first = items[0]
+      const last = items[items.length - 1]
+      const active = document.activeElement
+      if (e.shiftKey && (active === first || active === panelRef.current)) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault()
+        first.focus()
+      } else if (!panelRef.current?.contains(active)) {
+        e.preventDefault()
+        first.focus()
+      }
     }
 
     const scrollY = window.scrollY
@@ -51,12 +88,14 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
     window.addEventListener("keydown", handleKeyDown)
 
     return () => {
+      window.clearTimeout(focusTimer)
       document.body.style.overflow = prevBodyOverflow
       window.removeEventListener("keydown", handleKeyDown)
       // Bypass `scroll-behavior: smooth` so the restore is instant, not animated
       html.style.scrollBehavior = "auto"
       window.scrollTo(0, scrollY)
       html.style.scrollBehavior = prevHtmlScrollBehavior
+      if (opener && document.contains(opener)) opener.focus({ preventScroll: true })
     }
   }, [model, onClose])
 
@@ -90,7 +129,9 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
     >
       <div className="min-h-full flex justify-center p-3 sm:p-6">
       <div
-        className="relative m-auto w-full max-w-2xl bg-[var(--surface-raised)] dark:bg-[var(--surface-raised)] border border-black/10 dark:border-white/[0.08] rounded-2xl shadow-xl p-4 sm:p-7 sm:max-h-[92dvh] sm:overflow-y-auto sm:overscroll-contain transition-colors duration-150 ease-out"
+        ref={panelRef}
+        tabIndex={-1}
+        className="relative m-auto w-full max-w-2xl outline-none bg-[var(--surface-raised)] dark:bg-[var(--surface-raised)] border border-black/10 dark:border-white/[0.08] rounded-2xl shadow-xl p-4 sm:p-7 sm:max-h-[92dvh] sm:overflow-y-auto sm:overscroll-contain transition-colors duration-150 ease-out"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Control Bar */}
@@ -366,7 +407,7 @@ export default function ModelDetailsModal({ model, onClose, folio, folioId }: Mo
           </button>
         </div>
 
-        <VerificationSection model={model} />
+        <ModelEvidence id={model.id} />
       </div>
 
       {isShareStudioOpen && (

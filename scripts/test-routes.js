@@ -55,6 +55,8 @@ function countDataset() {
     // redirect without depending on any retired slug existing.
     nearMissSlug: openaiFlagship ? `${openaiFlagship.id}-v2` : null,
     priceModelId: priceModel?.id ?? openaiFlagship?.id ?? null,
+    // A string that exists only in the full dataset (a model's first cited source), to prove it is not in first-load JavaScript.
+    provenanceMarker: modelsData.find((m) => m.sources && m.sources[0])?.sources[0].url ?? null,
     // Full "$in/$out" pair must survive CLI column layout untruncated.
     pricePair:
       priceModel != null ? `$${priceModel.pricing.input}/$${priceModel.pricing.output}` : null,
@@ -178,6 +180,32 @@ async function main() {
   await expectContains("/sitemap.xml", "/companies/openai", "xml")
   await expectContains("/sitemap.xml", "/docs", "xml")
   await expectContains("/rss.xml", EXPECTED.newestName, "xml")
+  // ---- First-load JavaScript: what a visitor's phone must download and parse ----
+  // Measured on the real production response. The homepage must not carry the
+  // full dataset (its provenance is read on demand), and its script bytes must
+  // stay inside a budget so a new dependency cannot quietly double them.
+  try {
+    const html = await (await get("/", { accept: "text/html" })).res.text()
+    // Every chunk the page will run is named in the response (preload links, script tags and the streamed payload); polyfills are nomodule and never run in a current browser.
+    const named = html.split("static/chunks/").slice(1).map((part) => part.slice(0, part.indexOf(".js") + 3)).filter((name) => /^[A-Za-z0-9_./-]+$/.test(name) && !name.startsWith("polyfills"))
+    const srcs = [...new Set(named.map((name) => "/_next/static/chunks/" + name))]
+    let raw = 0
+    let withDataset = []
+    for (const src of srcs) {
+      const body = await (await get(src)).res.text()
+      raw += Buffer.byteLength(body)
+      if (EXPECTED.provenanceMarker && body.includes(EXPECTED.provenanceMarker)) withDataset.push(src)
+    }
+    const BUDGET = 650 * 1024
+    if (srcs.length < 5) throw new Error("found only " + srcs.length + " first-load scripts: the page could not be read")
+    if (withDataset.length === 0) pass("homepage JavaScript does not carry the full dataset")
+    else fail("homepage JavaScript does not carry the full dataset", withDataset.join(", "))
+    if (raw <= BUDGET) pass("homepage first-load JavaScript is inside its budget", (raw / 1024).toFixed(0) + "KB of " + (BUDGET / 1024).toFixed(0) + "KB, " + srcs.length + " scripts")
+    else fail("homepage first-load JavaScript is inside its budget", (raw / 1024).toFixed(0) + "KB, budget " + (BUDGET / 1024).toFixed(0) + "KB")
+  } catch (e) {
+    fail("homepage first-load JavaScript", "fetch failed: " + e.message)
+  }
+
   // ---- Count parity: every public surface reports the same number of records ----
   try {
     const rss = await (await get("/rss.xml")).res.text()

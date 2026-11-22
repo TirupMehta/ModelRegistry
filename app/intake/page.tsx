@@ -41,7 +41,7 @@ export default async function IntakePreview({ searchParams }: { searchParams: Pr
   const report = read<Report>(`${id}/report.json`)
   if (!candidate || !report) {
     return (
-      <main className="p-10 text-body">
+      <main id="content" tabIndex={-1} className="p-10 text-body focus:outline-none">
         No intake output for <code>{id}</code>. Run <code>node scripts/intake.mjs scripts/intake/{id}.facts.json</code>.
       </main>
     )

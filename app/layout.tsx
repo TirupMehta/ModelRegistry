@@ -186,6 +186,9 @@ export default function RootLayout({
           }}
         />
 
+        <a href="#content" className="skip-link">
+          Skip to main content
+        </a>
         <FeedbackInit />
         <div className="flex-1 flex flex-col [&>main]:!min-h-0">{children}</div>
         <Footer />

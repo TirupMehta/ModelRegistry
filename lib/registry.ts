@@ -1,4 +1,4 @@
-import { type ModelItem } from "@/data/models"
+import type { ModelCore } from "@/lib/model-list"
 
 /**
  * Shared registry queries. Single home for the "which model is newest /
@@ -8,12 +8,12 @@ import { type ModelItem } from "@/data/models"
  * The dataset is ALWAYS passed in explicitly (never imported here): server
  * components pass the server-side import for free, while client components
  * pass the copy they already hold. A top-level `modelsData` import in this
- * module would silently bundle all 219KB into every client that uses a
+ * module would silently bundle the whole 400KB dataset into every client that uses a
  * single helper - that is exactly the trap this module exists to avoid.
  */
 
 /** Newest record by releaseDate (undefined when the registry is empty). */
-export function newestRelease(models: ModelItem[]): ModelItem | undefined {
+export function newestRelease<T extends ModelCore>(models: T[]): T | undefined {
   if (models.length === 0) return undefined
   let newest = models[0]
   for (const m of models) {
@@ -23,12 +23,12 @@ export function newestRelease(models: ModelItem[]): ModelItem | undefined {
 }
 
 /** "YYYY-MM" of the newest tracked release, for freshness stamps. */
-export function newestReleaseMonth(models: ModelItem[]): string {
+export function newestReleaseMonth(models: ModelCore[]): string {
   return newestRelease(models)?.releaseDate.slice(0, 7) ?? ""
 }
 
 /** Same-lab siblings for crawlable internal linking (newest first). */
-export function modelSiblings(model: ModelItem, count: number, models: ModelItem[]): ModelItem[] {
+export function modelSiblings<T extends ModelCore>(model: ModelCore, count: number, models: T[]): T[] {
   return models
     .filter((m) => m.companyId === model.companyId && m.id !== model.id)
     .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
@@ -40,7 +40,7 @@ export function modelSiblings(model: ModelItem, count: number, models: ModelItem
  * position in the registry (1-based, zero-padded); the id is the stable
  * record slug. Both derive from live data - never hand-maintained.
  */
-export function modelFolio(modelId: string, models: ModelItem[]): {
+export function modelFolio(modelId: string, models: ModelCore[]): {
   folio: string
   folioId: string
 } {
@@ -55,7 +55,7 @@ export function modelFolio(modelId: string, models: ModelItem[]): {
  * Null-safe folio for modal call sites: the details modal renders nothing
  * without a model, so a missing model yields blank strings that never paint.
  */
-export function folioFor(model: ModelItem | null, models: ModelItem[]): {
+export function folioFor(model: ModelCore | null, models: ModelCore[]): {
   folio: string
   folioId: string
 } {

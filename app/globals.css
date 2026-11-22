@@ -415,3 +415,26 @@ input {
 .text-black\/55 { color: rgb(0 0 0 / 0.63); }
 .text-black\/60 { color: rgb(0 0 0 / 0.68); }
 .text-black\/65 { color: rgb(0 0 0 / 0.72); }
+
+/* Skip link: first Tab stop on every page, hidden until it has focus. Lets a
+   keyboard or screen-reader user jump past the header and navigation. */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
+}

@@ -190,7 +190,7 @@ curl -s https://modelregistry.tirup.in/api/cli?model=${model.id}`
 
   return (
     <div className="min-h-screen bg-[var(--bg)] dark:bg-[var(--bg)] text-[var(--fg)] dark:text-[var(--fg)] transition-colors duration-150">
-      <main className="page-x pb-10">
+      <main id="content" tabIndex={-1} className="page-x pb-10 focus:outline-none">
         {/* Breadcrumb Navigation */}
         <div className="mb-5 flex items-center gap-2.5 overflow-x-auto whitespace-nowrap text-small font-sans leading-relaxed text-fg-muted [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <Link

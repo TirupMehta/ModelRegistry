@@ -2,81 +2,17 @@
 
 import { useSyncExternalStore } from "react"
 import { Field, Icon, Kbd, Row, Roll, Stage, Swap, Text, Window, type Act } from "./kit"
-import { modelsData, type ModelItem } from "@/data/models"
 import { SITE_URL } from "@/lib/site"
-import { formatDate } from "@/lib/utils"
+import { START, TARGET, type Card } from "./record-demo-cards"
 import "./record-demo.css"
 
 // The homepage demo: open a record and see the lab page it came from and the
 // date it was checked. Every string on screen is read from the registry's own
 // dataset, so the demo cannot drift from the records it shows.
 
-const ROW_IDS = [
-  "claude-fable-5-2",
-  "gpt-6-1-sol",
-  "grok-4-7",
-  "mistral-large-4",
-  "kimi-k3-1-pro",
-  "qwen-3-8-2-4t-a95b",
-] as const
-
-// The story opens on START, the cursor opens TARGET, and the loop ends back on START.
-const START = "gpt-6-1-sol"
-const TARGET = "mistral-large-4"
-
-type Card = {
-  id: string
-  name: string
-  lab: string
-  released: string
-  context: string
-  input: string
-  output: string
-  publisher: string
-  source: string
-  checked: string
-}
-
 type S = { id: string }
 
 const HOST = SITE_URL.replace(/^https?:\/\//, "")
-
-/** 1,000,000 → 1M, 1,048,576 → 1.05M, 500,000 → 500K. */
-function compactTokens(n: number): string {
-  if (n >= 1_000_000) return `${+(n / 1_000_000).toFixed(2)}M`
-  return `${Math.round(n / 1_000)}K`
-}
-
-/** USD per 1M tokens: two decimals, more only under a dime. Matches the index. */
-function usd(n: number): string {
-  if (n === 0) return "Free"
-  return n < 0.1 ? `$${n}` : `$${n.toFixed(2)}`
-}
-
-function toCard(model: ModelItem): Card | null {
-  const source = model.sources[0]
-  if (!source || model.contextWindowTokens <= 0 || model.pricingUnit || model.pricingCurrency) return null
-  return {
-    id: model.id,
-    name: model.name,
-    lab: model.companyName,
-    released: formatDate(model.releaseDate),
-    context: compactTokens(model.contextWindowTokens),
-    input: usd(model.pricing.input),
-    output: usd(model.pricing.output),
-    publisher: source.publisher,
-    source: source.title,
-    checked: formatDate(model.lastVerifiedAt),
-  }
-}
-
-const CARDS: Card[] = ROW_IDS.flatMap((id) => {
-  const model = modelsData.find((m) => m.id === id)
-  const card = model ? toCard(model) : null
-  return card ? [card] : []
-})
-const BY_ID = new Map(CARDS.map((card) => [card.id, card]))
-const READY = BY_ID.has(START) && BY_ID.has(TARGET)
 
 const initial: S = { id: START }
 const poster: S = { id: TARGET }
@@ -109,9 +45,10 @@ function subscribe(notify: () => void) {
 }
 const isDark = () => document.documentElement.classList.contains("dark")
 
-export default function RecordDemo() {
+export default function RecordDemo({ cards: CARDS }: { cards: Card[] }) {
   const dark = useSyncExternalStore(subscribe, isDark, () => false)
-  if (!READY) return null
+  const BY_ID = new Map(CARDS.map((card) => [card.id, card]))
+  if (!(BY_ID.has(START) && BY_ID.has(TARGET))) return null
 
   return (
     <div

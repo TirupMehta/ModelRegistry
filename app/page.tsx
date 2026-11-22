@@ -1,4 +1,7 @@
 import Header from "@/components/header"
+import { modelsData } from "@/data/models"
+import { toListItems } from "@/lib/model-list"
+import { buildDemoCards } from "@/components/stageshow/record-demo-cards"
 import HomeClient from "@/components/home-client"
 import AlertsPopup from "@/components/alerts-popup"
 import QuickAnswers from "@/components/quick-answers"
@@ -8,9 +11,9 @@ import QuickAnswers from "@/components/quick-answers"
 // island, which holds the only client-side copy of the dataset.
 export default function Home() {
   return (
-    <main className="relative min-h-screen">
+    <main id="content" tabIndex={-1} className="relative min-h-screen focus:outline-none">
       <Header />
-      <HomeClient quickAnswers={<QuickAnswers />} />
+      <HomeClient models={toListItems(modelsData)} demoCards={buildDemoCards(modelsData)} quickAnswers={<QuickAnswers />} />
       <AlertsPopup />
     </main>
   )

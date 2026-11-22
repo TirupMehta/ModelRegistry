@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Header from "@/components/header"
+import { modelsData } from "@/data/models"
+import { toListItems } from "@/lib/model-list"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import FlagshipsClient from "@/components/flagships-client"
@@ -23,7 +25,7 @@ export default function FlagshipsPage() {
   }
 
   return (
-    <main className="relative min-h-screen">
+    <main id="content" tabIndex={-1} className="relative min-h-screen focus:outline-none">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="page">
@@ -40,7 +42,7 @@ export default function FlagshipsPage() {
           <Link href="/methodology" className="text-accent-ink hover:underline underline-offset-2">methodology</Link>).
           Chronological view: <Link href="/timeline" className="text-accent-ink hover:underline underline-offset-2">release timeline</Link>.
         </p>
-        <FlagshipsClient />
+        <FlagshipsClient models={toListItems(modelsData)} />
       </section>
     </main>
   )

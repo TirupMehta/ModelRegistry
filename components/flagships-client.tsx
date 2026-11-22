@@ -2,20 +2,20 @@
 
 import { useMemo, useState } from "react"
 import Link from "next/link"
-import { modelsData } from "@/data/models"
+import type { ModelListItem } from "@/lib/model-list"
 import { companies } from "@/data/companies"
 import ModelFilterControls from "@/components/model-filter-controls"
 import { DEFAULT_MODEL_FILTERS, filterModels, type ModelFilters } from "@/lib/model-filters"
 import { priceSymbol } from "@/lib/utils"
 
-export default function FlagshipsClient() {
+export default function FlagshipsClient({ models }: { models: ModelListItem[] }) {
   const [filters, setFilters] = useState<ModelFilters>(DEFAULT_MODEL_FILTERS)
   const flagships = useMemo(() => {
-    const filtered = filterModels(modelsData.filter((model) => model.isCompanyFlagship), filters)
+    const filtered = filterModels(models.filter((model) => model.isCompanyFlagship), filters)
     return filters.sort === "default"
       ? filtered.sort((a, b) => Object.keys(companies).indexOf(a.companyId) - Object.keys(companies).indexOf(b.companyId))
       : filtered
-  }, [filters])
+  }, [filters, models])
 
   return <>
     <ModelFilterControls filters={filters} onChange={setFilters} />
@@ -27,7 +27,7 @@ export default function FlagshipsClient() {
         </span>
         <Link href={`/companies/${model.companyId}`} className="text-small font-sans text-fg-muted hover:text-accent-ink shrink-0">{model.companyName}</Link>
         <span className="text-small font-sans tabular-nums text-fg-muted sm:ml-auto shrink-0">{model.releaseDate} · {model.contextWindow.replace(" tokens", "")} · {priceSymbol(model)}{model.pricing.input}/{priceSymbol(model)}{model.pricing.output}</span>
-        {model.sources[0] && <a href={model.sources[0].url} target="_blank" rel="noopener noreferrer" className="text-caption font-sans text-accent-ink hover:underline underline-offset-2 shrink-0">Source</a>}
+        {model.primarySourceUrl && <a href={model.primarySourceUrl} target="_blank" rel="noopener noreferrer" className="text-caption font-sans text-accent-ink hover:underline underline-offset-2 shrink-0">Source</a>}
       </div>)}
       {flagships.length === 0 && <p className="py-10 text-center text-body text-fg-muted">No flagship models match these filters.</p>}
     </div>

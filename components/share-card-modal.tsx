@@ -1,13 +1,13 @@
 "use client"
 
 import React, { useEffect, useRef, useState, useCallback } from "react"
-import { type ModelItem } from "@/data/models"
+import type { ModelCore } from "@/lib/model-list"
 import { companies } from "@/data/companies"
 import { benchPretty, formatPrice, priceSymbol } from "@/lib/utils"
 import { Download, Copy, Share2, Check, X, Sparkles, Code2, ZoomIn } from "lucide-react"
 
 interface ShareCardModalProps {
-  model: ModelItem
+  model: ModelCore
   isOpen: boolean
   onClose: () => void
   // Dossier folio, derived server-side (see lib/registry modelFolio) so the

@@ -10,7 +10,7 @@ export const metadata: Metadata = withShare({
 }, { page: "/suggest" }, "/suggest")
 
 export default function SuggestPage() {
-  return <main className="relative min-h-screen">
+  return <main id="content" tabIndex={-1} className="relative min-h-screen focus:outline-none">
     <Header />
     <section className="page">
       <h1 className="mb-3 text-heading font-display font-semibold tracking-tight text-fg-strong sm:text-page">Suggest a model</h1>

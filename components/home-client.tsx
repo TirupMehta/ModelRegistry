@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react"
 import Link from "next/link"
 import TextWithBlur from "@/components/text-with-blur"
 import ModelDetailsModal from "@/components/model-details-modal"
-import { modelsData, type ModelItem } from "@/data/models"
+import type { ModelListItem } from "@/lib/model-list"
 import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
 import { formatDate, isUsdPriced, priceSymbol } from "@/lib/utils"
@@ -13,6 +13,7 @@ import { selectFeedback, tapFeedback, successFeedback } from "@/lib/feedback"
 import { ArrowUpRight, Copy, Check, X, Search, SearchX } from "lucide-react"
 import ModelFilterControls from "@/components/model-filter-controls"
 import RecordDemo from "@/components/stageshow/record-demo"
+import type { Card as DemoCard } from "@/components/stageshow/record-demo-cards"
 import { DEFAULT_MODEL_FILTERS, filterModels, type ModelFilters } from "@/lib/model-filters"
 
 type ViewTab = "flagships" | "latest-drops" | "open-weights" | "visual" | "all"
@@ -51,12 +52,12 @@ function isNewDrop(releaseDate: string, now: number = Date.now()): boolean {
   return diffDays >= 0 && diffDays <= NEW_DROPS_WINDOW_DAYS
 }
 
-export default function HomeClient({ quickAnswers }: { quickAnswers?: React.ReactNode }) {
+export default function HomeClient({ models, demoCards, quickAnswers }: { models: ModelListItem[]; demoCards: DemoCard[]; quickAnswers?: React.ReactNode }) {
   const [activeTab, setActiveTab] = useState<ViewTab>("flagships")
   const [searchQuery, setSearchQuery] = useState("")
   const [filters, setFilters] = useState<ModelFilters>(DEFAULT_MODEL_FILTERS)
-  const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
-  const modalFolio = folioFor(activeModalModel, modelsData)
+  const [activeModalModel, setActiveModalModel] = useState<ModelListItem | null>(null)
+  const modalFolio = folioFor(activeModalModel, models)
   const [curlCopied, setCurlCopied] = useState(false)
   const [showAll, setShowAll] = useState(false)
 
@@ -68,7 +69,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
     setShowAll(false)
   }
 
-  const openModel = (model: ModelItem) => {
+  const openModel = (model: ModelListItem) => {
     tapFeedback()
     setActiveModalModel(model)
   }
@@ -80,7 +81,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
       const params = new URLSearchParams(window.location.search)
       const modelId = params.get("model")
       if (modelId) {
-        const found = modelsData.find((m) => m.id === modelId)
+        const found = models.find((m) => m.id === modelId)
         if (found) {
           setActiveModalModel(found)
         }
@@ -94,7 +95,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
     handleUrlQuery()
     window.addEventListener("popstate", handleUrlQuery)
     return () => window.removeEventListener("popstate", handleUrlQuery)
-  }, [])
+  }, [models])
 
   // Sync query parameter with modal state
   useEffect(() => {
@@ -131,7 +132,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
   // New Drops is a purely datewise feed: released in the last
   // NEW_DROPS_WINDOW_DAYS, newest releaseDate first.
   const filteredModels = useMemo(() => {
-    const filtered = modelsData.filter((model) => {
+    const filtered = models.filter((model) => {
       // Flagships tab is the LLM-frontier landing strip: company flagships
       // except pure video generators (they live under the Visual tab).
       if (activeTab === "flagships" && (!model.isCompanyFlagship || model.category === "video")) return false
@@ -161,7 +162,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
     }
 
     return refined
-  }, [activeTab, searchQuery, filters])
+  }, [activeTab, searchQuery, filters, models])
 
   // Searching or filtering means the visitor asked for matches, so show them all.
   const narrowed =
@@ -171,24 +172,24 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
 
   // The hero states how much of the dataset can be traced back to a source.
   const sourceCount = useMemo(
-    () => modelsData.reduce((total, model) => total + (model.sources?.length ?? 0), 0),
-    []
+    () => models.reduce((total, model) => total + model.sourceCount, 0),
+    [models]
   )
 
   // Filter counters
   const counts = useMemo(() => {
     return {
-      flagships: modelsData.filter((m) => m.isCompanyFlagship && m.category !== "video").length,
-      latestDrops: modelsData.filter((m) => isNewDrop(m.releaseDate)).length,
-      openWeights: modelsData.filter((m) => m.openWeights).length,
-      visual: modelsData.filter((m) => m.category === "image" || m.category === "video").length,
-      all: modelsData.length,
+      flagships: models.filter((m) => m.isCompanyFlagship && m.category !== "video").length,
+      latestDrops: models.filter((m) => isNewDrop(m.releaseDate)).length,
+      openWeights: models.filter((m) => m.openWeights).length,
+      visual: models.filter((m) => m.category === "image" || m.category === "video").length,
+      all: models.length,
     }
-  }, [])
+  }, [models])
 
   // Check if a flagship has a specialized newest drop (newest by releaseDate)
   const getSpecializedDrop = (companyId: string, currentId: string) => {
-    return modelsData
+    return models
       .filter(
         (m) => m.companyId === companyId && m.isLatestCheckpoint && m.id !== currentId
       )
@@ -199,7 +200,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
   const labNames = Object.values(companies)
     .map((c) => c.name)
     .join(", ")
-  const newestMonth = newestReleaseMonth(modelsData)
+  const newestMonth = newestReleaseMonth(models)
   const newestReleaseMonthLabel = newestMonth
     ? new Date(`${newestMonth}-02`).toLocaleDateString("en-US", {
         month: "long",
@@ -217,7 +218,7 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
           </p>
           <h2>Active Heavyweight Flagships ({newestReleaseMonthLabel})</h2>
           <ul>
-            {modelsData.map((m) => (
+            {models.map((m) => (
               <li key={m.id}>
                 <strong>{m.name}</strong> ({m.companyName}) - {m.categoryLabel}. Released: {m.releaseDate}. Context: {m.contextWindow}. Parameters: {m.parameters}. Status: {m.statusBadge}. Summary: {m.highlight}
               </li>
@@ -234,13 +235,13 @@ export default function HomeClient({ quickAnswers }: { quickAnswers?: React.Reac
             Every frontier model, with its sources.
           </h1>
           <p className="mt-3 max-w-[52ch] text-title font-normal leading-[1.55] text-fg sm:mt-4 sm:text-title">
-            Specs, prices and context limits for {modelsData.length} models. Each record names the lab page it came from and the date it was checked.
+            Specs, prices and context limits for {models.length} models. Each record names the lab page it came from and the date it was checked.
           </p>
           <p className="mt-3 text-small tabular-nums text-fg-muted">
             {Object.keys(companies).length} labs · {sourceCount} primary sources · <span className="whitespace-nowrap">revised {formatDate(datasetRevision.revisedAt)}</span>
           </p>
           {quickAnswers}
-          <RecordDemo />
+          <RecordDemo cards={demoCards} />
         </div>
       </section>
 

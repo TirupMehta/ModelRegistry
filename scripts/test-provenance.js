@@ -75,7 +75,11 @@ check("no dishonest/trust-inflating copy in repo", hits.length === 0, hits.slice
 const pageView = read("components/model-page-view.tsx")
 const modal = read("components/model-details-modal.tsx")
 check("model page links the report-error form and renders the sources strip", pageView.includes("reportIssueUrl(model.id)") && pageView.includes("{footer}") && read("app/models/[id]/page.tsx").includes("footer={<ModelProvenance model={model} />}"))
-check("model modal renders VerificationSection", modal.includes("<VerificationSection model={model} />"))
+// The modal receives the slim list record, so sources are loaded on demand by ModelEvidence, which renders VerificationSection from the full record.
+check(
+  "model modal renders VerificationSection (through the on-demand evidence panel)",
+  modal.includes("<ModelEvidence id={model.id} />") && read("components/model-evidence.tsx").includes("<VerificationSection model={state.model} />"),
+)
 check(
   "report-error link points at data-correction template",
   read("components/verification-section.tsx").includes("template=data-correction.yml")
