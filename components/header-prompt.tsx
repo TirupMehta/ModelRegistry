@@ -9,6 +9,7 @@ import { Sparkles, Check } from "lucide-react"
 // nav row it sits in stays server-rendered.
 export default function HeaderPrompt() {
   const [promptCopied, setPromptCopied] = useState(false)
+  const [copyFailed, setCopyFailed] = useState(false)
   const [hintPos, setHintPos] = useState<{ top: number; right: number } | null>(null)
   const promptBtnRef = useRef<HTMLButtonElement>(null)
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -36,8 +37,11 @@ export default function HeaderPrompt() {
   // Fetches the live agent prompt (zero bundle cost) and copies it.
   // Falls back to the docs page when clipboard or network is unavailable.
   async function handleCopyPrompt() {
+    // A request that never answers must not leave the button doing nothing.
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), 8000)
     try {
-      const res = await fetch("/api/agent-prompt")
+      const res = await fetch("/api/agent-prompt", { signal: controller.signal })
       if (!res.ok) throw new Error("prompt fetch failed")
       const text = await res.text()
       try {
@@ -56,7 +60,13 @@ export default function HeaderPrompt() {
       successFeedback()
       setTimeout(() => setPromptCopied(false), 2000)
     } catch {
-      window.location.href = "/docs"
+      // Say what is happening before leaving: the docs page carries the same prompt.
+      setCopyFailed(true)
+      setTimeout(() => {
+        window.location.href = "/docs"
+      }, 1200)
+    } finally {
+      clearTimeout(timer)
     }
   }
 
@@ -82,7 +92,7 @@ export default function HeaderPrompt() {
         ) : (
           <Sparkles size={13} className="text-accent-ink shrink-0" />
         )}
-        <span>{promptCopied ? "Copied" : "Copy Prompt"}</span>
+        <span role="status" aria-live="polite">{copyFailed ? "Opening docs" : promptCopied ? "Copied" : "Copy Prompt"}</span>
       </button>
 
       {/* Viewport-fixed explainer card - zero layout impact, never clipped */}

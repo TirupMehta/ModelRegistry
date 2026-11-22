@@ -6,17 +6,17 @@ import TextWithBlur from "@/components/text-with-blur"
 import { PageHeader } from "@/components/ui"
 import ModelDetailsModal from "@/components/model-details-modal"
 import { companies } from "@/data/companies"
-import { modelsData, ModelItem } from "@/data/models"
+import type { ModelListItem } from "@/lib/model-list"
 import { folioFor } from "@/lib/registry"
 import { ArrowUpRight } from "lucide-react"
 import { formatDate } from "@/lib/utils"
 import { tapFeedback } from "@/lib/feedback"
 
-export default function CompaniesClient() {
-  const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
-  const modalFolio = folioFor(activeModalModel, modelsData)
+export default function CompaniesClient({ models }: { models: ModelListItem[] }) {
+  const [activeModalModel, setActiveModalModel] = useState<ModelListItem | null>(null)
+  const modalFolio = folioFor(activeModalModel, models)
 
-  const openModel = (model: ModelItem) => {
+  const openModel = (model: ModelListItem) => {
     tapFeedback()
     setActiveModalModel(model)
   }
@@ -36,13 +36,13 @@ export default function CompaniesClient() {
 
         <ul className="space-y-4">
           {companyList.map((company, index) => {
-            const flagshipModel = modelsData.find((m) => m.companyId === company.id && m.isCompanyFlagship)
-            const latestDrop = modelsData.find(
+            const flagshipModel = models.find((m) => m.companyId === company.id && m.isCompanyFlagship)
+            const latestDrop = models.find(
               (m) => m.companyId === company.id && m.isLatestCheckpoint && m.id !== flagshipModel?.id,
             )
             const secondaryModel = latestDrop
               ? null
-              : [...modelsData]
+              : [...models]
                   .filter((m) => m.companyId === company.id && m.id !== flagshipModel?.id)
                   .sort((x, y) => y.releaseDate.localeCompare(x.releaseDate))[0]
             const second = latestDrop ?? secondaryModel
@@ -53,7 +53,7 @@ export default function CompaniesClient() {
                 label: latestDrop ? "Newest release" : `More from ${company.shortName}`,
                 meta: formatDate(second.releaseDate),
               },
-            ].filter((row): row is { model: ModelItem; label: string; meta: string } => Boolean(row))
+            ].filter((row): row is { model: ModelListItem; label: string; meta: string } => Boolean(row))
 
             return (
               <TextWithBlur key={company.id} delay={index * 35}>

@@ -145,7 +145,7 @@ export default async function CompanyPage({ params }: Props) {
   }
 
   return (
-    <main className="relative min-h-screen">
+    <main id="content" tabIndex={-1} className="relative min-h-screen focus:outline-none">
       <Header />
 
       <script

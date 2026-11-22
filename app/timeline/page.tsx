@@ -1,4 +1,6 @@
 import Header from "@/components/header"
+import { modelsData } from "@/data/models"
+import { toListItems } from "@/lib/model-list"
 import TimelineClient from "@/components/timeline-client"
 
 // Server shell: header and layout render on the server. The
@@ -6,9 +8,9 @@ import TimelineClient from "@/components/timeline-client"
 // only client-side copy of the dataset.
 export default function TimelinePage() {
   return (
-    <main className="relative min-h-screen">
+    <main id="content" tabIndex={-1} className="relative min-h-screen focus:outline-none">
       <Header />
-      <TimelineClient />
+      <TimelineClient models={toListItems(modelsData)} />
     </main>
   )
 }

@@ -30,24 +30,27 @@ export default function Header() {
           </div>
 
           <div className="flex shrink-0 items-center gap-2.5 text-caption font-sans sm:gap-3 sm:text-caption">
-            <Link
+            {/* Plain links on purpose: a Next <Link> prefetches its target when it scrolls into view. The header is on every page, so these two would download the whole feed and the full models JSON (about 400 KB) on every page view just to render a link. */}
+            <a
               href="/rss.xml"
               className="group inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150"
             >
               <Rss size={11} className="text-accent-ink" />
               <span>RSS</span>
-            </Link>
+            </a>
             <span className="inline-block h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
-            <Link
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a
               href="/api/v1/models"
               className="group inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150"
             >
               <Code2 size={11} className="text-accent-ink" />
               <span>API</span>
-            </Link>
+            </a>
             <span className="inline-block h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
             <Link
               href="/docs"
+              prefetch={false}
               className="group inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150"
             >
               <File size={11} className="text-accent-ink" />

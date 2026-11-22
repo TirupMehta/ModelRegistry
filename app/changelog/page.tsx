@@ -29,7 +29,7 @@ export default function ChangelogPage() {
   }
 
   return (
-    <main className="relative min-h-screen">
+    <main id="content" tabIndex={-1} className="relative min-h-screen focus:outline-none">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="page">

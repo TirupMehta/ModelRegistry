@@ -4,27 +4,27 @@ import { useState } from "react"
 import TextWithBlur from "@/components/text-with-blur"
 import { PageHeader } from "@/components/ui"
 import ModelDetailsModal from "@/components/model-details-modal"
-import { modelsData, ModelItem } from "@/data/models"
+import type { ModelListItem } from "@/lib/model-list"
 import { parseLocalDate, withoutReleasePrefix } from "@/lib/utils"
 import { folioFor } from "@/lib/registry"
 import { tapFeedback } from "@/lib/feedback"
 
-export default function TimelineClient() {
-  const [activeModalModel, setActiveModalModel] = useState<ModelItem | null>(null)
-  const modalFolio = folioFor(activeModalModel, modelsData)
+export default function TimelineClient({ models }: { models: ModelListItem[] }) {
+  const [activeModalModel, setActiveModalModel] = useState<ModelListItem | null>(null)
+  const modalFolio = folioFor(activeModalModel, models)
 
-  const openModel = (model: ModelItem) => {
+  const openModel = (model: ModelListItem) => {
     tapFeedback()
     setActiveModalModel(model)
   }
 
   // Sort chronological descending
-  const sortedModels = [...modelsData].sort(
+  const sortedModels = [...models].sort(
     (a, b) => new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime()
   )
 
   // Group by Month Year
-  const groupedTimeline: { [key: string]: ModelItem[] } = {}
+  const groupedTimeline: { [key: string]: ModelListItem[] } = {}
   sortedModels.forEach((model) => {
     const d = parseLocalDate(model.releaseDate)
     const monthYear = d.toLocaleDateString("en-US", { month: "long", year: "numeric" })
