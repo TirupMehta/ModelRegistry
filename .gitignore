@@ -41,3 +41,8 @@ Thumbs.db
 
 # Local screenshots and promotional images; never pushed
 /assets/
+
+# Local tool output: browser logs and installed agent skills; never pushed
+/.playwright-mcp/
+/.agents/
+/temp/
