@@ -453,6 +453,15 @@ No account and no key:
 - Dated changelogs at ${SITE_URL}/changelog, with RSS and JSON Feed, so a client
   can fetch only what changed.
 
+## Connect
+
+Claude Code: claude mcp add --transport http modelregistry ${SITE_URL}/api/mcp
+
+Other MCP clients (merge into the client's MCP config):
+{ "mcpServers": { "modelregistry": { "url": "${SITE_URL}/api/mcp" } } }
+
+Then call get_health to confirm the connection and read datasetVersion.
+
 ## Scale
 
 ${modelsData.length} models across ${DATASET_FACTS.labs} laboratories, dataset

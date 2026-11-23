@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowLeft, Check, Minus } from "lucide-react"
 import Header from "@/components/header"
+import ConnectKit, { type ConnectTab } from "@/components/connect-kit"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { CORE_KEYWORDS, WEBSITE_ID } from "@/lib/entities"
@@ -40,6 +41,71 @@ function A({ href, children }: { href: string; children: React.ReactNode }) {
     <Link href={href} className={linkClass}>{children}</Link>
   )
 }
+
+const MCP_URL = `${SITE_URL}/api/mcp`
+
+const AGENT_PROMPT = `Add the ModelRegistry MCP server so you can look up AI model specifications yourself, then check it works.
+
+Server
+- Name: modelregistry
+- URL: ${MCP_URL}
+- Transport: streamable HTTP. No API key, no headers, no sign-in.
+
+Steps
+1. Work out which client you are running in (Claude Code, Cursor, Claude Desktop, Windsurf, Codex, VS Code, or another).
+2. Register the server the way that client expects.
+   - Claude Code: run \`claude mcp add --transport http modelregistry ${MCP_URL}\`
+   - Clients with a JSON MCP config: merge this into the existing file and keep every server already there:
+     { "mcpServers": { "modelregistry": { "url": "${MCP_URL}" } } }
+   - Any other client: use its own documented way to add a remote HTTP MCP server at that URL.
+3. Ask me before editing a config file outside this project, and tell me if the client needs a restart or reload.
+4. Verify: call the get_health tool and tell me the datasetVersion it returns. If the new tools are not available in this session yet, say so, then fetch ${SITE_URL}/llms.txt with the header "Accept: text/markdown" as a fallback.
+
+How to use it afterwards
+- Use get_model(id) for one model, list_models(company=...) to find an id, list_labs() for laboratories, and get_changes(since) for what changed.
+- Cite the model page URL and the datasetVersion with every figure.
+- A figure written as "Undisclosed" is undisclosed. Never fill it in from memory.
+- A last-verified date is when a source was reviewed, not proof a model is live today.`
+
+const CONNECT_TABS: ConnectTab[] = [
+  {
+    id: "ai",
+    label: "Ask your AI",
+    hint: "Paste into any AI assistant. It installs and tests the server itself.",
+    text: AGENT_PROMPT,
+  },
+  {
+    id: "claude-code",
+    label: "Claude Code",
+    hint: "One command, then ask a question about any model.",
+    text: `claude mcp add --transport http modelregistry ${MCP_URL}`,
+  },
+  {
+    id: "json",
+    label: "Cursor, Desktop, Windsurf",
+    hint: "Merge into mcp.json or your client's MCP config, keeping existing servers.",
+    text: `{
+  "mcpServers": {
+    "modelregistry": {
+      "url": "${MCP_URL}"
+    }
+  }
+}`,
+  },
+  {
+    id: "http",
+    label: "No MCP? Use HTTP",
+    hint: "Plain Markdown and JSON work from any script or agent.",
+    text: `# the short map of the site, as Markdown
+curl -H "Accept: text/markdown" ${SITE_URL}/llms.txt
+
+# any page as Markdown
+curl -H "Accept: text/markdown" ${SITE_URL}/models/<model-id>
+
+# JSON API (contract at ${SITE_URL}/openapi.json)
+curl ${SITE_URL}/api/v1/models`,
+  },
+]
 
 const WAYS = [
   {
@@ -194,12 +260,13 @@ export default function WhyPage() {
         </div>
 
         <h2 className={h2}>Connect in ten seconds</h2>
-        <p className={lede}>Add the server to Claude Code, or point any MCP client at the URL.</p>
-        <pre className="well p-4 mb-12 whitespace-pre-wrap break-all font-mono text-small text-fg-strong leading-6">
-{`claude mcp add --transport http modelregistry ${SITE_URL}/api/mcp
-
-curl -H "Accept: text/markdown" ${SITE_URL}/llms.txt`}
-        </pre>
+        <p className={lede}>
+          Fastest: paste the first tab into your AI assistant and let it install the server, check
+          it works and report back. Or pick your client and copy one command. No key, no sign-up.
+        </p>
+        <div className="mb-12">
+          <ConnectKit tabs={CONNECT_TABS} />
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-12">
           <div className="tile p-4">
