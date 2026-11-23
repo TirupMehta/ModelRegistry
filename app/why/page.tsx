@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { ArrowLeft, Check, Minus } from "lucide-react"
 import Header from "@/components/header"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
@@ -27,30 +28,67 @@ export const metadata: Metadata = withShare({
   },
 }, { page: "/why" }, "/why")
 
-function H2({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="text-heading font-display font-semibold tracking-tight text-fg-strong mt-8 mb-3">
-      {children}
-    </h2>
-  )
-}
+const linkClass = "text-accent-ink hover:underline underline-offset-2"
 
-function P({ children }: { children: React.ReactNode }) {
-  return <p className="max-w-[68ch] text-body text-fg leading-6 sm:leading-7 mb-3">{children}</p>
-}
-
+// Feeds, specs and API routes are plain documents: a Next <Link> would
+// prefetch them on every view, so they use a regular anchor.
 function A({ href, children }: { href: string; children: React.ReactNode }) {
-  const external = /^https?:/.test(href)
-  // Feeds, specs and API routes are plain documents: a Next <Link> would
-  // prefetch them on every view, so they use a regular anchor.
-  const plain = external || /^\/(api|llms|openapi|rss|feed)/.test(href)
-  const cls = "text-accent-ink hover:underline underline-offset-2"
+  const plain = /^https?:/.test(href) || /^\/(api|llms|openapi|rss|feed)/.test(href)
   return plain ? (
-    <a href={href} className={cls}>{children}</a>
+    <a href={href} className={linkClass}>{children}</a>
   ) : (
-    <Link href={href} className={cls}>{children}</Link>
+    <Link href={href} className={linkClass}>{children}</Link>
   )
 }
+
+const WAYS = [
+  {
+    n: "01",
+    label: "MCP server",
+    href: "/api/mcp",
+    text: "Zero-auth. List and fetch models, list labs, read changes since a date, read any page. Add the URL to your client and you are done.",
+  },
+  {
+    n: "02",
+    label: "Markdown",
+    text: "Send Accept: text/markdown to any page and get clean Markdown instead of HTML. Fewer tokens, less parsing.",
+  },
+  {
+    n: "03",
+    label: "llms.txt",
+    href: "/llms.txt",
+    text: "The short map of the site, with llms-full.txt carrying the full matrix.",
+  },
+  {
+    n: "04",
+    label: "OpenAPI",
+    href: "/openapi.json",
+    text: "The JSON API contract, so a client is generated rather than guessed.",
+  },
+  {
+    n: "05",
+    label: "Dated changelogs",
+    href: "/changelog",
+    text: "Every change is dated, with RSS and JSON Feed. Ask what moved since last Tuesday and fetch only those records.",
+  },
+]
+
+const FOR_PEOPLE = [
+  "One page per model, every figure linked to its source.",
+  "Two models side by side, same test only.",
+  "Public and private tests labelled before you trust a ranking.",
+  "No fifteen-tab ritual, and no cookie banners to dismiss.",
+]
+
+const WILL_NOT = [
+  "Call a model universally best from incomparable results.",
+  "Treat a check date as proof a model is live today.",
+  "Guess a figure a lab does not state. It says Undisclosed.",
+  "Take payment, sponsorship or editorial input.",
+]
+
+const h2 = "text-heading font-display font-semibold tracking-tight text-fg-strong mb-1"
+const lede = "text-body font-sans text-fg-muted mb-4 max-w-2xl"
 
 export default function WhyPage() {
   const labs = new Set(modelsData.map((m) => m.companyId)).size
@@ -82,104 +120,117 @@ export default function WhyPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumb) }} />
       <section className="page">
+        <nav
+          aria-label="Breadcrumb"
+          className="flex items-center gap-2.5 mb-7 text-small font-sans leading-relaxed text-fg-muted"
+        >
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1 hover:text-accent-ink transition-colors duration-150"
+          >
+            <ArrowLeft size={13} />
+            <span>Ledger</span>
+          </Link>
+          <span>/</span>
+          <span className="font-medium text-accent-ink">Why</span>
+        </nav>
+
         <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
-          Fifteen tabs, or one call
+          Why ModelRegistry exists
         </h1>
-        <p className="max-w-[60ch] text-heading font-display tracking-tight text-fg leading-snug mb-5">
-          A model launches. You open the announcement, the pricing page, the model card, two
-          leaderboards that disagree, and forget what you were comparing. ModelRegistry reads them
-          once so you do not have to.
-        </p>
-        <p className="mb-10 flex flex-wrap items-center gap-2 text-caption text-fg-muted">
-          <span className="chip tabular-nums">{models} models</span>
-          <span className="chip tabular-nums">{labs} labs</span>
-          <span className="chip">No account, no key</span>
-          <span className="chip font-mono tabular-nums">{datasetRevision.datasetVersion}</span>
+        <p className="mb-6 flex flex-wrap items-center gap-2 text-small font-sans text-fg-muted">
+          <span>Dataset revision {datasetRevision.datasetVersion}</span>
+          <span className="h-3 w-px bg-black/10 dark:bg-white/15" aria-hidden="true" />
+          <span>Revised</span>
+          <time dateTime={datasetRevision.revisedAt} className="tabular-nums">
+            {datasetRevision.revisedAt}
+          </time>
         </p>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="tile p-5">
-            <p className="text-caption uppercase tracking-wide text-fg-muted mb-3">The usual way</p>
-            <ul className="flex flex-col gap-1.5 text-body text-fg">
-              {["Launch post", "Pricing page", "Model card", "API docs", "Leaderboard A", "Leaderboard B (disagrees)", "Forum thread", "...and eight more"].map((t) => (
-                <li key={t} className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 shrink-0 rounded-full border border-current text-fg-muted" aria-hidden="true" />
-                  {t}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 text-small text-fg-muted">About 45 minutes, to learn one price.</p>
-          </div>
-          <div className="tile p-5">
-            <p className="text-caption uppercase tracking-wide text-fg-muted mb-3">With ModelRegistry</p>
-            <div className="well p-3 font-mono text-small text-fg-strong overflow-x-auto">
-              <span className="text-fg-muted">get_model(</span>&quot;model-id&quot;<span className="text-fg-muted">)</span>
-            </div>
-            <p className="mt-4 text-body text-fg">
-              Context, price, release date, license and reported benchmarks, each with its source
-              link. The cookie banners stay home.
-            </p>
-            <p className="mt-4 text-small text-fg-muted">One request, a fraction of a second.</p>
-          </div>
+        <div className="tile p-5 sm:p-6 mb-4">
+          <p className="font-display text-heading font-semibold tracking-tight text-fg-strong leading-snug mb-3">
+            A model launches. You open fifteen tabs.
+          </p>
+          <p className="text-title text-fg-muted leading-7">
+            The announcement, the pricing page, the model card, the docs, two leaderboards that
+            disagree. Somewhere around tab twelve you forget what you were comparing. ModelRegistry
+            reads those pages once and keeps the answer in one place, with the source linked next to
+            every figure. For you, and for the agent working on your behalf.
+          </p>
         </div>
 
-        <H2>For people</H2>
-        <P>
-          One page per model, with a link to where the lab said each figure. Put two models side by
-          side and see which tests are public and which are private before you trust a ranking.
-          Start from <A href="/">the registry</A>, <A href="/compare">compare</A> or the{" "}
-          <A href="/score">ModelRegistry Score</A>.
-        </P>
-
-        <H2>For AI agents</H2>
-        <P>Agents should not scrape marketing pages and hope. Five doors, all open:</P>
-        <ul className="grid gap-3 sm:grid-cols-2 mb-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-12">
           {[
-            ["/api/mcp", "MCP server", "List and fetch models, list labs, read changes since a date, read any page. Zero auth."],
-            ["Accept: text/markdown", "Markdown on request", "Send the header to any page and get clean Markdown, not HTML. Fewer tokens, less parsing."],
-            ["/llms.txt", "llms.txt", "The short map, with /llms-full.txt carrying the full matrix."],
-            ["/openapi.json", "OpenAPI", "The JSON API contract, so a client is generated rather than guessed."],
-            ["/changelog", "Dated changelogs", "Every change dated, with RSS and JSON Feed. Fetch only what moved since last Tuesday."],
-          ].map(([code, title, body]) => (
-            <li key={code} className="tile p-4">
-              <p className="text-body font-semibold text-fg-strong">{title}</p>
-              <p className="mt-0.5 mb-2 font-mono text-caption text-accent-ink break-all">
-                {code.startsWith("/") ? <A href={code}>{code}</A> : code}
-              </p>
-              <p className="text-small text-fg leading-6">{body}</p>
-            </li>
+            { value: String(models), label: "models tracked" },
+            { value: String(labs), label: "laboratories" },
+            { value: "0", label: "accounts or keys needed" },
+            { value: "1", label: "call instead of 15 tabs" },
+          ].map((stat) => (
+            <div key={stat.label} className="tile p-4">
+              <div className="text-heading font-display font-semibold tracking-tight text-fg-strong tabular-nums">
+                {stat.value}
+              </div>
+              <div className="mt-1 text-small font-sans text-fg-muted leading-snug">{stat.label}</div>
+            </div>
           ))}
-        </ul>
+        </div>
 
-        <H2>Connect in ten seconds</H2>
-        <P>Add the server to Claude Code, or point any MCP client at the URL:</P>
-        <pre className="well max-w-[68ch] p-4 mb-3 overflow-x-auto font-mono text-small text-fg-strong leading-6">
+        <h2 className={h2}>Five ways in, all open</h2>
+        <p className={lede}>
+          Agents should not scrape marketing pages and hope. None of these needs an account.
+        </p>
+        <div className="rule-t mb-12">
+          {WAYS.map((row) => (
+            <div key={row.n} className="flex flex-col sm:flex-row gap-1 sm:gap-6 py-4 rule-b">
+              <span className="text-small font-sans tabular-nums text-fg-muted pt-1 sm:w-6 shrink-0">
+                {row.n}
+              </span>
+              <span className="text-body font-sans font-medium text-fg-strong sm:w-36 shrink-0">
+                {row.href ? <A href={row.href}>{row.label}</A> : row.label}
+              </span>
+              <span className="text-body font-sans text-fg-muted leading-6">{row.text}</span>
+            </div>
+          ))}
+        </div>
+
+        <h2 className={h2}>Connect in ten seconds</h2>
+        <p className={lede}>Add the server to Claude Code, or point any MCP client at the URL.</p>
+        <pre className="well p-4 mb-12 whitespace-pre-wrap break-all font-mono text-small text-fg-strong leading-6">
 {`claude mcp add --transport http modelregistry ${SITE_URL}/api/mcp
 
 curl -H "Accept: text/markdown" ${SITE_URL}/llms.txt`}
         </pre>
 
-        <H2>What it will not do</H2>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {[
-            ["No fake freshness", "A last-verified date records when a source was reviewed, not whether a model is live today."],
-            ["No crowned winners", "Results measured differently are not merged into a universal best."],
-            ["No guessing", "A figure a lab does not state is written as Undisclosed. Boring, and the reason you can cite it."],
-          ].map(([title, body]) => (
-            <div key={title} className="tile p-4">
-              <p className="text-body font-semibold text-fg-strong mb-1">{title}</p>
-              <p className="text-small text-fg leading-6">{body}</p>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-12">
+          <div className="tile p-4">
+            <h2 className="text-body font-sans font-semibold text-fg-strong mb-3">For people</h2>
+            <ul className="space-y-2">
+              {FOR_PEOPLE.map((item) => (
+                <li key={item} className="flex gap-2 text-body font-sans text-fg-muted leading-6">
+                  <Check size={13} className="shrink-0 mt-1 text-accent-ink" aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="tile p-4">
+            <h2 className="text-body font-sans font-semibold text-fg-strong mb-3">What it will not do</h2>
+            <ul className="space-y-2">
+              {WILL_NOT.map((item) => (
+                <li key={item} className="flex gap-2 text-body font-sans text-fg-muted leading-6">
+                  <Minus size={13} className="shrink-0 mt-1 text-fg-muted" aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        <div className="rule-t mt-10 pt-6">
-          <p className="text-small text-fg-muted">
-            Next: the <A href="/docs">API docs</A>, the <A href="/methodology">methodology</A>, or{" "}
-            <A href="/about">who maintains it</A>. Corrections go through the{" "}
-            <A href="/suggest">suggestion form</A>, and a maintainer reads every one.
-          </p>
-        </div>
+        <p className="text-body font-sans text-fg-muted max-w-2xl">
+          Next: the <A href="/docs">API docs</A>, the <A href="/methodology">methodology</A>, the{" "}
+          <A href="/trust">sourcing standard</A> or <A href="/about">who maintains it</A>.
+          Corrections go through the <A href="/suggest">suggestion form</A>.
+        </p>
       </section>
     </main>
   )
