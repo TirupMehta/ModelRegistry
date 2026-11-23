@@ -43,7 +43,7 @@ TOOLS
 - read_page_markdown(path): any page as Markdown ('/', '/docs', '/about', '/methodology', '/open-source', '/cli', '/models/{id}', ...).
 
 RESOURCES
-- Fixed: modelregistry://home, /docs, /about, /methodology, /open-source, /cli, /contact, /privacy
+- Fixed: modelregistry://home, /docs, /about, /why, /methodology, /open-source, /cli, /contact, /privacy
 - Template: modelregistry://page/{+path} reads any page (e.g. modelregistry://page/models/gpt-6-1-sol).
 
 HOW TO ANSWER
@@ -603,6 +603,7 @@ const FIXED_RESOURCES: Array<{ uri: string; path: string; name: string; descript
   { uri: "modelregistry://methodology", path: "/methodology", name: "Methodology", description: "Inclusion rules, source standards, verification levels." },
   { uri: "modelregistry://open-source", path: "/open-source", name: "Open source", description: "Latest pushes, contributors, merged PRs, how to contribute." },
   { uri: "modelregistry://cli", path: "/cli", name: "CLI", description: "Terminal client commands and plain-text routes." },
+  { uri: "modelregistry://why", path: "/why", name: "Why", description: "Why one call to this registry beats fifteen tabs on every model launch." },
   { uri: "modelregistry://contact", path: "/contact", name: "Contact", description: "Channels for corrections, security reports, enquiries." },
   { uri: "modelregistry://privacy", path: "/privacy", name: "Privacy", description: "What the site stores (very little)." },
 ]
