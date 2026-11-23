@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useState } from "react"
+import { ChevronDown } from "lucide-react"
 import CopyButton from "./copy-button"
 
 export interface ConnectTab {
@@ -12,6 +13,8 @@ export interface ConnectTab {
   text: string
 }
 
+const PREVIEW_LINES = 6
+
 const copyClass =
   "border border-black/10 dark:border-white/[0.08] text-fg-muted hover:border-accent/50 hover:text-accent-ink min-h-8"
 
@@ -21,9 +24,19 @@ const copyClass =
  */
 export default function ConnectKit({ tabs }: { tabs: ConnectTab[] }) {
   const [active, setActive] = useState(tabs[0]?.id)
+  const [expanded, setExpanded] = useState(false)
   const refs = useRef<Record<string, HTMLButtonElement | null>>({})
   const current = tabs.find((t) => t.id === active) ?? tabs[0]
   if (!current) return null
+
+  const lines = current.text.split("\n")
+  const hiddenCount = Math.max(lines.length - PREVIEW_LINES, 0)
+  const shown = expanded || hiddenCount === 0 ? current.text : lines.slice(0, PREVIEW_LINES).join("\n")
+
+  function select(id: string) {
+    setActive(id)
+    setExpanded(false)
+  }
 
   function onKeyDown(e: React.KeyboardEvent, index: number) {
     const last = tabs.length - 1
@@ -35,7 +48,7 @@ export default function ConnectKit({ tabs }: { tabs: ConnectTab[] }) {
       : -1
     if (next < 0) return
     e.preventDefault()
-    setActive(tabs[next].id)
+    select(tabs[next].id)
     refs.current[tabs[next].id]?.focus()
   }
 
@@ -56,7 +69,7 @@ export default function ConnectKit({ tabs }: { tabs: ConnectTab[] }) {
               aria-selected={selected}
               aria-controls={`connect-panel-${t.id}`}
               tabIndex={selected ? 0 : -1}
-              onClick={() => setActive(t.id)}
+              onClick={() => select(t.id)}
               onKeyDown={(e) => onKeyDown(e, i)}
               className={`shrink-0 cursor-pointer whitespace-nowrap px-4 py-2.5 text-small font-sans transition-colors ${
                 selected
@@ -79,8 +92,22 @@ export default function ConnectKit({ tabs }: { tabs: ConnectTab[] }) {
           <CopyButton text={current.text} label="COPY" className={copyClass} />
         </div>
         <pre className="px-4 sm:px-5 py-3.5 text-small font-mono leading-relaxed text-fg whitespace-pre-wrap break-words">
-          {current.text}
+          {shown}
         </pre>
+        {hiddenCount > 0 && (
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            aria-expanded={expanded}
+            className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rule-t text-caption sm:text-small font-sans text-fg-muted hover:text-accent-ink transition-colors cursor-pointer"
+          >
+            <span>{expanded ? "Show less" : `Read more (+${hiddenCount} lines)`}</span>
+            <ChevronDown
+              size={12}
+              className={`transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+            />
+          </button>
+        )}
       </div>
     </div>
   )
