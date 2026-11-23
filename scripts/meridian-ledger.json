@@ -10,22 +10,22 @@
     "claude-fable-5-2": {
       "score": 654,
       "tests": 9,
-      "inputs": "a3da565f622e"
+      "inputs": "8be4096790de"
     },
     "claude-haiku-5-5": {
       "score": 478,
       "tests": 10,
-      "inputs": "c3efcd104775"
+      "inputs": "0a2ef3b3a815"
     },
     "claude-opus-5-5": {
       "score": 617,
       "tests": 10,
-      "inputs": "e7c8f9c41222"
+      "inputs": "eef2e28aa927"
     },
     "claude-sonnet-5-5": {
       "score": 591,
       "tests": 10,
-      "inputs": "5b94618a665c"
+      "inputs": "fa77226a3ed5"
     },
     "deepseek-v4-1-flash-1017": {
       "score": 487,
@@ -45,7 +45,7 @@
     "gemini-4-argon": {
       "score": 576,
       "tests": 10,
-      "inputs": "12ed239cd2ad"
+      "inputs": "2fae55095021"
     },
     "gemini-4-carbon": {
       "score": 625,
@@ -65,12 +65,12 @@
     "glm-5-3": {
       "score": 470,
       "tests": 10,
-      "inputs": "bb71e31d1b57"
+      "inputs": "d1f1c3028830"
     },
     "glm-5-3-flash": {
       "score": 448,
       "tests": 9,
-      "inputs": "b0158ccc551a"
+      "inputs": "b3c5d16455cd"
     },
     "gpt-6-1-terra": {
       "score": 563,
@@ -90,32 +90,32 @@
     "grok-4-7": {
       "score": 502,
       "tests": 10,
-      "inputs": "320b9b81dbdc"
+      "inputs": "569c32da430f"
     },
     "kimi-k3-1-pro": {
       "score": 567,
       "tests": 10,
-      "inputs": "8a11eab00285"
+      "inputs": "de29637a1feb"
     },
     "mimo-v2-6-flash": {
       "score": 435,
       "tests": 10,
-      "inputs": "6d321a4a1ec2"
+      "inputs": "ff8254e8f021"
     },
     "mimo-v2-6-pro": {
       "score": 470,
       "tests": 10,
-      "inputs": "10ea767f6c2f"
+      "inputs": "f1bf78fe5690"
     },
     "minimax-m3-1-flash": {
-      "score": 477,
+      "score": 478,
       "tests": 9,
-      "inputs": "653d46863fdc"
+      "inputs": "4b28960e534a"
     },
     "mistral-large-4": {
       "score": 434,
       "tests": 10,
-      "inputs": "8619619e863b"
+      "inputs": "fd04209fe5ed"
     },
     "muse-ember": {
       "score": 509,
@@ -125,7 +125,7 @@
     "muse-spark-open": {
       "score": 418,
       "tests": 9,
-      "inputs": "1d45685ac4dc"
+      "inputs": "0135dd94a6fc"
     },
     "muse-wonder": {
       "score": 559,
@@ -140,7 +140,7 @@
     "nemotron-3-ultra": {
       "score": 253,
       "tests": 10,
-      "inputs": "238416470cd4"
+      "inputs": "0e36d5583063"
     },
     "qwen4-max": {
       "score": 556,
@@ -148,9 +148,9 @@
       "inputs": "48634dbb7dd3"
     },
     "tencent-hy4": {
-      "score": 503,
+      "score": 502,
       "tests": 9,
-      "inputs": "d3d6a0cbf44b"
+      "inputs": "23e7c15ce172"
     }
   }
 }
