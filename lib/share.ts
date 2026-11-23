@@ -97,6 +97,8 @@ export function pageCard(path: string): PageCard | null {
       return base("Timeline", "Release timeline", "Every tracked release in order, newest first.", String(models), "Releases", [newest() ? `Newest: ${newest().name}` : "", `Revised ${rev}`].filter(Boolean))
     case "/trust":
       return base("Trust", "Why you can trust the registry", "Sources, check dates and the limits of what the registry can know.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
+    case "/why":
+      return base("Why", "Why use ModelRegistry", "One MCP call instead of fifteen tabs, for people and AI agents.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     default:
       return null
   }

@@ -433,6 +433,42 @@ availability signal.`
 ${resourceLinks("/about")}
 `,
   }),
+  "/why": () => ({
+    status: 200,
+    body: `${frontMatter(
+      "Why use ModelRegistry",
+      `A new model launches and the usual routine is fifteen tabs: announcement,
+pricing, model card, docs, two leaderboards that disagree. ModelRegistry reads
+those pages once and keeps the answer in one place, with the source linked next
+to every figure.
+
+## For agents
+
+No account and no key:
+
+- MCP server: ${SITE_URL}/api/mcp (list_models, get_model, list_labs, get_changes, get_health, read_page_markdown).
+- Markdown on request: send "Accept: text/markdown" to any page.
+- ${SITE_URL}/llms.txt for the map, ${SITE_URL}/llms-full.txt for the full matrix.
+- ${SITE_URL}/openapi.json for the JSON API contract.
+- Dated changelogs at ${SITE_URL}/changelog, with RSS and JSON Feed, so a client
+  can fetch only what changed.
+
+## Scale
+
+${modelsData.length} models across ${DATASET_FACTS.labs} laboratories, dataset
+${datasetRevision.datasetVersion}, revised ${REVISED_LABEL}.
+
+## Limits
+
+Records report what laboratories publish. A last-verified date is a source-review
+date, not a live availability signal. Figures a laboratory does not state are
+written as "Undisclosed". Results from different tests are not merged into a
+universal "best".`
+    )}
+
+${resourceLinks("/why")}
+`,
+  }),
   "/methodology": () => ({
     status: 200,
     body: `${frontMatter(
