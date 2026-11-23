@@ -49,9 +49,9 @@ const m = spec.maintainer
 
 // ---------------------------------------------------------------- helpers
 const normText = (s) =>
-  s.replace(/&quot;/g, '"').replace(/&#39;|&#x27;/g, "'").replace(/&amp;/g, "&").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim()
+  s.replace(/&quot;/g, '"').replace(/&#39;|&#x27;/g, "'").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim()
 const toText = (html) =>
-  normText(html.replace(/<script[\s\S]*?<\/script>/g, " ").replace(/<style[\s\S]*?<\/style>/g, " ").replace(/<[^>]+>/g, " "))
+  normText(html.replace(/<script[\s\S]*?<\/script[^>]*>/g, " ").replace(/<style[\s\S]*?<\/style[^>]*>/g, " ").replace(/<[^>]+>/g, " "))
 /**
  * The same page as data: nothing is stripped, and the escapes a script-rendered page uses
  * (\\n, \\", \\u0026) are undone. Model catalogs such as Microsoft Foundry ship their model

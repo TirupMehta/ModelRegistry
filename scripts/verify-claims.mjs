@@ -36,8 +36,8 @@ async function pageText(url) {
       clearTimeout(t)
       if (!res.ok) return ""
       return (await res.text())
-        .replace(/<script[\s\S]*?<\/script>/gi, " ")
-        .replace(/<style[\s\S]*?<\/style>/gi, " ")
+        .replace(/<script[\s\S]*?<\/script[^>]*>/gi, " ")
+        .replace(/<style[\s\S]*?<\/style[^>]*>/gi, " ")
         .replace(/<[^>]+>/g, " ")
         .replace(/&nbsp;|&#160;/g, " ")
         .replace(/&amp;/g, "&")

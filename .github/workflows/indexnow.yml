@@ -14,6 +14,9 @@ on:
       - "lib/**"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
   group: indexnow
   cancel-in-progress: true

@@ -45,7 +45,7 @@ function pageUrl(path: string): string {
 }
 
 function cell(value: string): string {
-  return value.replace(/\|/g, "\\|").replace(/\s*\n\s*/g, " ").trim()
+  return value.replace(/\\/g, "\\\\").replace(/\|/g, "\\|").replace(/\s*\n\s*/g, " ").trim()
 }
 
 function table(headers: string[], rows: string[][]): string {
@@ -1204,7 +1204,7 @@ export function renderMarkdown(pathname: string): MarkdownDocument {
   const normalized = raw.length > 1 && raw.endsWith("/") ? raw.slice(0, -1) : raw
   const path = normalized === "" ? "/" : normalized
 
-  const staticPage = STATIC_PAGES[path]
+  const staticPage = Object.hasOwn(STATIC_PAGES, path) ? STATIC_PAGES[path] : undefined
   if (staticPage) return staticPage()
 
   const modelMatch = /^\/models\/([^/]+)$/.exec(path)
