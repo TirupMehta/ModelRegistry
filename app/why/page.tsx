@@ -117,6 +117,7 @@ const WAYS = [
   {
     n: "02",
     label: "Markdown",
+    href: "/docs",
     text: "Send Accept: text/markdown to any page and get clean Markdown instead of HTML. Fewer tokens, less parsing.",
   },
   {
