@@ -52,10 +52,6 @@ function A({ href, children }: { href: string; children: React.ReactNode }) {
   )
 }
 
-function Code({ children }: { children: React.ReactNode }) {
-  return <code className="font-mono text-small text-fg-strong">{children}</code>
-}
-
 export default function WhyPage() {
   const labs = new Set(modelsData.map((m) => m.companyId)).size
   const models = modelsData.length
@@ -86,89 +82,104 @@ export default function WhyPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumb) }} />
       <section className="page">
-        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-2">
-          Why ModelRegistry exists
+        <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
+          Fifteen tabs, or one call
         </h1>
-        <p className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-small font-sans text-fg-muted">
-          <span>
-            {models} models, {labs} labs, dataset{" "}
-            <span className="font-mono tabular-nums">{datasetRevision.datasetVersion}</span>
-          </span>
+        <p className="max-w-[60ch] text-heading font-display tracking-tight text-fg leading-snug mb-5">
+          A model launches. You open the announcement, the pricing page, the model card, two
+          leaderboards that disagree, and forget what you were comparing. ModelRegistry reads them
+          once so you do not have to.
+        </p>
+        <p className="mb-10 flex flex-wrap items-center gap-2 text-caption text-fg-muted">
+          <span className="chip tabular-nums">{models} models</span>
+          <span className="chip tabular-nums">{labs} labs</span>
+          <span className="chip">No account, no key</span>
+          <span className="chip font-mono tabular-nums">{datasetRevision.datasetVersion}</span>
         </p>
 
-        <P>
-          A new model launches. You open the lab&rsquo;s announcement, then its pricing page, then
-          its model card, then the docs, then a benchmark leaderboard, then a second leaderboard that
-          disagrees with the first. Somewhere around tab twelve you forget what you were comparing.
-          This is a known failure mode, and so far no one has patched it.
-        </P>
-        <P>
-          ModelRegistry is the patch. It reads those pages so you do not have to, and keeps the
-          answer in one place with the source linked next to every figure.
-        </P>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="tile p-5">
+            <p className="text-caption uppercase tracking-wide text-fg-muted mb-3">The usual way</p>
+            <ul className="flex flex-col gap-1.5 text-body text-fg">
+              {["Launch post", "Pricing page", "Model card", "API docs", "Leaderboard A", "Leaderboard B (disagrees)", "Forum thread", "...and eight more"].map((t) => (
+                <li key={t} className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full border border-current text-fg-muted" aria-hidden="true" />
+                  {t}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-small text-fg-muted">About 45 minutes, to learn one price.</p>
+          </div>
+          <div className="tile p-5">
+            <p className="text-caption uppercase tracking-wide text-fg-muted mb-3">With ModelRegistry</p>
+            <div className="well p-3 font-mono text-small text-fg-strong overflow-x-auto">
+              <span className="text-fg-muted">get_model(</span>&quot;model-id&quot;<span className="text-fg-muted">)</span>
+            </div>
+            <p className="mt-4 text-body text-fg">
+              Context, price, release date, license and reported benchmarks, each with its source
+              link. The cookie banners stay home.
+            </p>
+            <p className="mt-4 text-small text-fg-muted">One request, a fraction of a second.</p>
+          </div>
+        </div>
 
         <H2>For people</H2>
         <P>
-          Pick a model and you get its context window, parameters, price, release date, license and
-          reported benchmarks on one page, each with a link to where the lab said it. Compare two
-          models side by side, and see which tests are public and which are private before trusting
-          a ranking. Start at <A href="/">the registry</A>, <A href="/compare">compare</A> or the{" "}
+          One page per model, with a link to where the lab said each figure. Put two models side by
+          side and see which tests are public and which are private before you trust a ranking.
+          Start from <A href="/">the registry</A>, <A href="/compare">compare</A> or the{" "}
           <A href="/score">ModelRegistry Score</A>.
         </P>
 
         <H2>For AI agents</H2>
-        <P>
-          Agents should not scrape marketing pages and hope. The same data is available the way
-          machines prefer it, with no account and no key:
-        </P>
-        <ul className="max-w-[68ch] list-disc pl-5 flex flex-col gap-2 text-body text-fg leading-6 sm:leading-7 mb-3">
-          <li>
-            <strong>MCP server</strong> at <A href="/api/mcp">/api/mcp</A>. Tools to list and fetch
-            models, list labs, read changes since a date, and read any page. Zero auth. Add the URL
-            to your client and you are done.
-          </li>
-          <li>
-            <strong>Markdown on request.</strong> Send <Code>Accept: text/markdown</Code> to any
-            page and get clean Markdown instead of HTML, which saves tokens and spares the parser.
-          </li>
-          <li>
-            <strong>llms.txt.</strong> <A href="/llms.txt">/llms.txt</A> is the short map and{" "}
-            <A href="/llms-full.txt">/llms-full.txt</A> carries the full matrix.
-          </li>
-          <li>
-            <strong>OpenAPI.</strong> <A href="/openapi.json">/openapi.json</A> describes the JSON
-            API, so a client can be generated rather than guessed.
-          </li>
-          <li>
-            <strong>Dated changelogs.</strong> The <A href="/changelog">changelog</A> is dated per
-            change, with <A href="/rss.xml">RSS</A> and <A href="/feed.json">JSON Feed</A>. Ask what
-            changed since last Tuesday and fetch only those records.
-          </li>
+        <P>Agents should not scrape marketing pages and hope. Five doors, all open:</P>
+        <ul className="grid gap-3 sm:grid-cols-2 mb-2">
+          {[
+            ["/api/mcp", "MCP server", "List and fetch models, list labs, read changes since a date, read any page. Zero auth."],
+            ["Accept: text/markdown", "Markdown on request", "Send the header to any page and get clean Markdown, not HTML. Fewer tokens, less parsing."],
+            ["/llms.txt", "llms.txt", "The short map, with /llms-full.txt carrying the full matrix."],
+            ["/openapi.json", "OpenAPI", "The JSON API contract, so a client is generated rather than guessed."],
+            ["/changelog", "Dated changelogs", "Every change dated, with RSS and JSON Feed. Fetch only what moved since last Tuesday."],
+          ].map(([code, title, body]) => (
+            <li key={code} className="tile p-4">
+              <p className="text-body font-semibold text-fg-strong">{title}</p>
+              <p className="mt-0.5 mb-2 font-mono text-caption text-accent-ink break-all">
+                {code.startsWith("/") ? <A href={code}>{code}</A> : code}
+              </p>
+              <p className="text-small text-fg leading-6">{body}</p>
+            </li>
+          ))}
         </ul>
 
-        <H2>The tab arithmetic</H2>
-        <P>
-          Fifteen tabs, three minutes each, one launch: that is 45 minutes of reading to learn a
-          price. Across {models} models and {labs} labs, it is a part-time job. One MCP call
-          returns the same facts in a fraction of a second, and it does not complain about cookie
-          banners.
-        </P>
+        <H2>Connect in ten seconds</H2>
+        <P>Add the server to Claude Code, or point any MCP client at the URL:</P>
+        <pre className="well max-w-[68ch] p-4 mb-3 overflow-x-auto font-mono text-small text-fg-strong leading-6">
+{`claude mcp add --transport http modelregistry ${SITE_URL}/api/mcp
+
+curl -H "Accept: text/markdown" ${SITE_URL}/llms.txt`}
+        </pre>
 
         <H2>What it will not do</H2>
-        <P>
-          ModelRegistry reports what labs publish, with a last-verified date that records when a
-          source was reviewed, not whether a model is live today. It does not crown a universal best
-          model from results that were not measured the same way. If a figure is not disclosed, it
-          says <em>Undisclosed</em> rather than guessing. Boring, yes, but it is the reason you can
-          cite it.
-        </P>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {[
+            ["No fake freshness", "A last-verified date records when a source was reviewed, not whether a model is live today."],
+            ["No crowned winners", "Results measured differently are not merged into a universal best."],
+            ["No guessing", "A figure a lab does not state is written as Undisclosed. Boring, and the reason you can cite it."],
+          ].map(([title, body]) => (
+            <div key={title} className="tile p-4">
+              <p className="text-body font-semibold text-fg-strong mb-1">{title}</p>
+              <p className="text-small text-fg leading-6">{body}</p>
+            </div>
+          ))}
+        </div>
 
-        <H2>Where to go next</H2>
-        <P>
-          Read the <A href="/docs">API docs</A>, the <A href="/methodology">methodology</A>, or{" "}
-          <A href="/about">who maintains it</A>. Corrections go through the{" "}
-          <A href="/suggest">suggestion form</A> and a maintainer reads every one.
-        </P>
+        <div className="rule-t mt-10 pt-6">
+          <p className="text-small text-fg-muted">
+            Next: the <A href="/docs">API docs</A>, the <A href="/methodology">methodology</A>, or{" "}
+            <A href="/about">who maintains it</A>. Corrections go through the{" "}
+            <A href="/suggest">suggestion form</A>, and a maintainer reads every one.
+          </p>
+        </div>
       </section>
     </main>
   )
