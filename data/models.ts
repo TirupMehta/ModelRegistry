@@ -6789,10 +6789,10 @@ export const modelsData: ModelItem[] = [
       ],
       isCompanyFlagship: [
         {
-          url: "https://www.nvidia.com/en-us/ai-data-science/foundation-models/nemotron/llm-info/",
+          url: "https://developer.nvidia.com/nemotron",
           publisher: "NVIDIA",
-          title: "Nemotron 3 Ultra 550B: NVIDIA's Nemotron LLM info page lists Ultra as the largest of the Nemotron 3 line (Lightning, Nano, Super, Ultra)",
-          accessedAt: "2026-11-19",
+          title: "Nemotron 3 Ultra 550B: NVIDIA's Nemotron page describes Ultra as the frontier-intelligence model of the Nemotron 3 line, built for the highest reasoning accuracy",
+          accessedAt: "2026-11-24",
           sourceType: "model-card",
           live: true,
         },
