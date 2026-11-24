@@ -35,7 +35,7 @@
     "deepseek-v4-pro-0813": {
       "score": 418,
       "tests": 10,
-      "inputs": "b5690cd7c5c4"
+      "inputs": "e8b564b75d59"
     },
     "gemini-3-8-flash": {
       "score": 480,
@@ -70,7 +70,7 @@
     "glm-5-3-flash": {
       "score": 448,
       "tests": 9,
-      "inputs": "b3c5d16455cd"
+      "inputs": "3383400298e3"
     },
     "gpt-6-1-terra": {
       "score": 563,
@@ -115,12 +115,12 @@
     "mistral-large-4": {
       "score": 434,
       "tests": 10,
-      "inputs": "fd04209fe5ed"
+      "inputs": "8619619e863b"
     },
     "muse-ember": {
       "score": 509,
       "tests": 9,
-      "inputs": "a57ae2208c2e"
+      "inputs": "6259b92ff843"
     },
     "muse-spark-open": {
       "score": 418,
