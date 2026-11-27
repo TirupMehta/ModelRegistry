@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { sans, display } from "./fonts"
 import "./globals.css"
 import FeedbackInit from "@/components/feedback-init"
+import PostHogAnalytics from "@/components/posthog-analytics"
 import Footer from "@/components/footer"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
@@ -194,6 +195,7 @@ export default function RootLayout({
         <Footer />
         <Analytics />
         <SpeedInsights />
+        <PostHogAnalytics />
       </body>
     </html>
   )

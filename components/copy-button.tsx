@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Check, Copy } from "lucide-react"
+import { capture } from "@/lib/analytics"
 
 interface CopyButtonProps {
   text: string
@@ -34,6 +35,7 @@ export default function CopyButton({
       document.body.removeChild(ta)
     }
     setCopied(true)
+    capture("content_copied", { label })
     setTimeout(() => setCopied(false), 2000)
   }
 

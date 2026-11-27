@@ -14,9 +14,24 @@ const RATE_LIMIT_HEADERS = [
   { key: "X-RateLimit-Policy", value: "600;w=60" },
 ]
 
+/**
+ * PostHog reverse proxy. Analytics requests go to /ingest on our own origin,
+ * which keeps them first-party and working through blockers that target
+ * *.posthog.com. The browser bundle is served from PostHog's asset host; events
+ * go to the ingestion host. Both default to the US Cloud region and follow
+ * NEXT_PUBLIC_POSTHOG_HOST for EU or self-hosted installs.
+ */
+const posthogHost = (process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com").replace(/\/+$/, "")
+const posthogAssetsHost = /^https:\/\/[a-z0-9-]+\.i\.posthog\.com$/.test(posthogHost)
+  ? posthogHost.replace(".i.posthog.com", "-assets.i.posthog.com")
+  : posthogHost
+
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // PostHog's proxy endpoints are path-sensitive; a trailing-slash redirect
+  // would turn a capture into a GET of the wrong URL.
+  skipTrailingSlashRedirect: true,
   // The leaderboard was folded into /best, which answers the same questions by task.
   async redirects() {
     return [{ source: "/leaderboard", destination: "/best", permanent: true }]
@@ -34,6 +49,15 @@ const nextConfig = {
       },
       { source: "/api", headers: RATE_LIMIT_HEADERS },
       { source: "/api/:path*", headers: RATE_LIMIT_HEADERS },
+      // Machine files are for agents and feeds, not search results. They stay
+      // fully crawlable and linked; noindex only keeps them out of the index so
+      // the crawl budget stays on the HTML pages people search for.
+      { source: "/llms.txt", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
+      { source: "/llms-full.txt", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
+      { source: "/rss.xml", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
+      { source: "/feed.json", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
+      { source: "/openapi.json", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
+      { source: "/latest", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
       {
         source: "/api/alerts/:path*",
         headers: [
@@ -46,6 +70,16 @@ const nextConfig = {
   },
   async rewrites() {
     return [
+      {
+        // PostHog's browser bundle and its lazily loaded dependencies.
+        source: "/ingest/static/:path*",
+        destination: `${posthogAssetsHost}/static/:path*`,
+      },
+      {
+        // Capture, decide and other ingestion endpoints.
+        source: "/ingest/:path*",
+        destination: `${posthogHost}/:path*`,
+      },
       {
         // Agent Skills discovery index (v0.2.0): canonical route lives at
         // /api/agent-skills; the well-known URI rewrites to it.

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server"
+import { NextResponse, after } from "next/server"
 import { DatabaseNotConfiguredError, isDatabaseConfigured } from "@/lib/db"
 import { clientIp, isSameOrigin, rateLimitKey } from "@/lib/waitlist/request"
 import { addWaitlistSignup, consumeRateLimit, maybeSweepRateLimits } from "@/lib/waitlist/repository"
@@ -8,6 +8,7 @@ import {
   waitlistProblemMessage,
   type WaitlistProblem,
 } from "@/lib/waitlist/validation"
+import { captureServerEvent } from "@/lib/posthog-server"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -141,6 +142,10 @@ export async function POST(request: Request) {
   }
 
   void maybeSweepRateLimits()
+
+  // Counted after the response so the form never waits on analytics. Only the
+  // consent version is sent: no address, IP or form text leaves the database.
+  after(() => captureServerEvent("waitlist_signup", { consent_version: WAITLIST_CONSENT_VERSION }))
 
   // New and already-registered addresses get the same answer on purpose: a
   // distinct "already on the list" reply would turn this endpoint into a tool

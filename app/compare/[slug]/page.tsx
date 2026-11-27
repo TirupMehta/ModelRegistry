@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import Header from "@/components/header"
+import AnalyticsEvent from "@/components/analytics-event"
 import { companies } from "@/data/companies"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
@@ -142,6 +143,7 @@ export default async function ComparePage({ params }: Props) {
   return (
     <main id="content" tabIndex={-1} className="relative min-h-screen focus:outline-none">
       <Header />
+      <AnalyticsEvent event="compare_viewed" properties={{ a: a.id, b: b.id }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdArticle) }}

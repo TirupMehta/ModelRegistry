@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import Header from "@/components/header"
+import AnalyticsEvent from "@/components/analytics-event"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import { SITE, breadcrumbList, compareHref, faqPage, itemList } from "@/lib/seo"
@@ -90,6 +91,7 @@ export default async function BestTaskPage({ params }: { params: Promise<{ task:
   return (
     <main id="content" tabIndex={-1} className="relative min-h-screen focus:outline-none">
       <Header />
+      <AnalyticsEvent event="best_viewed" properties={{ task: answer.id, leader: leader.model.id }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqPage(faq)) }} />
       <script

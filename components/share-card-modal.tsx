@@ -5,6 +5,7 @@ import type { ModelCore } from "@/lib/model-list"
 import { companies } from "@/data/companies"
 import { benchPretty, formatPrice, priceSymbol } from "@/lib/utils"
 import { Download, Copy, Share2, Check, X, Sparkles, Code2, ZoomIn } from "lucide-react"
+import { capture } from "@/lib/analytics"
 
 interface ShareCardModalProps {
   model: ModelCore
@@ -745,6 +746,7 @@ function ShareCardModalInner({ model, isOpen, onClose, folio, folioId }: ShareCa
       // Firefox ignores programmatic clicks on detached anchors.
       document.body.appendChild(link)
       link.click()
+      capture("share_card_downloaded", { model: model.id, ratio })
     } catch {
       // Canvas export unavailable on this device - no-op instead of a crash.
     } finally {

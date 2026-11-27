@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { ArrowUpRight, ExternalLink } from "lucide-react"
+import { capture } from "@/lib/analytics"
 
 const inputClass = "w-full rounded-lg border border-[var(--field-edge)] bg-[var(--surface-field)] px-3 py-2.5 text-body text-fg-strong placeholder:text-fg-muted dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-accent-ink/20"
 
@@ -39,6 +40,12 @@ export default function ModelSuggestionForm() {
     ].join("\n")
     const params = new URLSearchParams({ title, body })
     setIssueUrl(`https://github.com/TirupMehta/ModelRegistry/issues/new?${params.toString()}`)
+    // Only shape, never the text: the suggestion itself stays between the
+    // visitor and GitHub until a maintainer reviews it.
+    capture("model_suggestion_prepared", {
+      has_date: Boolean(date),
+      has_summary: Boolean(summary),
+    })
   }
 
   return <form onSubmit={createDraft} className="max-w-2xl space-y-4">

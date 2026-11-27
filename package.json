@@ -15,7 +15,7 @@
     "db:migrate": "node scripts/db-migrate.mjs",
     "db:verify": "node scripts/verify-db.mjs",
     "db:studio": "drizzle-kit studio",
-    "test": "node scripts/validate-registry.js && node scripts/test-completeness.js && node scripts/test-meridian.js && node scripts/test-fallback.js && node scripts/test-site-integrity.js && node scripts/test-user-experience.js && node scripts/test-provenance.js && node scripts/test-public-trust.js && node scripts/test-share.js && node scripts/test-currency.js && node scripts/test-design-tokens.js && node scripts/test-agent-readiness.js && node scripts/test-cli.js",
+    "test": "node scripts/validate-registry.js && node scripts/test-completeness.js && node scripts/test-meridian.js && node scripts/test-fallback.js && node scripts/test-site-integrity.js && node scripts/test-user-experience.js && node scripts/test-analytics.js && node scripts/test-provenance.js && node scripts/test-public-trust.js && node scripts/test-share.js && node scripts/test-currency.js && node scripts/test-design-tokens.js && node scripts/test-agent-readiness.js && node scripts/test-cli.js",
     "test:routes": "node scripts/test-routes.js"
   },
   "dependencies": {
@@ -29,6 +29,7 @@
     "lucide-react": "^0.454.0",
     "motion": "^13.5.0",
     "next": "^15.5.26",
+    "posthog-node": "^6.0.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^2.5.5"

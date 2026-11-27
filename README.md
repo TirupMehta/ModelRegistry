@@ -268,6 +268,24 @@ pnpm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+Copy `.env.example` to `.env.local` for optional services. Analytics is off unless `NEXT_PUBLIC_POSTHOG_KEY` is set.
+
+### Analytics
+
+PostHog records page views and a few explicit product events (model views, comparisons, copied prompts, completed waitlist signups). It is wired for privacy: no session recording, autocapture, heatmaps, surveys, ad cookies or cross-site tracking; Do Not Track is honoured; form text is never sent. Visitors can turn analytics off on `/privacy`; the choice is stored locally and applied to the client as `opt_out_capturing_by_default`.
+
+The browser bundle is served through a first-party `/ingest` reverse proxy and loaded at `lazyOnload`, keeping the SDK out of the Next.js first-load JavaScript. Server-side events (waitlist signups) use `posthog-node`.
+
+The privacy policy lives at `/privacy` and the terms of use at `/terms`; both are mirrored in Markdown, `llms.txt` and the MCP resources. When you change what is collected, update both the page and `lib/markdown.ts`, then run `node scripts/test-analytics.js`.
+
+```bash
+NEXT_PUBLIC_POSTHOG_KEY=phc_...
+# US Cloud is the default; use https://eu.i.posthog.com for EU Cloud.
+NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+```
+
+In the PostHog project settings, enable **Discard client IP data** to match the site's privacy policy. The key is a public project key, not a personal API key.
+
 ---
 
 ## 📄 License

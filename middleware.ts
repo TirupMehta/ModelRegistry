@@ -13,18 +13,29 @@ import { prefersMarkdown } from "@/lib/content-negotiation"
  *    CLI table; an explicit `Accept: text/html` always returns the page.
  * 3. `/api/v1/*` is documented as read-only. Unsupported methods get a JSON 405
  *    with an Allow header instead of an empty framework response.
+ * 4. Trailing slashes are redirected to the canonical URL. Next's own redirect
+ *    is disabled (see skipTrailingSlashRedirect) so the PostHog proxy can keep
+ *    its byte-exact paths; without this, `/privacy/` would be a second 200.
  *
  * The matcher skips Next's own asset routes; everything else is cheap header
  * work for a pass-through request.
  */
 
-// Asset and framework paths never need content negotiation.
-const NON_PAGE_PREFIXES = ["/_next/", "/api/"]
+// Asset, framework and PostHog proxy paths never need content negotiation.
+const NON_PAGE_PREFIXES = ["/_next/", "/api/", "/ingest/"]
 const FILE_EXTENSION = /\.[a-z0-9]{1,8}$/i
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const method = request.method.toUpperCase()
+
+  // One URL per resource. `/ingest` never reaches middleware, so the proxy keeps
+  // the trailing slashes its endpoints depend on.
+  if (pathname.length > 1 && pathname.endsWith("/")) {
+    const target = new URL(request.url)
+    target.pathname = pathname.replace(/\/+$/, "")
+    return NextResponse.redirect(target, 308)
+  }
 
   // Read-only API: answer method misuse with the shared JSON error contract.
   if (pathname === "/api/v1" || pathname.startsWith("/api/v1/")) {
@@ -86,5 +97,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  // PostHog's /ingest proxy is excluded: it is machine traffic, not a page, and
+  // must pass through without content negotiation or middleware overhead.
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|ingest(?:/|$)).*)"],
 }

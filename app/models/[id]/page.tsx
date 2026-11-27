@@ -10,6 +10,7 @@ import { measuredProperties } from "@/lib/seo"
 import { buildAlternatives } from "@/lib/alternatives"
 import { safeJsonLd } from "@/lib/utils"
 import Header from "@/components/header"
+import AnalyticsEvent from "@/components/analytics-event"
 import ModelPageView from "@/components/model-page-view"
 import { ModelComparisons, ModelFaq, ModelPositions, ModelProvenance } from "@/components/model-dossier"
 
@@ -162,6 +163,15 @@ export default async function ModelPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLdBreadcrumb) }}
       />
       <Header />
+      <AnalyticsEvent
+        event="model_viewed"
+        properties={{
+          model: model.id,
+          company: model.companyId,
+          category: model.categoryLabel,
+          flagship: model.isCompanyFlagship,
+        }}
+      />
       <ModelPageView model={model} siblings={siblings} folio={folio} folioId={folioId} footer={<ModelProvenance model={model} />}>
         <ModelPositions model={model} />
         <ModelFaq model={model} />

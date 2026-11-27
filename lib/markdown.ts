@@ -582,30 +582,43 @@ ${resourceLinks("/contact")}
     status: 200,
     body: `${frontMatter(
       "Privacy policy",
-      `This page describes what ${SITE_NAME} actually stores. It is short because the
-site collects very little.
+      `Last updated: 2026-11-27. This page describes what ${SITE_NAME} actually stores. It is short because the site collects very little. The controller is Tirup Mehta, an individual in Gujarat, India.
 
-- **No accounts, no login, no payment data.** The registry and API are
-  anonymous.
-- **Local preferences** (theme, haptic and click-sound toggles) are stored in
-  your browser's localStorage and never sent to a server.
-- **Analytics**: Vercel Analytics and Speed Insights record aggregate page views
-  and performance. They do not set advertising cookies or build a profile.
-- **Waitlist**: if you submit the Model Alerts waitlist, the normalized email
-  address, consent timestamp, and consent version are stored in the project's
-  Postgres database. It is used only to contact you about Model Alerts. No other
-  field is collected. To have a waitlist entry removed, open a GitHub issue and
-  the maintainer will delete it.
-- **Server logs**: requests pass through the hosting provider, which retains
-  standard technical logs (IP, user agent, timestamp) for security and abuse
-  prevention. A pseudonymous hash of the client IP is used to rate-limit the
-  waitlist form; raw addresses are not stored in that table.
-- **No third-party trackers, ad networks, or data sales.**
+- **No accounts, no login, no payment data.** The registry and API are anonymous.
+- **Local preferences and state** are stored in your browser's localStorage: the theme, the haptic and click sound toggles, the changelog last visit date, the alerts popup dismissal time, the waitlist joined marker, your analytics choice, and PostHog's own entry holding a random visitor ID and session state. They stay on the device except the analytics ID, which is sent with events so repeat visits can be counted without identifying you. One sessionStorage counter stops the waitlist popup appearing immediately. The site sets no first party analytics or advertising cookies.
+- **Analytics**: Vercel Analytics and Speed Insights record aggregate page views and performance. PostHog records page views, the referring page, campaign parameters, browser, operating system, device type, language, timezone, screen size, a random visitor ID, and a session ID, plus explicit events (model view, comparison view, best by task view, copied prompt, downloaded share card, completed waitlist signup, submitted model suggestion shape). It is configured without session recording, autocapture, heatmaps, surveys, feature flags, person profiles, advertising cookies or cross site tracking, and it honours Do Not Track. Form text is never sent. The browser talks to /ingest on this domain and the request is forwarded to PostHog Cloud (United States by default, EU region optional). PostHog sees the request's network metadata, which can include an IP address; the site disables GeoIP and the deployment enables PostHog's discard client IP setting so the address is not retained with events.
+- **Your analytics choice**: the switch at ${SITE_URL}/privacy#your-analytics-choice stores a local opt out; ${SITE_URL}/privacy explains it. You can also send Do Not Track.
+- **Waitlist**: if you submit the Model Alerts waitlist, the normalized email address, consent timestamp, and consent version are stored in the project's Postgres database. The legal basis is consent. It is used only to contact you about Model Alerts. No other field is collected. It is kept until you ask for deletion or the waitlist is closed.
+- **Server logs**: requests pass through the hosting provider, which retains standard technical logs (IP, user agent, timestamp) for security and abuse prevention. A keyed hash of the client IP is used to rate limit the waitlist form; raw addresses are not stored in that table, and counter rows are deleted after one day.
+- **Retention**: PostHog events follow the project's retention setting (one year at the time of writing). Host logs follow the provider's retention. Browser values last until you clear site data.
+- **Rights and requests**: ask for access, correction, deletion, restriction, portability, or object to analytics through ${SITE_URL}/contact, or open a private report at the GitHub security advisory page and say it is a privacy request. You can complain to your local data protection authority.
+- **No advertising trackers, ad networks, or data sales.** Vercel and PostHog process usage data on the project's behalf under their data processing terms.
 
-Questions or deletion requests: ${SITE_URL}/contact.`
+Terms of use: ${SITE_URL}/terms`
     )}
 
 ${resourceLinks("/privacy")}
+`,
+  }),
+  "/terms": () => ({
+    status: 200,
+    body: `${frontMatter(
+      "Terms of use",
+      `Last updated: 2026-11-27. These terms cover the site at ${SITE_URL}, its API, feeds and downloads.
+
+- **What it is**: an informational index of specifications published by AI laboratories, with a primary source and check date per record. It is not affiliated with any laboratory, does not host models or run inference, and is not engineering, legal, financial or procurement advice.
+- **Free use and rate limit**: reading the site, API, feeds and Markdown views is free and needs no key. The API allows 600 requests per 60 second window per client, advertised in headers, with Retry-After on a 429. Cache responses and prefer /api/v1/changes for incremental sync.
+- **Licence**: the code and dataset are MIT licensed; keep the copyright and permission notice. These terms add no restriction to rights the MIT licence grants. Keep source citations and check dates when republishing a substantial part, and do not present laboratory reported figures as independent results.
+- **Third party marks**: model, laboratory, logo and benchmark names belong to their owners and are used only to identify what is described. Licence strings are the publisher's stated terms, not a legal conclusion.
+- **Acceptable use**: no unlawful use, disruption, unauthorised access, rate limit evasion, or claims of endorsement; do not hide a figure's source, date, or the fact that a laboratory reported it.
+- **No warranty**: provided as is and as available. Laboratories change prices, limits and models without notice. Check the primary source before relying on a figure, and expect no service level.
+- **Liability**: to the extent permitted by law, no liability for indirect or consequential loss; liability otherwise limited to the amount paid, which is zero.
+- **Changes**: terms may change with a new revision date; the version published at ${SITE_URL}/terms is the current one.
+- **Law**: governed by the laws of India, with the courts of Gujarat, India. Mandatory consumer or data protection rights in your country are not removed.
+- **Contact**: ${SITE_URL}/contact. Security reports follow ${REPO_URL}/blob/main/SECURITY.md.`
+    )}
+
+${resourceLinks("/terms")}
 `,
   }),
   "/alerts": () => ({
