@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import Header from "@/components/header"
 import { ORGANIZATION_ID } from "@/lib/entities"
-import { SITE_URL } from "@/lib/site"
+import { SITE_URL, CONTACT_EMAIL } from "@/lib/site"
 import { safeJsonLd } from "@/lib/utils"
 import { withShare } from "@/lib/share"
 
@@ -205,7 +205,8 @@ export default function TermsPage() {
 
         <H2>Contact</H2>
         <P>
-          Questions about these terms, corrections, and permission requests go through the{" "}
+          Questions about these terms, corrections, and permission requests go to{" "}
+          <Ext href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</Ext> or through the{" "}
           <A href="/contact">contact page</A>. Security reports should follow the{" "}
           <Ext href="https://github.com/TirupMehta/ModelRegistry/blob/main/SECURITY.md">
             security policy

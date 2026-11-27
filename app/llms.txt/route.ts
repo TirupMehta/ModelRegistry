@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic"
 
 const SITE = "https://modelregistry.tirup.in"
 const REPO = "https://github.com/TirupMehta/ModelRegistry"
+const EMAIL = "modelregistry@tirup.in"
 
 function formatDate(iso: string): string {
   // Noon-local parse: plain YYYY-MM-DD is midnight UTC, which renders as the
@@ -41,7 +42,7 @@ ${modelsData.length} models across ${Object.keys(companies).length} laboratories
 - ${link("MCP server", `${SITE}/api/mcp`)}: stateless JSON-RPC 2.0 over POST for agents.
 - ${link("RSS feed", `${SITE}/rss.xml`)} and ${link("JSON Feed", `${SITE}/feed.json`)}: dated record changes.
 - ${link("Source repository", REPO)}: MIT licensed code and dataset.
-- ${link("Contact", `${SITE}/contact`)}: corrections, privacy requests and security reports.
+- ${link("Contact", `${SITE}/contact`)}: corrections, privacy requests and security reports, or email ${EMAIL}.
 - ${link("Privacy policy", `${SITE}/privacy`)} and ${link("terms of use", `${SITE}/terms`)}: what is stored and the rules for using it.
 
 ## When to use ModelRegistry

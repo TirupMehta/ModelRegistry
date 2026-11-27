@@ -3,7 +3,7 @@ import Link from "next/link"
 import Header from "@/components/header"
 import AnalyticsOptOut from "@/components/analytics-opt-out"
 import { ORGANIZATION_ID } from "@/lib/entities"
-import { SITE_URL } from "@/lib/site"
+import { SITE_URL, CONTACT_EMAIL } from "@/lib/site"
 import { safeJsonLd } from "@/lib/utils"
 import { withShare } from "@/lib/share"
 
@@ -300,15 +300,15 @@ export default function PrivacyPage() {
           switch above is the fastest way to exercise the right to object to analytics.
         </P>
         <P>
-          For anything else, including deletion of a waitlist entry, use the{" "}
-          <A href="/contact">contact page</A> or open a private report at{" "}
+          For anything else, including deletion of a waitlist entry, email{" "}
+          <Ext href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</Ext> or use the{" "}
+          <A href="/contact">contact page</A>. You can also open a private report at{" "}
           <Ext href="https://github.com/TirupMehta/ModelRegistry/security/advisories/new">
             GitHub private vulnerability reporting
           </Ext>{" "}
-          and say it is a privacy request. That channel is private, not a public issue.
-          Include the email address you used if you want a waitlist entry removed. The
-          maintainer aims to reply within a few days; there is no guaranteed service
-          level.
+          and say it is a privacy request. Include the email address you used if you want a
+          waitlist entry removed. The maintainer aims to reply within a few days; there is
+          no guaranteed service level.
         </P>
         <P>
           If you are not satisfied with the response, you can complain to your local data

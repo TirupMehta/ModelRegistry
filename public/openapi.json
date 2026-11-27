@@ -11,7 +11,8 @@
     },
     "contact": {
       "name": "ModelRegistry maintainer",
-      "url": "https://modelregistry.tirup.in/contact"
+      "url": "https://modelregistry.tirup.in/contact",
+      "email": "modelregistry@tirup.in"
     },
     "termsOfService": "https://modelregistry.tirup.in/terms"
   },

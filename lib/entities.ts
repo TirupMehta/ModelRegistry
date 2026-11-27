@@ -1,4 +1,4 @@
-import { SITE_NAME, SITE_URL } from "./site"
+import { SITE_NAME, SITE_URL, CONTACT_EMAIL } from "./site"
 
 /**
  * One entity graph for the whole site.
@@ -68,13 +68,13 @@ export const organizationNode = {
   description:
     "Open, source-linked registry of frontier AI model specifications: context windows, parameters, pricing, release dates, and lab-published benchmarks.",
   founder: { "@id": PERSON_ID },
-  // Trust anchors agents check before recommending a site. The contact channel
-  // is the issue tracker and the /contact page: no mailbox or phone number is
-  // published, so none is claimed here.
+  // Trust anchors agents check before recommending a site. The mailbox and the
+  // /contact page are the published channels; there is no phone number.
   contactPoint: [
     {
       "@type": "ContactPoint",
       contactType: "technical support",
+      email: CONTACT_EMAIL,
       url: `${SITE_URL}/contact`,
       availableLanguage: ["English"],
       areaServed: "Worldwide",

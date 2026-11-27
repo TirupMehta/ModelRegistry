@@ -2,14 +2,14 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import Header from "@/components/header"
 import { ORGANIZATION_ID, PERSON_ID } from "@/lib/entities"
-import { SITE_URL } from "@/lib/site"
+import { SITE_URL, CONTACT_EMAIL } from "@/lib/site"
 import { safeJsonLd } from "@/lib/utils"
 import { withShare } from "@/lib/share"
 
 export const metadata: Metadata = withShare({
   title: "Contact ModelRegistry - data corrections, security, and enquiries",
   description:
-    "How to reach ModelRegistry: report a data correction, an endpoint problem, or a security issue, and which channels exist for everything else. No phone line, no sales team, no guaranteed service level.",
+    "How to reach ModelRegistry by email at modelregistry@tirup.in, plus the channel for data corrections, endpoint problems, and security reports. No phone line, no sales team, no guaranteed service level.",
   alternates: { canonical: `${SITE_URL}/contact` },
   openGraph: {
     title: "Contact ModelRegistry",
@@ -42,6 +42,17 @@ function A({ href, children }: { href: string; children: React.ReactNode }) {
     <Link href={href} className="text-accent-ink hover:underline underline-offset-2">
       {children}
     </Link>
+  )
+}
+
+function Mail() {
+  return (
+    <a
+      href={`mailto:${CONTACT_EMAIL}`}
+      className="text-accent-ink hover:underline underline-offset-2 break-words"
+    >
+      {CONTACT_EMAIL}
+    </a>
   )
 }
 
@@ -81,6 +92,15 @@ export default function ContactPage() {
           narrow: there is no phone line, no sales team, and no guaranteed
           response time. The channels below are the ones that actually reach the
           maintainer, and each one is right for a different kind of request.
+        </P>
+
+        <H2>Email</H2>
+        <P>
+          For a question, a correction that should not be public, a privacy or
+          data-deletion request, or anything that needs a reply rather than a
+          public thread, email <Mail />. It reaches the maintainer directly.
+          Include a primary source with a correction, and put &ldquo;privacy&rdquo;
+          or &ldquo;security&rdquo; in the subject when the request is sensitive.
         </P>
 
         <H2>Data corrections and missing models</H2>
@@ -124,19 +144,18 @@ export default function ContactPage() {
         <H2>Everything else</H2>
         <P>
           For collaboration, press, attribution questions, or a citation
-          clarification, use LinkedIn (
+          clarification, email <Mail />, or use LinkedIn (
           <A href="https://www.linkedin.com/in/TirupMehta">linkedin.com/in/TirupMehta</A>)
           or GitHub (<A href="https://github.com/TirupMehta">github.com/TirupMehta</A>).
           The maintainer&apos;s portfolio is{" "}
           <A href="https://tirup.in">tirup.in</A>.
         </P>
         <P>
-          Privacy and data-deletion requests are described on the{" "}
-          <A href="/privacy">privacy page</A>, including a private reporting channel for
-          requests that should not be public. Use of the site and its data is covered by
-          the <A href="/terms">terms</A>. There is no published mailbox or phone number: a
-          channel that could not be monitored reliably would be worse than no channel at
-          all.
+          Privacy and data-deletion requests are covered on the{" "}
+          <A href="/privacy">privacy page</A> and can be sent to <Mail /> or through
+          the private GitHub report it describes. Use of the site and its data is
+          covered by the <A href="/terms">terms</A>. There is no phone number and no
+          guaranteed reply time.
         </P>
 
         <H2>Response expectations</H2>

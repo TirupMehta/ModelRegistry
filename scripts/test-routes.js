@@ -445,6 +445,17 @@ async function main() {
     fail("trailing-slash canonical redirect", e.message)
   }
 
+  // The published mailbox must be a real, clickable channel on the contact page.
+  try {
+    const { res } = await get("/contact", { accept: "text/html" })
+    const body = await res.text()
+    if (res.status === 200 && body.includes('href="mailto:modelregistry@tirup.in"'))
+      pass("contact email published", "mailto link on /contact")
+    else fail("contact email published", `status ${res.status}, mailto ${body.includes("mailto:modelregistry@tirup.in")}`)
+  } catch (e) {
+    fail("contact email published", e.message)
+  }
+
   // MCP server (POST-only JSON-RPC, stateless): initialize handshake,
   // tools/list schema, tools/call round trip, and the honest error contract.
   // Each call is a real transport exchange, not a source-text assertion.

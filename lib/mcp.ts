@@ -604,7 +604,7 @@ const FIXED_RESOURCES: Array<{ uri: string; path: string; name: string; descript
   { uri: "modelregistry://open-source", path: "/open-source", name: "Open source", description: "Latest pushes, contributors, merged PRs, how to contribute." },
   { uri: "modelregistry://cli", path: "/cli", name: "CLI", description: "Terminal client commands and plain-text routes." },
   { uri: "modelregistry://why", path: "/why", name: "Why", description: "Why one call to this registry beats fifteen tabs on every model launch." },
-  { uri: "modelregistry://contact", path: "/contact", name: "Contact", description: "Channels for corrections, security reports, enquiries." },
+  { uri: "modelregistry://contact", path: "/contact", name: "Contact", description: "Email modelregistry@tirup.in, the issue tracker and the security policy for corrections, privacy requests and enquiries." },
   { uri: "modelregistry://privacy", path: "/privacy", name: "Privacy", description: "What the site stores (very little) and how to opt out." },
   { uri: "modelregistry://terms", path: "/terms", name: "Terms", description: "Rules for using the site, API and dataset, including the rate limit and MIT licence." },
 ]

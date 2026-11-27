@@ -180,6 +180,7 @@ POST; tools: list_models, get_model, list_labs, get_changes, get_health,
 read_page_markdown)
 Trust pages: https://modelregistry.tirup.in/contact and
 https://modelregistry.tirup.in/privacy
+Contact email: modelregistry@tirup.in
 Terms of use: https://modelregistry.tirup.in/terms
 Project open-source activity: https://modelregistry.tirup.in/open-source
 

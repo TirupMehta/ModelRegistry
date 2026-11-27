@@ -337,8 +337,30 @@ checkTrue(
 const entities = fs.readFileSync(path.resolve(__dirname, "../lib/entities.ts"), "utf8")
 checkTrue("org-contact-point", entities.includes("contactPoint") && entities.includes("ContactPoint"))
 checkTrue("org-contact-type", entities.includes("contactType"))
+checkTrue("org-contact-email", entities.includes("email: CONTACT_EMAIL"))
 checkTrue("org-address", entities.includes("PostalAddress") && entities.includes("addressCountry"))
 checkTrue("org-knows-about", entities.includes("knowsAbout") && entities.includes("keywords"))
+
+// 6b. The published mailbox must appear on every surface that promises a way to
+// reach the maintainer, and must not be an address only the HTML page knows.
+const CONTACT_EMAIL = "modelregistry@tirup.in"
+checkTrue("site-contact-email", fs.readFileSync(path.resolve(__dirname, "../lib/site.ts"), "utf8").includes(`export const CONTACT_EMAIL = "${CONTACT_EMAIL}"`))
+for (const [name, file] of [
+  ["contact", "../app/contact/page.tsx"],
+  ["privacy", "../app/privacy/page.tsx"],
+  ["terms", "../app/terms/page.tsx"],
+  ["markdown", "../lib/markdown.ts"],
+  ["skills", "../lib/skills.ts"],
+  ["mcp", "../lib/mcp.ts"],
+  ["llms", "../app/llms.txt/route.ts"],
+  ["openapi", "../public/openapi.json"],
+]) {
+  const src = fs.readFileSync(path.resolve(__dirname, file), "utf8")
+  checkTrue(
+    `contact-email-in-${name}`,
+    src.includes(CONTACT_EMAIL) || src.includes("CONTACT_EMAIL")
+  )
+}
 
 // 7. Agent instructions: when-to-use lives in llms.txt and the skill.
 const llms = fs.readFileSync(path.resolve(__dirname, "../app/llms.txt/route.ts"), "utf8")

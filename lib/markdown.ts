@@ -1,7 +1,7 @@
 import { companies } from "@/data/companies"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
-import { SITE_NAME, SITE_URL } from "@/lib/site"
+import { SITE_NAME, SITE_URL, CONTACT_EMAIL } from "@/lib/site"
 import { REPO_URL } from "@/lib/github"
 import { formatPrice, isUsdPriced, priceSymbol } from "@/lib/utils"
 import { CONTESTED_SPREAD, MIN_TESTS_FOR_STANDING, STANDING_VERSION } from "@/lib/standing"
@@ -561,6 +561,10 @@ ${resourceLinks("/open-source")}
       `Use these channels for the specific job you have. There is no phone line and
 no sales team.
 
+- **Email**: ${CONTACT_EMAIL} for questions, corrections, privacy and
+  data-deletion requests, or anything that needs a reply rather than a public
+  thread. Put "privacy" or "security" in the subject when the request is
+  sensitive.
 - **Data corrections and missing models**: open an issue at
   https://github.com/TirupMehta/ModelRegistry/issues, or use
   ${SITE_URL}/suggest. Include the model, the field, and the primary source.
@@ -591,7 +595,7 @@ ${resourceLinks("/contact")}
 - **Waitlist**: if you submit the Model Alerts waitlist, the normalized email address, consent timestamp, and consent version are stored in the project's Postgres database. The legal basis is consent. It is used only to contact you about Model Alerts. No other field is collected. It is kept until you ask for deletion or the waitlist is closed.
 - **Server logs**: requests pass through the hosting provider, which retains standard technical logs (IP, user agent, timestamp) for security and abuse prevention. A keyed hash of the client IP is used to rate limit the waitlist form; raw addresses are not stored in that table, and counter rows are deleted after one day.
 - **Retention**: PostHog events follow the project's retention setting (one year at the time of writing). Host logs follow the provider's retention. Browser values last until you clear site data.
-- **Rights and requests**: ask for access, correction, deletion, restriction, portability, or object to analytics through ${SITE_URL}/contact, or open a private report at the GitHub security advisory page and say it is a privacy request. You can complain to your local data protection authority.
+- **Rights and requests**: ask for access, correction, deletion, restriction, portability, or object to analytics by emailing ${CONTACT_EMAIL} or through ${SITE_URL}/contact, or open a private report at the GitHub security advisory page and say it is a privacy request. You can complain to your local data protection authority.
 - **No advertising trackers, ad networks, or data sales.** Vercel and PostHog process usage data on the project's behalf under their data processing terms.
 
 Terms of use: ${SITE_URL}/terms`
@@ -615,7 +619,7 @@ ${resourceLinks("/privacy")}
 - **Liability**: to the extent permitted by law, no liability for indirect or consequential loss; liability otherwise limited to the amount paid, which is zero.
 - **Changes**: terms may change with a new revision date; the version published at ${SITE_URL}/terms is the current one.
 - **Law**: governed by the laws of India, with the courts of Gujarat, India. Mandatory consumer or data protection rights in your country are not removed.
-- **Contact**: ${SITE_URL}/contact. Security reports follow ${REPO_URL}/blob/main/SECURITY.md.`
+- **Contact**: ${CONTACT_EMAIL} or ${SITE_URL}/contact. Security reports follow ${REPO_URL}/blob/main/SECURITY.md.`
     )}
 
 ${resourceLinks("/terms")}
