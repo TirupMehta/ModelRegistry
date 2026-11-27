@@ -12,7 +12,8 @@
     "contact": {
       "name": "ModelRegistry maintainer",
       "url": "https://modelregistry.tirup.in/contact"
-    }
+    },
+    "termsOfService": "https://modelregistry.tirup.in/terms"
   },
   "servers": [
     {

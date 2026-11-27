@@ -39,6 +39,7 @@ export async function GET() {
         "modelregistry://cli",
         "modelregistry://contact",
         "modelregistry://privacy",
+        "modelregistry://terms",
         "modelregistry://llms.txt",
         "modelregistry://page/{+path}",
       ],

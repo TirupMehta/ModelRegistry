@@ -66,6 +66,7 @@ export default function Footer() {
               <Link href="/about" className={linkClass}>About</Link>
               <Link href="/contact" className={linkClass}>Contact</Link>
               <Link href="/privacy" className={linkClass}>Privacy</Link>
+              <Link href="/terms" className={linkClass}>Terms</Link>
               <Link href="/editorial-policy" className={linkClass}>Editorial policy</Link>
               <Link href="/changelog" className={linkClass}>Changelog</Link>
               <Link href="/docs" className={linkClass}>API &amp; docs</Link>

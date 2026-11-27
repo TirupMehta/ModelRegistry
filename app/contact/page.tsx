@@ -132,9 +132,11 @@ export default function ContactPage() {
         </P>
         <P>
           Privacy and data-deletion requests are described on the{" "}
-          <A href="/privacy">privacy page</A>. There is no published mailbox or
-          phone number: a channel that could not be monitored reliably would be
-          worse than no channel at all.
+          <A href="/privacy">privacy page</A>, including a private reporting channel for
+          requests that should not be public. Use of the site and its data is covered by
+          the <A href="/terms">terms</A>. There is no published mailbox or phone number: a
+          channel that could not be monitored reliably would be worse than no channel at
+          all.
         </P>
 
         <H2>Response expectations</H2>

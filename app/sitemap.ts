@@ -106,6 +106,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.4,
     },
     {
+      url: `${baseUrl}/terms`,
+      lastModified: revisedAt,
+      changeFrequency: "yearly",
+      priority: 0.4,
+    },
+    {
       url: `${baseUrl}/editorial-policy`,
       lastModified: revisedAt,
       changeFrequency: "monthly",

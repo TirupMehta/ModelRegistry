@@ -43,7 +43,7 @@ TOOLS
 - read_page_markdown(path): any page as Markdown ('/', '/docs', '/about', '/methodology', '/open-source', '/cli', '/models/{id}', ...).
 
 RESOURCES
-- Fixed: modelregistry://home, /docs, /about, /why, /methodology, /open-source, /cli, /contact, /privacy
+- Fixed: modelregistry://home, /docs, /about, /why, /methodology, /open-source, /cli, /contact, /privacy, /terms
 - Template: modelregistry://page/{+path} reads any page (e.g. modelregistry://page/models/gpt-6-1-sol).
 
 HOW TO ANSWER
@@ -514,7 +514,7 @@ Discovery:
 - Health: https://modelregistry.tirup.in/api/check-updates
 
 Tools: list_models, get_model, list_labs, get_changes, get_health, read_page_markdown.
-Resources: modelregistry://home, /docs, /about, /methodology, /open-source, /cli, /contact, /privacy, /llms.txt, and modelregistry://page/{+path} for any page.
+Resources: modelregistry://home, /docs, /about, /methodology, /open-source, /cli, /contact, /privacy, /terms, /llms.txt, and modelregistry://page/{+path} for any page.
 
 When asked about a model, prefer get_model(id) and cite the model page URL plus datasetVersion. If you only have a name, call list_models(company=...) first.`,
             },
@@ -605,7 +605,8 @@ const FIXED_RESOURCES: Array<{ uri: string; path: string; name: string; descript
   { uri: "modelregistry://cli", path: "/cli", name: "CLI", description: "Terminal client commands and plain-text routes." },
   { uri: "modelregistry://why", path: "/why", name: "Why", description: "Why one call to this registry beats fifteen tabs on every model launch." },
   { uri: "modelregistry://contact", path: "/contact", name: "Contact", description: "Channels for corrections, security reports, enquiries." },
-  { uri: "modelregistry://privacy", path: "/privacy", name: "Privacy", description: "What the site stores (very little)." },
+  { uri: "modelregistry://privacy", path: "/privacy", name: "Privacy", description: "What the site stores (very little) and how to opt out." },
+  { uri: "modelregistry://terms", path: "/terms", name: "Terms", description: "Rules for using the site, API and dataset, including the rate limit and MIT licence." },
 ]
 
 export const RESOURCE_LIST = [

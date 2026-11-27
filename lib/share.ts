@@ -87,6 +87,8 @@ export function pageCard(path: string): PageCard | null {
       return base("Pricing", "AI model pricing", "Published price per 1M tokens for every tracked model.", String(models), "Models priced", [`${labs} labs`, `Revised ${rev}`])
     case "/privacy":
       return base("Privacy", "Privacy policy", "What the site collects and what it does not.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
+    case "/terms":
+      return base("Terms", "Terms of use", "The rules for using the site, its API and its data.", String(models), "Models tracked", ["MIT licensed", `Revised ${rev}`])
     case "/retired":
       return base("Retired", "Retired models", "Models kept for history after a lab withdrew them.", String(retired), "Retired records", [`${models} models`, `Revised ${rev}`])
     case "/score":
