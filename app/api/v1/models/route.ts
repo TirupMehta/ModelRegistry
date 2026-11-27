@@ -4,6 +4,7 @@ import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
 import { toPublicModel } from "@/lib/verification"
+import { verifiedFacts } from "@/lib/verified-facts"
 
 export const dynamic = "force-dynamic"
 
@@ -71,7 +72,9 @@ export async function GET(request: Request) {
         latestCheckpoint: checkpoint?.name || "",
       }
     }),
-    models: filtered.map(toPublicModel),
+    // Additive within v1: verified Phase 2 facts appear only where they exist,
+    // in the exact shape /schema/model-v1.json declares. Nothing is nulled out.
+    models: filtered.map((model) => ({ ...toPublicModel(model), ...verifiedFacts(model.id) })),
   }
 
   const etag = `"${createHash("sha256")

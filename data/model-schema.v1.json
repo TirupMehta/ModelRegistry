@@ -1,0 +1,353 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://modelregistry.tirup.in/schema/model-v1.json",
+  "title": "ModelRegistry canonical model record, version 1.0",
+  "description": "One model, normalized for machines. Every field is either confirmed against a primary source or explicitly null: the registry never fills a gap with an estimate. `legacy` carries the registry's own editorial fields unchanged so no published fact is lost in the projection.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "slug",
+    "aliases",
+    "displayName",
+    "provider",
+    "providerId",
+    "family",
+    "accessType",
+    "canonicalApiIds",
+    "routerIds",
+    "huggingfaceRepo",
+    "license",
+    "licenseSpdx",
+    "parameterCountTotal",
+    "parameterCountActive",
+    "parameterSourceText",
+    "quantizedVariants",
+    "hfDownloads30d",
+    "contextWindowTokens",
+    "maxOutputTokens",
+    "knowledgeCutoff",
+    "modalities",
+    "modalitiesInput",
+    "modalitiesOutput",
+    "capabilities",
+    "pricing",
+    "priceHistory",
+    "releaseDate",
+    "status",
+    "deprecationDate",
+    "sunsetDate",
+    "recommendedReplacementSlug",
+    "trainingComputeFlops",
+    "trainingHardware",
+    "attributions",
+    "telemetry",
+    "lastVerifiedAt",
+    "sources",
+    "publicStatus",
+    "legacy"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0",
+      "description": "Version of this record shape. A breaking change bumps it and the manifest."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Stable canonical identifier and the /models/{slug} path segment."
+    },
+    "aliases": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+      "uniqueItems": true,
+      "description": "Former slugs that redirect here. Never a second canonical id."
+    },
+    "displayName": { "type": "string", "minLength": 1 },
+    "provider": { "type": "string", "minLength": 1, "description": "Laboratory, as published." },
+    "providerId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$", "description": "Laboratory slug used by /companies/{id}." },
+    "family": {
+      "type": ["string", "null"],
+      "description": "Model family (for example a shared base or generation name). Null when the laboratory does not state one."
+    },
+    "accessType": {
+      "enum": ["proprietary", "open-weight"],
+      "description": "open-weight means the laboratory publishes weights the public can download. A hosted-only model is proprietary even when its licence is permissive."
+    },
+    "canonicalApiIds": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true,
+      "description": "Exact model strings a provider API accepts, copied from the provider, not inferred from the display name."
+    },
+    "routerIds": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/routerId" },
+      "description": "Third-party routing identifiers (OpenRouter, Bedrock, Vertex). A router id is not a provider id."
+    },
+    "huggingfaceRepo": {
+      "type": ["string", "null"],
+      "pattern": "^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$",
+      "description": "Canonical Hugging Face repository for open-weight models. Null for closed models and for weights not published there."
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Licence as the laboratory states it, verbatim. A description, not an SPDX identifier."
+    },
+    "licenseSpdx": {
+      "type": ["string", "null"],
+      "description": "SPDX identifier when the licence is unambiguously one. Null when the laboratory ships a custom or unnamed licence."
+    },
+    "parameterCountTotal": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "Total parameters, parsed only from an unambiguous statement in parameterSourceText. Null when the laboratory does not publish a number."
+    },
+    "parameterCountActive": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "Active parameters per token for mixture-of-experts models, when stated. Null otherwise."
+    },
+    "parameterSourceText": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The laboratory's own wording, so a parsed number can always be checked against it."
+    },
+    "quantizedVariants": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/quantizedVariant" },
+      "description": "Verified GGUF or MLX distributions. Empty means none verified, never none exists."
+    },
+    "hfDownloads30d": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Hugging Face downloads over the last 30 days, from the Hub API, with the retrieval date in lastVerifiedAt semantics. Null when not measured."
+    },
+    "contextWindowTokens": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "Maximum input context in tokens."
+    },
+    "maxOutputTokens": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "Maximum output in tokens, only when the source states a plain token limit. Null for image, audio and video limits and for conditional limits such as 'up to X with long decode'."
+    },
+    "knowledgeCutoff": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Training data cutoff, only when the laboratory states a date. Null otherwise."
+    },
+    "modalities": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true,
+      "description": "Modalities as the registry records them, undirected."
+    },
+    "modalitiesInput": {
+      "type": ["array", "null"],
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Input modalities, only when the source states the direction. Null when the source publishes one undirected list."
+    },
+    "modalitiesOutput": {
+      "type": ["array", "null"],
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Output modalities, only when the source states the direction."
+    },
+    "capabilities": { "$ref": "#/$defs/capabilities" },
+    "pricing": { "$ref": "#/$defs/pricing" },
+    "priceHistory": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/priceSnapshot" },
+      "description": "Append-only observations, oldest first. An earlier entry is never edited; a new price adds a line."
+    },
+    "releaseDate": { "type": "string", "format": "date" },
+    "status": {
+      "enum": ["active", "preview", "deprecated", "retired"],
+      "description": "Lifecycle state. 'active' includes models replaced in their role: superseded is not retired, because no laboratory withdrew them."
+    },
+    "deprecationDate": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Date the provider announced the model will be withdrawn. Null when none announced."
+    },
+    "sunsetDate": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Last date the model can be called. Null when none announced."
+    },
+    "recommendedReplacementSlug": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Slug of the model that took over this one's role, when one is recorded."
+    },
+    "trainingComputeFlops": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Training compute in floating-point operations, only from a cited estimate. Null otherwise."
+    },
+    "trainingHardware": {
+      "type": ["string", "null"],
+      "description": "Training hardware as stated or estimated. Null otherwise."
+    },
+    "attributions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/attribution" },
+      "description": "Upstream open datasets this record was enriched from, with the licence they require crediting."
+    },
+    "telemetry": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/telemetry" },
+      "description": "Measured latency, throughput and uptime. Empty when nothing has been measured; never filled with a placeholder."
+    },
+    "lastVerifiedAt": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the record's fields were last read against the cited primary sources."
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/source" },
+      "description": "Primary pages behind the record."
+    },
+    "publicStatus": {
+      "enum": ["verified", "retired", null],
+      "description": "The only verification states the registry publishes. Null when the record carries no public state at all; a half-confirmed label is never exposed."
+    },
+    "legacy": {
+      "type": "object",
+      "description": "The registry's editorial fields, unchanged: the long highlight, laboratory-reported benchmarks, sub-variants, links, per-field citations and change log. Present so the canonical projection loses nothing."
+    }
+  },
+  "$defs": {
+    "routerId": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["router", "modelId"],
+      "properties": {
+        "router": { "enum": ["openrouter", "aws-bedrock", "google-vertex"] },
+        "modelId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "quantizedVariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "quantization", "url", "verifiedAt"],
+      "properties": {
+        "format": { "enum": ["gguf", "mlx", "other"] },
+        "quantization": { "type": ["string", "null"] },
+        "url": { "type": ["string", "null"], "format": "uri" },
+        "verifiedAt": { "type": ["string", "null"], "format": "date" }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reasoning",
+        "toolCalling",
+        "structuredJson",
+        "vision",
+        "audio",
+        "video",
+        "promptCaching",
+        "batchApi"
+      ],
+      "properties": {
+        "reasoning": { "type": ["boolean", "null"] },
+        "toolCalling": { "type": ["boolean", "null"] },
+        "structuredJson": { "type": ["boolean", "null"] },
+        "vision": { "type": ["boolean", "null"] },
+        "audio": { "type": ["boolean", "null"] },
+        "video": { "type": ["boolean", "null"] },
+        "promptCaching": { "type": ["boolean", "null"] },
+        "batchApi": { "type": ["boolean", "null"] }
+      },
+      "description": "null means not confirmed for this model, which is different from false (confirmed absent)."
+    },
+    "pricing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input",
+        "output",
+        "cachedInput",
+        "batchInput",
+        "batchOutput",
+        "currency",
+        "unit",
+        "effectiveDate",
+        "observedAt"
+      ],
+      "properties": {
+        "input": { "type": ["number", "null"], "minimum": 0 },
+        "output": { "type": ["number", "null"], "minimum": 0 },
+        "cachedInput": { "type": ["number", "null"], "minimum": 0 },
+        "batchInput": { "type": ["number", "null"], "minimum": 0 },
+        "batchOutput": { "type": ["number", "null"], "minimum": 0 },
+        "currency": { "enum": ["USD", "INR", "CNY"] },
+        "unit": { "enum": ["per_1m_tokens", "per_second", "per_request", "other"] },
+        "effectiveDate": { "type": ["string", "null"], "format": "date" },
+        "observedAt": { "type": "string", "format": "date" }
+      }
+    },
+    "priceSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observedAt", "effectiveDate", "input", "output", "currency", "unit", "sourceUrl", "note"],
+      "properties": {
+        "observedAt": { "type": "string", "format": "date" },
+        "effectiveDate": { "type": ["string", "null"], "format": "date" },
+        "input": { "type": ["number", "null"], "minimum": 0 },
+        "output": { "type": ["number", "null"], "minimum": 0 },
+        "currency": { "enum": ["USD", "INR", "CNY"] },
+        "unit": { "enum": ["per_1m_tokens", "per_second", "per_request", "other"] },
+        "sourceUrl": { "type": ["string", "null"], "format": "uri" },
+        "note": { "type": ["string", "null"] }
+      }
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "url", "license", "retrievedAt"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "license": { "type": "string", "minLength": 1 },
+        "retrievedAt": { "type": "string", "format": "date" }
+      }
+    },
+    "telemetry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["region", "ttftMs", "tokensPerSec", "uptimePct", "measuredAt"],
+      "properties": {
+        "region": { "enum": ["ap-south-1", "eu-central-1", "us-east-1"] },
+        "ttftMs": { "type": ["number", "null"], "minimum": 0 },
+        "tokensPerSec": { "type": ["number", "null"], "minimum": 0 },
+        "uptimePct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "measuredAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "url", "sourceTier", "verifiedAt"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "sourceTier": { "enum": ["official", "independent", "community"] },
+        "verifiedAt": { "type": "string", "format": "date" },
+        "publisher": { "type": "string", "minLength": 1 },
+        "kind": {
+          "enum": ["announcement", "api-docs", "pricing", "model-card", "paper", "weights", "benchmark", "console"]
+        },
+        "live": { "type": "boolean" },
+        "publishedAt": { "type": "string", "format": "date" },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

@@ -16,13 +16,24 @@ function loadTsModule(relPath, registry = {}) {
   const ctx = vm.createContext({
     module: mod,
     exports: mod.exports,
+    console,
+    // lib/site.ts reads NEXT_PUBLIC_SITE_URL at module scope.
+    process,
     require: (spec) => {
       // Lib modules import the dataset with relative or @/-aliased paths that
       // plain node cannot resolve - serve the already-loaded modules instead.
       if (spec in registry) return registry[spec]
+      // A relative import resolves against the module being loaded, not against
+      // this script. Without this, lib/seo.ts importing ./site looks for
+      // scripts/site.ts.
+      if (spec.startsWith(".")) {
+        const target = path.resolve(path.dirname(fullPath), spec)
+        for (const candidate of [target, `${target}.ts`, `${target}.tsx`]) {
+          if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return loadTsModule(candidate, registry)
+        }
+      }
       return require(spec)
     },
-    console,
   })
   vm.runInContext(transpiled, ctx)
   return mod.exports

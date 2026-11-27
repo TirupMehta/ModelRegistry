@@ -17,7 +17,7 @@ export const EPOCH_EVALUATOR = {
   index: "Epoch Capabilities Index",
   url: "https://epoch.ai/eci",
   dataUrl: "https://epoch.ai/data/eci_scores.csv",
-  retrievedAt: "2026-11-20",
+  retrievedAt: "2026-11-27",
   license: "CC BY 4.0",
   credit: "Epoch AI, 'Epoch Capabilities Index'. Published online at epoch.ai.",
   method:
@@ -40,161 +40,161 @@ export const epochRecords: EpochRecord[] = [
   {
     "modelId": "claude-fable-5-2",
     "epochName": "Claude Fable 5.2",
-    "eci": 173.5,
-    "ciLow": 170.09,
-    "ciHigh": 177.36,
+    "eci": 173.16,
+    "ciLow": 169.73,
+    "ciHigh": 176.88,
     "evaluatedAt": "2026-11-09"
   },
   {
     "modelId": "claude-opus-5-5",
     "epochName": "Claude Opus 5.5",
-    "eci": 168.7,
-    "ciLow": 165.87,
-    "ciHigh": 171.89,
+    "eci": 168.51,
+    "ciLow": 165.72,
+    "ciHigh": 171.64,
     "evaluatedAt": "2026-09-22"
   },
   {
     "modelId": "claude-sonnet-5-5",
     "epochName": "Claude Sonnet 5.5",
-    "eci": 166.59,
-    "ciLow": 163.83,
-    "ciHigh": 169.65,
+    "eci": 166.43,
+    "ciLow": 163.8,
+    "ciHigh": 169.41,
     "evaluatedAt": "2026-09-28"
   },
   {
     "modelId": "claude-haiku-5-5",
     "epochName": "Claude Haiku 5.5",
-    "eci": 160.29,
-    "ciLow": 158.12,
-    "ciHigh": 162.69,
+    "eci": 160.19,
+    "ciLow": 158.11,
+    "ciHigh": 162.53,
     "evaluatedAt": "2026-10-07"
   },
   {
     "modelId": "gpt-6-2-astra",
     "epochName": "GPT-6.2 Astra",
-    "eci": 174.17,
-    "ciLow": 170.29,
-    "ciHigh": 178.58,
+    "eci": 171.64,
+    "ciLow": 168.26,
+    "ciHigh": 175.45,
     "evaluatedAt": "2026-11-17"
   },
   {
     "modelId": "gpt-6-1-terra",
     "epochName": "GPT-6.1 Terra",
-    "eci": 167.72,
-    "ciLow": 164.78,
-    "ciHigh": 170.92,
+    "eci": 167.35,
+    "ciLow": 164.52,
+    "ciHigh": 170.48,
     "evaluatedAt": "2026-10-26"
   },
   {
     "modelId": "gemini-4-carbon",
     "epochName": "Gemini 4 Carbon",
-    "eci": 169.78,
-    "ciLow": 166.59,
-    "ciHigh": 173.31,
+    "eci": 169.1,
+    "ciLow": 166.14,
+    "ciHigh": 172.48,
     "evaluatedAt": "2026-11-10"
   },
   {
     "modelId": "gemini-4-argon",
     "epochName": "Gemini 4 Argon",
-    "eci": 166.57,
-    "ciLow": 163.94,
-    "ciHigh": 169.51,
+    "eci": 166.52,
+    "ciLow": 163.83,
+    "ciHigh": 169.5,
     "evaluatedAt": "2026-10-13"
   },
   {
     "modelId": "gemini-3-8-flash",
     "epochName": "Gemini 3.8 Flash",
-    "eci": 158.83,
-    "ciLow": 156.86,
+    "eci": 158.8,
+    "ciLow": 156.85,
     "ciHigh": 160.97,
     "evaluatedAt": "2026-09-02"
   },
   {
     "modelId": "kimi-k3-1-pro",
     "epochName": "Kimi K3.1 Pro",
-    "eci": 161.36,
-    "ciLow": 158.97,
-    "ciHigh": 163.9,
+    "eci": 161.11,
+    "ciLow": 158.88,
+    "ciHigh": 163.52,
     "evaluatedAt": "2026-10-23"
   },
   {
     "modelId": "muse-wonder",
     "epochName": "Muse Wonder",
-    "eci": 161.74,
-    "ciLow": 159.36,
-    "ciHigh": 164.32,
+    "eci": 161.84,
+    "ciLow": 159.56,
+    "ciHigh": 164.37,
     "evaluatedAt": "2026-10-12"
   },
   {
     "modelId": "muse-spark-open",
     "epochName": "Muse Spark Open",
-    "eci": 155.45,
-    "ciLow": 153.37,
-    "ciHigh": 157.73,
+    "eci": 155.47,
+    "ciLow": 153.42,
+    "ciHigh": 157.63,
     "evaluatedAt": "2026-10-15"
   },
   {
     "modelId": "grok-4-7",
     "epochName": "Grok 4.7",
-    "eci": 156.43,
-    "ciLow": 154.47,
-    "ciHigh": 158.52,
+    "eci": 156.38,
+    "ciLow": 154.49,
+    "ciHigh": 158.39,
     "evaluatedAt": "2026-09-21"
   },
   {
     "modelId": "deepseek-v4-1-flash-1017",
     "epochName": "DeepSeek V4.1 Flash 1017",
-    "eci": 159.4,
+    "eci": 159.39,
     "ciLow": 157.16,
-    "ciHigh": 161.93,
+    "ciHigh": 161.82,
     "evaluatedAt": "2026-10-17"
   },
   {
     "modelId": "deepseek-v4-pro-0813",
     "epochName": "DeepSeek V4 Pro 0813",
-    "eci": 155.96,
+    "eci": 155.98,
     "ciLow": 154.1,
-    "ciHigh": 157.99,
+    "ciHigh": 158,
     "evaluatedAt": "2026-08-13"
   },
   {
     "modelId": "glm-5-3",
     "epochName": "GLM-5.3",
-    "eci": 157.1,
-    "ciLow": 155.04,
-    "ciHigh": 159.33,
+    "eci": 157.03,
+    "ciLow": 154.95,
+    "ciHigh": 159.3,
     "evaluatedAt": "2026-08-14"
   },
   {
     "modelId": "glm-5-3-flash",
     "epochName": "GLM-5.3-Flash",
-    "eci": 153.78,
-    "ciLow": 152.04,
-    "ciHigh": 155.62,
+    "eci": 153.76,
+    "ciLow": 152.01,
+    "ciHigh": 155.6,
     "evaluatedAt": "2026-08-20"
   },
   {
     "modelId": "mistral-large-4",
     "epochName": "Mistral Large 4",
-    "eci": 154.56,
-    "ciLow": 151.79,
+    "eci": 154.6,
+    "ciLow": 151.88,
     "ciHigh": 157.42,
     "evaluatedAt": "2026-10-29"
   },
   {
     "modelId": "beam-1",
     "epochName": "Beam 1.0",
-    "eci": 150.87,
-    "ciLow": 148.66,
-    "ciHigh": 153.12,
+    "eci": 150.85,
+    "ciLow": 148.67,
+    "ciHigh": 153.06,
     "evaluatedAt": "2026-10-05"
   },
   {
     "modelId": "nemotron-3-ultra",
     "epochName": "Nemotron 3 Ultra",
     "eci": 147,
-    "ciLow": 145.02,
-    "ciHigh": 149.09,
+    "ciLow": 144.9,
+    "ciHigh": 149.11,
     "evaluatedAt": "2026-06-04"
   }
 ]

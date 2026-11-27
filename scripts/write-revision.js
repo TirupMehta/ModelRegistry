@@ -13,7 +13,22 @@ const fs = require("fs")
 const path = require("path")
 const crypto = require("crypto")
 
-const DATA_FILES = ["../data/models.ts", "../data/companies.ts", "../data/leaderboard.ts", "../data/provider-catalog.ts", "../data/independent-benchmarks.ts"]
+const DATA_FILES = [
+  "../data/models.ts",
+  "../data/companies.ts",
+  "../data/leaderboard.ts",
+  "../data/provider-catalog.ts",
+  "../data/independent-benchmarks.ts",
+  // Curated canonical facts and past prices are published data too: without them
+  // here, editing them would change the signed snapshot while datasetVersion
+  // stayed the same.
+  "../data/canonical-overrides.ts",
+  "../data/price-history.ts",
+  "../data/huggingface.ts",
+  "../data/benchmarks.ts",
+  "../data/irt-anchors.ts",
+  "../data/api-ids.ts",
+]
 const OUT_PATH = path.resolve(__dirname, "../data/revision.ts")
 
 function todayUTC() {
@@ -33,7 +48,7 @@ function readExisting() {
   return null
 }
 
-function main() {
+function computeContentHash() {
   // Hash the logical content, never the platform's line endings. Windows
   // checkouts (core.autocrlf=true) read these files as CRLF while Linux CI
   // reads LF; hashing raw bytes made every locally-generated revision differ
@@ -44,7 +59,11 @@ function main() {
     const content = fs.readFileSync(path.resolve(__dirname, rel), "utf8").replace(/\r\n/g, "\n")
     hash.update(content, "utf8")
   }
-  const contentHash = hash.digest("hex").slice(0, 16)
+  return hash.digest("hex").slice(0, 16)
+}
+
+function main() {
+  const contentHash = computeContentHash()
   const existing = readExisting()
   if (existing && existing.contentHash === contentHash) {
     console.log(`✔ Dataset revision unchanged (${existing.datasetVersion}, revised ${existing.revisedAt}).`)
@@ -72,4 +91,9 @@ export const datasetRevision = {
   console.log(`✔ Dataset revision advanced to ${datasetVersion}.`)
 }
 
-main()
+// Importable so tests can assert that every tracked data file is also covered by
+// the snapshot manifest: a file in one list but not the other lets the published
+// snapshot change without its version moving.
+module.exports = { DATA_FILES, computeContentHash }
+
+if (require.main === module) main()

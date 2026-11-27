@@ -50,6 +50,8 @@ function loadTsModule(relPath, registry = {}) {
     },
     console,
     URL,
+    // lib/site.ts reads NEXT_PUBLIC_SITE_URL at module scope.
+    process,
   })
   vm.runInContext(transpiled, ctx)
   return mod.exports

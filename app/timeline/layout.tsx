@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { withShare } from "@/lib/share"
-
-const SITE_URL = "https://modelregistry.tirup.in"
+import { SITE_URL } from "@/lib/site"
 
 export const metadata: Metadata = withShare({
   title: "AI model release timeline: every frontier launch",

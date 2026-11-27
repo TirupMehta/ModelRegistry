@@ -1,10 +1,11 @@
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
+import { SITE_URL } from "@/lib/site"
 
 export const dynamic = "force-dynamic"
 
-const SITE = "https://modelregistry.tirup.in"
+const SITE = SITE_URL
 const REPO = "https://github.com/TirupMehta/ModelRegistry"
 const EMAIL = "modelregistry@tirup.in"
 
@@ -41,6 +42,9 @@ ${modelsData.length} models across ${Object.keys(companies).length} laboratories
 - ${link("OpenAPI 3.1 description", `${SITE}/openapi.json`)}: machine readable schema for the API.
 - ${link("MCP server", `${SITE}/api/mcp`)}: stateless JSON-RPC 2.0 over POST for agents.
 - ${link("RSS feed", `${SITE}/rss.xml`)} and ${link("JSON Feed", `${SITE}/feed.json`)}: dated record changes.
+- ${link("Verify the dataset", `${SITE}/verify`)}: every file hash, the snapshot root and the Ed25519 signature, with the commands to check them offline.
+- ${link("Record schema", `${SITE}/schema/model-v1.json`)}: the JSON Schema a canonical record validates against.
+- ${link("IRT ability board", `${SITE}/irt`)}: a regularized 2-parameter IRT estimate with 90% intervals, published beside the ModelRegistry Score and never merged with it.
 - ${link("Source repository", REPO)}: MIT licensed code and dataset.
 - ${link("Contact", `${SITE}/contact`)}: corrections, privacy requests and security reports, or email ${EMAIL}.
 - ${link("Privacy policy", `${SITE}/privacy`)} and ${link("terms of use", `${SITE}/terms`)}: what is stored and the rules for using it.

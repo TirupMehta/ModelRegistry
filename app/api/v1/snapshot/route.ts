@@ -1,6 +1,7 @@
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
+import { SITE_URL } from "@/lib/site"
 
 export const dynamic = "force-dynamic"
 
@@ -12,8 +13,8 @@ export async function GET() {
     datasetVersion: datasetRevision.datasetVersion,
     revisedAt: datasetRevision.revisedAt,
     license: "MIT (Open Data)",
-    methodology: "https://modelregistry.tirup.in/methodology",
-    changelog: "https://modelregistry.tirup.in/changelog",
+    methodology: `${SITE_URL}/methodology`,
+    changelog: `${SITE_URL}/changelog`,
     counts: {
       models: modelsData.length,
       companies: Object.keys(companies).length,

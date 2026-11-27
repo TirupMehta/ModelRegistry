@@ -656,6 +656,24 @@
           "pricingCurrency": { "type": "string", "enum": ["INR", "CNY"], "description": "Present only when the lab publishes its price in another currency; pricing is then in that currency exactly as published, never converted. Absent means USD." },
           "highlight": { "type": "string" },
           "modalities": { "type": "array", "items": { "type": "string" } },
+          "canonicalApiIds": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Exact provider API model strings, matching /schema/model-v1.json. Present only when a provider's own documentation proved the string; omitted otherwise."
+          },
+          "huggingfaceRepo": {
+            "type": "string",
+            "description": "Canonical Hugging Face repository (org/repo). Present only for a verified repository."
+          },
+          "hfDownloads30d": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Hugging Face 30-day download count as returned by the Hub API. Present only when measured."
+          },
+          "licenseSpdx": {
+            "type": "string",
+            "description": "SPDX identifier when the licence maps unambiguously. Present only when verified."
+          },
           "benchmarks": {
             "type": "object",
             "description": "Lab-published scores keyed by benchmark. Empty object means none published.",

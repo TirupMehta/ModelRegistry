@@ -58,6 +58,23 @@ const nextConfig = {
       { source: "/feed.json", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
       { source: "/openapi.json", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
       { source: "/latest", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
+      // Snapshot artifacts are text a verifier downloads and reads, not
+      // certificates or PGP blocks. Say so, so curl, browsers and agents do not
+      // guess from the extension.
+      {
+        source: "/verify/manifest.sig",
+        headers: [
+          { key: "Content-Type", value: "text/plain; charset=utf-8" },
+          { key: "Access-Control-Allow-Origin", value: "*" },
+        ],
+      },
+      {
+        source: "/.well-known/modelregistry-pubkey.pem",
+        headers: [
+          { key: "Content-Type", value: "application/x-pem-file" },
+          { key: "Access-Control-Allow-Origin", value: "*" },
+        ],
+      },
       {
         source: "/api/alerts/:path*",
         headers: [

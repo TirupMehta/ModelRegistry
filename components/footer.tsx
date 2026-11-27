@@ -42,6 +42,7 @@ export default function Footer() {
               <Link href="/flagships" className={linkClass}>Flagships</Link>
               <Link href="/best" className={linkClass}>Best by task</Link>
               <Link href="/score" className={linkClass}>Overall ranking</Link>
+              <Link href="/irt" className={linkClass}>IRT board</Link>
               <Link href="/compare" className={linkClass}>Comparisons</Link>
               <Link href="/companies" className={linkClass}>Laboratories</Link>
               <Link href="/timeline" className={linkClass}>Release timeline</Link>
@@ -63,6 +64,7 @@ export default function Footer() {
               <h2 className="mb-1 text-caption font-medium text-fg-muted">About and data</h2>
               <Link href="/methodology" className={linkClass}>Methodology</Link>
               <Link href="/trust" className={linkClass}>Trust &amp; scope</Link>
+              <Link href="/verify" className={linkClass}>Verify snapshot</Link>
               <Link href="/about" className={linkClass}>About</Link>
               <Link href="/contact" className={linkClass}>Contact</Link>
               <Link href="/privacy" className={linkClass}>Privacy</Link>

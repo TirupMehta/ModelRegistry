@@ -6,6 +6,7 @@ import {
 } from "./benchmarks"
 import { isCurrent } from "./currency"
 import { isUsdPriced } from "./utils"
+import { SITE_URL } from "./site"
 
 /**
  * Shared structured-data and comparison primitives.
@@ -18,7 +19,7 @@ import { isUsdPriced } from "./utils"
  *      distrust the whole record.
  */
 
-export const SITE = "https://modelregistry.tirup.in"
+export const SITE = SITE_URL
 
 export function abs(path: string): string {
   return `${SITE}${path.startsWith("/") ? path : `/${path}`}`

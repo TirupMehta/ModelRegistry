@@ -32,7 +32,24 @@ function loadFile(file) {
     if (spec.startsWith("@/") || spec.startsWith(".")) return loadFile(resolve(key, spec))
     throw new Error(`ts-load: ${path.relative(ROOT, key)} imports "${spec}", which a pure data or library module must not`)
   }
-  vm.runInNewContext(output, { module: module_, exports: module_.exports, require: localRequire, console, process }, { filename: key })
+  vm.runInNewContext(
+    output,
+    {
+      module: module_,
+      exports: module_.exports,
+      require: localRequire,
+      console,
+      process,
+      // Web globals the libraries legitimately use. Without these, a vm context
+      // has the language intrinsics only, and `new URL(...)` throws.
+      URL,
+      URLSearchParams,
+      TextEncoder,
+      TextDecoder,
+      structuredClone,
+    },
+    { filename: key },
+  )
   return module_.exports
 }
 

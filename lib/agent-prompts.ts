@@ -1,7 +1,9 @@
 import { modelsData } from "../data/models"
 import { companies } from "../data/companies"
+import { SITE_URL as CANONICAL_SITE_URL } from "./site"
 
-export const SITE_URL = "https://modelregistry.tirup.in"
+/** Re-exported so every prompt in this file and its consumers share one origin. */
+export const SITE_URL = CANONICAL_SITE_URL
 export const REPO_URL = "https://github.com/TirupMehta/ModelRegistry"
 
 /** Bump when the prompt text changes so sync checks can detect drift. */

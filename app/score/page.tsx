@@ -226,6 +226,14 @@ export default function ScorePage() {
           itself. Only the current lineup is ranked: a superseded checkpoint is kept below with its
           replacement instead of being placed against current models.
         </p>
+        <p className="text-small text-fg-muted leading-6 mb-5 max-w-2xl">
+          A second, independent instrument is published beside this one: the{" "}
+          <Link href="/irt" className="text-accent-ink underline-offset-2 hover:underline">
+            IRT ability board
+          </Link>
+          , which estimates latent ability from the same results with a regularized 2PL model. It does not
+          change this score and is not an input to it.
+        </p>
         <div className="tile p-4 mb-5 max-w-2xl">
           <h2 className="text-body font-sans font-semibold text-fg-strong mb-1.5">How to read a score</h2>
           <ul className="space-y-1 text-body font-sans text-fg-muted leading-6">

@@ -89,6 +89,18 @@ export default function MethodologyPage() {
           <p><strong className="text-fg-strong">Retired</strong> - explicitly marked as retired by the registry and kept for historical reference. This label describes availability, not verification depth, and it alone does not confirm provider availability.</p>
           <p><strong className="text-fg-strong">Superseded</strong> - a later release from the same laboratory took over this model&apos;s role. The record is kept with its sources and readings and links its replacement, but it is not ranked against the current lineup. Superseded is not retired.</p>
           <p>Only records with cited sources are published, and only those can carry flagship or latest labels.</p>
+          <p>
+            Upstream datasets and APIs the registry builds on - Epoch AI (CC BY 4.0), Artificial Analysis, the
+            Hugging Face Hub and provider documentation - are listed with what was taken and under which terms in
+            the{" "}
+            <a
+              href="/attributions.md"
+              className="text-accent-ink underline-offset-2 hover:underline"
+            >
+              attributions file
+            </a>
+            .
+          </p>
         </div>
 
         <H2>What “flagship”, “latest”, and leaderboard places mean</H2>

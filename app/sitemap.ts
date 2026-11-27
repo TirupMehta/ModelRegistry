@@ -6,9 +6,10 @@ import { comparisonPairs } from "@/lib/seo";
 import { independentFor } from "@/lib/independent";
 import { bestSlug, buildBestAnswers } from "@/lib/best";
 import { buildAlternatives, hasAlternatives } from "@/lib/alternatives";
+import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://modelregistry.tirup.in";
+  const baseUrl = SITE_URL;
   // Content-based freshness: the last real data revision - never build time.
   const revisedAt = new Date(`${datasetRevision.revisedAt}T00:00:00Z`);
   const now = new Date();
@@ -32,6 +33,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: revisedAt,
       changeFrequency: "daily",
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/irt`,
+      lastModified: revisedAt,
+      changeFrequency: "weekly",
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/compare`,
@@ -80,6 +87,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: revisedAt,
       changeFrequency: "monthly",
       priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/verify`,
+      lastModified: revisedAt,
+      changeFrequency: "monthly",
+      priority: 0.5,
     },
     {
       url: `${baseUrl}/about`,

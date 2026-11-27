@@ -19,6 +19,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# release signing key: generated locally, never committed
+/.secrets/
+
 # vercel
 .vercel
 

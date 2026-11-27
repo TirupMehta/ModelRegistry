@@ -1,8 +1,9 @@
-import { notFound, redirect } from "next/navigation"
+import { notFound, permanentRedirect, redirect } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
 import { modelsData } from "@/data/models"
 import { companies } from "@/data/companies"
+import { resolveAlias } from "@/lib/canonical"
 import { resolveCompanyFallback } from "@/lib/model-fallback"
 import { modelSiblings, modelFolio } from "@/lib/registry"
 import { ORGANIZATION_ID, PERSON_ID, WEBSITE_ID } from "@/lib/entities"
@@ -12,6 +13,8 @@ import { safeJsonLd } from "@/lib/utils"
 import Header from "@/components/header"
 import AnalyticsEvent from "@/components/analytics-event"
 import ModelPageView from "@/components/model-page-view"
+import ModelOpenWeights from "@/components/model-open-weights"
+import ModelApiIds from "@/components/model-api-ids"
 import { ModelComparisons, ModelFaq, ModelPositions, ModelProvenance } from "@/components/model-dossier"
 
 interface Props {
@@ -71,6 +74,12 @@ export default async function ModelPage({ params }: Props) {
   const model = modelsData.find((m) => m.id === id)
 
   if (!model) {
+    // A recorded rename wins over the fuzzy fallback: an alias is a fact, the
+    // fallback is a guess. Permanent redirect (308), which is the modern
+    // method-preserving form of a 301 and what search engines treat as permanent.
+    const canonical = resolveAlias(id)
+    if (canonical) permanentRedirect(`/models/${canonical}`)
+
     const fallback = resolveCompanyFallback(id, modelsData)
     if (!fallback) {
       notFound()
@@ -173,6 +182,8 @@ export default async function ModelPage({ params }: Props) {
         }}
       />
       <ModelPageView model={model} siblings={siblings} folio={folio} folioId={folioId} footer={<ModelProvenance model={model} />}>
+        <ModelOpenWeights model={model} />
+        <ModelApiIds model={model} />
         <ModelPositions model={model} />
         <ModelFaq model={model} />
         <ModelComparisons model={model} />

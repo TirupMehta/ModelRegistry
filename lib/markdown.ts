@@ -1,6 +1,8 @@
 import { companies } from "@/data/companies"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
+import fs from "node:fs"
+import path from "node:path"
 import { SITE_NAME, SITE_URL, CONTACT_EMAIL } from "@/lib/site"
 import { REPO_URL } from "@/lib/github"
 import { formatPrice, isUsdPriced, priceSymbol } from "@/lib/utils"
@@ -12,6 +14,9 @@ import { LEADERBOARD_VERSION, MIN_COHORT_SIZE, leaderboardStats } from "@/lib/le
 import { splitLineup } from "@/lib/currency"
 import { buildBestAnswers } from "@/lib/best"
 import { buildComparison, compareHref, resolveComparison } from "@/lib/seo"
+import { IRT_COHORTS, IRT_COUNTS, IRT_METHOD, IRT_SCORES } from "@/data/irt-scores"
+import { providerApiIds } from "@/data/api-ids"
+import { huggingfaceSnapshot } from "@/data/huggingface"
 
 /**
  * Markdown representations of the public site, served through
@@ -292,6 +297,22 @@ function modelDocument(id: string): MarkdownDocument | null {
   if (!model) return null
 
   const benchEntries = Object.entries(model.benchmarks ?? {})
+  // Phase 2 facts, emitted only when verified. A missing repository or download
+  // count produces no row at all, never a zero or a placeholder.
+  const apiIds = providerApiIds.filter((entry) => entry.modelId === model.id).map((entry) => entry.id)
+  const hub = huggingfaceSnapshot.records[model.id]
+  const extraRows = [
+    ...(apiIds.length > 0 ? [`| API model ID | ${apiIds.map((id) => `\`${id}\``).join(", ")} |`] : []),
+    ...(hub
+      ? [
+          `| Repository | [${hub.repo}](https://huggingface.co/${hub.repo}) |`,
+          ...(typeof hub.downloads === "number"
+            ? [`| Downloads, 30 days | ${hub.downloads.toLocaleString("en-US")} (Hugging Face Hub, ${huggingfaceSnapshot.retrievedAt}) |`]
+            : []),
+          ...(hub.licenseSpdx ? [`| Repository licence | ${hub.licenseSpdx} |`] : []),
+        ]
+      : []),
+  ].join("\n")
   const sourceLines =
     model.sources.length > 0
       ? model.sources
@@ -318,6 +339,7 @@ ${model.highlight}
 | License | ${model.license} |
 | Modalities | ${model.modalities.join(", ")} |
 | Sources | ${model.sources.length} primary source${model.sources.length === 1 ? "" : "s"} (last checked ${model.lastVerifiedAt}) |
+${extraRows}
 
 ${benchEntries.length > 0 ? `## Lab-reported benchmarks\n\n${table(["Benchmark", "Score"], benchEntries.map(([k, v]) => [k, v]))}\n` : "## Benchmarks\n\nNo benchmark figures published for this record.\n"}
 ## Sources
@@ -395,6 +417,8 @@ const STATIC_PAGES: Record<string, () => MarkdownDocument> = {
   "/score": scoreDocument,
   "/best": bestDocument,
   "/trust": trustDocument,
+  "/verify": verifyDocument,
+  "/irt": irtDocument,
   "/about": () => ({
     status: 200,
     body: `${frontMatter(
@@ -1107,6 +1131,201 @@ only for duplicates, hoaxes, or records that never had a verifiable official
 source.
 
 ${resourceLinks("/trust")}
+`
+  return { status: 200, body }
+}
+
+/**
+ * The Markdown mirror of /verify.
+ *
+ * Derived from the published manifest, not hand-written, so the digests in the
+ * Markdown cannot drift from the ones the site shows or the ones the signature
+ * covers. A null manifest is a real state (the file is generated), and it is
+ * reported as a fact rather than as an empty table.
+ */
+function verifyDocument(): MarkdownDocument {
+  const read = (rel: string) => path.join(process.cwd(), "public", "verify", rel)
+  let manifest: {
+    snapshotVersion: string
+    schemaVersion: string
+    datasetVersion: string
+    revisedAt: string
+    recordCount: number
+    files: { path: string; sha256: string; bytes: number }[]
+    canonicalDataset: { sha256: string; records: number }
+    scores: { sha256: string; methodVersion: string; models: number }
+    rootSha256: string
+  } | null = null
+  try {
+    manifest = JSON.parse(fs.readFileSync(read("manifest.json"), "utf8"))
+  } catch {
+    manifest = null
+  }
+
+  if (!manifest) {
+    return {
+      status: 200,
+      body: `# Verify the ${SITE_NAME} snapshot
+
+No snapshot manifest is published for this deployment, so there is nothing here
+to check yet.
+
+${resourceLinks("/verify")}
+`,
+    }
+  }
+
+  const signed = fs.existsSync(read("manifest.sig"))
+  const files =
+    manifest.files.length > 0
+      ? `## Files covered
+
+${table(["Path", "Bytes", "SHA-256"], manifest.files.map((file) => [file.path, String(file.bytes), file.sha256]))}`
+      : ""
+
+  const body = `# Verify the ${SITE_NAME} snapshot
+
+${SITE_NAME} publishes a SHA-256 hash of every dataset file and signs the snapshot
+root with Ed25519. Anyone can check that the numbers on this site are the numbers
+in the published files, without trusting the site to tell the truth about itself.
+
+## Current snapshot
+
+- Dataset version: ${manifest.datasetVersion} (revised ${manifest.revisedAt})
+- Snapshot format: ${manifest.snapshotVersion}, schema version ${manifest.schemaVersion}
+- Records: ${manifest.recordCount}
+- Files hashed: ${manifest.files.length}
+- Canonical dataset SHA-256: ${manifest.canonicalDataset.sha256}
+- ModelRegistry Score SHA-256: ${manifest.scores.sha256} (method version ${manifest.scores.methodVersion}, ${manifest.scores.models} models rated)
+- Snapshot root SHA-256: ${manifest.rootSha256}
+- Signature: ${signed ? "Ed25519, detached (manifest.sig)" : "unsigned"}
+
+The manifest is generated from the dataset revision date, never from a build
+clock, so the same data always produces the same bytes. Change one byte and both
+the file hash and the root hash change.
+
+${files}
+
+## Verify in one command
+
+From a clone of the repository, with no dependencies installed and no network
+access:
+
+\`\`\`
+node scripts/verify-snapshot.mjs
+\`\`\`
+
+It re-hashes every file the manifest lists, recomputes the root from the manifest
+body, and checks the signature against the published public key. Exit code 0 means
+every check passed.
+
+## Verify without this codebase
+
+\`\`\`
+# 1. each file hash must match manifest.json -> files[].sha256
+sha256sum data/models.ts
+
+# 2. the root is SHA-256 over the canonical JSON of the manifest with the
+#    rootSha256 key removed (keys sorted, no whitespace)
+
+# 3. the signature covers the root hash as UTF-8 text, with no trailing newline
+printf %s "${manifest.rootSha256}" > root-sha256.txt
+openssl pkeyutl -verify -pubin -inkey modelregistry-pubkey.pem \\
+  -rawin -in root-sha256.txt -sigfile manifest.sig.raw
+\`\`\`
+
+Published artifacts: ${pageUrl("/verify/manifest.json")},
+${pageUrl("/verify/manifest.sig")}, and
+${SITE_URL}/.well-known/modelregistry-pubkey.pem. The schema the records are
+validated against is ${pageUrl("/schema/model-v1.json")}.
+
+## What this proves, and what it does not
+
+A valid signature proves the manifest was signed by the holder of the private key
+and has not changed since. The file hashes prove the dataset files are the ones the
+manifest describes. Together they rule out quiet edits to a published record.
+
+They do not prove a fact is correct. A model page is only as good as the primary
+source it cites, which is why every record links its sources and its last check
+date. Verification answers "is this the published data", not "is the published
+data right".
+
+${resourceLinks("/verify")}
+`
+  return { status: 200, body }
+}
+
+/**
+ * The Markdown mirror of /irt. Generated from the same committed scores the page
+ * reads, so the two cannot disagree about a rank or an interval.
+ */
+function irtDocument(): MarkdownDocument {
+  const bySlug = new Map(modelsData.map((model) => [model.id, model]))
+  const rows = IRT_SCORES.map((row, index) => [
+    String(index + 1),
+    bySlug.get(row.slug)?.name ?? row.slug,
+    row.index.toFixed(1),
+    `${row.ci90[0].toFixed(1)} to ${row.ci90[1].toFixed(1)}`,
+    String(row.observations),
+    row.confidenceStatus,
+  ])
+  const excluded = IRT_COHORTS.filter((cohort) => cohort.status !== "kept")
+  const excludedTable =
+    excluded.length > 0
+      ? `## Cohorts excluded from the fit
+
+${table(
+  ["Test", "Domain", "Mode", "Models", "Status"],
+  excluded.map((cohort) => [cohort.benchmarkId, cohort.domain, cohort.toolMode, String(cohort.models), cohort.status]),
+)}`
+      : ""
+
+  const body = `# IRT ability board
+
+A second opinion, not a replacement. This board fits a regularized 2-parameter
+item response theory model to the benchmark results the registry already holds.
+The ModelRegistry Score at ${pageUrl("/score")} is unchanged and unaffected: the
+two are published side by side and neither is an input to the other.
+
+- Method: ${IRT_METHOD.name}, version ${IRT_METHOD.version}
+- As of: ${IRT_METHOD.asOf}
+- Models scored: ${IRT_COUNTS.scoredModels} from ${IRT_COUNTS.fittedObservations} fitted observations across ${IRT_COUNTS.keptCohorts} cohorts
+- Scale: ${IRT_METHOD.scale.mean} + ${IRT_METHOD.scale.sd} x ability, clamped to 0 to 100, with a 90% interval
+- Anchored: ${Object.keys(IRT_METHOD.anchors).join(", ")}
+
+## Ability and interval
+
+Rows are ordered by the index. Two models whose intervals overlap are not
+separated by this evidence. "Tests" counts the benchmark results the fit used.
+
+${table(["#", "Model", "IRT index", "90% interval", "Tests", "Evidence"], rows)}
+
+${excludedTable}
+
+## How the fit decides
+
+Every result is normalized to its own test's floor and ceiling. The model
+estimates each model's ability and each test's difficulty and discrimination from
+the results that model actually produced. A result a model never produced
+contributes nothing.
+
+Weakly informative priors keep the estimate finite: ability near zero, log
+discrimination near zero, difficulty near zero. A model with two easy results
+cannot outrank a model with fifteen hard ones. A test enters the fit only if at
+least four models took it, it has been touched within a year, fewer than a quarter
+of its results sit at the ceiling, and it is not a legacy test.
+
+A tool-assisted run and a bare run of the same benchmark are separate tests and
+are never merged.
+
+## What this board does not claim
+
+- It does not replace the ModelRegistry Score, and it does not change it.
+- It does not turn one test into an ability estimate.
+- It does not rank two models whose intervals overlap as if the order were known.
+- It does not treat a tool-assisted run and a bare run as the same test.
+
+${resourceLinks("/irt")}
 `
   return { status: 200, body }
 }

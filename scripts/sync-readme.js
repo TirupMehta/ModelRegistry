@@ -24,9 +24,19 @@ function loadTsModule(relPath, registry = {}) {
     exports: mod.exports,
     require: (spec) => {
       if (spec in registry) return registry[spec]
+      // A relative import resolves against the module being loaded, not against
+      // this script, so lib/seo.ts importing ./site finds lib/site.ts.
+      if (spec.startsWith(".")) {
+        const target = path.resolve(path.dirname(fullPath), spec)
+        for (const candidate of [target, `${target}.ts`, `${target}.tsx`]) {
+          if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return loadTsModule(candidate, registry)
+        }
+      }
       return require(spec)
     },
     console,
+    // lib/site.ts reads NEXT_PUBLIC_SITE_URL at module scope.
+    process,
   })
   vm.runInContext(transpiled, ctx)
   return mod.exports

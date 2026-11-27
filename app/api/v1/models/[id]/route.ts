@@ -4,6 +4,7 @@ import { apiError } from "@/lib/api-errors"
 import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { resolveCompanyFallback } from "@/lib/model-fallback"
+import { verifiedFacts } from "@/lib/verified-facts"
 
 export const dynamic = "force-dynamic"
 
@@ -62,7 +63,7 @@ export async function GET(request: Request, { params }: RouteContext) {
     methodology: "https://modelregistry.tirup.in/methodology",
     page: `/models/${model.id}`,
     url: `https://modelregistry.tirup.in/models/${model.id}`,
-    model,
+    model: { ...model, ...verifiedFacts(model.id) },
   }
 
   const etag = `"${createHash("sha256")

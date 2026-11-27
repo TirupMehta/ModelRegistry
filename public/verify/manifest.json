@@ -1,0 +1,103 @@
+{
+  "snapshotVersion": "1.0",
+  "schemaVersion": "1.0",
+  "datasetVersion": "2026.11.27-r6",
+  "revisedAt": "2026-11-27",
+  "generatedAt": "2026-11-27",
+  "recordCount": 78,
+  "files": [
+    {
+      "path": "data/api-ids.ts",
+      "sha256": "684f09c4cffe35e14be8a6be4a8a491d648bd9dc5edde0e6bfed0e1e8b7abde6",
+      "bytes": 2735
+    },
+    {
+      "path": "data/benchmarks.ts",
+      "sha256": "de2945e473becc921dd2f8a247cf5fe81150db13dacf5ff888271074de93c4cc",
+      "bytes": 130495
+    },
+    {
+      "path": "data/canonical-overrides.ts",
+      "sha256": "64123a4e5a926762102cbba1dc9ca197a885304c1503f9fa2de1e927f669b8eb",
+      "bytes": 2734
+    },
+    {
+      "path": "data/companies.ts",
+      "sha256": "f98ec1c03723171624f41f1585b51ea9030d4ad6b366e8e2482101a2bc2b956c",
+      "bytes": 12344
+    },
+    {
+      "path": "data/epoch-eci.ts",
+      "sha256": "ab6380666f53405165cda3399083c1a4458e78b0f52934abf0995415271088a1",
+      "bytes": 4929
+    },
+    {
+      "path": "data/huggingface.ts",
+      "sha256": "818a3ba0598e13b0bde34ed4b95545769aa82dd4cc0a25430237b16063ace99e",
+      "bytes": 5047
+    },
+    {
+      "path": "data/independent-benchmarks.ts",
+      "sha256": "bd39804d3e9658b3241014e9741a5095046d36f6cb245726e2b8353d2e7add73",
+      "bytes": 31111
+    },
+    {
+      "path": "data/irt-anchors.ts",
+      "sha256": "6b96f255be7aea557dbe202a559f530f3eeaf8d66c7472cafe974a4b5ffb71a0",
+      "bytes": 1204
+    },
+    {
+      "path": "data/irt-scores.ts",
+      "sha256": "7473deed26dabbf73a6a8b1096733cd1f536dff4e8d328c008544f80c93acce3",
+      "bytes": 19284
+    },
+    {
+      "path": "data/leaderboard.ts",
+      "sha256": "09daa8b2d6b4c02ef002f3e3f7c7736397138fb4b14f985d849e53ca3a71d7bc",
+      "bytes": 2953
+    },
+    {
+      "path": "data/meridian-calibration.ts",
+      "sha256": "51b57a33ab06b98fd1d8f403b224f26bcf104028fad3f54e2ece606449355f2b",
+      "bytes": 2053
+    },
+    {
+      "path": "data/model-schema.v1.json",
+      "sha256": "1e920c92a674c2300f11ff42511ccb97a7b34e3bc5305b013416b477a6bc9409",
+      "bytes": 14095
+    },
+    {
+      "path": "data/models.ts",
+      "sha256": "d4e3bbd919d05274c5a6486b39bd8bcac472ab20e773ff0de1e8cedd90fd80ec",
+      "bytes": 519756
+    },
+    {
+      "path": "data/price-history.ts",
+      "sha256": "167f3147171df27a5b45d74940d416bd6cc6e56279aa94d71a722fa53c948c91",
+      "bytes": 2255
+    },
+    {
+      "path": "data/provider-catalog.ts",
+      "sha256": "f581815a1802a60a93e5e6341a43feb566c7ca921a999a22df30c6e2c041f0ae",
+      "bytes": 2282
+    },
+    {
+      "path": "data/revision.ts",
+      "sha256": "5611e67587e3942bb8ee57580182a89cef4208c44afcd2fc6bd8f385e26fb3c6",
+      "bytes": 410
+    }
+  ],
+  "canonicalDataset": {
+    "sha256": "3f326b65902a26ffe2d87c29b23661870c1f1487cd8672078e90ac16ac0d2207",
+    "bytes": 493066,
+    "records": 78
+  },
+  "scores": {
+    "methodVersion": "3.0.0",
+    "sha256": "57e46c0091ae12f5c70c4fb5049388ccb2d0a550f0946f9135895a8d59d33d85",
+    "bytes": 3348,
+    "models": 30,
+    "observations": 293
+  },
+  "rootSha256": "1f452a54b88a0874f7cc6527eb87887baebbd1d0ab54ff8e18b85b3cb8fd5e70"
+}

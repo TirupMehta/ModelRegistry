@@ -4,6 +4,7 @@ import { companies } from "@/data/companies"
 import { datasetRevision } from "@/data/revision"
 import { independentRecords } from "@/data/independent-benchmarks"
 import { buildIndependentStanding } from "@/lib/independent"
+import { IRT_SCORES } from "@/data/irt-scores"
 import { SITE_NAME, SITE_URL } from "@/lib/site"
 
 /**
@@ -93,6 +94,8 @@ export function pageCard(path: string): PageCard | null {
       return base("Retired", "Retired models", "Models kept for history after a lab withdrew them.", String(retired), "Retired records", [`${models} models`, `Revised ${rev}`])
     case "/score":
       return base("ModelRegistry Score", "The ModelRegistry Score", "A fixed-reference score across the independent tests.", String(buildIndependentStanding(modelsData).rated), "Models rated", ["Fixed calibration", `Revised ${rev}`])
+    case "/irt":
+      return base("IRT board", "IRT ability board", "A regularized 2-parameter IRT estimate, published beside the Score and never merged with it.", String(IRT_SCORES.length), "Models scored", ["90% intervals", `Revised ${rev}`])
     case "/suggest":
       return base("Suggest a model", "Suggest a model", "Propose a model for the registry. Every suggestion is reviewed.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/timeline":
@@ -101,6 +104,8 @@ export function pageCard(path: string): PageCard | null {
       return base("Trust", "Why you can trust the registry", "Sources, check dates and the limits of what the registry can know.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
     case "/why":
       return base("Why", "Why use ModelRegistry", "One MCP call instead of fifteen tabs, for people and AI agents.", String(models), "Models tracked", [`${labs} labs`, `Revised ${rev}`])
+    case "/verify":
+      return base("Verification", "Verify the snapshot", "A published SHA-256 manifest and a detached Ed25519 signature over every dataset file.", "SHA-256", "Root hash", ["Ed25519 signature", `Revised ${rev}`])
     default:
       return null
   }
