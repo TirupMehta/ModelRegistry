@@ -212,7 +212,7 @@ export default function HomeClient({ models, demoCards, quickAnswers }: { models
     <>
       <noscript>
         <article style={{ maxWidth: "48rem", margin: "0 auto", padding: "2rem 1.5rem", fontFamily: "var(--font-sans), system-ui, sans-serif", lineHeight: 1.6, color: "var(--fg)" }}>
-          <h1>ModelRegistry - Frontier AI Model Telemetry Index</h1>
+          <h1>ModelRegistry: AI model comparison, pricing, context and benchmarks</h1>
           <p>
             Official open machine-readable registry of premier frontier artificial intelligence models across {labNames}.
           </p>
@@ -231,8 +231,8 @@ export default function HomeClient({ models, demoCards, quickAnswers }: { models
         {/* Hero: the claim, one sentence, then the provenance that separates a
             cited registry from another list of models. */}
         <div>
-          <h1 className="max-w-[20ch] font-display text-display font-semibold leading-[1.05] tracking-[-0.03em] text-fg-strong">
-            Every frontier model, with its sources.
+          <h1 className="max-w-[22ch] font-display text-display font-semibold leading-[1.05] tracking-[-0.03em] text-fg-strong">
+            Compare every frontier AI model, with its sources.
           </h1>
           <p className="mt-3 max-w-[52ch] text-title font-normal leading-[1.55] text-fg sm:mt-4 sm:text-title">
             Specs, prices and context limits for {models.length} models. Each record names the lab page it came from and the date it was checked.

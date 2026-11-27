@@ -207,7 +207,7 @@ const labDoc = renderMarkdown(`/companies/${labId}`)
 check("md-lab-status", labDoc.status, 200)
 checkTrue("md-lab-name", labDoc.body.includes(companies[labId].name))
 
-for (const route of ["/contact", "/privacy", "/about", "/methodology", "/pricing", "/changelog", "/flagships", "/companies", "/cli", "/open-source"]) {
+for (const route of ["/contact", "/privacy", "/terms", "/about", "/methodology", "/pricing", "/changelog", "/flagships", "/companies", "/cli", "/open-source"]) {
   const doc = renderMarkdown(route)
   checkTrue(`md-${route}-200`, doc.status === 200 && doc.body.length > 300, `${doc.body.length} chars`)
 }
@@ -342,9 +342,15 @@ checkTrue("org-knows-about", entities.includes("knowsAbout") && entities.include
 
 // 7. Agent instructions: when-to-use lives in llms.txt and the skill.
 const llms = fs.readFileSync(path.resolve(__dirname, "../app/llms.txt/route.ts"), "utf8")
-for (const token of ["When to use ModelRegistry", "How an agent should call it", "text/markdown", "/openapi.json", "/contact", "/privacy", "/open-source", "/api/mcp"]) {
+for (const token of ["When to use ModelRegistry", "How an agent should call it", "text/markdown", "/openapi.json", "/contact", "/privacy", "/terms", "/open-source", "/api/mcp"]) {
   checkTrue(`llms-${token.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`, llms.includes(token))
 }
+// The llms.txt audit expects a Markdown file with an H1 and real links, not a
+// list of bare URLs. Guard the generated shape, not just the prose.
+checkTrue("llms-h1", llms.includes("# ModelRegistry") && llms.includes("## Start here"))
+checkTrue("llms-blockquote", llms.includes("> An open, source linked registry"))
+checkTrue("llms-markdown-links", llms.includes("[${label}](${url})") && llms.includes("link("))
+checkTrue("llms-no-bare-url-list", !/^- [A-Za-z][^\n]*: https:\/\//m.test(llms))
 const skills = fs.readFileSync(path.resolve(__dirname, "../lib/skills.ts"), "utf8")
 checkTrue("skill-when-to-use", skills.includes("When to use this skill"))
 checkTrue("skill-error-codes", skills.includes("model_not_found") && skills.includes("Retry-After"))
@@ -354,16 +360,22 @@ checkTrue("skills-index-when-to-use", /description:[\s\S]{0,200}Use when/.test(s
 // 8. Trust anchors: contact and privacy exist, are linked, and are in the sitemap.
 checkTrue("page-contact", fs.existsSync(path.resolve(__dirname, "../app/contact/page.tsx")))
 checkTrue("page-privacy", fs.existsSync(path.resolve(__dirname, "../app/privacy/page.tsx")))
+checkTrue("page-terms", fs.existsSync(path.resolve(__dirname, "../app/terms/page.tsx")))
 const contactSrc = fs.readFileSync(path.resolve(__dirname, "../app/contact/page.tsx"), "utf8")
 const privacySrc = fs.readFileSync(path.resolve(__dirname, "../app/privacy/page.tsx"), "utf8")
+const termsSrc = fs.readFileSync(path.resolve(__dirname, "../app/terms/page.tsx"), "utf8")
 checkTrue("contact-content-length", contactSrc.length > 2000, `${contactSrc.length} chars`)
-checkTrue("privacy-content-length", privacySrc.length > 2000, `${privacySrc.length} chars`)
+checkTrue("privacy-content-length", privacySrc.length > 5000, `${privacySrc.length} chars`)
+checkTrue("terms-content-length", termsSrc.length > 4000, `${termsSrc.length} chars`)
 const sitemap = fs.readFileSync(path.resolve(__dirname, "../app/sitemap.ts"), "utf8")
 checkTrue("sitemap-contact", sitemap.includes("/contact"))
 checkTrue("sitemap-privacy", sitemap.includes("/privacy"))
+checkTrue("sitemap-terms", sitemap.includes("/terms"))
 const footer = fs.readFileSync(path.resolve(__dirname, "../components/footer.tsx"), "utf8")
 checkTrue("footer-contact", footer.includes('href="/contact"'))
 checkTrue("footer-privacy", footer.includes('href="/privacy"'))
+checkTrue("footer-terms", footer.includes('href="/terms"'))
+checkTrue("markdown-terms", fs.readFileSync(path.resolve(__dirname, "../lib/markdown.ts"), "utf8").includes('"/terms"'))
 // Open-source page: existence, sitemap, and footer sync, same contract as the trust anchors.
 checkTrue("page-open-source", fs.existsSync(path.resolve(__dirname, "../app/open-source/page.tsx")))
 const openSourceSrc = fs.readFileSync(path.resolve(__dirname, "../app/open-source/page.tsx"), "utf8")
@@ -402,7 +414,7 @@ checkTrue("config-rate-limit-source", nextConfig.includes('source: "/api/:path*"
 
 // 10. The docs page names the product and API in its title and heading.
 const docsSrc = fs.readFileSync(path.resolve(__dirname, "../app/docs/page.tsx"), "utf8")
-checkTrue("docs-title-product", /title:\s*"ModelRegistry API Reference/.test(docsSrc))
+checkTrue("docs-title-product", /title:\s*(\{ absolute: )?"ModelRegistry API [Rr]eference/.test(docsSrc))
 checkTrue("docs-h1-product", docsSrc.includes("ModelRegistry API Reference"))
 checkTrue("docs-mcp-section", docsSrc.includes('id="mcp"') && docsSrc.includes("/api/mcp"))
 const openapiFull = fs.readFileSync(path.resolve(__dirname, "../public/openapi.json"), "utf8")

@@ -16,7 +16,7 @@ import { ArrowLeft, ArrowUpRight, Check, ChevronDown, Minus } from "lucide-react
 import { withShare } from "@/lib/share"
 
 export const metadata: Metadata = withShare({
-  title: "Why you can trust ModelRegistry: sources, checks and limits",
+  title: "Why you can trust the sources and checks",
   description:
     "Every record is published only after its figures are traced to the laboratory's own documents. This page shows the sources, the check dates, the cross-checking standard and the exact limits of what the registry can know.",
   alternates: { canonical: `${SITE}/trust` },

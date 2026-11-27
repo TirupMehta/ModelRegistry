@@ -28,12 +28,12 @@ import { ArrowLeft, ChevronDown } from "lucide-react"
 import { withShare } from "@/lib/share"
 
 export const metadata: Metadata = withShare({
-  title: "ModelRegistry Score: AI model score across benchmarks, and how to spot benchmark tuning",
+  title: "AI model benchmark comparison and scores",
   description:
     "The ModelRegistry Score is a fixed-reference cross-test score for AI models, with a 95% band, the disagreement between tests, and each model's results on private tests against public tests. Models measured on one test are ranked on that test only.",
   alternates: { canonical: `${SITE}/score` },
   openGraph: {
-    title: "ModelRegistry Score: AI model score across benchmarks",
+    title: "AI model benchmark comparison: the ModelRegistry Score",
     description:
       "A fixed reference scale, 95% bands, coverage refusal, and the spread between tests published as a first-class number.",
     url: `${SITE}/score`,
@@ -216,7 +216,7 @@ export default function ScorePage() {
         <RankingsSwitcher current="/score" />
 
         <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
-          How the models compare
+          AI model benchmark comparison
         </h1>
         <p className="text-title text-fg-muted leading-7 max-w-2xl mb-5">
           The ModelRegistry Score is one number for how an AI model performs across independent

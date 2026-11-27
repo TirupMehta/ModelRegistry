@@ -7,7 +7,7 @@ import { safeJsonLd } from "@/lib/utils"
 import { withShare } from "@/lib/share"
 
 export const metadata: Metadata = withShare({
-  title: "AI model capability & modality matrix",
+  title: "AI model modalities: text, vision, audio and video",
   description:
     "Which frontier models handle text, vision, audio, video, code, and images - as declared by each lab, with sources.",
   alternates: { canonical: "https://modelregistry.tirup.in/modalities" },
@@ -30,7 +30,7 @@ export default function ModalitiesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <section className="page">
         <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
-          Capability &amp; modality matrix
+          AI model modalities compared
         </h1>
         <p className="mb-5 flex items-center gap-2 text-small font-sans text-fg-muted">
           <span>Dataset revised</span>

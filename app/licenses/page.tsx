@@ -5,11 +5,12 @@ import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import { withShare } from "@/lib/share"
+import { faqPage, itemList } from "@/lib/seo"
 
 export const metadata: Metadata = withShare({
-  title: "Open-weight AI license comparison",
+  title: "Open weight AI models and licenses",
   description:
-    "Which frontier models publish weights, under which license, grouped for enterprise review - with primary sources and verification status.",
+    "The open weight AI models list: which frontier models publish weights, under which licence, with primary sources and the dataset revision they were checked against.",
   alternates: { canonical: "https://modelregistry.tirup.in/licenses" },
 }, { page: "/licenses" }, "/licenses")
 
@@ -20,21 +21,56 @@ export default function LicensesPage() {
     list.push(m)
     groups.set(m.license, list)
   }
+  const open = modelsData.filter((m) => m.openWeights)
+  const revised = datasetRevision.revisedAt
+  const faqs = [
+    {
+      q: "How many AI models publish open weights?",
+      a: `${open.length} of ${modelsData.length} tracked records publish downloadable weights as of ${revised}. The rest are proprietary or do not publish weights; a missing weights link is not a claim that no weights exist.`,
+    },
+    {
+      q: "Is open weight the same as open source?",
+      a: "No. Open weight means the parameters can be downloaded. The licence can still restrict commercial use, modification, or redistribution. Some records use community or research licences that are not OSI approved, so read the licence source before deploying.",
+    },
+    {
+      q: "Can I self host an open weight model?",
+      a: "Only if its licence permits it. Check the linked licence for the model you plan to use; the registry reports the publisher's stated terms and does not decide what your use requires.",
+    },
+    {
+      q: "Why are licence names grouped exactly as written?",
+      a: "They are the publisher's stated terms, not the registry's interpretation. Keeping the string unchanged, with a source link, is what makes the list checkable.",
+    },
+  ]
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Open-weight AI license comparison",
+    name: "Open weight AI models and licenses",
     url: "https://modelregistry.tirup.in/licenses",
-    dateModified: datasetRevision.revisedAt,
+    dateModified: revised,
   }
 
   return (
     <main id="content" tabIndex={-1} className="relative min-h-screen focus:outline-none">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqPage(faqs)) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJsonLd(
+            itemList({
+              name: "Open weight AI models",
+              path: "/licenses",
+              description: "Frontier AI models that publish downloadable weights, with their stated licence.",
+              models: open,
+              order: "https://schema.org/ItemListUnordered",
+            }),
+          ),
+        }}
+      />
       <section className="page">
         <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
-          Open weights &amp; licenses
+          Open weight AI models and licenses
         </h1>
         <p className="mb-5 flex items-center gap-2 text-small font-sans text-fg-muted">
           <span>Dataset revised</span>
@@ -77,6 +113,18 @@ export default function LicensesPage() {
                   </li>
                 ))}
               </ul>
+            </div>
+          ))}
+        </div>
+
+        <h2 className="mt-10 mb-3 font-display text-heading font-semibold tracking-tight text-fg-strong">
+          Open weight questions
+        </h2>
+        <div className="rule-t">
+          {faqs.map((item) => (
+            <div key={item.q} className="py-4 rule-b">
+              <h3 className="mb-1.5 text-body font-medium tracking-tight text-fg-strong">{item.q}</h3>
+              <p className="max-w-[68ch] text-body font-sans leading-6 text-fg-muted">{item.a}</p>
             </div>
           ))}
         </div>

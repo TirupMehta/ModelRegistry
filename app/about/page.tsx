@@ -9,14 +9,14 @@ import { safeJsonLd } from "@/lib/utils"
 import { withShare } from "@/lib/share"
 
 export const metadata: Metadata = withShare({
-  title: "About ModelRegistry - built and maintained by Tirup Mehta",
+  title: "About the project and its maintainer",
   description:
     "ModelRegistry is an open, source-linked registry of frontier AI model specifications, built and maintained by Tirup Mehta. What it covers, how records are verified, and how to query it.",
   keywords: CORE_KEYWORDS,
   authors: [{ name: "Tirup Mehta", url: "https://tirup.in" }],
   alternates: { canonical: `${SITE_URL}/about` },
   openGraph: {
-    title: "About ModelRegistry - built and maintained by Tirup Mehta",
+    title: "About ModelRegistry, built and maintained by Tirup Mehta",
     description:
       "An open registry of frontier AI model specifications, maintained by Tirup Mehta. What it covers, how it is verified, and how to query it.",
     url: `${SITE_URL}/about`,

@@ -166,8 +166,13 @@ export const CORE_KEYWORDS = [
   // Comparison and data intent
   "context window comparison",
   "AI model pricing comparison",
+  "LLM pricing comparison",
+  "AI model comparison",
   "AI model leaderboard",
   "open weights models",
+  "open weight AI models list",
+  "AI model release timeline",
+  "best AI model for coding",
   "foundation model list",
   "latest AI models",
   "new AI models 2026",

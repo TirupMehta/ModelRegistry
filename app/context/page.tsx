@@ -5,6 +5,7 @@ import { modelsData } from "@/data/models"
 import { datasetRevision } from "@/data/revision"
 import { safeJsonLd } from "@/lib/utils"
 import { withShare } from "@/lib/share"
+import { faqPage, itemList } from "@/lib/seo"
 
 export const metadata: Metadata = withShare({
   title: "AI model context window comparison",
@@ -21,6 +22,27 @@ function fmt(tokens: number) {
 
 export default function ContextPage() {
   const ranked = [...modelsData].sort((a, b) => b.contextWindowTokens - a.contextWindowTokens)
+  const largest = ranked.find((m) => m.contextWindowTokens > 0)
+  const faqs = [
+    {
+      q: "Which AI model has the largest context window?",
+      a: largest
+        ? `${largest.name} (${largest.companyName}) lists ${largest.contextWindow}, the largest published window in the registry as of ${datasetRevision.revisedAt}.`
+        : "No tracked record currently publishes a token context window.",
+    },
+    {
+      q: "What does a context window measure?",
+      a: "The maximum number of tokens a model can handle in one request, including input and, where the laboratory states it, output. The registry records the limit the laboratory publishes. A dash means the limit is undisclosed or the model is billed by a non-token unit such as audio or video seconds.",
+    },
+    {
+      q: "Does a larger context window mean better long document performance?",
+      a: "No. A context window is a limit, not a measure of retrieval accuracy, reasoning quality, or cost. The registry records the published number and does not rank quality from it.",
+    },
+    {
+      q: "Are these input limits or total limits?",
+      a: "Where a laboratory publishes separate input and output limits, the model record shows both. This page ranks the largest published window per model, so a model with a combined input and output limit can sit beside one that publishes input only.",
+    },
+  ]
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -33,9 +55,24 @@ export default function ContextPage() {
     <main id="content" tabIndex={-1} className="relative min-h-screen focus:outline-none">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqPage(faqs)) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJsonLd(
+            itemList({
+              name: "AI model context window ranking",
+              path: "/context",
+              description: "Frontier AI models ranked by the largest published context window.",
+              models: ranked.filter((m) => m.contextWindowTokens > 0),
+              order: "https://schema.org/ItemListOrderDescending",
+            }),
+          ),
+        }}
+      />
       <section className="page">
         <h1 className="text-page font-display font-semibold tracking-tight text-fg-strong mb-3">
-          Context window comparison
+          AI model context window comparison
         </h1>
         <p className="mb-5 flex items-center gap-2 text-small font-sans text-fg-muted">
           <span>Dataset revised</span>
@@ -70,6 +107,18 @@ export default function ContextPage() {
                   Source
                 </a>
               )}
+            </div>
+          ))}
+        </div>
+
+        <h2 className="mt-10 mb-3 font-display text-heading font-semibold tracking-tight text-fg-strong">
+          Context window questions
+        </h2>
+        <div className="rule-t">
+          {faqs.map((item) => (
+            <div key={item.q} className="py-4 rule-b">
+              <h3 className="mb-1.5 text-body font-medium tracking-tight text-fg-strong">{item.q}</h3>
+              <p className="max-w-[68ch] text-body font-sans leading-6 text-fg-muted">{item.a}</p>
             </div>
           ))}
         </div>

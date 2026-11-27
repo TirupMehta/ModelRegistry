@@ -7,6 +7,7 @@ import { isUsdPriced, priceSymbol, safeJsonLd } from "@/lib/utils"
 import { ArrowUpRight } from "lucide-react"
 import { Disclosure, PageHeader } from "@/components/ui"
 import { withShare } from "@/lib/share"
+import { faqPage, itemList } from "@/lib/seo"
 
 export const metadata: Metadata = withShare({
   title: "AI model pricing comparison with sources",
@@ -23,21 +24,57 @@ export default function PricingPage() {
     .filter((m) => !m.pricingUnit && isUsdPriced(m))
     .sort((a, b) => a.pricing.input - b.pricing.input)
   const unitModels = modelsData.filter((m) => m.pricingUnit || !isUsdPriced(m))
+  const cheapest = tokenModels[0]
+  const revised = datasetRevision.revisedAt
+  const faqs = [
+    {
+      q: "Which AI model is cheapest per token?",
+      a: cheapest
+        ? `${cheapest.name} (${cheapest.companyName}) lists the lowest input price among token-billed models in the registry: ${usd(cheapest.pricing.input)} per 1M input tokens and ${usd(cheapest.pricing.output)} per 1M output tokens as of ${revised}. Compare the full mix of input and output prices before choosing.`
+        : "No token-billed model currently publishes a USD price.",
+    },
+    {
+      q: "Are these the prices I will actually pay?",
+      a: "These are official list prices per 1M tokens. They exclude caching discounts, batch pricing, negotiated rates, taxes, and regional differences. The linked laboratory pricing page is the source, and it overrides this table.",
+    },
+    {
+      q: "Why are some models listed apart?",
+      a: "Models billed per image, per second, or in another currency are shown separately because they cannot be ranked against a per-token price. Mixing the two would make the comparison meaningless.",
+    },
+    {
+      q: "How current is this pricing comparison?",
+      a: `The table is rebuilt from records checked against laboratory pricing pages; the dataset revision is ${revised}. Promotional and introductory prices change on the dates the laboratories state, so check the source before budgeting.`,
+    },
+  ]
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "AI model pricing comparison",
     url: "https://modelregistry.tirup.in/pricing",
-    dateModified: datasetRevision.revisedAt,
+    dateModified: revised,
   }
 
   return (
     <main id="content" tabIndex={-1} className="relative min-h-screen focus:outline-none">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqPage(faqs)) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJsonLd(
+            itemList({
+              name: "AI model prices per 1M tokens",
+              path: "/pricing",
+              description: "Token-billed frontier AI models ordered from the lowest listed input price.",
+              models: tokenModels,
+            }),
+          ),
+        }}
+      />
       <section className="page">
         <PageHeader
-          title="Pricing comparison"
+          title="AI model pricing comparison"
           lead="Official list prices for each model, per 1M tokens. Check the linked source before budgeting: providers change prices."
           className="mb-6"
         />
@@ -116,6 +153,18 @@ export default function PricingPage() {
             </ul>
           </div>
         )}
+
+        <h2 className="mt-10 mb-3 font-display text-heading font-semibold tracking-tight text-fg-strong">
+          Pricing questions
+        </h2>
+        <div className="rule-t">
+          {faqs.map((item) => (
+            <div key={item.q} className="py-4 rule-b">
+              <h3 className="mb-1.5 text-body font-medium tracking-tight text-fg-strong">{item.q}</h3>
+              <p className="max-w-[68ch] text-body font-sans leading-6 text-fg-muted">{item.a}</p>
+            </div>
+          ))}
+        </div>
       </section>
     </main>
   )

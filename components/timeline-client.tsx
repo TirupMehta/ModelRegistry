@@ -38,7 +38,7 @@ export default function TimelineClient({ models }: { models: ModelListItem[] }) 
     <>
       <section className="section page">
         <TextWithBlur delay={120}>
-          <PageHeader title="Release timeline" lead="Every tracked model checkpoint, newest first. Select a row for the full record." />
+          <PageHeader title="AI model release timeline" lead="Every tracked model checkpoint, newest first. Select a row for the full record." />
         </TextWithBlur>
 
         <div className="space-y-10">

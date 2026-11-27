@@ -15,7 +15,7 @@ import { withShare } from "@/lib/share"
 const SITE_URL = "https://modelregistry.tirup.in"
 
 export const metadata: Metadata = withShare({
-  title: "ModelRegistry API Reference - endpoints, parameters, examples",
+  title: { absolute: "ModelRegistry API reference: endpoints, parameters and examples" },
   description:
     "ModelRegistry API reference: free unauthenticated REST API, OpenAPI 3.1 description, RSS, llms.txt, CLI, badges and health endpoints for the open frontier AI model registry. Authentication, rate limits, error codes, full field reference, and copy-paste examples.",
   alternates: {

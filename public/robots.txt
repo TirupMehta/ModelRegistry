@@ -12,6 +12,7 @@
 User-agent: *
 Allow: /
 Crawl-delay: 0
+Disallow: /ingest/
 
 # ---- Search engines ----
 User-agent: Googlebot

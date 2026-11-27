@@ -421,7 +421,7 @@ async function main() {
   }
 
   // Trust anchors: real pages, linked from the footer and listed in the sitemap.
-  for (const path of ["/contact", "/privacy", "/open-source"]) {
+  for (const path of ["/contact", "/privacy", "/terms", "/open-source"]) {
     try {
       const { res } = await get(path, { accept: "text/html" })
       const body = await res.text()
@@ -431,6 +431,18 @@ async function main() {
     } catch (e) {
       fail(`${path} trust page`, e.message)
     }
+  }
+
+  // Trailing slashes must not create a second 200 for a page. The PostHog proxy
+  // needs Next's redirect off, so middleware canonicalises the URL instead.
+  try {
+    const { res } = await get("/privacy/", { accept: "text/html", redirect: "manual" })
+    const location = res.headers.get("location") || ""
+    if ((res.status === 308 || res.status === 307) && location.endsWith("/privacy"))
+      pass("trailing-slash canonical redirect", `${res.status} -> ${location}`)
+    else fail("trailing-slash canonical redirect", `status ${res.status}, location '${location}'`)
+  } catch (e) {
+    fail("trailing-slash canonical redirect", e.message)
   }
 
   // MCP server (POST-only JSON-RPC, stateless): initialize handshake,
@@ -613,14 +625,26 @@ async function main() {
   } catch (e) {
     fail("well-known mcp discovery", e.message)
   }
-  // llms.txt carries the when-to-use and call-convention guidance.
+  // llms.txt carries the when-to-use and call-convention guidance, and must be
+  // a Markdown file with an H1 and real links (the llms.txt audit rejects a
+  // list of bare URLs).
   try {
     const { res } = await get("/llms.txt")
     const text = await res.text()
     const hasWhen = text.includes("When to use ModelRegistry")
     const hasHow = text.includes("How an agent should call it")
-    if (res.status === 200 && hasWhen && hasHow) pass("llms.txt agent instructions")
-    else fail("llms.txt agent instructions", `whenToUse=${hasWhen}, howToCall=${hasHow}`)
+    const hasH1 = /^# ModelRegistry/m.test(text)
+    const hasBlockquote = /^> /m.test(text)
+    const hasLinks = /\]\(https:\/\//.test(text)
+    const hasTerms = text.includes("](https://modelregistry.tirup.in/terms)")
+    if (res.status === 200 && hasWhen && hasHow && hasH1 && hasBlockquote && hasLinks && hasTerms) {
+      pass("llms.txt agent instructions", "H1, summary, Markdown links")
+    } else {
+      fail(
+        "llms.txt agent instructions",
+        `whenToUse=${hasWhen}, howToCall=${hasHow}, h1=${hasH1}, quote=${hasBlockquote}, links=${hasLinks}, terms=${hasTerms}`,
+      )
+    }
   } catch (e) {
     fail("llms.txt agent instructions", e.message)
   }

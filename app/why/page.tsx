@@ -10,7 +10,7 @@ import { SITE_URL } from "@/lib/site"
 import { safeJsonLd } from "@/lib/utils"
 import { withShare } from "@/lib/share"
 
-const TITLE = "Why use ModelRegistry - one call instead of fifteen tabs"
+const TITLE = "Why this registry exists: one call instead of fifteen tabs"
 const DESCRIPTION =
   "A new AI model launches and you open fifteen tabs. ModelRegistry answers from one source-linked place, for people and for AI agents: a zero-auth MCP server, Markdown on request, llms.txt, OpenAPI and dated changelogs."
 
