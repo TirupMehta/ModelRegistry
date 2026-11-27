@@ -3,9 +3,9 @@
   "suite": "Intelligence Index v5.0.1",
   "scores": {
     "beam-1": {
-      "score": 346,
+      "score": 345,
       "tests": 10,
-      "inputs": "869d42983bb5"
+      "inputs": "7ac3a15e83ea"
     },
     "claude-fable-5-2": {
       "score": 654,
@@ -15,27 +15,27 @@
     "claude-haiku-5-5": {
       "score": 478,
       "tests": 10,
-      "inputs": "0a2ef3b3a815"
+      "inputs": "596bbcfb04a9"
     },
     "claude-opus-5-5": {
       "score": 617,
       "tests": 10,
-      "inputs": "eef2e28aa927"
+      "inputs": "91b9bfe7a88c"
     },
     "claude-sonnet-5-5": {
       "score": 591,
       "tests": 10,
-      "inputs": "fa77226a3ed5"
+      "inputs": "ef7fb56d66b3"
     },
     "deepseek-v4-1-flash-1017": {
-      "score": 487,
+      "score": 486,
       "tests": 9,
-      "inputs": "59c546a32bd5"
+      "inputs": "6a6847cb522b"
     },
     "deepseek-v4-pro-0813": {
       "score": 418,
       "tests": 10,
-      "inputs": "b5690cd7c5c4"
+      "inputs": "e8b564b75d59"
     },
     "gemini-3-8-flash": {
       "score": 480,
@@ -45,7 +45,7 @@
     "gemini-4-argon": {
       "score": 576,
       "tests": 10,
-      "inputs": "2fae55095021"
+      "inputs": "49c92a118207"
     },
     "gemini-4-carbon": {
       "score": 625,
@@ -65,22 +65,22 @@
     "glm-5-3": {
       "score": 470,
       "tests": 10,
-      "inputs": "d1f1c3028830"
+      "inputs": "7b41d057ac9f"
     },
     "glm-5-3-flash": {
       "score": 448,
       "tests": 9,
-      "inputs": "b3c5d16455cd"
+      "inputs": "39917062e21a"
     },
     "gpt-6-1-terra": {
       "score": 563,
       "tests": 9,
-      "inputs": "fe3b9e53d428"
+      "inputs": "23bdd41fbee4"
     },
     "gpt-6-2-astra": {
       "score": 635,
       "tests": 9,
-      "inputs": "34b519c5a016"
+      "inputs": "582bbbe8fc58"
     },
     "gpt-6-2-sol": {
       "score": 606,
@@ -90,17 +90,17 @@
     "grok-4-7": {
       "score": 502,
       "tests": 10,
-      "inputs": "569c32da430f"
+      "inputs": "0becb1c92563"
     },
     "kimi-k3-1-pro": {
       "score": 567,
       "tests": 10,
-      "inputs": "de29637a1feb"
+      "inputs": "64dc3f01e42b"
     },
     "mimo-v2-6-flash": {
       "score": 435,
       "tests": 10,
-      "inputs": "ff8254e8f021"
+      "inputs": "6d321a4a1ec2"
     },
     "mimo-v2-6-pro": {
       "score": 470,
@@ -115,12 +115,12 @@
     "mistral-large-4": {
       "score": 434,
       "tests": 10,
-      "inputs": "fd04209fe5ed"
+      "inputs": "8619619e863b"
     },
     "muse-ember": {
       "score": 509,
       "tests": 9,
-      "inputs": "a57ae2208c2e"
+      "inputs": "d0e2d11685ad"
     },
     "muse-spark-open": {
       "score": 418,
@@ -140,7 +140,7 @@
     "nemotron-3-ultra": {
       "score": 253,
       "tests": 10,
-      "inputs": "0e36d5583063"
+      "inputs": "65d495012f2b"
     },
     "qwen4-max": {
       "score": 556,
