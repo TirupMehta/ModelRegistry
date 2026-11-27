@@ -21,18 +21,30 @@ export default function FlagshipsClient({ models }: { models: ModelListItem[] })
     <ModelFilterControls filters={filters} onChange={setFilters} />
     <p className="mb-3 text-caption tabular-nums text-fg-muted" aria-live="polite">{flagships.length} {flagships.length === 1 ? "lab" : "labs"} shown</p>
     <div className="rule-t">
-      {flagships.map((model) => <div key={model.id} className="flex flex-col gap-1 py-3 rule-b text-body sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3">
-        <span className="flex items-center gap-2 min-w-0 sm:w-64 shrink-0">
-          <Link href={`/models/${model.id}`} className="font-medium tracking-tight text-fg-strong hover:text-accent-ink truncate">{model.name}</Link>
-        </span>
-        <Link href={`/companies/${model.companyId}`} className="text-small font-sans text-fg-muted hover:text-accent-ink sm:shrink-0">{model.companyName}</Link>
-        {/* The detail string can be a full sentence for long context or per-second
-            pricing, so it moves to its own right-aligned line instead of running
-            past the column. Source is part of that line and stays with it. */}
-        <span className="min-w-0 text-small font-sans tabular-nums text-fg-muted sm:ml-auto sm:max-w-full sm:shrink-0 sm:text-right">
-          {model.releaseDate} · {model.contextWindow.replace(" tokens", "")} · {priceSymbol(model)}{model.pricing.input}/{priceSymbol(model)}{model.pricing.output}
-          {model.primarySourceUrl && <> · <a href={model.primarySourceUrl} target="_blank" rel="noopener noreferrer" className="text-caption text-accent-ink hover:underline underline-offset-2">Source</a></>}
-        </span>
+      {flagships.map((model) => <div key={model.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-4 gap-y-0.5 py-3 rule-b">
+        <Link href={`/models/${model.id}`} className="min-w-0 text-body font-medium tracking-tight text-fg-strong hover:text-accent-ink">
+          {model.name}
+        </Link>
+        <div className="flex items-baseline justify-end gap-3 text-small font-sans tabular-nums">
+          <span className="font-medium text-fg">
+            {priceSymbol(model)}{model.pricing.input}/{priceSymbol(model)}{model.pricing.output}
+          </span>
+          {model.primarySourceUrl && <a href={model.primarySourceUrl} target="_blank" rel="noopener noreferrer" className="text-caption text-accent-ink hover:underline underline-offset-2">Source</a>}
+        </div>
+        {/* Provenance runs the full width of the row under the name, so a record
+            with a caveat-heavy context window wraps as prose instead of pushing
+            the price or the source out of the column. */}
+        <p className="col-span-2 text-pretty text-small font-sans text-fg-muted">
+          <Link href={`/companies/${model.companyId}`} className="hover:text-accent-ink">
+            {model.companyName}
+          </Link>
+          <span aria-hidden="true"> · </span>
+          <time dateTime={model.releaseDate} className="tabular-nums whitespace-nowrap">
+            {model.releaseDate}
+          </time>
+          <span aria-hidden="true"> · </span>
+          <span className="tabular-nums">{model.contextWindow.replace(" tokens", "")}</span>
+        </p>
       </div>)}
       {flagships.length === 0 && <p className="py-10 text-center text-body text-fg-muted">No flagship models match these filters.</p>}
     </div>
